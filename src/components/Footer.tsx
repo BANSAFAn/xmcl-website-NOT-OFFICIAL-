@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 
 export function Footer() {
   const [currentLanguage, setCurrentLanguage] = useState('en');
+  
+
   useEffect(() => {
     const savedLang = localStorage.getItem('language') || 'en';
     setCurrentLanguage(savedLang);
@@ -26,7 +28,7 @@ export function Footer() {
       websiteSource: "Website Source Code",
       author: "Baneronetwo (Author)",
       viewSource: "View Source",
-      copyright: "© 2022-2025 X Minecraft Launcher. Website by moderator Baneronetwo. Created by",
+      copyright: "© 2022-2025 X Minecraft Launcher. Website by moderator Baneronetwo. Launcher created by",
     },
     ru: {
       description: "Minecraft лаунчер с открытым исходным кодом, ориентированный на современный интерфейс и эффективное управление модами.",
@@ -43,7 +45,7 @@ export function Footer() {
       websiteSource: "Исходный код сайта",
       author: "Baneronetwo (Автор)",
       viewSource: "Просмотреть код",
-      copyright: "© 2022-2025 X Minecraft Launcher. Сайт создан модератором Baneronetwo. Разработчик лаунчера",
+      copyright: "© 2022-2025 X Minecraft Launcher. Сайт создан модератором Baneronetwo. Лаунчер создан",
     },
     uk: {
       description: "Minecraft лаунчер з відкритим вихідним кодом, орієнтований на сучасний інтерфейс та ефективне керування модами.",
@@ -60,7 +62,7 @@ export function Footer() {
       websiteSource: "Вихідний код сайту",
       author: "Baneronetwo (Автор)",
       viewSource: "Переглянути код",
-      copyright: "© 2022-2025 X Minecraft Launcher. Сайт створено модератором Baneronetwo. Розробник лаунчера",
+      copyright: "© 2022-2025 X Minecraft Launcher. Сайт створено модератором Baneronetwo. Лаунчер створено",
     }
   };
 

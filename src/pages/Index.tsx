@@ -1,7 +1,7 @@
 
 import { Hero } from "@/components/Hero";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
-import { DownloadSection } from "@/components/DownloadSection";
+import { DownloadSection } from "@/components/download";
 import { InformationSection } from "@/components/InformationSection";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/navbar";

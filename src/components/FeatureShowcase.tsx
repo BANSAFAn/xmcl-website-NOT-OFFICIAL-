@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 
 export function FeatureShowcase() {
   const [currentLanguage, setCurrentLanguage] = useState('en');
-  
   useEffect(() => {
     const savedLang = localStorage.getItem('language') || 'en';
     setCurrentLanguage(savedLang);

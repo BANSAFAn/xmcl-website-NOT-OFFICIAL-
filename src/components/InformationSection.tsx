@@ -38,7 +38,7 @@ export function InformationSection() {
             description: "XMCL поддерживает установку vanilla Minecraft, Minecraft Forge, Fabric и даже Optifine - всё в одном! Вы можете установить их в одном месте в Лаунчере. Также поддерживается сторонняя зеркальная ссылка BMCL API. Вы даже можете настроить собственное зеркало в лаунчере.",
             cta: "BMCL API",
             ctaLink: "https://bmclapidoc.bangbang93.com/",
-            image: "https://imgur.com/a/dGD1JhA",
+            image: "/XMCL/1.png",
             imageAlt: "Установка игры"
           },
           {
@@ -48,14 +48,14 @@ export function InformationSection() {
             ctaLink: "https://en.wikipedia.org/wiki/Hard_link",
             cta2: "Символическая ссылка",
             cta2Link: "https://en.wikipedia.org/wiki/Symbolic_link",
-            image: "https://imgur.com/a/QmSb9az",
+            image: "/XMCL/2.gif",
             imageAlt: "Управление дисковым пространством",
             reverse: true
           },
           {
             title: "Держите рабочее пространство чистым с помощью мульти-экземпляров",
             description: "XMCL имеет встроенную поддержку мульти-экземпляров. Вы можете легко создавать несколько экземпляров. Так что вам не нужно беспокоиться о смешении различных настроек запуска.",
-            image: "/XMCL/2.gif",
+            image: "/lovable-uploads/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
             imageAlt: "Мульти-экземпляры"
           },
           {
@@ -69,7 +69,7 @@ export function InformationSection() {
             cta3Link: "https://github.com/bs-community",
             cta4: "Authlib Injector",
             cta4Link: "https://blessing.netlify.app/yggdrasil-api/authlib-injector.html",
-            image: "/XMCL/https://imgur.com/a/QmSb9az",
+            image: "/lovable-uploads/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
             imageAlt: "Интеграция с сообществами",
             reverse: true
           }
@@ -81,7 +81,7 @@ export function InformationSection() {
             description: "XMCL підтримує встановлення vanilla Minecraft, Minecraft Forge, Fabric і навіть Optifine - все в одному! Ви можете встановити їх в одному місці в Лаунчері. Також підтримується стороннє дзеркальне посилання BMCL API. Ви навіть можете налаштувати власне дзеркало в лаунчері.",
             cta: "BMCL API",
             ctaLink: "https://bmclapidoc.bangbang93.com/",
-            image: "/XMCL/https://imgur.com/a/QmSb9az",
+            image: "/XMCL/1.png",
             imageAlt: "Встановлення гри"
           },
           {
@@ -91,14 +91,14 @@ export function InformationSection() {
             ctaLink: "https://en.wikipedia.org/wiki/Hard_link",
             cta2: "Символічне посилання",
             cta2Link: "https://en.wikipedia.org/wiki/Symbolic_link",
-            image: "https://imgur.com/a/dGD1JhA",
+            image: "/XMCL/2.gif",
             imageAlt: "Управління дисковим простором",
             reverse: true
           },
           {
             title: "Тримайте робочий простір чистим за допомогою мульти-екземплярів",
             description: "XMCL має вбудовану підтримку мульти-екземплярів. Ви можете легко створювати кілька екземплярів. Тож вам не потрібно турбуватися про змішування різних налаштувань запуску.",
-            image: "/XMCL/2.gif",
+            image: "/lovable-uploads/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
             imageAlt: "Мульти-екземпляри"
           },
           {
@@ -112,7 +112,7 @@ export function InformationSection() {
             cta3Link: "https://github.com/bs-community",
             cta4: "Authlib Injector",
             cta4Link: "https://blessing.netlify.app/yggdrasil-api/authlib-injector.html",
-            image: "https://imgur.com/a/QmSb9az",
+            image: "/lovable-uploads/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
             imageAlt: "Інтеграція зі спільнотами",
             reverse: true
           }
@@ -124,7 +124,7 @@ export function InformationSection() {
             description: "XMCL supports installation of vanilla Minecraft, Minecraft Forge, Fabric, and even Optifine All in One! You can install them in a single place within the Launcher. It also supports the third party mirror link BMCL API. You can even customize your own mirror in the launcher.",
             cta: "BMCL API",
             ctaLink: "https://bmclapidoc.bangbang93.com/",
-            image: "/XMCL/2.gif",
+            image: "/XMCL/1.png",
             imageAlt: "Game Installation"
           },
           {
@@ -134,14 +134,14 @@ export function InformationSection() {
             ctaLink: "https://en.wikipedia.org/wiki/Hard_link",
             cta2: "Symbolic link",
             cta2Link: "https://en.wikipedia.org/wiki/Symbolic_link",
-            image: "https://imgur.com/a/dGD1JhA",
+            image: "/XMCL/2.gif",
             imageAlt: "Disk Space Management",
             reverse: true
           },
           {
             title: "Keep your workspace Clean with multi-instances",
             description: "XMCL has built in support of multi-instances. You can create multiple instances easily. So you don't need to be worried about the mixture of the different launch settings.",
-            image: "/XMCL/2.gif",
+            image: "/lovable-uploads/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
             imageAlt: "Multi-instances"
           },
           {
@@ -155,7 +155,7 @@ export function InformationSection() {
             cta3Link: "https://github.com/bs-community",
             cta4: "Authlib Injector",
             cta4Link: "https://blessing.netlify.app/yggdrasil-api/authlib-injector.html",
-            image: "https://imgur.com/a/dGD1JhA",
+            image: "/lovable-uploads/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
             imageAlt: "Community Integration",
             reverse: true
           }

@@ -1,5 +1,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+// Language data with translations
 export const languages = [
   { 
     code: 'en', 
@@ -83,10 +85,15 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   const changeLanguage = (code: string) => {
     setCurrentLanguage(code);
     localStorage.setItem('language', code);
-  
+    
+    // Update translations
     const langData = languages.find(l => l.code === code) || languages[0];
     setTranslations(langData.translations);
+    
+    // Dispatch custom event for immediate updates in other components
     window.dispatchEvent(new Event('languageChange'));
+    
+    // Also dispatch storage event for components listening to storage
     window.dispatchEvent(new StorageEvent('storage', {
       key: 'language',
       newValue: code

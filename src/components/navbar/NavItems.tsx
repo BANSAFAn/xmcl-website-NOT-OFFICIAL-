@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { BookOpen, FileText, ExternalLink, Newspaper, Globe } from 'lucide-react';
+import { BookOpen, FileText, Newspaper, Globe, History } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   Tooltip,
@@ -9,6 +9,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useLanguage } from './LanguageContext';
+
+// Motion variants for staggered animation
 const navItemVariants = {
   hidden: { opacity: 0, y: -10 },
   visible: (i: number) => ({ 
@@ -43,9 +45,9 @@ export const NavItems = () => {
       index: 1
     },
     { 
-      icon: <ExternalLink size={20} className="transition-all duration-300" />,
-      link: "https://xmcl.app/en/changelogs/0.49.1",
-      external: true,
+      icon: <History size={20} className="transition-all duration-300" />,
+      link: "/changelogs",
+      external: false,
       color: "text-orange-400 hover:text-orange-300",
       tooltip: translations.changelogs,
       index: 2
