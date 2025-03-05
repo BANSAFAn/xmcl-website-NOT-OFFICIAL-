@@ -1,2 +1,2 @@
 
-export * from "./DownloadSection";
+export { DownloadSection } from './DownloadSection';

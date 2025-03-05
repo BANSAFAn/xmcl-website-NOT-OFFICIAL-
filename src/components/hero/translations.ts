@@ -20,6 +20,13 @@ export const translations = {
     download: "Завантажити v0.49.1",
     github: "GitHub Репозиторій",
     description: "X Minecraft Launcher (XMCL) - це сучасний лаунчер Minecraft, який ефективно керує вашими модпаками, ресурспаками, модами та шейдерами. Він інтегрується з Minecraft Forge, Fabric, Quilt, CurseForge та Modrinth."
+  },
+  zh: {
+    title: "X Minecraft 启动器",
+    subtitle: "具有现代用户体验的开源启动器",
+    download: "下载 v0.49.1",
+    github: "GitHub 仓库",
+    description: "X Minecraft 启动器 (XMCL) 是一个现代化的 Minecraft 启动器，可以高效管理您的模组包、资源包、模组和光影包。它与 Minecraft Forge、Fabric、Quilt、CurseForge 和 Modrinth 集成。"
   }
 };
 

@@ -65,18 +65,9 @@ export function DownloadSection() {
           versionTag={releaseData?.tag_name || "v0.49.1"}
         />
         
-        {/* OS Selection Tabs */}
-        <OSSelector activeOS={activeOS} setActiveOS={setActiveOS} />
-        
-        {/* Download Options */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-          <DownloadOptions 
-            releaseData={releaseData}
-            isLoading={isLoading}
-            error={error as Error | null}
-            activeOS={activeOS}
-            downloadText={text.downloadBtn}
-          />
+        {/* Download Options Grid - We'll pass activeOS to DownloadOptions directly */}
+        <div className="max-w-5xl mx-auto">
+          <DownloadOptions selectedOS={activeOS} setSelectedOS={setActiveOS} />
         </div>
         
         <motion.div 

@@ -10,9 +10,21 @@ import {
 } from "@/components/ui/tooltip";
 import { languages, useLanguage } from './LanguageContext';
 
-export const LanguageSwitcher = () => {
+interface LanguageSwitcherProps {
+  onChange?: (code: string) => void;
+}
+
+export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps = {}) => {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const { currentLanguage, setCurrentLanguage, translations } = useLanguage();
+
+  const handleLanguageChange = (code: string) => {
+    setCurrentLanguage(code as any);
+    setLanguageMenuOpen(false);
+    if (onChange) {
+      onChange(code);
+    }
+  };
 
   return (
     <div className="relative">
@@ -45,10 +57,7 @@ export const LanguageSwitcher = () => {
             {languages.map((lang, index) => (
               <motion.button
                 key={lang.code}
-                onClick={() => {
-                  setCurrentLanguage(lang.code);
-                  setLanguageMenuOpen(false);
-                }}
+                onClick={() => handleLanguageChange(lang.code)}
                 className={`w-full text-left p-2 rounded-md ${currentLanguage === lang.code ? 'bg-white/10' : 'hover:bg-white/5'}`}
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}

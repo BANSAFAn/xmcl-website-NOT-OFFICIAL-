@@ -1,11 +1,6 @@
 
 import { motion } from "framer-motion";
-
-interface OSOption {
-  id: string;
-  name: string;
-  color: string;
-}
+import { Monitor, Apple, Terminal } from "lucide-react";
 
 interface OSSelectorProps {
   activeOS: string;
@@ -13,37 +8,32 @@ interface OSSelectorProps {
 }
 
 export function OSSelector({ activeOS, setActiveOS }: OSSelectorProps) {
-  const osOptions: OSOption[] = [
-    { id: "windows", name: "Windows", color: "bg-blue-500 hover:bg-blue-600" },
-    { id: "macos", name: "macOS", color: "bg-orange-500 hover:bg-orange-600" },
-    { id: "linux", name: "Linux", color: "bg-cyan-500 hover:bg-cyan-600" }
+  const operatingSystems = [
+    { id: "windows", name: "Windows", icon: <Monitor className="mr-2" size={18} /> },
+    { id: "macos", name: "macOS", icon: <Apple className="mr-2" size={18} /> },
+    { id: "linux", name: "Linux", icon: <Terminal className="mr-2" size={18} /> }
   ];
 
   return (
-    <motion.div 
-      className="flex justify-center mb-8"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.3 }}
-    >
-      <div className="glass-card inline-flex p-1 rounded-xl">
-        {osOptions.map((os) => (
+    <div className="flex justify-center mb-10">
+      <div className="inline-flex bg-white/5 backdrop-blur-sm p-1 rounded-lg shadow-inner">
+        {operatingSystems.map((os) => (
           <motion.button
             key={os.id}
             onClick={() => setActiveOS(os.id)}
-            className={`px-6 py-2 rounded-lg transition-all duration-300 ${
-              activeOS === os.id 
-                ? `${os.color} text-white shadow-lg` 
-                : 'hover:bg-white/10 text-white/70'
+            className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+              activeOS === os.id
+                ? "bg-blue-500 text-white shadow-md"
+                : "text-white/70 hover:text-white hover:bg-white/10"
             }`}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: activeOS === os.id ? 1 : 1.05 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
           >
+            {os.icon}
             {os.name}
           </motion.button>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }

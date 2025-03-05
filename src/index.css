@@ -57,6 +57,37 @@
       text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
     }
   }
+
+  .animate-digital-noise {
+    animation: digitalNoise 0.2s steps(2) infinite;
+  }
+
+  @keyframes digitalNoise {
+    0%, 100% { clip-path: inset(50% 0 40% 0); }
+    20% { clip-path: inset(10% 0 60% 0); }
+    40% { clip-path: inset(70% 0 20% 0); }
+    60% { clip-path: inset(30% 0 80% 0); }
+    80% { clip-path: inset(20% 0 40% 0); }
+  }
+
+  @keyframes digitalGlitch {
+    0% {
+      transform: skew(1deg);
+      text-shadow: -2px 0 rgba(0,255,255,0.5), 2px 0 rgba(255,0,0,0.5);
+    }
+    25% {
+      transform: skew(-1deg);
+      text-shadow: 2px 0 rgba(0,255,255,0.5), -2px 0 rgba(255,0,0,0.5);
+    }
+    50% {
+      transform: skew(2deg);
+      text-shadow: 1px 0 rgba(0,255,255,0.5), -1px 0 rgba(255,0,0,0.5);
+    }
+    100% {
+      transform: skew(0);
+      text-shadow: none;
+    }
+  }
 }
 
 @layer base {

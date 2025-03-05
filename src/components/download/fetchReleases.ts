@@ -31,6 +31,40 @@ export const fetchLatestRelease = async (): Promise<Release> => {
   return response.json();
 };
 
+// Mock data for releases - this will be used if API call fails
+export const mockReleaseData = {
+  windows: {
+    installer: { url: "#", size: "64.2 MB" },
+    appx: { url: "#", size: "67.1 MB" },
+    portable: { url: "#", size: "63.9 MB" }
+  },
+  macos: {
+    universal: { url: "#", size: "78.4 MB" },
+    arm64: { url: "#", size: "75.3 MB" },
+    intel: { url: "#", size: "76.8 MB" }
+  },
+  linux: {
+    appimage: { url: "#", size: "70.1 MB" },
+    deb: { url: "#", size: "68.5 MB" },
+    rpm: { url: "#", size: "69.2 MB" },
+    arm64: { url: "#", size: "67.8 MB" }
+  }
+};
+
+// Function to fetch release data
+export const fetchReleases = async () => {
+  try {
+    const release = await fetchLatestRelease();
+    
+    // Process release data here
+    // For now, return mock data
+    return mockReleaseData;
+  } catch (error) {
+    console.error("Error fetching releases:", error);
+    return mockReleaseData;
+  }
+};
+
 // Hook to get the latest release data
 export const useLatestRelease = () => {
   return useQuery({

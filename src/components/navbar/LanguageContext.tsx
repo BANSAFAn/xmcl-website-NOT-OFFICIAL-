@@ -1,108 +1,145 @@
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-// Language data with translations
+export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh';
+
+interface Translations {
+  guide: string;
+  guideLocal: string;
+  privacy: string;
+  changelogs: string;
+  blogs: string;
+  coreDocument: string;
+  download: string;
+  github: string;
+  darkMode: string;
+  lightMode: string;
+  downloadNow: string;
+  changeLanguage: string;
+  githubRepo: string;
+  discordServer: string;
+}
+
 export const languages = [
-  { 
-    code: 'en', 
-    name: 'English',
-    translations: {
-      guide: 'Guide',
-      privacy: 'Privacy',
-      changelogs: 'Changelogs',
-      blogs: 'Blogs',
-      coreDocument: 'Core Document',
-      changeLanguage: 'Change Language',
-      githubRepo: 'GitHub Repository',
-      discordServer: 'Discord Server',
-      download: 'Download v0.49.1'
-    }
-  },
-  { 
-    code: 'ru', 
-    name: 'Русский',
-    translations: {
-      guide: 'Руководство',
-      privacy: 'Конфиденциальность',
-      changelogs: 'Изменения',
-      blogs: 'Блоги',
-      coreDocument: 'Основной документ',
-      changeLanguage: 'Изменить язык',
-      githubRepo: 'Репозиторий GitHub',
-      discordServer: 'Сервер Discord',
-      download: 'Скачать v0.49.1'
-    }
-  },
-  { 
-    code: 'uk', 
-    name: 'Українська',
-    translations: {
-      guide: 'Посібник',
-      privacy: 'Конфіденційність',
-      changelogs: 'Зміни',
-      blogs: 'Блоги',
-      coreDocument: 'Основний документ',
-      changeLanguage: 'Змінити мову',
-      githubRepo: 'Репозиторій GitHub',
-      discordServer: 'Сервер Discord',
-      download: 'Завантажити v0.49.1'
-    }
-  }
+  { code: 'en', name: 'English' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'uk', name: 'Українська' },
+  { code: 'zh', name: '中文' }
 ];
 
-export type Translation = typeof languages[0]['translations'];
+const defaultTranslations: Record<LanguageCode, Translations> = {
+  en: {
+    guide: 'Documentation',
+    guideLocal: 'Guide',
+    privacy: 'Privacy Policy',
+    changelogs: 'Changelogs',
+    blogs: 'Blog',
+    coreDocument: 'Core API',
+    download: 'Download',
+    github: 'GitHub',
+    darkMode: 'Dark Mode',
+    lightMode: 'Light Mode',
+    downloadNow: 'Download Now',
+    changeLanguage: 'Change Language',
+    githubRepo: 'GitHub Repository',
+    discordServer: 'Discord Server'
+  },
+  ru: {
+    guide: 'Документация',
+    guideLocal: 'Гид',
+    privacy: 'Конфиденциальность',
+    changelogs: 'История изменений',
+    blogs: 'Блог',
+    coreDocument: 'API ядра',
+    download: 'Скачать',
+    github: 'GitHub',
+    darkMode: 'Тёмная тема',
+    lightMode: 'Светлая тема',
+    downloadNow: 'Скачать сейчас',
+    changeLanguage: 'Изменить язык',
+    githubRepo: 'GitHub Репозиторий',
+    discordServer: 'Discord Сервер'
+  },
+  uk: {
+    guide: 'Документація',
+    guideLocal: 'Гід',
+    privacy: 'Конфіденційність',
+    changelogs: 'Історія змін',
+    blogs: 'Блог',
+    coreDocument: 'API ядра',
+    download: 'Завантажити',
+    github: 'GitHub',
+    darkMode: 'Темна тема',
+    lightMode: 'Світла тема',
+    downloadNow: 'Завантажити зараз',
+    changeLanguage: 'Змінити мову',
+    githubRepo: 'GitHub репозиторій',
+    discordServer: 'Discord сервер'
+  },
+  zh: {
+    guide: '文档',
+    guideLocal: '指南',
+    privacy: '隐私政策',
+    changelogs: '更新日志',
+    blogs: '博客',
+    coreDocument: '核心 API',
+    download: '下载',
+    github: 'GitHub',
+    darkMode: '深色模式',
+    lightMode: '浅色模式',
+    downloadNow: '立即下载',
+    changeLanguage: '更改语言',
+    githubRepo: 'GitHub 仓库',
+    discordServer: 'Discord 服务器'
+  }
+};
 
-interface LanguageContextType {
-  currentLanguage: string;
-  setCurrentLanguage: (code: string) => void;
-  translations: Translation;
+interface LanguageContextProps {
+  currentLanguage: LanguageCode;
+  setCurrentLanguage: (lang: LanguageCode) => void;
+  translations: Translations;
 }
 
-const LanguageContext = createContext<LanguageContextType>({
-  currentLanguage: 'en',
-  setCurrentLanguage: () => {},
-  translations: languages[0].translations
-});
+const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
 
-export const useLanguage = () => useContext(LanguageContext);
-
-interface LanguageProviderProps {
-  children: ReactNode;
-}
-
-export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  const [currentLanguage, setCurrentLanguage] = useState('en');
-  const [translations, setTranslations] = useState<Translation>(languages[0].translations);
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en');
   
-  // Initialize language based on localStorage
   useEffect(() => {
-    const savedLang = localStorage.getItem('language') || 'en';
-    setCurrentLanguage(savedLang);
-    const langData = languages.find(l => l.code === savedLang) || languages[0];
-    setTranslations(langData.translations);
+    // Initialize language on component mount
+    const savedLang = localStorage.getItem('language');
+    if (savedLang && (savedLang === 'en' || savedLang === 'ru' || savedLang === 'uk' || savedLang === 'zh')) {
+      setCurrentLanguage(savedLang as LanguageCode);
+    }
   }, []);
-
-  const changeLanguage = (code: string) => {
-    setCurrentLanguage(code);
-    localStorage.setItem('language', code);
+  
+  // Handle language change and notify other components
+  const handleLanguageChange = (lang: LanguageCode) => {
+    setCurrentLanguage(lang);
+    localStorage.setItem('language', lang);
     
-    // Update translations
-    const langData = languages.find(l => l.code === code) || languages[0];
-    setTranslations(langData.translations);
-    
-    // Dispatch custom event for immediate updates in other components
+    // Dispatch events to notify other components about the language change
     window.dispatchEvent(new Event('languageChange'));
-    
-    // Also dispatch storage event for components listening to storage
-    window.dispatchEvent(new StorageEvent('storage', {
-      key: 'language',
-      newValue: code
-    }));
+    window.dispatchEvent(new StorageEvent('storage', { key: 'language', newValue: lang }));
   };
-
+  
+  const translations = defaultTranslations[currentLanguage];
+  
   return (
-    <LanguageContext.Provider value={{ currentLanguage, setCurrentLanguage: changeLanguage, translations }}>
+    <LanguageContext.Provider value={{ 
+      currentLanguage, 
+      setCurrentLanguage: handleLanguageChange,
+      translations
+    }}>
       {children}
     </LanguageContext.Provider>
   );
-};
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+}

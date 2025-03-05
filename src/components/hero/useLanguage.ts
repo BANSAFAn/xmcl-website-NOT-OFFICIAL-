@@ -4,12 +4,15 @@ import { translations, LanguageCode, TranslationsType } from "./translations";
 
 export function useLanguage() {
   const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en');
+  const [text, setText] = useState(translations.en);
   
   // Initialize language based on localStorage and add listener for changes
   useEffect(() => {
     const updateLanguage = () => {
       const savedLang = localStorage.getItem('language') || 'en';
-      setCurrentLanguage(savedLang as LanguageCode);
+      const langCode = savedLang as LanguageCode;
+      setCurrentLanguage(langCode);
+      setText(translations[langCode] || translations.en);
     };
     
     // Initial language set
@@ -26,9 +29,6 @@ export function useLanguage() {
       window.removeEventListener('languageChange', updateLanguage);
     };
   }, []);
-
-  // Get current translation
-  const text = translations[currentLanguage] || translations.en;
 
   return { currentLanguage, text };
 }
