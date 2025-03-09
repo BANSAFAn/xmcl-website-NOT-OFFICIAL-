@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { FileText, History } from 'lucide-react';
+import { FileText, History, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   Tooltip,
@@ -16,19 +16,26 @@ export const NavItems = () => {
   const location = useLocation();
   
   const navItems = [
+    {
+      icon: <BookOpen size={18} />,
+      link: "/guide",
+      external: false,
+      label: translations.guide || "Guide",
+      index: 0
+    },
     { 
       icon: <FileText size={18} />,
       link: "/privacy",
       external: false,
       label: translations.privacy,
-      index: 0
+      index: 1
     },
     { 
       icon: <History size={18} />,
       link: "/changelogs",
       external: false,
       label: translations.changelogs,
-      index: 1
+      index: 2
     }
   ];
 
