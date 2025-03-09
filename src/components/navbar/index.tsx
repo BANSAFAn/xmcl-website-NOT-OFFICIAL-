@@ -108,7 +108,7 @@ const NavbarContent = ({
           }} transition={{
             duration: 0.2
           }}>
-              <img src="/lovable-uploads/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-7 w-7" />
+              <img src="/XMCL/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-7 w-7" />
             </motion.div>
             <span className="font-bold text-base tracking-tight">XMCL</span>
           </Link>
