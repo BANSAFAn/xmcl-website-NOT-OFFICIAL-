@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh';
@@ -18,6 +17,8 @@ interface Translations {
   changeLanguage: string;
   githubRepo: string;
   discordServer: string;
+  selectLanguage: string;
+  language: string; // Adding the missing property
 }
 
 export const languages = [
@@ -42,7 +43,9 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     downloadNow: 'Download Now',
     changeLanguage: 'Change Language',
     githubRepo: 'GitHub Repository',
-    discordServer: 'Discord Server'
+    discordServer: 'Discord Server',
+    selectLanguage: 'Select Language',
+    language: 'Language'
   },
   ru: {
     guide: 'Документация',
@@ -58,7 +61,9 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     downloadNow: 'Скачать сейчас',
     changeLanguage: 'Изменить язык',
     githubRepo: 'GitHub Репозиторий',
-    discordServer: 'Discord Сервер'
+    discordServer: 'Discord Сервер',
+    selectLanguage: 'Выберите язык',
+    language: 'Язык'
   },
   uk: {
     guide: 'Документація',
@@ -74,7 +79,9 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     downloadNow: 'Завантажити зараз',
     changeLanguage: 'Змінити мову',
     githubRepo: 'GitHub репозиторій',
-    discordServer: 'Discord сервер'
+    discordServer: 'Discord сервер',
+    selectLanguage: 'Виберіть мову',
+    language: 'Мова'
   },
   zh: {
     guide: '文档',
@@ -90,7 +97,9 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     downloadNow: '立即下载',
     changeLanguage: '更改语言',
     githubRepo: 'GitHub 仓库',
-    discordServer: 'Discord 服务器'
+    discordServer: 'Discord 服务器',
+    selectLanguage: '选择语言',
+    language: '语言'
   }
 };
 

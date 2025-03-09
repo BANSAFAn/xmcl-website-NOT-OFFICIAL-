@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 
 export function FeatureShowcase() {
   const [currentLanguage, setCurrentLanguage] = useState('en');
+  
+  // Initialize language based on localStorage
   useEffect(() => {
     const savedLang = localStorage.getItem('language') || 'en';
     setCurrentLanguage(savedLang);
@@ -125,7 +127,7 @@ export function FeatureShowcase() {
             borderColor: "border-minecraft-accent-yellow/30"
           }
         ];
-      default: 
+      default: // English
         return [
           {
             title: "No more worry about the Game Install",

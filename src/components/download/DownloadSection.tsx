@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
 import { useLatestRelease } from "./fetchReleases";
 import { downloadTranslations, LanguageKey } from "./translations";
 import { OSSelector } from "./OsSelector";
@@ -46,15 +45,15 @@ export function DownloadSection() {
   return (
     <motion.section 
       id="download" 
-      className="py-24 bg-minecraft-dark-blue relative"
+      className="py-16 bg-minecraft-dark-blue relative md:py-24"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.3 }}
     >
-      {/* Background blurred lights */}
+      {/* Background blurred lights - reduced opacity for performance */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-500/10 rounded-full filter blur-[80px] opacity-30"></div>
-        <div className="absolute bottom-40 right-20 w-80 h-80 bg-purple-500/10 rounded-full filter blur-[100px] opacity-30"></div>
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-500/5 rounded-full filter blur-[80px] opacity-20"></div>
+        <div className="absolute bottom-40 right-20 w-80 h-80 bg-purple-500/5 rounded-full filter blur-[100px] opacity-20"></div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
@@ -65,7 +64,7 @@ export function DownloadSection() {
           versionTag={releaseData?.tag_name || "v0.49.1"}
         />
         
-        {/* Download Options Grid - We'll pass activeOS to DownloadOptions directly */}
+        {/* Download Options with OS Selector */}
         <div className="max-w-5xl mx-auto">
           <DownloadOptions selectedOS={activeOS} setSelectedOS={setActiveOS} />
         </div>

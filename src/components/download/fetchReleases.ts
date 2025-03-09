@@ -1,5 +1,6 @@
 
 import { useQuery } from "@tanstack/react-query";
+import { WindowsAssets, MacOSAssets, LinuxAssets } from "./types";
 
 export type ReleaseAsset = {
   name: string;
@@ -14,6 +15,9 @@ export type Release = {
   published_at: string;
   assets: ReleaseAsset[];
 };
+
+// Define specific asset types for different OS
+export type ReleaseAssets = WindowsAssets | MacOSAssets | LinuxAssets;
 
 // Function to format file size
 export const formatFileSize = (bytes: number): string => {
@@ -31,37 +35,92 @@ export const fetchLatestRelease = async (): Promise<Release> => {
   return response.json();
 };
 
+// Improved function to better match release assets for different OS types
+export const getAssetsForOS = (release: Release | undefined, os: string): ReleaseAssets => {
+  if (!release) return {};
+  
+  const assets = release.assets.reduce<Record<string, any>>((acc, asset) => {
+    const { name, browser_download_url, size } = asset;
+    
+    // Windows assets
+    if (os === 'windows') {
+      if (name.includes('win') && name.includes('x64') && name.endsWith('.zip')) {
+        acc.zip64 = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.includes('win') && (name.includes('x86') || name.includes('ia32')) && name.endsWith('.zip')) {
+        acc.zip32 = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.endsWith('.appx') || name.includes('msix')) {
+        acc.appx = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.endsWith('.exe')) {
+        acc.app = { url: browser_download_url, size: formatFileSize(size) };
+      }
+    }
+    
+    // macOS assets
+    else if (os === 'macos') {
+      if (name.endsWith('.dmg') && name.includes('arm64')) {
+        acc.arm64 = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.endsWith('.dmg') && (name.includes('x64') || name.includes('intel'))) {
+        acc.intel = { url: browser_download_url, size: formatFileSize(size) };
+      }
+    }
+    
+    // Linux assets
+    else if (os === 'linux') {
+      if (name.endsWith('.AppImage')) {
+        acc.appimage = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.endsWith('.tar.gz') || name.includes('.tgz')) {
+        acc.tarball = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.includes('arm64') || name.includes('aarch64')) {
+        acc.arm64 = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.endsWith('.rpm')) {
+        acc.rpm = { url: browser_download_url, size: formatFileSize(size) };
+      } else if (name.endsWith('.deb')) {
+        acc.deb = { url: browser_download_url, size: formatFileSize(size) };
+      }
+    }
+    
+    return acc;
+  }, {});
+  
+  return assets;
+};
+
 // Mock data for releases - this will be used if API call fails
-export const mockReleaseData = {
+export const mockReleaseData: Record<string, ReleaseAssets> = {
   windows: {
-    installer: { url: "#", size: "64.2 MB" },
+    zip64: { url: "#", size: "64.2 MB" },
+    zip32: { url: "#", size: "60.5 MB" },
     appx: { url: "#", size: "67.1 MB" },
-    portable: { url: "#", size: "63.9 MB" }
+    app: { url: "#", size: "63.9 MB" }
   },
   macos: {
-    universal: { url: "#", size: "78.4 MB" },
     arm64: { url: "#", size: "75.3 MB" },
     intel: { url: "#", size: "76.8 MB" }
   },
   linux: {
     appimage: { url: "#", size: "70.1 MB" },
-    deb: { url: "#", size: "68.5 MB" },
+    tarball: { url: "#", size: "68.5 MB" },
+    arm64: { url: "#", size: "67.8 MB" },
     rpm: { url: "#", size: "69.2 MB" },
-    arm64: { url: "#", size: "67.8 MB" }
+    deb: { url: "#", size: "65.7 MB" }
   }
 };
 
-// Function to fetch release data
-export const fetchReleases = async () => {
+// Improved function to fetch release data with better error handling
+export const fetchReleases = async (os: string = 'windows'): Promise<ReleaseAssets> => {
   try {
     const release = await fetchLatestRelease();
+    const assets = getAssetsForOS(release, os);
     
-    // Process release data here
-    // For now, return mock data
-    return mockReleaseData;
+    if (!assets || Object.keys(assets).length === 0) {
+      console.warn(`No assets found for ${os}, using mock data`);
+      return mockReleaseData[os as keyof typeof mockReleaseData] || {};
+    }
+    
+    return assets;
   } catch (error) {
     console.error("Error fetching releases:", error);
-    return mockReleaseData;
+    return mockReleaseData[os as keyof typeof mockReleaseData] || {};
   }
 };
 
@@ -73,4 +132,18 @@ export const useLatestRelease = () => {
     staleTime: 1000 * 60 * 60, // Cache for 1 hour
     refetchOnWindowFocus: false
   });
+};
+
+// New hook to get assets for a specific OS
+export const useOSAssets = (os: string) => {
+  const { data: release, isLoading, error } = useLatestRelease();
+  
+  const assets = release ? getAssetsForOS(release, os) : {};
+  const isEmpty = Object.keys(assets).length === 0;
+  
+  return {
+    assets: isEmpty ? mockReleaseData[os as keyof typeof mockReleaseData] || {} : assets,
+    isLoading,
+    error
+  };
 };

@@ -1,193 +1,146 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { X, FileText, Newspaper, History, BookMarked } from 'lucide-react';
+import { Github, FileText, Home, Download, Info, BookOpen, Clock, Mail, Globe } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { SocialLinks } from './SocialLinks';
-import { DownloadButton } from './DownloadButton';
-import { LanguageCode } from './LanguageContext';
+import { useLanguage } from './LanguageContext';
+import { useState } from 'react';
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onLanguageChange: (lang: LanguageCode) => void;
+  onLanguageChange: () => void;
 }
 
 export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProps) {
-  const menuItems = [
-    {
-      icon: <BookMarked size={20} />,
-      title: 'Guide',
-      link: '/guide',
-      external: false
-    },
-    {
-      icon: <FileText size={20} />,
-      title: 'Privacy Policy',
-      link: '/privacy',
-      external: false
-    },
-    {
-      icon: <History size={20} />,
-      title: 'Changelogs',
-      link: '/changelogs',
-      external: false
-    },
-    {
-      icon: <Newspaper size={20} />,
-      title: 'Blog',
-      link: 'https://xmcl.app/en/blog/',
-      external: true
-    }
-  ];
+  const { translations } = useLanguage();
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
 
+  // Animation variants
   const menuVariants = {
-    hidden: { 
+    closed: {
       opacity: 0,
-      y: -10,
+      y: -20,
       transition: {
-        type: 'spring',
+        duration: 0.2,
+        staggerDirection: -1,
+        staggerChildren: 0.05,
+        when: "afterChildren"
       }
     },
-    visible: {
+    open: {
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
-        mass: 0.5,
-        stiffness: 100,
-        damping: 15
-      }
-    },
-    exit: {
-      opacity: 0,
-      y: -10,
-      transition: {
-        type: 'spring',
+        duration: 0.3,
+        staggerChildren: 0.07,
+        delayChildren: 0.1
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1.0]
-      }
-    }),
-    exit: (i: number) => ({
-      opacity: 0,
-      y: 10,
-      transition: {
-        delay: i * 0.05,
-        duration: 0.3,
-        ease: [0.25, 0.1, 0.25, 1.0]
-      }
-    })
+    closed: { opacity: 0, y: -10 },
+    open: { opacity: 1, y: 0 }
   };
 
+  const languageSelectorVariants = {
+    closed: { opacity: 0, height: 0 },
+    open: { opacity: 1, height: 'auto' }
+  };
+
+  const menuItems = [
+    { name: 'Home', icon: <Home size={18} />, path: '/' },
+    { name: 'Guide', icon: <BookOpen size={18} />, path: '/guide' },
+    { name: 'Download', icon: <Download size={18} />, path: '/#download' },
+    { name: 'About', icon: <Info size={18} />, path: '/about' },
+    { name: 'Changelogs', icon: <Clock size={18} />, path: '/changelogs' },
+    { name: 'Blog', icon: <FileText size={18} />, path: '/blogs' },
+    { name: 'GitHub', icon: <Github size={18} />, path: 'https://github.com/Voxelum/x-minecraft-launcher', external: true },
+    { name: 'Contact', icon: <Mail size={18} />, path: '/contact' }
+  ];
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
+    <motion.div 
+      className="fixed inset-x-0 top-[56px] bg-black/80 backdrop-blur-md border-b border-white/10 p-4 shadow-lg"
+      initial="closed"
+      animate="open"
+      exit="closed"
+      variants={menuVariants}
+    >
+      {/* Language selector - floating button */}
+      <motion.div
+        className="fixed bottom-6 right-6 z-50"
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <motion.button
+          onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+          className="flex items-center space-x-2 px-4 py-3 rounded-full bg-accent shadow-lg hover:bg-accent/90 transition-colors"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <motion.div
-            className="absolute inset-y-0 right-0 w-full max-w-sm bg-minecraft-darker-blue/95 shadow-xl p-6"
-            variants={menuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header with close button */}
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-xl font-bold">Menu</h2>
-              <button 
-                onClick={onClose}
-                className="p-2 rounded-full hover:bg-white/10 transition-colors"
-              >
-                <X size={24} />
-              </button>
-            </div>
+          <Globe size={18} />
+          <span>{translations.language}</span>
+        </motion.button>
 
-            {/* Navigation Links */}
-            <nav className="mb-8">
-              <ul className="space-y-4">
-                {menuItems.map((item, i) => (
-                  <motion.li
-                    key={item.title}
-                    custom={i}
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    {item.external ? (
-                      <a
-                        href={item.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center p-3 rounded-lg hover:bg-white/10 transition-all duration-300"
-                        onClick={onClose}
-                      >
-                        <span className="mr-3 text-accent">{item.icon}</span>
-                        {item.title}
-                      </a>
-                    ) : (
-                      <Link
-                        to={item.link}
-                        className="flex items-center p-3 rounded-lg hover:bg-white/10 transition-all duration-300"
-                        onClick={onClose}
-                      >
-                        <span className="mr-3 text-accent">{item.icon}</span>
-                        {item.title}
-                      </Link>
-                    )}
-                  </motion.li>
-                ))}
-              </ul>
-            </nav>
-
-            {/* Language Switcher */}
-            <motion.div 
-              variants={itemVariants}
-              custom={menuItems.length + 1}
-              className="mb-8"
-            >
-              <h3 className="text-lg font-semibold mb-3">Language</h3>
-              <LanguageSwitcher onChange={onLanguageChange} />
-            </motion.div>
-
-            {/* Social Links */}
-            <motion.div 
-              variants={itemVariants}
-              custom={menuItems.length + 2}
-              className="mb-8"
-            >
-              <h3 className="text-lg font-semibold mb-3">Connect</h3>
-              <SocialLinks />
-            </motion.div>
-
-            {/* Download Button */}
+        <AnimatePresence>
+          {showLanguageSelector && (
             <motion.div
-              variants={itemVariants}
-              custom={menuItems.length + 3}
-              className="pt-4"
+              initial={{ scale: 0.9, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 10 }}
+              className="absolute bottom-14 right-0 p-3 bg-black/90 backdrop-blur-sm rounded-lg shadow-xl border border-white/10"
             >
-              <DownloadButton fullWidth={true} />
+              <div className="mb-2 text-sm text-white/70">{translations.selectLanguage}:</div>
+              <LanguageSwitcher onChange={() => {
+                onLanguageChange();
+                setTimeout(() => setShowLanguageSelector(false), 500);
+              }} />
             </motion.div>
-          </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      <div className="container mx-auto px-2 pb-14">
+        <motion.div className="grid grid-cols-2 gap-3 mb-4" variants={itemVariants}>
+          {menuItems.map((item) => (
+            <motion.div key={item.name} variants={itemVariants}>
+              {item.external ? (
+                <a 
+                  href={item.path} 
+                  className="flex items-center space-x-2 py-2 px-3 rounded-md bg-white/5 hover:bg-white/10 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={onClose}
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </a>
+              ) : (
+                <Link 
+                  to={item.path} 
+                  className="flex items-center space-x-2 py-2 px-3 rounded-md bg-white/5 hover:bg-white/10 transition-colors"
+                  onClick={onClose}
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </Link>
+              )}
+            </motion.div>
+          ))}
         </motion.div>
-      )}
-    </AnimatePresence>
+        
+        <motion.div 
+          className="mt-4 p-3 bg-white/5 rounded-md"
+          variants={itemVariants}
+        >
+          <p className="text-xs text-white/60 text-center">
+            This is an unofficial website created by XMCL moderator Baneronetwo.
+          </p>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }

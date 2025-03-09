@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,7 +13,7 @@ interface LanguageSwitcherProps {
   onChange?: (code: string) => void;
 }
 
-export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps = {}) => {
+export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const { currentLanguage, setCurrentLanguage, translations } = useLanguage();
 
