@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Monitor, Apple, Terminal } from "lucide-react";
 
@@ -9,9 +8,17 @@ interface OSSelectorProps {
 
 export function OSSelector({ activeOS, setActiveOS }: OSSelectorProps) {
   const operatingSystems = [
-    { id: "windows", name: "Windows", icon: <Monitor className="mr-2" size={18} /> },
+    {
+      id: "windows",
+      name: "Windows",
+      icon: <Monitor className="mr-2" size={18} />,
+    },
     { id: "macos", name: "macOS", icon: <Apple className="mr-2" size={18} /> },
-    { id: "linux", name: "Linux", icon: <Terminal className="mr-2" size={18} /> }
+    {
+      id: "linux",
+      name: "Linux",
+      icon: <Terminal className="mr-2" size={18} />,
+    },
   ];
 
   return (
