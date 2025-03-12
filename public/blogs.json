@@ -1,4 +1,3 @@
-
 [
   {
     "slug": "Nya",
@@ -7,7 +6,17 @@
     "author": "XMCL Team",
     "excerpt": "12321331",
     "category": "News",
-    "image": "https://raw.githubusercontent.com/Voxelum/xmcl-page/master/.vitepress/theme/assets/home.png",
+    "image": "",
     "path": "/blogs/2025-03/new-website.md"
+  },
+  {
+    "slug": "Nya",
+    "title": "AAAAAAAAAAAAAAAAAAA",
+    "date": "2025-03-15",
+    "author": "XMCL TEST",
+    "excerpt": "43565654654654",
+    "category": "News",
+    "image": "",
+    "path": "/blogs/2025-03/nyachka.md"
   }
 ]
