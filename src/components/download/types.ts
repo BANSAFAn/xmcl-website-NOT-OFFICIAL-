@@ -1,10 +1,10 @@
-
 import { ReactNode } from "react";
 
 export interface DownloadOption {
   id: string;
   title: string;
   subtitle: string;
+  description?: string; // Added description field for package information
   icon: ReactNode;
   disabled: boolean;
   onClick: () => void;
