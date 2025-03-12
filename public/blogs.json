@@ -1,13 +1,13 @@
 
 [
   {
-    "slug": "new-website",
+    "slug": "Nya",
     "title": "Welcome to Our New Website",
     "date": "2025-03-15",
     "author": "XMCL Team",
-    "excerpt": "We're excited to announce the launch of our brand new website for X Minecraft Launcher.",
+    "excerpt": "12321331",
     "category": "News",
-    "image": "/lovable-uploads/bc119197-ca8b-4f7f-8988-823cc947ad73.png",
+    "image": "https://raw.githubusercontent.com/Voxelum/xmcl-page/master/.vitepress/theme/assets/home.png",
     "path": "/blogs/2025-03/new-website.md"
   }
 ]
