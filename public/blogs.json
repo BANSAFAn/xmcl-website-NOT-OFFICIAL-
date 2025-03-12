@@ -1,0 +1,13 @@
+
+[
+  {
+    "slug": "Nya",
+    "title": "Welcome to Our New Website",
+    "date": "2025-03-15",
+    "author": "XMCL Team",
+    "excerpt": "12321331",
+    "category": "News",
+    "image": "https://raw.githubusercontent.com/Voxelum/xmcl-page/master/.vitepress/theme/assets/home.png",
+    "path": "/blogs/2025-03/new-website.md"
+  }
+]

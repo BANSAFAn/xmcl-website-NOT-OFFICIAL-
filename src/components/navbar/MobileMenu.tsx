@@ -1,7 +1,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Github, FileText, Home, Download, Info, BookOpen, Clock, Mail, Globe } from 'lucide-react';
+import { Github, FileText, Home, Download, Info, BookOpen, Clock, Mail, Globe, MessageSquare } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useLanguage } from './LanguageContext';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProp
     { name: 'Download', icon: <Download size={18} />, path: '/#download' },
     { name: 'About', icon: <Info size={18} />, path: '/about' },
     { name: 'Changelogs', icon: <Clock size={18} />, path: '/changelogs' },
-    { name: 'Blog', icon: <FileText size={18} />, path: '/blogs' },
+    { name: 'Blog', icon: <MessageSquare size={18} />, path: '/blogs' },
     { name: 'GitHub', icon: <Github size={18} />, path: 'https://github.com/Voxelum/x-minecraft-launcher', external: true },
     { name: 'Contact', icon: <Mail size={18} />, path: '/contact' }
   ];
