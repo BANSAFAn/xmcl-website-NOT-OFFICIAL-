@@ -1,22 +1,15 @@
 import React from "react";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
-import { TipAlert, ImportantAlert } from "../GuideAlerts";
 import { CodeBlock } from "../CodeBlock";
+import { UnderConstructionBadge } from "../GuideBages";
 
 export function AppXMigrationGuide() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">AppX Migration</h2>
-        <Badge
-          variant="outline"
-          className="bg-amber-500/10 text-amber-300 border-amber-300/20"
-        >
-          Migration Guide
-        </Badge>
+        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <p className="mb-4">

@@ -1,17 +1,14 @@
-import React from "react";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
-import { NoteAlert } from "../GuideAlerts";
-import { CodeBlock } from "../CodeBlock";
+import { UnderConstructionBadge } from "../GuideBages";
 
 export function DataStorageGuide() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Data Storage</h2>
+        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <Card className="mb-8 border border-white/10 bg-black/20 backdrop-blur-sm">
@@ -60,19 +57,18 @@ export function DataStorageGuide() {
               </div>
             </TabsContent>
             <TabsContent value="appx" className="space-y-4 mt-2">
-              <p className="text-slate-200">
-                The location is managed by Windows and may vary between
-                versions.
-              </p>
+              <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
+                %LocalAppData%\Packages\XMCL_68mcaawk44tpj\LocalCache\Roaming\xmcl
+              </div>
             </TabsContent>
             <TabsContent value="macos" className="space-y-4 mt-2">
-              <p className="text-slate-200">
-                Standard macOS Application Support directory.
-              </p>
+              <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
+                ~/Library/Application Support/xmcl
+              </div>
             </TabsContent>
             <TabsContent value="linux" className="space-y-4 mt-2">
               <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
-                ~/.xmcl/
+                ~/.config/xmcl
               </div>
             </TabsContent>
           </Tabs>

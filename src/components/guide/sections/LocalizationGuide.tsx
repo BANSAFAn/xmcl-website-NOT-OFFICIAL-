@@ -1,10 +1,15 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { CodeBlock } from "../CodeBlock";
+import {
+  UnderConstructionBadge,
+  GreenBadge,
+  YellowBadge,
+  RedBadge,
+} from "../GuideBages";
 
 export function LocalizationGuide() {
   return (
@@ -13,38 +18,58 @@ export function LocalizationGuide() {
         <h2 className="text-3xl font-bold tracking-tight">
           Getting Started with Localization
         </h2>
-        <Badge
-          variant="outline"
-          className="bg-amber-500/10 text-amber-300 border-amber-300/20"
-        >
-          Contributor Guide
-        </Badge>
+        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <Card className="mb-8 border border-white/10 bg-black/20 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold">
-            Pre-requirements
-          </CardTitle>
+          <CardTitle className="text-2xl font-semibold">Requirements</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              <strong>Git.</strong> You must install git to getting stared
+              <strong>Git.</strong> Required for version control and project
+              cloning
             </li>
             <li>
-              <strong>VSCode.</strong> The highly recommended editor for
-              translator to translate. It have integrated UI tool to help you
-              find the translation key.
+              <strong>Code editor:</strong> Choose one of the following:
+              <ul className="list-disc pl-6 mt-2">
+                <li>
+                  <strong>VSCode</strong> <GreenBadge>Recommended</GreenBadge> -
+                  Features integrated translation tools and extensions that
+                  simplify finding translation keys
+                </li>
+                <li>
+                  <strong>Zed</strong> <YellowBadge>(Alternative)</YellowBadge>{" "}
+                  - Has fewer translation-specific features at the moment
+                </li>
+              </ul>
             </li>
             <li>
-              <strong>Node.js.</strong> If you want to test your translation
-              locally, you need this. You can just install latest version.
+              <strong>Runtime environment:</strong> Choose one option:
+              <ul className="list-disc pl-6 mt-2">
+                <li>
+                  <strong>Node.js</strong> <YellowBadge>Standard</YellowBadge> -
+                  Install the latest version for local translation testing
+                </li>
+                <li>
+                  <strong>bun</strong> <GreenBadge>Recommended</GreenBadge> -
+                  Faster alternative to Node.js
+                </li>
+              </ul>
             </li>
             <li>
-              <strong>pnpm.</strong> If you want to test your translation
-              locally, you need this. You can follow its installation page to
-              install.
+              <strong>Package manager:</strong> Choose one option:
+              <ul className="list-disc pl-6 mt-2">
+                <li>
+                  <strong>pnpm</strong> <YellowBadge>Standard</YellowBadge> -
+                  Follow the official installation guide
+                </li>
+                <li>
+                  <strong>bun</strong> <GreenBadge>Recommended</GreenBadge> -
+                  Faster alternative to pnpm
+                </li>
+              </ul>
             </li>
           </ul>
         </CardContent>
@@ -90,8 +115,8 @@ export function LocalizationGuide() {
 
             <TabsContent value="install" className="space-y-4 mt-2">
               <p>
-                Install the project using pnpm, or you can run corepack command
-                to install pnpm.
+                Install the project using pnpm or bun, or you can run corepack
+                command to install pnpm.
               </p>
               <p>
                 Under the folder you cloned, e.g. x-minecraft-launcher, run
@@ -106,6 +131,10 @@ export function LocalizationGuide() {
               </div>
 
               <CodeBlock>pnpm install</CodeBlock>
+
+              <p className="mt-3">Or if you prefer using bun:</p>
+
+              <CodeBlock>bun install</CodeBlock>
 
               <div className="bg-amber-500/10 p-4 rounded-lg border border-amber-300/20 mt-4">
                 <div className="flex items-start gap-3">
@@ -122,7 +151,7 @@ export function LocalizationGuide() {
                       git submodule update --init --recursive
                     </div>
                     <div className="mt-2 text-sm text-slate-300">
-                      Then run pnpm install again.
+                      Then run pnpm install or bun install again.
                     </div>
                   </div>
                 </div>
@@ -156,9 +185,7 @@ export function LocalizationGuide() {
               <div className="mb-4">
                 <h4 className="text-lg font-semibold text-amber-300">
                   Use VSCode with i18n Extension{" "}
-                  <Badge variant="outline" className="ml-2">
-                    Recommended
-                  </Badge>
+                  <GreenBadge showEmoji={true}>Recommended</GreenBadge>
                 </h4>
                 <p className="mt-2">
                   Install the i18n-ally (lokalise.i18n-ally) extension. VSCode
@@ -193,9 +220,7 @@ export function LocalizationGuide() {
               <div className="mt-6">
                 <h4 className="text-lg font-semibold text-amber-300">
                   Adding new language{" "}
-                  <Badge variant="outline" className="ml-2">
-                    Optional
-                  </Badge>
+                  <YellowBadge showEmoji={true}>Optional</YellowBadge>
                 </h4>
                 <p className="mt-2">
                   If you are adding a new language, you need to also go to the{" "}
@@ -213,7 +238,8 @@ export function LocalizationGuide() {
   "zh-TW": "繁體中文",
   "en": "English",
   "ru": "Русский язык",
-  "es-ES": "Español"
+  "uk": "Українська мова",
+  "es-ES": "Español",
 }`}
                 </CodeBlock>
 
@@ -225,6 +251,7 @@ export function LocalizationGuide() {
   "zh-TW": "繁體中文",
   "en": "English",
   "ru": "Русский язык",
+  "uk": "Українська мова",
   "es-ES": "Español",
   "fr": "French"
 }`}
@@ -257,9 +284,7 @@ export function LocalizationGuide() {
               <div className="mb-4">
                 <h4 className="text-lg font-semibold text-amber-300">
                   Test your translation{" "}
-                  <Badge variant="outline" className="ml-2">
-                    Recommended
-                  </Badge>
+                  <GreenBadge showEmoji={true}>Recommended</GreenBadge>
                 </h4>
                 <ol className="list-decimal pl-6 space-y-3 mt-3 text-slate-200">
                   <li>

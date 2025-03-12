@@ -1,22 +1,13 @@
-import React from "react";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Image, CodepenIcon, Monitor, AlertCircle } from "lucide-react";
-import { TipAlert, NoteAlert } from "../GuideAlerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UnderConstructionBadge } from "../GuideBages";
 
 export function AppearanceGuide() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Appearance Guide</h2>
-        <Badge
-          variant="outline"
-          className="bg-amber-500/10 text-amber-300 border-amber-300/20"
-        >
-          Under Construction
-        </Badge>
+        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <Card className="mb-8 border border-white/10 bg-black/20 backdrop-blur-sm">

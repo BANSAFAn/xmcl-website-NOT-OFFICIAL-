@@ -1,21 +1,16 @@
 import React from "react";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { CodeBlock } from "../CodeBlock";
+import { UnderConstructionBadge } from "../GuideBages";
 
 export function UpdateGuide() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Update Guide</h2>
-        <Badge
-          variant="outline"
-          className="bg-amber-500/10 text-amber-300 border-amber-300/20"
-        >
-          Under Construction
-        </Badge>
+        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <p className="mb-8">
@@ -131,13 +126,13 @@ export function UpdateGuide() {
               value="macos"
               className="p-4 bg-black/30 rounded-lg mt-2"
             >
-              <p>Standard macOS Application Support directory.</p>
+              <CodeBlock>~/Library/Application Support/xmcl</CodeBlock>
             </TabsContent>
             <TabsContent
               value="linux"
               className="p-4 bg-black/30 rounded-lg mt-2"
             >
-              <p>Standard Linux data directory.</p>
+              <CodeBlock>~/.config/xmcl</CodeBlock>
             </TabsContent>
           </Tabs>
         </CardContent>

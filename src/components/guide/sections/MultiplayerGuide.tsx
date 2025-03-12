@@ -4,18 +4,14 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
+import { UnderConstructionBadge } from "../GuideBages";
 
 export function MultiplayerGuide() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Multiplayer Guide</h2>
-        <Badge
-          variant="outline"
-          className="bg-amber-500/10 text-amber-300 border-amber-300/20"
-        >
-          Under Construction
-        </Badge>
+        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <Card className="mb-8 border border-white/10 bg-black/20 backdrop-blur-sm">
@@ -105,12 +101,7 @@ export function MultiplayerGuide() {
 
             <TabsContent value="macos" className="mt-2">
               <div className="flex justify-center items-center h-40 bg-amber-500/10 rounded-lg border border-amber-300/20">
-                <Badge
-                  variant="outline"
-                  className="text-amber-300 border-amber-300/20"
-                >
-                  Under Construction
-                </Badge>
+                <UnderConstructionBadge size="large"></UnderConstructionBadge>
               </div>
             </TabsContent>
           </Tabs>
@@ -125,12 +116,7 @@ export function MultiplayerGuide() {
         </CardHeader>
         <CardContent>
           <div className="flex justify-center items-center h-40 bg-amber-500/10 rounded-lg border border-amber-300/20">
-            <Badge
-              variant="outline"
-              className="text-amber-300 border-amber-300/20"
-            >
-              Under Construction
-            </Badge>
+            <UnderConstructionBadge size="large"></UnderConstructionBadge>
           </div>
         </CardContent>
       </Card>
@@ -143,12 +129,7 @@ export function MultiplayerGuide() {
         </CardHeader>
         <CardContent>
           <div className="flex justify-center items-center h-40 bg-amber-500/10 rounded-lg border border-amber-300/20">
-            <Badge
-              variant="outline"
-              className="text-amber-300 border-amber-300/20"
-            >
-              Under Construction
-            </Badge>
+            <UnderConstructionBadge size="large"></UnderConstructionBadge>
           </div>
         </CardContent>
       </Card>

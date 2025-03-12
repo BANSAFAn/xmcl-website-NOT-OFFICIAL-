@@ -1,10 +1,9 @@
-import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { GoodNewsAlert, NoteAlert } from "../GuideAlerts";
+import { UnderConstructionBadge } from "../GuideBages";
 
 export function InstallationGuide() {
   return (
@@ -13,12 +12,7 @@ export function InstallationGuide() {
         <h2 className="text-3xl font-bold tracking-tight">
           Installation Guide
         </h2>
-        <Badge
-          variant="outline"
-          className="bg-amber-500/10 text-amber-300 border-amber-300/20"
-        >
-          Installation Formats
-        </Badge>
+        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <p className="mb-8">

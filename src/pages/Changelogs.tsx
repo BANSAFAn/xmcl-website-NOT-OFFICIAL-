@@ -1,13 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, DownloadCloud, Calendar, Tag } from "lucide-react";
+import { ExternalLink, Calendar, Tag } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/navbar";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import remarkEmoji from "remark-emoji";
-import rehypeHighlight from "rehype-highlight";
 
 type ReleaseAsset = {
   name: string;
@@ -25,10 +20,17 @@ type Release = {
   assets: ReleaseAsset[];
 };
 
-// Function to fetch all releases from GitHub
+// Import Markdown and plugins directly
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import remarkEmoji from "remark-emoji";
+import rehypeHighlight from "rehype-highlight";
+
+// Function to fetch limited releases from GitHub
 const fetchReleases = async (): Promise<Release[]> => {
   const response = await fetch(
-    "https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases",
+    "https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases?per_page=10",
   );
   if (!response.ok) {
     throw new Error("Failed to fetch releases");
@@ -53,123 +55,11 @@ const cleanReleaseBody = (body: string): string => {
   return body.replace(downloadsPattern, "");
 };
 
-// Matrix-style loading component
-const MatrixLoading = () => {
-  const characters = "01";
-  const columnCount = 12;
-
+// Simplified loading component
+const SimpleLoading = () => {
   return (
-    <div className="flex flex-col items-center justify-center py-20">
-      <div className="relative h-64 w-64 mb-8">
-        {/* Matrix digital rain effect */}
-        <div className="absolute inset-0 overflow-hidden">
-          {Array.from({ length: columnCount }).map((_, colIndex) => (
-            <div
-              key={colIndex}
-              className="absolute top-0"
-              style={{ left: `${(100 / columnCount) * colIndex}%` }}
-            >
-              {Array.from({ length: 12 }).map((_, i) => (
-                <motion.div
-                  key={`${colIndex}-${i}`}
-                  initial={{
-                    y: -100 * Math.random(),
-                    opacity: 0,
-                  }}
-                  animate={{
-                    y: [null, 300],
-                    opacity: [0, 1, 0],
-                  }}
-                  transition={{
-                    duration: 2 + Math.random() * 3,
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    delay: colIndex * 0.1 + i * 0.1,
-                  }}
-                  className="text-lg sm:text-2xl font-mono text-accent/80"
-                >
-                  {characters.charAt(
-                    Math.floor(Math.random() * characters.length),
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          ))}
-        </div>
-
-        {/* Circular spinner with glowing effect */}
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <motion.div
-            className="relative w-24 h-24"
-            animate={{
-              rotate: 360,
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 3,
-              ease: "linear",
-            }}
-          >
-            <div className="absolute inset-0 rounded-full border-2 border-t-accent border-l-accent/50 border-b-accent/30 border-r-transparent shadow-[0_0_15px_rgba(56,189,248,0.5)]"></div>
-
-            {/* Orbital particles */}
-            {Array.from({ length: 6 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-accent rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"
-                initial={{
-                  rotate: i * 60,
-                  translateX: 50,
-                }}
-                animate={{
-                  rotate: [i * 60, i * 60 + 360],
-                  scale: [1, 1.5, 1],
-                }}
-                transition={{
-                  rotate: { repeat: Infinity, duration: 6, ease: "linear" },
-                  scale: { repeat: Infinity, duration: 2, ease: "easeInOut" },
-                }}
-                style={{
-                  transformOrigin: "center center",
-                }}
-              />
-            ))}
-
-            <motion.div
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-blue-400/20 to-cyan-500/20 flex items-center justify-center"
-              animate={{
-                boxShadow: [
-                  "0 0 5px rgba(56,189,248,0.3), 0 0 10px rgba(56,189,248,0.2), inset 0 0 5px rgba(56,189,248,0.2)",
-                  "0 0 10px rgba(56,189,248,0.5), 0 0 20px rgba(56,189,248,0.3), inset 0 0 10px rgba(56,189,248,0.3)",
-                  "0 0 5px rgba(56,189,248,0.3), 0 0 10px rgba(56,189,248,0.2), inset 0 0 5px rgba(56,189,248,0.2)",
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <DownloadCloud size={32} className="text-accent" />
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      <div className="font-mono">
-        <motion.span
-          className="inline-block text-lg"
-          animate={{ opacity: [0, 1] }}
-          transition={{
-            duration: 0.5,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        >
-          Loading data...
-        </motion.span>
-      </div>
+    <div className="flex flex-col items-center justify-center py-10">
+      <div className="w-16 h-16 border-4 border-accent/30 border-t-accent rounded-full animate-spin mb-4"></div>
     </div>
   );
 };
@@ -206,7 +96,8 @@ const Changelogs = () => {
       version: "Version",
       released: "Released",
       viewOnGithub: "View on GitHub",
-      loading: "Loading releases...",
+      viewAllReleases: "View all releases on GitHub",
+      // loading: "Loading releases...",
       error: "Failed to load releases. Please try again later.",
     },
     ru: {
@@ -216,7 +107,8 @@ const Changelogs = () => {
       version: "Версия",
       released: "Выпущено",
       viewOnGithub: "Посмотреть на GitHub",
-      loading: "Загрузка релизов...",
+      viewAllReleases: "Посмотреть все релизы на GitHub",
+      // loading: "Загрузка релизов...",
       error: "Не удалось загрузить релизы. Пожалуйста, попробуйте позже.",
     },
     uk: {
@@ -226,7 +118,8 @@ const Changelogs = () => {
       version: "Версія",
       released: "Випущено",
       viewOnGithub: "Переглянути на GitHub",
-      loading: "Завантаження релізів...",
+      viewAllReleases: "Переглянути всі релізи на GitHub",
+      // loading: "Завантаження релізів...",
       error: "Не вдалося завантажити релізи. Будь ласка, спробуйте пізніше.",
     },
   };
@@ -236,7 +129,7 @@ const Changelogs = () => {
     translations[currentLanguage as keyof typeof translations] ||
     translations.en;
 
-  // Fetch releases data
+  // Fetch releases data with optimizations
   const {
     data: releases,
     isLoading,
@@ -281,7 +174,7 @@ const Changelogs = () => {
           </motion.div>
 
           {isLoading ? (
-            <MatrixLoading />
+            <SimpleLoading />
           ) : error ? (
             <div className="text-center py-20">
               <p className="text-red-400 mb-4">{text.error}</p>
@@ -296,143 +189,170 @@ const Changelogs = () => {
               </a>
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto space-y-14">
-              {processedReleases?.map((release, index) => (
-                <motion.div
-                  key={release.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card p-8 rounded-xl relative overflow-hidden"
-                >
-                  {/* Decorative elements */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-60"></div>
+            <>
+              <div className="max-w-4xl mx-auto space-y-14">
+                {processedReleases?.slice(0, 10).map((release, index) => (
+                  <motion.div
+                    key={release.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    className="glass-card p-8 rounded-xl relative overflow-hidden"
+                  >
+                    {/* Decorative elements */}
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-60"></div>
 
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                    <div className="flex items-center">
-                      <Tag className="text-accent mr-3" />
-                      <h2 className="text-2xl md:text-3xl font-bold">
-                        <span className="text-accent">{release.tag_name}</span>
-                        {release.name && release.name !== release.tag_name && (
-                          <span className="ml-2 text-white/90">
-                            - {release.name}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                      <div className="flex items-center">
+                        <Tag className="text-accent mr-3" />
+                        <h2 className="text-2xl md:text-3xl font-bold">
+                          <span className="text-accent">
+                            {release.tag_name}
                           </span>
-                        )}
-                      </h2>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <div className="flex items-center text-white/60 text-sm">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        <span>{formatDate(release.published_at)}</span>
+                          {release.name &&
+                            release.name !== release.tag_name && (
+                              <span className="ml-2 text-white/90">
+                                - {release.name}
+                              </span>
+                            )}
+                        </h2>
                       </div>
 
-                      <a
-                        href={release.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm px-3 py-1 bg-white/10 hover:bg-white/20 rounded-md transition-colors text-white/80"
-                      >
-                        <ExternalLink size={14} className="mr-1" />
-                        {text.viewOnGithub}
-                      </a>
-                    </div>
-                  </div>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <div className="flex items-center text-white/60 text-sm">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          <span>{formatDate(release.published_at)}</span>
+                        </div>
 
-                  {/* Release notes content with enhanced markdown support */}
-                  <div className="prose prose-invert prose-sm max-w-none prose-headings:text-accent prose-a:text-accent hover:prose-a:text-accent/80 prose-a:transition-colors">
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm, remarkEmoji]}
-                      rehypePlugins={[rehypeRaw, rehypeHighlight]}
-                      components={{
-                        a: ({ node, ...props }) => (
-                          <a
-                            {...props}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="underline hover:text-accent/80 transition-colors"
-                          />
-                        ),
-                        img: ({ node, ...props }) => (
-                          <img
-                            {...props}
-                            className="max-w-full h-auto rounded-md my-4 border border-white/10"
-                            loading="lazy"
-                          />
-                        ),
-                        code: ({
-                          node,
-                          inline,
-                          className,
-                          children,
-                          ...props
-                        }) => {
-                          return inline ? (
-                            <code
-                              className="bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono"
-                              {...props}
-                            >
-                              {children}
-                            </code>
-                          ) : (
-                            <div className="bg-white/5 rounded-md overflow-hidden border border-white/10 my-4">
-                              <div className="px-4 py-2 bg-white/10 border-b border-white/10 text-xs text-white/60 font-mono">
-                                {className
-                                  ? className.replace(/language-/, "")
-                                  : "code"}
+                        <a
+                          href={release.html_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-sm px-3 py-1 bg-white/10 hover:bg-white/20 rounded-md transition-colors text-white/80"
+                        >
+                          <ExternalLink size={14} className="mr-1" />
+                          {text.viewOnGithub}
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Release notes content with enhanced markdown support */}
+                    <div className="prose prose-invert prose-sm max-w-none prose-headings:text-accent prose-a:text-accent hover:prose-a:text-accent/80 prose-a:transition-colors">
+                      <Suspense
+                        fallback={
+                          <div className="animate-pulse bg-white/10 h-40 rounded-md"></div>
+                        }
+                      >
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm, remarkEmoji]}
+                          rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                          components={{
+                            a: (props) => (
+                              <a
+                                {...props}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline hover:text-accent/80 transition-colors"
+                              />
+                            ),
+                            img: (props) => (
+                              <img
+                                {...props}
+                                className="max-w-full h-auto rounded-md my-4 border border-white/10"
+                                loading="lazy"
+                              />
+                            ),
+                            code: ({
+                              node,
+                              inline,
+                              className,
+                              children,
+                              ...props
+                            }: any) => {
+                              if (inline) {
+                                return (
+                                  <code
+                                    className="bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono"
+                                    {...props}
+                                  >
+                                    {children}
+                                  </code>
+                                );
+                              }
+                              return (
+                                <div className="bg-white/5 rounded-md overflow-hidden border border-white/10 my-4">
+                                  <div className="px-4 py-2 bg-white/10 border-b border-white/10 text-xs text-white/60 font-mono">
+                                    {className
+                                      ? className.replace(/language-/, "")
+                                      : "code"}
+                                  </div>
+                                  <pre className="p-4 overflow-x-auto text-sm">
+                                    <code {...props}>{children}</code>
+                                  </pre>
+                                </div>
+                              );
+                            },
+                            table: (props) => (
+                              <div className="overflow-x-auto my-6">
+                                <table
+                                  className="border-collapse w-full"
+                                  {...props}
+                                />
                               </div>
-                              <pre className="p-4 overflow-x-auto text-sm">
-                                <code {...props}>{children}</code>
-                              </pre>
-                            </div>
-                          );
-                        },
-                        table: ({ node, ...props }) => (
-                          <div className="overflow-x-auto my-6">
-                            <table
-                              className="border-collapse w-full"
-                              {...props}
-                            />
-                          </div>
-                        ),
-                        th: ({ node, ...props }) => (
-                          <th
-                            className="border border-white/10 px-4 py-2 bg-white/5 text-left"
-                            {...props}
-                          />
-                        ),
-                        td: ({ node, ...props }) => (
-                          <td
-                            className="border border-white/10 px-4 py-2"
-                            {...props}
-                          />
-                        ),
-                        blockquote: ({ node, ...props }) => (
-                          <blockquote
-                            className="border-l-4 border-accent/60 pl-4 py-1 my-4 text-white/80 bg-white/5 rounded-r-md"
-                            {...props}
-                          />
-                        ),
-                        ul: ({ node, ...props }) => (
-                          <ul
-                            className="list-disc pl-5 my-4 space-y-2"
-                            {...props}
-                          />
-                        ),
-                        ol: ({ node, ...props }) => (
-                          <ol
-                            className="list-decimal pl-5 my-4 space-y-2"
-                            {...props}
-                          />
-                        ),
-                      }}
-                    >
-                      {release.body}
-                    </ReactMarkdown>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                            ),
+                            th: (props) => (
+                              <th
+                                className="border border-white/10 px-4 py-2 bg-white/5 text-left"
+                                {...props}
+                              />
+                            ),
+                            td: (props) => (
+                              <td
+                                className="border border-white/10 px-4 py-2"
+                                {...props}
+                              />
+                            ),
+                            blockquote: (props) => (
+                              <blockquote
+                                className="border-l-4 border-accent/60 pl-4 py-1 my-4 text-white/80 bg-white/5 rounded-r-md"
+                                {...props}
+                              />
+                            ),
+                            ul: (props) => (
+                              <ul
+                                className="list-disc pl-5 my-4 space-y-2"
+                                {...props}
+                              />
+                            ),
+                            ol: (props) => (
+                              <ol
+                                className="list-decimal pl-5 my-4 space-y-2"
+                                {...props}
+                              />
+                            ),
+                          }}
+                        >
+                          {release.body}
+                        </ReactMarkdown>
+                      </Suspense>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Link to view all releases */}
+              <div className="mt-12 text-center">
+                <a
+                  href="https://github.com/Voxelum/x-minecraft-launcher/releases"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-5 py-2 bg-accent/80 hover:bg-accent text-white rounded-md transition-colors shadow-lg"
+                >
+                  <ExternalLink size={18} className="mr-2" />
+                  {text.viewAllReleases}
+                </a>
+              </div>
+            </>
           )}
         </div>
       </div>
