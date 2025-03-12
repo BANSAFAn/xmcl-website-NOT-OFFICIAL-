@@ -1,99 +1,105 @@
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/Footer";
+import { BlogHeader } from "@/components/blog/BlogHeader";
+import { BlogCard } from "@/components/blog/BlogCard";
+import { getAllBlogPosts, BlogPost } from "@/utils/blogUtils";
+import { useToast } from "@/hooks/use-toast";
+import { AlertTriangle } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { blogTranslations } from "@/components/blog/translations";
+import { useLanguage } from "@/components/navbar/LanguageContext";
 
 const Blogs = () => {
-  const blogPosts = [
-    {
-      id: 1,
-      title: "How to Create the Perfect Modpack",
-      excerpt: "Learn how to build a balanced and performance-friendly modpack that will provide the best Minecraft experience.",
-      date: "June 12, 2023",
-      imageUrl: "",
-      category: "Tutorials"
-    },
-    {
-      id: 2,
-      title: "Understanding Minecraft Performance Optimization",
-      excerpt: "Dive deep into the technical aspects of improving Minecraft performance with the right settings and mods.",
-      date: "May 28, 2023",
-      imageUrl: "",
-      category: "Guides"
-    },
-    {
-      id: 3,
-      title: "The Future of X Minecraft Launcher",
-      excerpt: "Our roadmap for upcoming features and improvements that will make XMCL the ultimate Minecraft launcher.",
-      date: "May 15, 2023",
-      imageUrl: "",
-      category: "Announcements"
-    }
-  ];
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+  const { currentLanguage } = useLanguage();
+  
+  const text = blogTranslations[currentLanguage as keyof typeof blogTranslations];
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const posts = await getAllBlogPosts();
+        setBlogPosts(posts);
+        
+        if (posts.length === 0) {
+          toast({
+            title: text.pageTitle,
+            description: text.noBlogs,
+            variant: "default",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        setError(text.loadingError);
+        toast({
+          title: text.error,
+          description: text.loadingError,
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [toast, text]);
 
   return (
-    <div className="min-h-screen pt-32 pb-20">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient-cyan">Blog</span>
-          </h1>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg">
-            Insights, tutorials, and updates from the X Minecraft Launcher team
-          </p>
-        </motion.div>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      
+      <main className="flex-grow pt-32 pb-20">
+        <div className="container mx-auto px-4">
+          <BlogHeader 
+            title={text.pageTitle}
+            subtitle={text.subtitle}
+          />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {blogPosts.map((post, index) => (
+          {error && (
             <motion.div
-              key={post.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card rounded-xl overflow-hidden hover:translate-y-[-5px] transition-all duration-300"
+              className="max-w-3xl mx-auto mb-8"
             >
-              <div className="h-48 overflow-hidden">
-                <img 
-                  src={post.imageUrl} 
-                  alt={post.title} 
-                  className="w-full h-full object-cover transition-all duration-500 hover:scale-110"
-                />
-              </div>
-              
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-xs py-1 px-3 rounded-full bg-accent/20 text-accent">
-                    {post.category}
-                  </span>
-                  <span className="text-white/60 text-sm">{post.date}</span>
-                </div>
-                
-                <h3 className="text-xl font-bold mb-3 hover:text-accent transition-colors duration-300">
-                  <Link to={`/blog/${post.id}`}>{post.title}</Link>
-                </h3>
-                
-                <p className="text-white/70 mb-4 line-clamp-3">
-                  {post.excerpt}
-                </p>
-                
-                <Link 
-                  to={`/blog/${post.id}`}
-                  className="inline-flex items-center text-accent hover:text-accent/80 transition-colors duration-300"
-                >
-                  Read more
-                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                  </svg>
-                </Link>
-              </div>
+              <Alert variant="destructive">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>{text.error}</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             </motion.div>
-          ))}
+          )}
+
+          {isLoading ? (
+            <div className="flex justify-center items-center h-60">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+            </div>
+          ) : blogPosts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {blogPosts.map((post, index) => (
+                <BlogCard key={post.slug} post={post} index={index} />
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12"
+            >
+              <p className="text-white/70 text-lg">{text.noBlogs}</p>
+            </motion.div>
+          )}
         </div>
-      </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 };

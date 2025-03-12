@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { FileText, History, BookOpen } from 'lucide-react';
+import { FileText, History, BookOpen, MessageSquare, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   Tooltip,
@@ -24,74 +24,61 @@ export const NavItems = () => {
       index: 0
     },
     { 
+      icon: <Users size={18} />,
+      link: "/about",
+      external: false,
+      label: translations.about || "About",
+      index: 1
+    },
+    { 
       icon: <FileText size={18} />,
       link: "/privacy",
       external: false,
       label: translations.privacy,
-      index: 1
+      index: 2
     },
     { 
       icon: <History size={18} />,
       link: "/changelogs",
       external: false,
       label: translations.changelogs,
-      index: 2
+      index: 3
+    },
+    { 
+      icon: <MessageSquare size={18} />,
+      link: "/blogs",
+      external: false,
+      label: translations.blogs || "Blog",
+      index: 4
     }
   ];
 
-  // Icon animation variants
-  const iconAnimations = {
-    hover: {
-      scale: 1.2,
-      rotate: [0, -10, 10, -5, 5, 0],
-      transition: {
-        duration: 0.5,
-        type: "spring",
-        stiffness: 300
-      }
-    },
-    tap: {
-      scale: 0.9
-    }
-  };
-
   return (
-    <nav className="flex items-center gap-3">
+    <nav className="flex items-center gap-3 justify-center">
       {navItems.map(item => (
         <Tooltip key={item.label}>
           <TooltipTrigger asChild>
             <motion.div
-              whileHover="hover"
-              whileTap="tap"
-              transition={{ duration: 0.2 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              {item.external ? (
-                <a 
-                  href={item.link}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 px-3 py-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors text-white/80 hover:text-white"
-                  aria-label={item.label}
+              <Link 
+                to={item.link}
+                className={`flex items-center justify-center p-2.5 rounded-lg transition-all duration-300 ${
+                  location.pathname === item.link 
+                    ? 'bg-accent text-white shadow-lg shadow-accent/20' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+                aria-label={item.label}
+              >
+                <motion.div
+                  whileHover={{ rotate: [0, -10, 10, -5, 5, 0] }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <motion.div variants={iconAnimations}>
-                    {item.icon}
-                  </motion.div>
-                </a>
-              ) : (
-                <Link 
-                  to={item.link}
-                  className={`flex items-center gap-1 px-3 py-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors ${
-                    location.pathname === item.link 
-                      ? 'text-accent bg-white/10' 
-                      : 'text-white/80 hover:text-white'
-                  }`}
-                  aria-label={item.label}
-                >
-                  <motion.div variants={iconAnimations}>
-                    {item.icon}
-                  </motion.div>
-                </Link>
-              )}
+                  {item.icon}
+                </motion.div>
+              </Link>
             </motion.div>
           </TooltipTrigger>
           <TooltipContent>

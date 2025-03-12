@@ -1,8 +1,15 @@
 
 import { motion } from 'framer-motion';
-import { ArrowDownToLine, ArrowUpRight, Github } from 'lucide-react';
+import { ArrowDownToLine, ArrowUpRight, Github, Info } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { DownloadOption } from './types';
+import { useToast } from '@/hooks/use-toast';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface DownloadCardProps {
   option: DownloadOption;
@@ -10,6 +17,21 @@ interface DownloadCardProps {
 }
 
 export function DownloadCard({ option, onDownloadClick }: DownloadCardProps) {
+  const { toast } = useToast();
+  
+  const handleInfoClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click
+    
+    if (option.description) {
+      toast({
+        title: `${option.title} Information`,
+        description: option.description,
+        variant: "default",
+        duration: 5000
+      });
+    }
+  };
+  
   return (
     <motion.div
       key={option.id}
@@ -37,6 +59,15 @@ export function DownloadCard({ option, onDownloadClick }: DownloadCardProps) {
       
       {/* Top left corner accent */}
       <div className="absolute -top-10 -left-10 w-20 h-20 bg-accent/20 rounded-full filter blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+      
+      {/* Package info button with enhanced visibility */}
+      <motion.div 
+        className="absolute top-4 right-4 p-2 rounded-full bg-blue-500/30 text-white hover:bg-blue-500/50 hover:text-white z-10 border border-blue-400/30"
+        whileHover={{ scale: 1.2, rotate: 15 }}
+        onClick={handleInfoClick}
+      >
+        <Info size={16} />
+      </motion.div>
       
       {/* Icon with pulse animation */}
       <motion.div 

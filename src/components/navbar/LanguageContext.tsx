@@ -18,7 +18,8 @@ interface Translations {
   githubRepo: string;
   discordServer: string;
   selectLanguage: string;
-  language: string; // Adding the missing property
+  language: string;
+  about: string;
 }
 
 export const languages = [
@@ -45,7 +46,8 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     githubRepo: 'GitHub Repository',
     discordServer: 'Discord Server',
     selectLanguage: 'Select Language',
-    language: 'Language'
+    language: 'Language',
+    about: 'About'
   },
   ru: {
     guide: 'Документация',
@@ -63,7 +65,8 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     githubRepo: 'GitHub Репозиторий',
     discordServer: 'Discord Сервер',
     selectLanguage: 'Выберите язык',
-    language: 'Язык'
+    language: 'Язык',
+    about: 'О нас'
   },
   uk: {
     guide: 'Документація',
@@ -81,7 +84,8 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     githubRepo: 'GitHub репозиторій',
     discordServer: 'Discord сервер',
     selectLanguage: 'Виберіть мову',
-    language: 'Мова'
+    language: 'Мова',
+    about: 'Про нас'
   },
   zh: {
     guide: '文档',
@@ -99,7 +103,8 @@ const defaultTranslations: Record<LanguageCode, Translations> = {
     githubRepo: 'GitHub 仓库',
     discordServer: 'Discord 服务器',
     selectLanguage: '选择语言',
-    language: '语言'
+    language: '语言',
+    about: '关于我们'
   }
 };
 
@@ -115,19 +120,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en');
   
   useEffect(() => {
-    // Initialize language on component mount
     const savedLang = localStorage.getItem('language');
     if (savedLang && (savedLang === 'en' || savedLang === 'ru' || savedLang === 'uk' || savedLang === 'zh')) {
       setCurrentLanguage(savedLang as LanguageCode);
     }
   }, []);
   
-  // Handle language change and notify other components
   const handleLanguageChange = (lang: LanguageCode) => {
     setCurrentLanguage(lang);
     localStorage.setItem('language', lang);
     
-    // Dispatch events to notify other components about the language change
     window.dispatchEvent(new Event('languageChange'));
     window.dispatchEvent(new StorageEvent('storage', { key: 'language', newValue: lang }));
   };

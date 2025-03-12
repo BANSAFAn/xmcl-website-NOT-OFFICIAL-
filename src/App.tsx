@@ -12,6 +12,8 @@ import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import Changelogs from "./pages/Changelogs";
 import Blogs from "./pages/Blogs";
+import BlogPost from "./pages/BlogPost";
+import About from "./pages/About";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { LanguageProvider } from "./components/navbar/LanguageContext";
 
@@ -21,10 +23,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [contentReady, setContentReady] = useState(false);
   
-  // Handle loading sequence
   useEffect(() => {
     if (!isLoading) {
-      // Add a slight delay before showing content to ensure smooth transition
       const timer = setTimeout(() => {
         setContentReady(true);
       }, 300);
@@ -44,15 +44,16 @@ const App = () => {
             {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
           </AnimatePresence>
           
-          {/* Only render the router and content when loading is complete */}
           {contentReady && (
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/guide" element={<Guide />} />
                 <Route path="/privacy" element={<Privacy />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/changelogs" element={<Changelogs />} />
                 <Route path="/blogs" element={<Blogs />} />
+                <Route path="/blogs/:slug" element={<BlogPost />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
