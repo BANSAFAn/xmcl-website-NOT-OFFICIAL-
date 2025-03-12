@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { BackgroundEffects } from "./hero/BackgroundEffects";
 import { AnimatedTitle } from "./hero/AnimatedTitle";
@@ -84,8 +85,50 @@ export function Hero() {
             />
           </motion.div>
           
-          {/* Description */}
-          <Description text={text.description} />
+          {/* Description with colored hover links */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-12 max-w-2xl text-white/60 text-center"
+          >
+            <p className="text-lg leading-relaxed">
+              X Minecraft Launcher (XMCL) is a modern Minecraft launcher that efficiently manages your modpacks, resource packs, mods, and shader packs. 
+              It integrates with{" "}
+              <a 
+                href="https://modrinth.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-purple-400 transition-colors duration-300"
+              >
+                Modrinth
+              </a>, {" "}
+              <a 
+                href="https://quiltmc.org/en/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-green-400 transition-colors duration-300"
+              >
+                Quilt
+              </a>, {" "}
+              <a 
+                href="https://fabricmc.net/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-orange-400 transition-colors duration-300"
+              >
+                Fabric
+              </a>, and {" "}
+              <a 
+                href="https://files.minecraftforge.net/net/minecraftforge/forge/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-blue-400 transition-colors duration-300"
+              >
+                Minecraft Forge
+              </a>.
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>
