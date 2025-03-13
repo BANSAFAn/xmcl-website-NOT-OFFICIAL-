@@ -26,6 +26,7 @@ export function DownloadOptions({
     useDownloadActions();
   const { data: releaseData, isLoading, error } = useLatestRelease();
   const isMobile = useIsMobile();
+  const [isUnsupportedWindows, setIsUnsupportedWindows] = useState(false);
 
   // Auto-detect OS on component mount
   useEffect(() => {
@@ -34,6 +35,17 @@ export function DownloadOptions({
 
       if (userAgent.indexOf("win") !== -1) {
         setSelectedOS("windows");
+
+        // Check Windows version
+        const winVersionMatch = userAgent.match(/windows nt (\d+\.\d+)/);
+        if (winVersionMatch) {
+          const winVersion = parseFloat(winVersionMatch[1]);
+          // Windows NT 6.2 is Windows 8, 6.3 is Windows 8.1, 10.0 is Windows 10
+          // Check if it's lower than Windows 10 (NT 10.0)
+          if (winVersion < 10.0) {
+            setIsUnsupportedWindows(true);
+          }
+        }
       } else if (userAgent.indexOf("mac") !== -1) {
         setSelectedOS("macos");
       } else if (userAgent.indexOf("linux") !== -1) {
@@ -101,11 +113,27 @@ export function DownloadOptions({
     uk: "Лаунчер доступний тільки для десктопних платформ (Windows, macOS, Linux).",
   };
 
+  // Windows version message translations
+  const windowsVersionMessages = {
+    en: "The launcher requires Windows 10 or higher to run.",
+    ru: "Для работы лаунчера требуется Windows 10 или выше.",
+    uk: "Для роботи лаунчера потрібна Windows 10 або вище.",
+  };
+
   // Get mobile message based on current language
   const getMobileMessage = () => {
     return (
       mobileMessages[currentLanguage as keyof typeof mobileMessages] ||
       mobileMessages.en
+    );
+  };
+
+  // Get Windows version message based on current language
+  const getWindowsVersionMessage = () => {
+    return (
+      windowsVersionMessages[
+        currentLanguage as keyof typeof windowsVersionMessages
+      ] || windowsVersionMessages.en
     );
   };
 
@@ -152,6 +180,23 @@ export function DownloadOptions({
                 Please visit this page from a desktop browser to download the
                 launcher.
               </p>
+            </div>
+          </div>
+        </div>
+      ) : isUnsupportedWindows ? (
+        <div className="p-6 border border-white/10 rounded-lg bg-white/5 backdrop-blur-sm my-8">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <div className="p-4 rounded-full bg-red-500/20">
+              <AlertTriangle className="h-10 w-10 text-red-500" />
+            </div>
+            <h3 className="text-xl font-medium text-white">
+              Unsupported Windows Version
+            </h3>
+            <p className="text-white/70">{getWindowsVersionMessage()}</p>
+
+            <div className="flex items-center mt-4 text-white/60 text-sm">
+              <AlertTriangle className="h-4 w-4 mr-2 text-yellow-500" />
+              <p>Please update to Windows 10 or later to use the launcher.</p>
             </div>
           </div>
         </div>
