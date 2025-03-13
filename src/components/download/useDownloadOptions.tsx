@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLanguage } from "@/components/navbar/LanguageContext";
 import { DownloadOption, ExtendedTranslations } from "./types";
@@ -16,15 +15,20 @@ export function useDownloadOptions() {
   // Safely access translation or use default
   const getTranslation = (key: keyof ExtendedTranslations): string => {
     // Need to cast translations as any since it doesn't have these properties in its interface
-    const translatedValue = (translations as any)[key];
-    return translatedValue || defaultDownloadTranslations[key as keyof typeof defaultDownloadTranslations];
+    const translatedValue = (translations as unknown)[key];
+    return (
+      translatedValue ||
+      defaultDownloadTranslations[
+        key as keyof typeof defaultDownloadTranslations
+      ]
+    );
   };
 
   const renderOptionsConfig = {
     getTranslation,
     setDownloadProgress,
     setCurrentAsset,
-    setShowConfirmation
+    setShowConfirmation,
   };
 
   return {
@@ -36,6 +40,6 @@ export function useDownloadOptions() {
     setCurrentAsset,
     renderWindowsOptions: () => renderWindowsOptions(renderOptionsConfig),
     renderLinuxOptions: () => renderLinuxOptions(renderOptionsConfig),
-    renderMacOSOptions: () => renderMacOSOptions(renderOptionsConfig)
+    renderMacOSOptions: () => renderMacOSOptions(renderOptionsConfig),
   };
 }
