@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { UnderConstructionBadge } from "../GuideBages";
+import { CodeBlock } from "../CodeBlock";
 
 export function DataStorageGuide() {
   return (
@@ -52,24 +53,18 @@ export function DataStorageGuide() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="windows" className="space-y-4 mt-2">
-              <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
-                %AppData%\xmcl
-              </div>
+              <CodeBlock>%AppData%\xmcl</CodeBlock>
             </TabsContent>
             <TabsContent value="appx" className="space-y-4 mt-2">
-              <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
+              <CodeBlock>
                 %LocalAppData%\Packages\XMCL_68mcaawk44tpj\LocalCache\Roaming\xmcl
-              </div>
+              </CodeBlock>
             </TabsContent>
             <TabsContent value="macos" className="space-y-4 mt-2">
-              <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
-                ~/Library/Application Support/xmcl
-              </div>
+              <CodeBlock>~/Library/Application Support/xmcl</CodeBlock>
             </TabsContent>
             <TabsContent value="linux" className="space-y-4 mt-2">
-              <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
-                ~/.config/xmcl
-              </div>
+              <CodeBlock>~/.config/xmcl</CodeBlock>
             </TabsContent>
           </Tabs>
 
@@ -131,26 +126,16 @@ export function DataStorageGuide() {
             from that of Minecraft:
           </p>
 
-          <div className="bg-slate-800/50 p-3 rounded font-mono text-sm">
-            "Public Data folder"
-            <br />
-            └─ 📂mods # Shared mods folder for all instances
-            <br />
-            ㅤ └─ modA.jar # A specific mod file, instance might link mods from
-            it.
-            <br />
-            ├─ 📂resourcepacks # Shared resourcepacks folder for all instances
-            <br />
-            ├─ 📂shaderpacks # Shared shaderpacks folder for all instances
-            <br />
-            ├─ 📂versions # Shared versions folder for all instances
-            <br />
-            ├─ 📂assets # Shared assets folder for all instances
-            <br />
-            ├─ 📂libraries # Shared libraries folder for all instances
-            <br />
-            └─ 📂instances # Contains the instances created by XMCL
-          </div>
+          <CodeBlock language="markdown">
+            {'"Private Data folder"\n' +
+              "└─ 📂mods # Private mods folder for each instance\n" +
+              "└─ 📂resourcepacks # Private resourcepacks folder for each instance\n" +
+              "└─ 📂shaderpacks # Private shaderpacks folder for each instance\n" +
+              "└─ 📂versions # Private versions folder for each instance\n" +
+              "└─ 📂assets # Private assets folder for each instance\n" +
+              "└─ 📂libraries # Private libraries folder for each instance\n" +
+              "└─ 📂instances # Contains the instances created by XMCL"}
+          </CodeBlock>
 
           <p className="text-slate-200">
             Most of the content is actually the same as Minecraft, among which
