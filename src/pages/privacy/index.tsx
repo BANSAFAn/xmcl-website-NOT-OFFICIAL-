@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/navbar";
 import { PrivacyHeader } from "./PrivacyHeader";
@@ -9,16 +8,16 @@ import { usePrivacyLanguage } from "./usePrivacyLanguage";
 
 const Privacy = () => {
   const { content } = usePrivacyLanguage();
-  
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15
-      }
-    }
+        staggerChildren: 0.15,
+      },
+    },
   };
 
   return (
@@ -33,13 +32,13 @@ const Privacy = () => {
           animate="visible"
           className="glass-card p-8 rounded-xl"
         >
-          <PrivacySection 
-            title={content.introduction.title} 
-            content={content.introduction.content} 
+          <PrivacySection
+            title={content.introduction.title}
+            content={content.introduction.content}
           />
 
-          <PrivacySection 
-            title={content.informationCollection.title} 
+          <PrivacySection
+            title={content.informationCollection.title}
             content=""
           >
             <PrivacyListSection
@@ -75,29 +74,29 @@ const Privacy = () => {
             items={content.dataSharing.items}
           />
 
-          <PrivacySection 
-            title={content.dataSecurity.title} 
-            content={content.dataSecurity.content} 
+          <PrivacySection
+            title={content.dataSecurity.title}
+            content={content.dataSecurity.content}
           />
 
-          <PrivacySection 
-            title={content.thirdParty.title} 
-            content={content.thirdParty.content} 
+          <PrivacySection
+            title={content.thirdParty.title}
+            content={content.thirdParty.content}
           />
 
-          <PrivacySection 
-            title={content.children.title} 
-            content={content.children.content} 
+          <PrivacySection
+            title={content.children.title}
+            content={content.children.content}
           />
 
-          <PrivacySection 
-            title={content.changes.title} 
-            content={content.changes.content} 
+          <PrivacySection
+            title={content.changes.title}
+            content={content.changes.content}
           />
 
-          <ContactSection 
-            title={content.contact.title} 
-            content={content.contact.content} 
+          <ContactSection
+            title={content.contact.title}
+            content={content.contact.content}
           />
         </motion.div>
       </div>
