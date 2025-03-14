@@ -65,7 +65,9 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.3",
     "zod": "^3.23.8",
-    "zwitch": "^2.0.4"
+    "zwitch": "^2.0.4",
+    "rehype-highlight": "^7.0.2",
+    "rehype-raw": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
