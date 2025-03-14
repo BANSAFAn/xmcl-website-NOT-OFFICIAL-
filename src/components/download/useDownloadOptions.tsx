@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
+import { useLanguage } from "@/components/navbar/LanguageContext";
 import { renderWindowsOptions } from './windowsOptions';
 import { renderLinuxOptions } from './linuxOptions';
 import { renderMacOSOptions } from './macosOptions';
 import { translations as downloadTranslations } from './translations';
-import { useLanguage } from '@/components/navbar/LanguageContext';
 import { ExtendedTranslations } from './types';
 
 export function useDownloadOptions() {
@@ -37,25 +36,17 @@ export function useDownloadOptions() {
     }
   };
 
+  const renderOptionsConfig = {
+    getTranslation,
+    setDownloadProgress,
+    setCurrentAsset,
+    setShowConfirmation,
+  };
+
   return {
-    renderWindowsOptions: () => renderWindowsOptions({
-      getTranslation,
-      setDownloadProgress,
-      setCurrentAsset,
-      setShowConfirmation
-    }),
-    renderLinuxOptions: () => renderLinuxOptions({
-      getTranslation,
-      setDownloadProgress,
-      setCurrentAsset,
-      setShowConfirmation
-    }),
-    renderMacOSOptions: () => renderMacOSOptions({
-      getTranslation,
-      setDownloadProgress,
-      setCurrentAsset,
-      setShowConfirmation
-    }),
+    renderWindowsOptions: () => renderWindowsOptions(renderOptionsConfig),
+    renderLinuxOptions: () => renderLinuxOptions(renderOptionsConfig),
+    renderMacOSOptions: () => renderMacOSOptions(renderOptionsConfig),
     downloadProgress,
     setDownloadProgress,
     currentAsset,
