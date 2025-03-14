@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, User, Tag, Image } from "lucide-react";
+import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/Footer";
 import { MarkdownRenderer } from "@/components/blog/MarkdownRenderer";
@@ -10,10 +10,11 @@ import { getBlogPost, BlogPost as BlogPostType } from "@/utils/blogUtils";
 import { useToast } from "@/hooks/use-toast";
 
 const BlogPost = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { year, month, slug } = useParams<{ year: string, month: string, slug: string }>();
   const [post, setPost] = useState<BlogPostType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -32,13 +33,15 @@ const BlogPost = () => {
           description: "Не удалось загрузить статью блога. Пожалуйста, попробуйте еще раз.",
           variant: "destructive",
         });
+        // Redirect back to blogs page after error
+        setTimeout(() => navigate("/blogs"), 2000);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPost();
-  }, [slug, toast]);
+  }, [slug, toast, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">

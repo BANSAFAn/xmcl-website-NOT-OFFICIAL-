@@ -1,9 +1,10 @@
 
-import { Github, Archive, Package, Download } from "lucide-react";
+import { Download, Package, FileArchive } from "lucide-react";
 import { DownloadOption } from './types';
 import { LinuxAssets } from './types';
 import { useOSAssets } from './fetchReleases';
 import { ExtendedTranslations } from './types';
+import { useLanguage } from '@/components/navbar/LanguageContext';
 
 type RenderFunctionProps = {
   getTranslation: (key: keyof ExtendedTranslations) => string;
@@ -18,37 +19,20 @@ export const renderLinuxOptions = ({
   setCurrentAsset,
   setShowConfirmation
 }: RenderFunctionProps): DownloadOption[] => {
-  // Get Linux assets from GitHub
   const { assets } = useOSAssets('linux');
   const linuxAssets = assets as LinuxAssets;
+  const { currentLanguage } = useLanguage();
   
   const options: DownloadOption[] = [];
-
-  // Linux Flatpak (always included as it's a link to a different repo)
-  options.push({
-    id: 'linux_flatpak',
-    title: "Linux Flatpak",
-    subtitle: "Community maintained Flatpak package",
-    description: "Flatpak is a sandboxed application framework that provides better security, easier installation, and compatibility across different Linux distributions. This is a community-maintained package.",
-    icon: <Github size={24} />,
-    disabled: false,
-    colorClass: 'bg-white/5',
-    isComingSoon: false,
-    link: "https://github.com/v1mkss/io.github.voxelum.xmcl",
-    onClick: () => {
-      // External link, no download progress
-      window.open("https://github.com/v1mkss/io.github.voxelum.xmcl", "_blank");
-    }
-  });
   
-  // Linux AppImage
+  // AppImage - Portable Linux option
   if (linuxAssets?.appimage) {
     options.push({
       id: 'linux_appimage',
-      title: "AppImage",
-      subtitle: "Portable Linux package",
-      description: "AppImage is a format for distributing portable software on Linux without needing superuser permissions to install the application. It runs on most Linux distributions and doesn't require installation.",
-      icon: <Package size={24} />,
+      title: "Linux AppImage",
+      subtitle: "Portable for any distribution",
+      description: getTranslation('linux.appimage'),
+      icon: <FileArchive size={24} />,
       disabled: false,
       colorClass: 'bg-white/5',
       isComingSoon: false,
@@ -62,55 +46,13 @@ export const renderLinuxOptions = ({
     });
   }
   
-  // Linux tarball (tar.gz)
-  if (linuxAssets?.tarball) {
-    options.push({
-      id: 'linux_tarball',
-      title: "tar.gz",
-      subtitle: "Compressed tarball archive",
-      description: "A compressed tarball (.tar.gz) contains the application files that you can extract and run directly. This is ideal for users who want manual control over where the application is installed.",
-      icon: <Archive size={24} />,
-      disabled: false,
-      colorClass: 'bg-white/5',
-      isComingSoon: false,
-      size: linuxAssets.tarball.size,
-      link: linuxAssets.tarball.url,
-      onClick: () => {
-        setDownloadProgress(0);
-        setCurrentAsset(linuxAssets.tarball?.url || '');
-        setShowConfirmation(true);
-      }
-    });
-  }
-
-  // Linux RPM
-  if (linuxAssets?.rpm) {
-    options.push({
-      id: 'linux_rpm',
-      title: "RPM",
-      subtitle: "For Fedora/RHEL-based distributions",
-      description: "RPM (Red Hat Package Manager) is a package format used by Fedora, RHEL, CentOS, and other related Linux distributions. This provides proper system integration with your package manager.",
-      icon: <Package size={24} />,
-      disabled: false,
-      colorClass: 'bg-white/5',
-      isComingSoon: false,
-      size: linuxAssets.rpm.size,
-      link: linuxAssets.rpm.url,
-      onClick: () => {
-        setDownloadProgress(0);
-        setCurrentAsset(linuxAssets.rpm?.url || '');
-        setShowConfirmation(true);
-      }
-    });
-  }
-
-  // Linux DEB
+  // Debian/Ubuntu package
   if (linuxAssets?.deb) {
     options.push({
       id: 'linux_deb',
-      title: "DEB",
-      subtitle: "For Debian/Ubuntu-based distributions",
-      description: "DEB is the package format used by Debian, Ubuntu, and related Linux distributions. This provides proper system integration with your package manager and handles dependencies.",
+      title: "Debian/Ubuntu DEB",
+      subtitle: "For Debian-based distributions",
+      description: getTranslation('linux.deb'),
       icon: <Package size={24} />,
       disabled: false,
       colorClass: 'bg-white/5',
@@ -125,14 +67,52 @@ export const renderLinuxOptions = ({
     });
   }
   
-  // Linux ARM64
+  // RPM package
+  if (linuxAssets?.rpm) {
+    options.push({
+      id: 'linux_rpm',
+      title: "Fedora/RHEL RPM",
+      subtitle: "For Fedora/RHEL-based distributions",
+      description: getTranslation('linux.rpm'),
+      icon: <Package size={24} />,
+      disabled: false,
+      colorClass: 'bg-white/5',
+      isComingSoon: false,
+      size: linuxAssets.rpm.size,
+      link: linuxAssets.rpm.url,
+      onClick: () => {
+        setDownloadProgress(0);
+        setCurrentAsset(linuxAssets.rpm?.url || '');
+        setShowConfirmation(true);
+      }
+    });
+  }
+  
+  // Flatpak (Community maintained)
+  options.push({
+    id: 'linux_flatpak',
+    title: "Linux Flatpak",
+    subtitle: "Maintained by community",
+    description: getTranslation('linux.flatpak'),
+    icon: <Package size={24} />,
+    disabled: false,
+    colorClass: 'bg-white/5',
+    isComingSoon: true,
+    size: "N/A",
+    link: "https://github.com/ci010/XMinecraftLauncher",
+    onClick: () => {
+      window.open("https://github.com/ci010/XMinecraftLauncher", "_blank");
+    }
+  });
+  
+  // ARM64 build (for Raspberry Pi, etc)
   if (linuxAssets?.arm64) {
     options.push({
-      id: 'linux_arm',
-      title: "ARM64",
-      subtitle: "For ARM-based systems like Raspberry Pi",
-      description: "This package is specifically built for ARM64 architecture devices like Raspberry Pi 4 and other ARM-based Linux systems. Provides optimized performance for ARM processors.",
-      icon: <Archive size={24} />,
+      id: 'linux_arm64',
+      title: "Linux ARM64",
+      subtitle: "For Raspberry Pi, etc",
+      description: getTranslation('linux.arm64'),
+      icon: <Download size={24} />,
       disabled: false,
       colorClass: 'bg-white/5',
       isComingSoon: false,

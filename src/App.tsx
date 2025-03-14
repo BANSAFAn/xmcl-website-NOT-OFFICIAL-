@@ -14,12 +14,15 @@ import Changelogs from "./pages/Changelogs";
 import Blogs from "./pages/Blogs";
 import BlogPost from "./pages/BlogPost";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { LanguageProvider } from "./components/navbar/LanguageContext";
+import { OSProvider } from "./context/OSContext";
+import { OldWindowsWarning } from "./components/OldWindowsWarning";
 
 const queryClient = new QueryClient();
 
-const App = () => {
+function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [contentReady, setContentReady] = useState(false);
   
@@ -36,32 +39,40 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          
-          <AnimatePresence mode="wait">
-            {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
-          </AnimatePresence>
-          
-          {contentReady && (
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/guide" element={<Guide />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/changelogs" element={<Changelogs />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/blogs/:slug" element={<BlogPost />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          )}
-        </TooltipProvider>
+        <OSProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            
+            <AnimatePresence mode="wait">
+              {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
+            </AnimatePresence>
+            
+            {contentReady && (
+              <>
+                <OldWindowsWarning />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/guide" element={<Guide />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/changelogs" element={<Changelogs />} />
+                    <Route path="/blogs" element={<Blogs />} />
+                    {/* Multiple blog post routes to support different URL patterns */}
+                    <Route path="/blogs/:slug" element={<BlogPost />} />
+                    <Route path="/blogs/:year/:month/:slug" element={<BlogPost />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </>
+            )}
+          </TooltipProvider>
+        </OSProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;

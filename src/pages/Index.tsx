@@ -1,11 +1,13 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Hero } from "@/components/Hero";
 import { DownloadSection } from "@/components/download";
 import { InformationSection } from "@/components/information";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/navbar";
+import { OSIndicator } from "@/components/OSIndicator";
+import { OSWarningDialog } from "@/components/download/OSWarningDialog";
 
 // Animation variants for page elements
 const pageVariants = {
@@ -52,6 +54,8 @@ const Index = () => {
       animate="animate"
     >
       <Navbar />
+      <OSIndicator />
+      <OSWarningDialog />
       
       <div className="sections-container">
         <motion.div variants={sectionVariants} key="hero-section">

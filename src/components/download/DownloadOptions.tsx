@@ -11,6 +11,7 @@ import { ErrorDisplay } from './ErrorDisplay';
 import { useLatestRelease } from './fetchReleases';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Smartphone, AlertTriangle } from 'lucide-react';
+import { useOS } from '@/context/OSContext';
 
 interface DownloadOptionsProps {
   selectedOS: string;
@@ -22,6 +23,14 @@ export function DownloadOptions({ selectedOS, setSelectedOS }: DownloadOptionsPr
   const { showAllOptions, setShowAllOptions, handleDownloadClick } = useDownloadActions();
   const { data: releaseData, isLoading, error } = useLatestRelease();
   const isMobile = useIsMobile();
+  const { osInfo } = useOS();
+  
+  // Set the selected OS based on detected OS on initial load
+  useEffect(() => {
+    if (osInfo.category !== "unknown") {
+      setSelectedOS(osInfo.category);
+    }
+  }, [osInfo.category, setSelectedOS]);
   
   // Get options based on selected OS
   const getOptions = () => {

@@ -1,41 +1,46 @@
-import { ReactNode } from "react";
 
 export interface DownloadOption {
   id: string;
   title: string;
   subtitle: string;
-  description?: string; // Added description field for package information
-  icon: ReactNode;
+  description: string;
+  icon: React.ReactNode;
   disabled: boolean;
-  onClick: () => void;
   colorClass?: string;
   isComingSoon?: boolean;
   size?: string;
   link?: string;
+  onClick?: () => void;
 }
 
 export interface WindowsAssets {
-  zip64?: { url: string; size: string };
-  zip32?: { url: string; size: string };
-  app?: { url: string; size: string };
-  appx?: { url: string; size: string };
+  zip64?: { name: string; size: string; url: string };
+  zip32?: { name: string; size: string; url: string };
+  appx?: { name: string; size: string; url: string };
+  app?: { name: string; size: string; url: string };
 }
 
 export interface MacOSAssets {
-  arm64?: { url: string; size: string };
-  intel?: { url: string; size: string };
+  universal?: { name: string; size: string; url: string };
+  arm64?: { name: string; size: string; url: string };
+  intel?: { name: string; size: string; url: string };
 }
 
 export interface LinuxAssets {
-  appimage?: { url: string; size: string };
-  tarball?: { url: string; size: string };
-  arm64?: { url: string; size: string };
-  rpm?: { url: string; size: string };
-  deb?: { url: string; size: string };
+  appimage?: { name: string; size: string; url: string };
+  deb?: { name: string; size: string; url: string };
+  rpm?: { name: string; size: string; url: string };
+  arm64?: { name: string; size: string; url: string };
 }
 
-// Define default translations for download-specific terms that might not be in the main translations
-export interface DownloadTranslations {
+export interface AssetInfo {
+  name: string;
+  size: string;
+  url: string;
+}
+
+// Add DownloadTranslationsType definition
+export interface DownloadTranslationsType {
   portable: string;
   portableDescription: string;
   zip64: string;
@@ -45,13 +50,20 @@ export interface DownloadTranslations {
   appxDescription: string;
 }
 
-// Extended interface for any additional translations needed in this component
-export interface ExtendedTranslations {
-  portable?: string;
-  portableDescription?: string;
-  zip64?: string;
-  zip32?: string;
-  zipDescription?: string;
-  appx?: string;
-  appxDescription?: string;
-}
+// Add ExtendedTranslations type for the download options
+export type ExtendedTranslations = {
+  'windows.installer': string;
+  'windows.appx': string;
+  'windows.portable': string;
+  'windows.zip64': string;
+  'windows.zip32': string;
+  'windows.app': string;
+  'macos.universal': string;
+  'macos.arm64': string;
+  'macos.intel': string;
+  'linux.appimage': string;
+  'linux.flatpak': string;
+  'linux.deb': string;
+  'linux.rpm': string;
+  'linux.arm64': string;
+};
