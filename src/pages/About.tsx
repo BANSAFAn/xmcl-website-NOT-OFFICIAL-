@@ -6,12 +6,70 @@ import { TeamMember } from "@/components/about/TeamMember";
 import { PageTitle } from "@/components/about/PageTitle";
 import { Navbar } from "@/components/navbar";
 import { SponsorsSection } from "@/components/about/SponsorsSection";
+import { useLanguage } from "@/components/navbar/LanguageContext";
 
 const About = () => {
+  const { currentLanguage } = useLanguage();
+
+  // Multi-language translations
+  const translations = {
+    en: {
+      returnHome: "Return to Home",
+      title: "About the Team",
+      subtitle: "Meet the people behind X Minecraft Launcher",
+      leadDeveloper: "Lead Developer",
+      webDeveloper: "Web Developer & Moderator",
+      aboutSection: "We are a small team of dedicated developers and Minecraft enthusiasts working to create the best Minecraft launcher experience possible.",
+      missionTitle: "Our Mission",
+      missionText: "To provide a fast, reliable, and feature-rich Minecraft launcher that helps players enjoy the game with minimal technical difficulties.",
+      contactUs: "Contact Us",
+      joinDiscord: "Join our Discord"
+    },
+    ru: {
+      returnHome: "Вернуться на главную",
+      title: "О команде",
+      subtitle: "Познакомьтесь с людьми, создающими X Minecraft Launcher",
+      leadDeveloper: "Ведущий разработчик",
+      webDeveloper: "Веб-разработчик и модератор",
+      aboutSection: "Мы небольшая команда преданных разработчиков и энтузиастов Minecraft, работающих над созданием лучшего опыта использования Minecraft лаунчера.",
+      missionTitle: "Наша миссия",
+      missionText: "Предоставить быстрый, надежный и функциональный Minecraft лаунчер, который помогает игрокам наслаждаться игрой с минимальными техническими трудностями.",
+      contactUs: "Связаться с нами",
+      joinDiscord: "Присоединиться к нашему Discord"
+    },
+    uk: {
+      returnHome: "Повернутися на головну",
+      title: "Про команду",
+      subtitle: "Познайомтеся з людьми, які створюють X Minecraft Launcher",
+      leadDeveloper: "Провідний розробник",
+      webDeveloper: "Веб-розробник і модератор",
+      aboutSection: "Ми невелика команда відданих розробників та ентузіастів Minecraft, які працюють над створенням найкращого досвіду використання Minecraft лаунчера.",
+      missionTitle: "Наша місія",
+      missionText: "Надати швидкий, надійний та функціональний Minecraft лаунчер, який допомагає гравцям насолоджуватися грою з мінімальними технічними труднощами.",
+      contactUs: "Зв'язатися з нами",
+      joinDiscord: "Приєднатися до нашого Discord"
+    },
+    zh: {
+      returnHome: "返回首页",
+      title: "关于团队",
+      subtitle: "认识 X Minecraft 启动器背后的人员",
+      leadDeveloper: "首席开发者",
+      webDeveloper: "网页开发者和版主",
+      aboutSection: "我们是一个由专注的开发者和 Minecraft 爱好者组成的小团队，致力于创造最佳的 Minecraft 启动器体验。",
+      missionTitle: "我们的使命",
+      missionText: "提供一个快速、可靠且功能丰富的 Minecraft 启动器，帮助玩家以最少的技术困难享受游戏。",
+      contactUs: "联系我们",
+      joinDiscord: "加入我们的 Discord"
+    }
+  };
+
+  // Select the appropriate translation
+  const text = translations[currentLanguage as keyof typeof translations] || translations.en;
+
   const teamMembers = [
     {
       name: "CIO10",
-      role: "Lead Developer",
+      role: text.leadDeveloper,
       avatar: "https://avatars.githubusercontent.com/u/8425057?v=4",
       socials: [
         { icon: <Github className="w-5 h-5" />, link: "https://github.com/ci010" },
@@ -20,7 +78,7 @@ const About = () => {
     },
     {
       name: "Baneronetwo",
-      role: "Web Developer & Moderator",
+      role: text.webDeveloper,
       avatar: "https://avatars.githubusercontent.com/u/86590991?v=4",
       socials: [
         { icon: <Github className="w-5 h-5" />, link: "https://github.com/BANSAFAn" },
@@ -30,7 +88,7 @@ const About = () => {
     },
     {
       name: "v1mkss",
-      role: "Web Developer & Moderator",
+      role: text.webDeveloper,
       avatar: "https://avatars.githubusercontent.com/u/155435591?v=4",
       socials: [
         { icon: <Github className="w-5 h-5" />, link: "https://github.com/v1mkss" },
@@ -51,7 +109,7 @@ const About = () => {
         >
           <Link to="/" className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-300">
             <Home size={18} />
-            <span className="text-sm font-medium">Return to Home</span>
+            <span className="text-sm font-medium">{text.returnHome}</span>
           </Link>
         </motion.div>
         

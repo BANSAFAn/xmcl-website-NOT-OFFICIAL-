@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BlogPost } from '@/utils/blogUtils';
 import { Calendar, Image } from 'lucide-react';
+import { useLanguage } from '@/components/navbar/LanguageContext';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -10,6 +11,35 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ post, index }: BlogCardProps) {
+  const { currentLanguage } = useLanguage();
+  
+  // Function to format date for URL if needed
+  const formatDateForUrl = (date: string) => {
+    const dateObj = new Date(date);
+    
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) {
+      // For Russian date format or other formats, just use the slug directly
+      return post.slug;
+    }
+    
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    
+    return `${year}/${month}/${post.slug}`;
+  };
+
+  // Get URL-friendly date parts
+  const blogUrl = `/blogs/${formatDateForUrl(post.date)}`;
+
+  // Read more text translations
+  const readMoreText = {
+    en: "Read more",
+    ru: "Читать далее",
+    uk: "Читати далі",
+    zh: "阅读更多"
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -40,7 +70,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
         </div>
         
         <h3 className="text-xl font-bold mb-3 hover:text-accent transition-colors duration-300">
-          <Link to={`/blogs/${post.slug}`}>{post.title}</Link>
+          <Link to={blogUrl}>{post.title}</Link>
         </h3>
         
         <p className="text-white/70 mb-4 line-clamp-3">
@@ -48,10 +78,10 @@ export function BlogCard({ post, index }: BlogCardProps) {
         </p>
         
         <Link 
-          to={`/blogs/${post.slug}`}
+          to={blogUrl}
           className="inline-flex items-center text-accent hover:text-accent/80 transition-colors duration-300"
         >
-          Читать далее
+          {readMoreText[currentLanguage as keyof typeof readMoreText] || readMoreText.en}
           <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
           </svg>

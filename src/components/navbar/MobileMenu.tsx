@@ -50,14 +50,14 @@ export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProp
   };
 
   const menuItems = [
-    { name: 'Home', icon: <Home size={18} />, path: '/' },
-    { name: 'Guide', icon: <BookOpen size={18} />, path: '/guide' },
-    { name: 'Download', icon: <Download size={18} />, path: '/#download' },
-    { name: 'About', icon: <Info size={18} />, path: '/about' },
-    { name: 'Changelogs', icon: <Clock size={18} />, path: '/changelogs' },
-    { name: 'Blog', icon: <MessageSquare size={18} />, path: '/blogs' },
+    { name: translations.guideLocal || 'Home', icon: <Home size={18} />, path: '/' },
+    { name: translations.guide || 'Guide', icon: <BookOpen size={18} />, path: '/guide' },
+    { name: translations.download || 'Download', icon: <Download size={18} />, path: '/#download' },
+    { name: translations.about || 'About', icon: <Info size={18} />, path: '/about' },
+    { name: translations.contact || 'Contact', icon: <Mail size={18} />, path: '/contact' },
+    { name: translations.changelogs || 'Changelogs', icon: <Clock size={18} />, path: '/changelogs' },
+    { name: translations.blogs || 'Blog', icon: <MessageSquare size={18} />, path: '/blogs' },
     { name: 'GitHub', icon: <Github size={18} />, path: 'https://github.com/Voxelum/x-minecraft-launcher', external: true },
-    { name: 'Contact', icon: <Mail size={18} />, path: '/contact' }
   ];
 
   return (

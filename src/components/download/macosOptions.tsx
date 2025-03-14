@@ -4,6 +4,7 @@ import { DownloadOption } from './types';
 import { MacOSAssets } from './types';
 import { useOSAssets } from './fetchReleases';
 import { ExtendedTranslations } from './types';
+import { useLanguage } from '@/components/navbar/LanguageContext';
 
 type RenderFunctionProps = {
   getTranslation: (key: keyof ExtendedTranslations) => string;
@@ -21,6 +22,7 @@ export const renderMacOSOptions = ({
   // Get macOS assets from GitHub
   const { assets } = useOSAssets('macos');
   const macOSAssets = assets as MacOSAssets;
+  const { currentLanguage } = useLanguage();
   
   const options: DownloadOption[] = [];
 
@@ -30,7 +32,7 @@ export const renderMacOSOptions = ({
       id: 'macos_arm64',
       title: "Apple Silicon DMG",
       subtitle: "For M1/M2/M3 Macs",
-      description: "This version is specifically optimized for Apple Silicon (M1/M2/M3) Macs. It provides native performance and better energy efficiency on these systems. Use this if you have a newer Mac with Apple's own processors.",
+      description: getTranslation('macos.arm64'),
       icon: <Apple size={24} />,
       disabled: false,
       colorClass: 'bg-white/5',
@@ -51,7 +53,7 @@ export const renderMacOSOptions = ({
       id: 'macos_intel',
       title: "Intel DMG",
       subtitle: "For Intel-based Macs",
-      description: "This version is designed for Intel-based Macs (pre-2020 models). If you have an older Mac with an Intel processor, this is the version you should download for best compatibility and performance.",
+      description: getTranslation('macos.intel'),
       icon: <Apple size={24} />,
       disabled: false,
       colorClass: 'bg-white/5',

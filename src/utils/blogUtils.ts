@@ -35,17 +35,24 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
 export async function getBlogPost(slug: string): Promise<BlogPost> {
   console.log(`Fetching blog post with slug: ${slug}`);
   
+  // Clean up the slug (remove any path components from URLs if present)
+  const cleanSlug = slug.split('/').pop() || slug;
+  
   // First try to fetch from the JSON/markdown system
-  const jsonPost = await fetchBlogPost(slug);
-  if (jsonPost) {
-    return jsonPost;
+  try {
+    const jsonPost = await fetchBlogPost(cleanSlug);
+    if (jsonPost) {
+      return jsonPost;
+    }
+  } catch (error) {
+    console.error(`Error fetching JSON blog post: ${error}`);
   }
   
   // Fallback to hardcoded data
-  const post = BLOG_POSTS.find(post => post.slug === slug);
+  const post = BLOG_POSTS.find(post => post.slug === cleanSlug);
   
   if (!post) {
-    throw new Error(`Blog post with slug "${slug}" not found`);
+    throw new Error(`Blog post with slug "${cleanSlug}" not found`);
   }
   
   return post;

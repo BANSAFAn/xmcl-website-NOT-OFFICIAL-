@@ -1,8 +1,8 @@
-
-import { DownloadTranslations } from './types';
+import { LanguageCode } from '../navbar/languageTypes';
+import { DownloadTranslationsType } from './types';
 
 // Define default translations for download-specific terms that might not be in the main translations
-export const defaultDownloadTranslations: DownloadTranslations = {
+export const defaultDownloadTranslations: DownloadTranslationsType = {
   portable: 'Portable',
   portableDescription: 'Run directly without installation',
   zip64: 'ZIP (64-bit)',

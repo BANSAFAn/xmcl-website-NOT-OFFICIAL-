@@ -10,6 +10,7 @@ import { ErrorDisplay } from "./ErrorDisplay";
 import { useLatestRelease } from "./fetchReleases";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Smartphone, Tablet, AlertTriangle } from "lucide-react";
+import { useOS } from '@/context/OSContext';
 
 interface DownloadOptionsProps {
   selectedOS: string;
@@ -26,17 +27,17 @@ export function DownloadOptions({
     useDownloadActions();
   const { data: releaseData, isLoading, error } = useLatestRelease();
   const isMobile = useIsMobile();
+  const { osInfo } = useOS();
   const [isUnsupportedWindows, setIsUnsupportedWindows] = useState(false);
 
-  // Auto-detect OS on component mount
+  // Set the selected OS based on detected OS context
   useEffect(() => {
-    const detectOS = () => {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-
-      if (userAgent.indexOf("win") !== -1) {
-        setSelectedOS("windows");
-
-        // Check Windows version
+    if (osInfo.category !== "unknown") {
+      setSelectedOS(osInfo.category);
+      
+      // Check Windows version if it's Windows
+      if (osInfo.category === "windows") {
+        const userAgent = window.navigator.userAgent.toLowerCase();
         const winVersionMatch = userAgent.match(/windows nt (\d+\.\d+)/);
         if (winVersionMatch) {
           const winVersion = parseFloat(winVersionMatch[1]);
@@ -46,16 +47,10 @@ export function DownloadOptions({
             setIsUnsupportedWindows(true);
           }
         }
-      } else if (userAgent.indexOf("mac") !== -1) {
-        setSelectedOS("macos");
-      } else if (userAgent.indexOf("linux") !== -1) {
-        setSelectedOS("linux");
       }
-    };
-
-    detectOS();
-  }, [setSelectedOS]);
-
+    }
+  }, [osInfo.category, setSelectedOS]);
+  
   // Get options based on selected OS
   const getOptions = () => {
     switch (selectedOS) {

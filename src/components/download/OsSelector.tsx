@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Monitor, Apple, Terminal } from "lucide-react";
+import { useOS } from "@/context/OSContext";
 
 interface OSSelectorProps {
   activeOS: string;
@@ -7,6 +8,8 @@ interface OSSelectorProps {
 }
 
 export function OSSelector({ activeOS, setActiveOS }: OSSelectorProps) {
+  const { setSelectedOS } = useOS();
+  
   const operatingSystems = [
     {
       id: "windows",
@@ -21,13 +24,18 @@ export function OSSelector({ activeOS, setActiveOS }: OSSelectorProps) {
     },
   ];
 
+  const handleOSChange = (os: string) => {
+    setSelectedOS(os); // This will check if warning should be shown
+    setActiveOS(os); // Update the local component state
+  };
+
   return (
     <div className="flex justify-center mb-10">
       <div className="inline-flex bg-white/5 backdrop-blur-sm p-1 rounded-lg shadow-inner">
         {operatingSystems.map((os) => (
           <motion.button
             key={os.id}
-            onClick={() => setActiveOS(os.id)}
+            onClick={() => handleOSChange(os.id)}
             className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               activeOS === os.id
                 ? "bg-blue-500 text-white shadow-md"

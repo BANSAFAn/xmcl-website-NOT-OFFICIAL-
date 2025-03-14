@@ -10,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLanguage } from '@/components/navbar/LanguageContext';
 
 interface DownloadCardProps {
   option: DownloadOption;
@@ -18,13 +19,26 @@ interface DownloadCardProps {
 
 export function DownloadCard({ option, onDownloadClick }: DownloadCardProps) {
   const { toast } = useToast();
+  const { currentLanguage } = useLanguage();
+  
+  // Translations for toast title
+  const infoTitleTranslations = {
+    en: "Information",
+    ru: "Информация",
+    uk: "Інформація",
+    zh: "信息"
+  };
+  
+  const getInfoTitle = () => {
+    return `${option.title} ${infoTitleTranslations[currentLanguage as keyof typeof infoTitleTranslations] || infoTitleTranslations.en}`;
+  };
   
   const handleInfoClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click
     
     if (option.description) {
       toast({
-        title: `${option.title} Information`,
+        title: getInfoTitle(),
         description: option.description,
         variant: "default",
         duration: 5000
