@@ -1,5 +1,4 @@
-import { HardDrive, File, Folder } from "lucide-react";
-import { UnderConstructionBadge } from "../GuideBages";
+import { HardDrive, File } from "lucide-react";
 import { CodeBlock } from "../CodeBlock";
 
 export function JavaDataCacheProtocol() {
@@ -7,7 +6,6 @@ export function JavaDataCacheProtocol() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold tracking-tight">Java Data Cache</h2>
-        <UnderConstructionBadge></UnderConstructionBadge>
       </div>
 
       <p className="mb-4">
