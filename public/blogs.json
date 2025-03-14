@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "Nya",
+    "title": "Welcome to Our New Website",
+    "date": "2025-03-15",
+    "author": "Not official XMCL Team",
+    "excerpt": "12321331",
+    "category": "News",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7l8cPChP_e-ipjv5m3NlLt2CecL3O2ehZyg&s",
+    "path": "/blogs/2025-03/new-website.md"
+  },
+  {
+    "slug": "New version will enhance the auto-detection of the mods side",
+    "title": "New version will enhance the auto-detection of the mods side",
+    "date": "2025-03-12",
+    "author": "CIO10",
+    "excerpt": "43565654654654",
+    "category": "DevLogs",
+    "image": "https://cdn.discordapp.com/attachments/990258414900879390/1339112738496053350/image.png?ex=67d2736c&is=67d121ec&hm=0eaed12c9d0c887642318f29f108a5650aea16ad178db1e5f635663e94ac34b6&",
+    "path": "/blogs/2025-03/3.12.25.md"
+  }
+]

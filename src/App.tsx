@@ -11,6 +11,8 @@ import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import Changelogs from "./pages/Changelogs";
 import Blogs from "./pages/Blogs";
+import BlogPost from "./pages/BlogPost";
+import About from "./pages/About";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { LanguageProvider } from "./components/navbar/LanguageContext";
 
@@ -22,7 +24,7 @@ const ScrollToTop = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname]); 
 
   return null;
 };
@@ -34,7 +36,6 @@ const App = () => {
   // Handle loading sequence
   useEffect(() => {
     if (!isLoading) {
-      // Add a slight delay before showing content to ensure smooth transition
       const timer = setTimeout(() => {
         setContentReady(true);
       }, 300);
@@ -65,8 +66,10 @@ const App = () => {
                 <Route path="/guide" element={<Guide />} />
                 <Route path="/guide/:sectionId" element={<Guide />} />
                 <Route path="/privacy" element={<Privacy />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/changelogs" element={<Changelogs />} />
                 <Route path="/blogs" element={<Blogs />} />
+                <Route path="/blogs/:slug" element={<BlogPost />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

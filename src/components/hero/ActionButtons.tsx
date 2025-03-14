@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-
+import { ArrowDownToLine } from "lucide-react";
 interface ActionButtonsProps {
   downloadText: string;
   githubText: string;
@@ -20,33 +20,22 @@ export function ActionButtons({
     >
       <motion.a
         href="#download"
-        className="py-4 px-8 bg-accent text-white rounded-md font-medium flex items-center text-lg relative overflow-hidden group"
+        className="p-3 bg-accent/90 backdrop-blur-sm text-white rounded-md font-medium flex items-center justify-center relative overflow-hidden group px-[93px]"
         whileHover={{
           scale: 1.05,
+          backgroundColor: "rgba(59, 130, 246, 1)"
         }}
         whileTap={{ scale: 0.95 }}
         transition={{ type: "spring", stiffness: 400, damping: 10 }}
       >
-        <span className="absolute inset-0 bg-gradient-to-r from-accent via-cyan-400 to-accent bg-[length:200%_100%] animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-        <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100"></span>
         <span className="relative flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="mr-2"
+          <motion.div
+            initial={{ rotate: 0 }}
+            whileHover={{ rotate: 180 }}
+            transition={{ duration: 0.3 }}
           >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          {downloadText}
+            <ArrowDownToLine strokeWidth={2} />
+          </motion.div>
         </span>
       </motion.a>
 
@@ -54,20 +43,20 @@ export function ActionButtons({
         href="https://github.com/Voxelum/x-minecraft-launcher"
         target="_blank"
         rel="noopener noreferrer"
-        className="py-4 px-8 bg-white/10 text-white rounded-md font-medium text-lg relative overflow-hidden group"
+        className="py-3 px-6 bg-white/10 text-white rounded-md font-medium text-lg relative overflow-hidden group"
         whileHover={{
           scale: 1.05,
+          backgroundColor: "rgba(255, 255, 255, 0.15)"
         }}
         whileTap={{ scale: 0.95 }}
         transition={{ type: "spring", stiffness: 400, damping: 10 }}
         onMouseEnter={onNumberEffect}
       >
-        <span className="absolute inset-0 bg-white/20 bg-[length:200%_100%] animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         <span className="relative flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

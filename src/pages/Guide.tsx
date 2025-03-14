@@ -11,7 +11,7 @@ import {
   InstallationGuide,
   DataStorageGuide,
   MultiplayerGuide,
-  UpdateGuide,
+  UpdateGuide
 } from "@/components/guide/sections";
 import {
   InstanceStorageProtocol,
@@ -161,9 +161,9 @@ const Guide = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-      },
-    },
+        staggerChildren: 0.1
+      }
+    }
   };
 
   const itemVariants = {
@@ -172,9 +172,9 @@ const Guide = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
-      },
-    },
+        duration: 0.5
+      }
+    }
   };
 
   // Function to change tab
@@ -185,8 +185,8 @@ const Guide = () => {
   return (
     <div className="min-h-screen bg-minecraft-dark-blue">
       <Navbar />
-
-      <motion.div
+      
+      <motion.div 
         className="container mx-auto px-4 pt-32 pb-20"
         initial="hidden"
         animate="visible"
@@ -194,18 +194,19 @@ const Guide = () => {
       >
         <motion.div variants={itemVariants}>
           <h1 className="text-4xl lg:text-5xl font-bold text-center mb-4">
-            <span className="text-gradient-cyan">X Minecraft Launcher</span>{" "}
-            Guide
+            <span className="text-gradient-cyan">X Minecraft Launcher</span> Guide
           </h1>
           <p className="text-center text-white/80 max-w-3xl mx-auto mb-12">
-            Complete documentation for getting the most out of the X Minecraft
-            Launcher
+            Complete documentation for getting the most out of the X Minecraft Launcher
           </p>
         </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
           {/* Sidebar */}
-          <motion.div className="lg:w-1/4" variants={itemVariants}>
+          <motion.div 
+            className="lg:w-1/4"
+            variants={itemVariants}
+          >
             <div className="glass-card rounded-xl p-4 sticky top-24">
               <h2 className="text-xl font-bold mb-4">Guide Sections</h2>
               <nav className="flex flex-col space-y-1">
@@ -244,9 +245,12 @@ const Guide = () => {
               </nav>
             </div>
           </motion.div>
-
+          
           {/* Content */}
-          <motion.div className="lg:w-3/4" variants={itemVariants}>
+          <motion.div 
+            className="lg:w-3/4"
+            variants={itemVariants}
+          >
             <div className="glass-card rounded-xl p-6 md:p-8 min-h-[70vh]">
               {currentContent()}
             </div>
