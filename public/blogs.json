@@ -2,7 +2,7 @@
   {
     "slug": "Optimizing X Minecraft Launcher Using Azure Application Insights and Azure Storage for Secure Sourcemap Management",
     "title": "Optimizing X Minecraft Launcher Using Azure Application Insights and Azure Storage for Secure Sourcemap Management",
-    "date": "2025-03-15"
+    "date": "2025-03-15",
     "author": "CIO10",
     "excerpt": "Use azure applicationinsights in Electron with sourcemap configuration in azure storage blob.",
     "category": "Blogs",
