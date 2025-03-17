@@ -75,7 +75,7 @@ const Index = () => {
         </motion.div>
       </div>
       
-      {/* Global style for image hover effects */}
+      {/* Global style for image hover effects and easter eggs */}
       <style dangerouslySetInnerHTML={{ __html: `
         .info-image {
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -102,6 +102,44 @@ const Index = () => {
           transform: scale(1.05);
           text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
           color: #38bdf8;
+        }
+        
+        /* Apple mode Easter Egg */
+        .apple-mode * {
+          font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, sans-serif !important;
+        }
+        
+        .apple-mode p, .apple-mode span, .apple-mode h1, .apple-mode h2, .apple-mode h3, .apple-mode h4, .apple-mode h5, .apple-mode h6, .apple-mode a {
+          position: relative;
+        }
+        
+        .apple-mode p::after, .apple-mode span::after, .apple-mode h1::after, .apple-mode h2::after, .apple-mode h3::after, .apple-mode h4::after, .apple-mode h5::after, .apple-mode h6::after, .apple-mode a::after {
+          content: "🍎";
+          position: relative;
+          display: inline-block;
+          animation: float 3s ease-in-out infinite;
+          margin-left: 4px;
+          font-size: 0.8em;
+        }
+        
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+          100% { transform: translateY(0px); }
+        }
+        
+        .apple-mode button {
+          background: linear-gradient(to bottom, #4f93ce, #1e5799) !important;
+          border-radius: 8px !important;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        .apple-mode .container {
+          background-color: rgba(255, 255, 255, 0.05) !important;
+          backdrop-filter: blur(10px) !important;
+          border-radius: 16px !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
       `}} />
     </motion.div>
