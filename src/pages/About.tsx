@@ -17,8 +17,9 @@ const About = () => {
       returnHome: "Return to Home",
       title: "About the Team",
       subtitle: "Meet the people behind X Minecraft Launcher",
-      leadDeveloper: "Lead Developer",
-      webDeveloper: "Web Developer & Moderator",
+      leadDeveloper: "Lead Developer & Creator",
+      moderator: "Moderator",
+      webDeveloper: "Web Developer & Flathub Maintainer",
       aboutSection: "We are a small team of dedicated developers and Minecraft enthusiasts working to create the best Minecraft launcher experience possible.",
       missionTitle: "Our Mission",
       missionText: "To provide a fast, reliable, and feature-rich Minecraft launcher that helps players enjoy the game with minimal technical difficulties.",
@@ -29,8 +30,9 @@ const About = () => {
       returnHome: "Вернуться на главную",
       title: "О команде",
       subtitle: "Познакомьтесь с людьми, создающими X Minecraft Launcher",
-      leadDeveloper: "Ведущий разработчик",
-      webDeveloper: "Веб-разработчик и модератор",
+      leadDeveloper: "Ведущий разработчик и создатель",
+      moderator: "Модератор",
+      webDeveloper: "Веб-разработчик и сопровождающий Flathub",
       aboutSection: "Мы небольшая команда преданных разработчиков и энтузиастов Minecraft, работающих над созданием лучшего опыта использования Minecraft лаунчера.",
       missionTitle: "Наша миссия",
       missionText: "Предоставить быстрый, надежный и функциональный Minecraft лаунчер, который помогает игрокам наслаждаться игрой с минимальными техническими трудностями.",
@@ -41,8 +43,9 @@ const About = () => {
       returnHome: "Повернутися на головну",
       title: "Про команду",
       subtitle: "Познайомтеся з людьми, які створюють X Minecraft Launcher",
-      leadDeveloper: "Провідний розробник",
-      webDeveloper: "Веб-розробник і модератор",
+      leadDeveloper: "Провідний розробник і творець",
+      moderator: "Модератор",
+      webDeveloper: "Веб-розробник і супроводжуючий Flathub",
       aboutSection: "Ми невелика команда відданих розробників та ентузіастів Minecraft, які працюють над створенням найкращого досвіду використання Minecraft лаунчера.",
       missionTitle: "Наша місія",
       missionText: "Надати швидкий, надійний та функціональний Minecraft лаунчер, який допомагає гравцям насолоджуватися грою з мінімальними технічними труднощами.",
@@ -53,8 +56,9 @@ const About = () => {
       returnHome: "返回首页",
       title: "关于团队",
       subtitle: "认识 X Minecraft 启动器背后的人员",
-      leadDeveloper: "首席开发者",
-      webDeveloper: "网页开发者和版主",
+      leadDeveloper: "首席开发者和创始人",
+      moderator: "版主",
+      webDeveloper: "网页开发者和 Flathub 维护者",
       aboutSection: "我们是一个由专注的开发者和 Minecraft 爱好者组成的小团队，致力于创造最佳的 Minecraft 启动器体验。",
       missionTitle: "我们的使命",
       missionText: "提供一个快速、可靠且功能丰富的 Minecraft 启动器，帮助玩家以最少的技术困难享受游戏。",
@@ -78,7 +82,7 @@ const About = () => {
     },
     {
       name: "Baneronetwo",
-      role: text.webDeveloper,
+      role: text.moderator,
       avatar: "https://avatars.githubusercontent.com/u/86590991?v=4",
       socials: [
         { icon: <Github className="w-5 h-5" />, link: "https://github.com/BANSAFAn" },
@@ -92,7 +96,8 @@ const About = () => {
       avatar: "https://avatars.githubusercontent.com/u/155435591?v=4",
       socials: [
         { icon: <Github className="w-5 h-5" />, link: "https://github.com/v1mkss" },
-        { icon: <Twitch className="w-5 h-5" />, link: "https://www.twitch.tv/v1mkss" }
+        { icon: <Twitch className="w-5 h-5" />, link: "https://www.twitch.tv/v1mkss" },
+        { icon: <Coffee className="w-5 h-5" />, link: "https://ko-fi.com/v1mkss" }
       ]
     }
   ];

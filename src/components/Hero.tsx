@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { BackgroundEffects } from "./hero/BackgroundEffects";
 import { AnimatedTitle } from "./hero/AnimatedTitle";
@@ -99,7 +98,10 @@ export function Hero() {
                 href="https://modrinth.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-purple-400 transition-colors duration-300"
+                className="text-white hover:text-purple-400 transition-colors duration-300 relative inline-block
+                  after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
+                  after:bg-purple-400 after:origin-bottom-right after:transition-transform after:duration-300 
+                  hover:after:scale-x-100 hover:after:origin-bottom-left hover:scale-110"
               >
                 Modrinth
               </a>, {" "}
@@ -107,7 +109,10 @@ export function Hero() {
                 href="https://quiltmc.org/en/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-green-400 transition-colors duration-300"
+                className="text-white hover:text-green-400 transition-colors duration-300 relative inline-block
+                  after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
+                  after:bg-green-400 after:origin-bottom-right after:transition-transform after:duration-300 
+                  hover:after:scale-x-100 hover:after:origin-bottom-left hover:scale-110"
               >
                 Quilt
               </a>, {" "}
@@ -115,7 +120,10 @@ export function Hero() {
                 href="https://fabricmc.net/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-orange-400 transition-colors duration-300"
+                className="text-white hover:text-orange-400 transition-colors duration-300 relative inline-block
+                  after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
+                  after:bg-orange-400 after:origin-bottom-right after:transition-transform after:duration-300 
+                  hover:after:scale-x-100 hover:after:origin-bottom-left hover:scale-110"
               >
                 Fabric
               </a>, and {" "}
@@ -123,7 +131,10 @@ export function Hero() {
                 href="https://files.minecraftforge.net/net/minecraftforge/forge/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-blue-400 transition-colors duration-300"
+                className="text-white hover:text-blue-400 transition-colors duration-300 relative inline-block
+                  after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
+                  after:bg-blue-400 after:origin-bottom-right after:transition-transform after:duration-300 
+                  hover:after:scale-x-100 hover:after:origin-bottom-left hover:scale-110"
               >
                 Minecraft Forge
               </a>.

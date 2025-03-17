@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { InfoSection } from "./translations";
+import { Lens } from "@/components/ui/lens";
 
 interface InfoSectionItemProps {
   section: InfoSection;
@@ -23,11 +24,17 @@ export function InfoSectionItem({ section }: InfoSectionItemProps) {
         <div className="relative">
           <div className={`absolute -inset-1 bg-gradient-to-r ${section.reverse ? 'from-minecraft-accent-orange to-accent' : 'from-accent to-minecraft-accent-green'} opacity-30 blur-xl rounded-2xl`}></div>
           <div className="relative bg-minecraft-darker-blue rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-            <img 
-              src={section.image} 
-              alt={section.imageAlt} 
-              className="w-full h-auto"
-            />
+            <Lens 
+              zoomFactor={1.3}
+              lensSize={150}
+              lensColor="rgba(0,0,0,0.9)"
+            >
+              <img 
+                src={section.image} 
+                alt={section.imageAlt} 
+                className="w-full h-auto"
+              />
+            </Lens>
           </div>
         </div>
       </motion.div>

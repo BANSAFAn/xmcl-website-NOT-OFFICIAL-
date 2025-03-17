@@ -1,23 +1,26 @@
+
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/navbar";
 import { PrivacyHeader } from "./PrivacyHeader";
-import { PrivacySection } from "./PrivacySection";
-import { PrivacyListSection } from "./PrivacyListSection";
-import { ContactSection } from "./ContactSection";
 import { usePrivacyLanguage } from "./usePrivacyLanguage";
 
 const Privacy = () => {
   const { content } = usePrivacyLanguage();
-
+  
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-      },
-    },
+        staggerChildren: 0.15
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
   };
 
   return (
@@ -32,72 +35,124 @@ const Privacy = () => {
           animate="visible"
           className="glass-card p-8 rounded-xl"
         >
-          <PrivacySection
-            title={content.introduction.title}
-            content={content.introduction.content}
-          />
+          <motion.div variants={itemVariants} className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-4">{content.introduction.title}</h2>
+            <p className="text-white/80 leading-relaxed">{content.introduction.content}</p>
+          </motion.div>
 
-          <PrivacySection
-            title={content.informationCollection.title}
-            content=""
-          >
-            <PrivacyListSection
-              title={content.informationCollection.usageInfo.title}
-              content={content.informationCollection.usageInfo.content}
-              items={content.informationCollection.usageInfo.items}
-              variant="subsection"
-            />
+          <motion.div variants={itemVariants} className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-4">{content.informationCollection.title}</h2>
+            
+            <motion.div
+              variants={containerVariants}
+              className="pl-4 border-l-2 border-accent/50 mb-6"
+            >
+              <h3 className="text-xl font-semibold text-white mb-2">{content.informationCollection.usageInfo.title}</h3>
+              <p className="text-white/80 leading-relaxed mb-4">{content.informationCollection.usageInfo.content}</p>
+              <ul className="space-y-2">
+                {content.informationCollection.usageInfo.items.map((item, index) => (
+                  <motion.li
+                    key={index}
+                    variants={{
+                      hidden: { opacity: 0, x: -20 },
+                      visible: { 
+                        opacity: 1, 
+                        x: 0,
+                        transition: { delay: index * 0.1 }
+                      }
+                    }}
+                    className="flex items-start text-white/80"
+                  >
+                    <span className="text-accent mr-2">•</span> {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            
+            <motion.div
+              variants={containerVariants}
+              className="pl-4 border-l-2 border-accent/50 mb-6"
+            >
+              <h3 className="text-xl font-semibold text-white mb-2">{content.informationCollection.additionalInfo.title}</h3>
+              <p className="text-white/80 leading-relaxed mb-4">{content.informationCollection.additionalInfo.content}</p>
+              <ul className="space-y-2">
+                {content.informationCollection.additionalInfo.items.map((item, index) => (
+                  <motion.li 
+                    key={index}
+                    variants={{
+                      hidden: { opacity: 0, x: -20 },
+                      visible: { 
+                        opacity: 1, 
+                        x: 0,
+                        transition: { delay: index * 0.1 }
+                      }
+                    }}
+                    className="flex items-start text-white/80"
+                  >
+                    <span className="text-accent mr-2">•</span> {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            
+            <motion.div variants={itemVariants} className="pl-4 border-l-2 border-accent/50 mb-6">
+              <h3 className="text-xl font-semibold text-white mb-2">{content.informationCollection.deviceId.title}</h3>
+              <p className="text-white/80 leading-relaxed">{content.informationCollection.deviceId.content}</p>
+            </motion.div>
+            
+            <motion.div variants={itemVariants} className="pl-4 border-l-2 border-accent/50">
+              <h3 className="text-xl font-semibold text-white mb-2">{content.informationCollection.errorReporting.title}</h3>
+              <p className="text-white/80 leading-relaxed">{content.informationCollection.errorReporting.content}</p>
+            </motion.div>
+          </motion.div>
 
-            <PrivacyListSection
-              title={content.informationCollection.additionalInfo.title}
-              content={content.informationCollection.additionalInfo.content}
-              items={content.informationCollection.additionalInfo.items}
-              variant="subsection"
-            />
+          <motion.div variants={itemVariants} className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-4">{content.dataSharing.title}</h2>
+            <p className="text-white/80 leading-relaxed mb-4">{content.dataSharing.content}</p>
+            <ul className="space-y-2 pl-4 border-l-2 border-accent/50">
+              {content.dataSharing.items.map((item, index) => (
+                <motion.li 
+                  key={index}
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { 
+                      opacity: 1, 
+                      x: 0,
+                      transition: { delay: index * 0.1 }
+                    }
+                  }}
+                  className="flex items-start text-white/80"
+                >
+                  <span className="text-accent mr-2">•</span> {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
 
-            <PrivacySection
-              title={content.informationCollection.deviceId.title}
-              content={content.informationCollection.deviceId.content}
-              variant="subsection"
-            />
+          <motion.div variants={itemVariants} className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-4">{content.dataSecurity.title}</h2>
+            <p className="text-white/80 leading-relaxed">{content.dataSecurity.content}</p>
+          </motion.div>
 
-            <PrivacySection
-              title={content.informationCollection.errorReporting.title}
-              content={content.informationCollection.errorReporting.content}
-              variant="subsection"
-            />
-          </PrivacySection>
+          <motion.div variants={itemVariants} className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-4">{content.thirdParty.title}</h2>
+            <p className="text-white/80 leading-relaxed">{content.thirdParty.content}</p>
+          </motion.div>
 
-          <PrivacyListSection
-            title={content.dataSharing.title}
-            content={content.dataSharing.content}
-            items={content.dataSharing.items}
-          />
+          <motion.div variants={itemVariants} className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-4">{content.children.title}</h2>
+            <p className="text-white/80 leading-relaxed">{content.children.content}</p>
+          </motion.div>
 
-          <PrivacySection
-            title={content.dataSecurity.title}
-            content={content.dataSecurity.content}
-          />
+          <motion.div variants={itemVariants} className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-4">{content.changes.title}</h2>
+            <p className="text-white/80 leading-relaxed">{content.changes.content}</p>
+          </motion.div>
 
-          <PrivacySection
-            title={content.thirdParty.title}
-            content={content.thirdParty.content}
-          />
-
-          <PrivacySection
-            title={content.children.title}
-            content={content.children.content}
-          />
-
-          <PrivacySection
-            title={content.changes.title}
-            content={content.changes.content}
-          />
-
-          <ContactSection
-            title={content.contact.title}
-            content={content.contact.content}
-          />
+          <motion.div variants={itemVariants}>
+            <h2 className="text-2xl font-bold text-white mb-4">{content.contact.title}</h2>
+            <p className="text-white/80 leading-relaxed">{content.contact.content}</p>
+          </motion.div>
         </motion.div>
       </div>
     </div>

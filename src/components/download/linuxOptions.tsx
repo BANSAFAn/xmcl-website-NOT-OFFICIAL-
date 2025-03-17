@@ -1,4 +1,5 @@
-import { Download, Github, Package, FileArchive } from "lucide-react";
+
+import { Download, Package, FileArchive } from "lucide-react";
 import { DownloadOption } from './types';
 import { LinuxAssets } from './types';
 import { useOSAssets } from './fetchReleases';
@@ -16,30 +17,13 @@ export const renderLinuxOptions = ({
   getTranslation,
   setDownloadProgress,
   setCurrentAsset,
-  setShowConfirmation,
+  setShowConfirmation
 }: RenderFunctionProps): DownloadOption[] => {
   const { assets } = useOSAssets('linux');
   const linuxAssets = assets as LinuxAssets;
   const { currentLanguage } = useLanguage();
   
   const options: DownloadOption[] = [];
-  
-  // Linux Flatpak (always included as it's a link to a different repo)
-  options.push({
-    id: "linux_flatpak",
-    title: "Linux Flatpak",
-    subtitle: "Community maintained Flatpak package",
-    description: getTranslation('linux.flatpak'),
-    icon: <Github size={24} />,
-    disabled: false,
-    colorClass: "bg-white/5",
-    isComingSoon: false,
-    link: "https://github.com/v1mkss/io.github.voxelum.xmcl",
-    onClick: () => {
-      // External link, no download progress
-      window.open("https://github.com/v1mkss/io.github.voxelum.xmcl", "_blank");
-    },
-  });
   
   // AppImage - Portable Linux option
   if (linuxAssets?.appimage) {
@@ -50,15 +34,15 @@ export const renderLinuxOptions = ({
       description: getTranslation('linux.appimage'),
       icon: <FileArchive size={24} />,
       disabled: false,
-      colorClass: "bg-white/5",
+      colorClass: 'bg-white/5',
       isComingSoon: false,
       size: linuxAssets.appimage.size,
       link: linuxAssets.appimage.url,
       onClick: () => {
         setDownloadProgress(0);
-        setCurrentAsset(linuxAssets.appimage?.url || "");
+        setCurrentAsset(linuxAssets.appimage?.url || '');
         setShowConfirmation(true);
-      },
+      }
     });
   }
   
@@ -71,7 +55,7 @@ export const renderLinuxOptions = ({
       description: getTranslation('linux.deb'),
       icon: <Package size={24} />,
       disabled: false,
-      colorClass: "bg-white/5",
+      colorClass: 'bg-white/5',
       isComingSoon: false,
       size: linuxAssets.deb.size,
       link: linuxAssets.deb.url,
@@ -79,7 +63,7 @@ export const renderLinuxOptions = ({
         setDownloadProgress(0);
         setCurrentAsset(linuxAssets.deb?.url || '');
         setShowConfirmation(true);
-      },
+      }
     });
   }
   
@@ -92,17 +76,34 @@ export const renderLinuxOptions = ({
       description: getTranslation('linux.rpm'),
       icon: <Package size={24} />,
       disabled: false,
-      colorClass: "bg-white/5",
+      colorClass: 'bg-white/5',
       isComingSoon: false,
       size: linuxAssets.rpm.size,
       link: linuxAssets.rpm.url,
       onClick: () => {
         setDownloadProgress(0);
-        setCurrentAsset(linuxAssets.rpm?.url || "");
+        setCurrentAsset(linuxAssets.rpm?.url || '');
         setShowConfirmation(true);
-      },
+      }
     });
   }
+  
+  // Flatpak (Community maintained)
+  options.push({
+    id: 'linux_flatpak',
+    title: "Linux Flatpak",
+    subtitle: "Maintained by community",
+    description: getTranslation('linux.flatpak'),
+    icon: <Package size={24} />,
+    disabled: false,
+    colorClass: 'bg-white/5',
+    isComingSoon: true,
+    size: "N/A",
+    link: "https://github.com/ci010/XMinecraftLauncher",
+    onClick: () => {
+      window.open("https://github.com/ci010/XMinecraftLauncher", "_blank");
+    }
+  });
   
   // ARM64 build (for Raspberry Pi, etc)
   if (linuxAssets?.arm64) {
@@ -113,15 +114,15 @@ export const renderLinuxOptions = ({
       description: getTranslation('linux.arm64'),
       icon: <Download size={24} />,
       disabled: false,
-      colorClass: "bg-white/5",
+      colorClass: 'bg-white/5',
       isComingSoon: false,
       size: linuxAssets.arm64.size,
       link: linuxAssets.arm64.url,
       onClick: () => {
         setDownloadProgress(0);
-        setCurrentAsset(linuxAssets.arm64?.url || "");
+        setCurrentAsset(linuxAssets.arm64?.url || '');
         setShowConfirmation(true);
-      },
+      }
     });
   }
 
