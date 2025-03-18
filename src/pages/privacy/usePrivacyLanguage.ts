@@ -1,32 +1,18 @@
 
 import { useState, useEffect } from "react";
 import { LanguageKey, privacyTranslations } from "./translations";
+import { useLanguage } from "@/components/navbar/LanguageContext";
 
 export function usePrivacyLanguage() {
-  const [currentLanguage, setCurrentLanguage] = useState<LanguageKey>('en');
+  const { currentLanguage } = useLanguage();
+  const [content, setContent] = useState(privacyTranslations.en);
   
   useEffect(() => {
-    const handleLanguageChange = () => {
-      const savedLang = localStorage.getItem('language') || 'en';
-      setCurrentLanguage(savedLang as LanguageKey);
-    };
-    
-    handleLanguageChange();
-    window.addEventListener('languageChange', handleLanguageChange);
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'language') {
-        handleLanguageChange();
-      }
-    });
-    
-    return () => {
-      window.removeEventListener('languageChange', handleLanguageChange);
-      window.removeEventListener('storage', handleLanguageChange);
-    };
-  }, []);
+    setContent(privacyTranslations[currentLanguage as LanguageKey] || privacyTranslations.en);
+  }, [currentLanguage]);
   
   return {
     currentLanguage,
-    content: privacyTranslations[currentLanguage]
+    content
   };
 }

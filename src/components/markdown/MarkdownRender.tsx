@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -11,6 +10,19 @@ interface MarkdownRenderProps {
 }
 
 export const MarkdownRender = ({ content, className }: MarkdownRenderProps) => {
+  // Process custom alerts in the content before rendering
+  const processedContent = content
+    .replace(/:::(tip|hint)\s+([\s\S]*?):::/g, '> TIP: $2')
+    .replace(/:::(important|warning)\s+([\s\S]*?):::/g, '> WARNING: $2')
+    .replace(/:::(caution)\s+([\s\S]*?):::/g, '> CAUTION: $2')
+    .replace(/:::(note|info)\s+([\s\S]*?):::/g, '> NOTE: $2')
+    // Also support double-colon format
+    .replace(/::tip\s+([\s\S]*?)::/g, '> TIP: $1')
+    .replace(/::important\s+([\s\S]*?)::/g, '> IMPORTANT: $1')
+    .replace(/::warning\s+([\s\S]*?)::/g, '> WARNING: $1')
+    .replace(/::caution\s+([\s\S]*?)::/g, '> CAUTION: $1')
+    .replace(/::note\s+([\s\S]*?)::/g, '> NOTE: $1');
+    
   return (
     <div className={cn("prose prose-invert max-w-none prose-headings:mb-3 prose-headings:mt-6 prose-p:my-3 prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-code:bg-white/10 prose-code:p-1 prose-code:rounded-md prose-pre:bg-black/40 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-hr:my-6 prose-hr:border-white/10", className)}>
       <ReactMarkdown
@@ -158,7 +170,7 @@ export const MarkdownRender = ({ content, className }: MarkdownRenderProps) => {
           }
         }}
       >
-        {content}
+        {processedContent}
       </ReactMarkdown>
     </div>
   );

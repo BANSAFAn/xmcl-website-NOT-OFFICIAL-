@@ -1,5 +1,5 @@
 
-export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh';
+export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
 
 export interface Translations {
   guide: string;

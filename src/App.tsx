@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -24,17 +25,17 @@ const queryClient = new QueryClient();
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [contentReady, setContentReady] = useState(false);
-
+  
   useEffect(() => {
     if (!isLoading) {
       const timer = setTimeout(() => {
         setContentReady(true);
       }, 300);
-
+      
       return () => clearTimeout(timer);
     }
   }, [isLoading]);
-
+  
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
@@ -42,13 +43,11 @@ function App() {
           <TooltipProvider>
             <Toaster />
             <Sonner />
-
+            
             <AnimatePresence mode="wait">
-              {isLoading && (
-                <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
-              )}
+              {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
             </AnimatePresence>
-
+            
             {contentReady && (
               <>
                 <OldWindowsWarning />
@@ -56,17 +55,13 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/guide" element={<Guide />} />
-                    <Route path="/guide/:sectionId" element={<Guide />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/changelogs" element={<Changelogs />} />
                     <Route path="/blogs" element={<Blogs />} />
                     {/* Multiple blog post routes to support different URL patterns */}
                     <Route path="/blogs/:slug" element={<BlogPost />} />
-                    <Route
-                      path="/blogs/:year/:month/:slug"
-                      element={<BlogPost />}
-                    />
+                    <Route path="/blogs/:year/:month/:slug" element={<BlogPost />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>

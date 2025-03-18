@@ -27,6 +27,20 @@ export const translations = {
     download: "下载",
     github: "GitHub 仓库",
     description: "X Minecraft 启动器 (XMCL) 是一个现代化的 Minecraft 启动器，可以高效管理您的模组包、资源包、模组和光影包。它与 Minecraft Forge、Fabric、Quilt、CurseForge 和 Modrinth 集成。"
+  },
+  de: {
+    title: "X Minecraft Launcher",
+    subtitle: "Ein Open-Source-Launcher mit moderner Benutzeroberfläche",
+    download: "Download",
+    github: "GitHub Repository",
+    description: "X Minecraft Launcher (XMCL) ist ein moderner Minecraft-Launcher, der Ihre Modpacks, Ressourcenpakete, Mods und Shader-Pakete effizient verwaltet. Er integriert sich mit Minecraft Forge, Fabric, Quilt, CurseForge und Modrinth."
+  },
+  ja: {
+    title: "X Minecraft ランチャー",
+    subtitle: "モダンなUXを備えたオープンソースランチャー",
+    download: "ダウンロード",
+    github: "GitHub リポジトリ",
+    description: "X Minecraft ランチャー（XMCL）は、モッドパック、リソースパック、MOD、シェーダーパックを効率的に管理する現代的なMinecraftランチャーです。Minecraft Forge、Fabric、Quilt、CurseForge、Modrinthと統合されています。"
   }
 };
 

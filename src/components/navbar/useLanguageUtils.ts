@@ -8,7 +8,7 @@ export function useLanguageStorage() {
   // Initialize language based on localStorage
   useEffect(() => {
     const savedLang = localStorage.getItem('language');
-    if (savedLang && (savedLang === 'en' || savedLang === 'ru' || savedLang === 'uk' || savedLang === 'zh')) {
+    if (savedLang && isValidLanguage(savedLang)) {
       setCurrentLanguage(savedLang as LanguageCode);
     }
   }, []);
@@ -24,4 +24,9 @@ export function useLanguageStorage() {
   };
   
   return { currentLanguage, setCurrentLanguage: handleLanguageChange };
+}
+
+// Helper function to validate language codes
+function isValidLanguage(lang: string): lang is LanguageCode {
+  return ['en', 'ru', 'uk', 'zh', 'de', 'ja'].includes(lang);
 }

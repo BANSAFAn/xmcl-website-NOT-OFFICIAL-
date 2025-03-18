@@ -17,7 +17,8 @@ const languageFlags = {
   en: "🇬🇧",
   ru: "🇷🇺",
   uk: "🇺🇦",
-  zh: "🇨🇳"
+  zh: "🇨🇳",
+  de: "🇩🇪"
 };
 
 export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {

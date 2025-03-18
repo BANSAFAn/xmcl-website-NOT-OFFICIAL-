@@ -6,35 +6,14 @@ import { downloadTranslations, LanguageKey } from "./translations";
 import { OSSelector } from "./OsSelector";
 import { DownloadOptions } from "./DownloadOptions";
 import { SectionHeader } from "./SectionHeader";
+import { useLanguage } from "@/components/navbar/LanguageContext";
 
 export function DownloadSection() {
   const [activeOS, setActiveOS] = useState("windows");
-  const [currentLanguage, setCurrentLanguage] = useState<LanguageKey>('en');
+  const { currentLanguage } = useLanguage();
   
-  // Initialize language based on localStorage and add listener for changes
-  useEffect(() => {
-    const updateLanguage = () => {
-      const savedLang = localStorage.getItem('language') || 'en';
-      setCurrentLanguage(savedLang as LanguageKey);
-    };
-    
-    // Initial language set
-    updateLanguage();
-    
-    // Listen for storage changes (from other components)
-    window.addEventListener('storage', updateLanguage);
-    
-    // Custom event listener for immediate language updates
-    window.addEventListener('languageChange', updateLanguage);
-    
-    return () => {
-      window.removeEventListener('storage', updateLanguage);
-      window.removeEventListener('languageChange', updateLanguage);
-    };
-  }, []);
-
   // Current translation
-  const text = downloadTranslations[currentLanguage] || downloadTranslations.en;
+  const text = downloadTranslations[currentLanguage as LanguageKey] || downloadTranslations.en;
 
   // Fetch latest release data
   const { data: releaseData, isLoading, error } = useLatestRelease();

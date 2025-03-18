@@ -59,5 +59,35 @@ export const blogTranslations = {
     tableOfContents: "Зміст",
     share: "Поділитися",
     minutes: "хв. читання"
+  },
+  de: {
+    pageTitle: "Blog",
+    subtitle: "Ideen, Anleitungen und Updates vom X Minecraft Launcher-Team",
+    loading: "Wird geladen...",
+    noBlogs: "Keine Blogs gefunden. Schauen Sie später wieder vorbei!",
+    error: "Fehler",
+    loadingError: "Blogs konnten nicht geladen werden. Bitte versuchen Sie es später noch einmal.",
+    readMore: "Weiterlesen",
+    publishedOn: "Veröffentlicht am",
+    category: "Kategorie",
+    relatedPosts: "Ähnliche Beiträge",
+    tableOfContents: "Inhaltsverzeichnis",
+    share: "Teilen",
+    minutes: "Min. Lesezeit"
+  },
+  ja: {
+    pageTitle: "ブログ",
+    subtitle: "X Minecraft Launcherチームからのアイデア、ガイド、アップデート",
+    loading: "読み込み中...",
+    noBlogs: "ブログが見つかりません。後でもう一度確認してください！",
+    error: "エラー",
+    loadingError: "ブログの読み込みに失敗しました。後でもう一度お試しください。",
+    readMore: "続きを読む",
+    publishedOn: "公開日",
+    category: "カテゴリー",
+    relatedPosts: "関連記事",
+    tableOfContents: "目次",
+    share: "共有",
+    minutes: "分で読めます"
   }
 };

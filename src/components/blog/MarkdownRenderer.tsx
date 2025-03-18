@@ -17,11 +17,18 @@ interface MarkdownRendererProps {
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   // Process custom alerts in the content
   const processedContent = content
-    .replace(/:::tip\s+([\s\S]*?):::/g, '<div class="tip-alert">$1</div>')
-    .replace(/:::important\s+([\s\S]*?):::/g, '<div class="important-alert">$1</div>')
-    .replace(/:::caution\s+([\s\S]*?):::/g, '<div class="caution-alert">$1</div>')
-    .replace(/:::note\s+([\s\S]*?):::/g, '<div class="note-alert">$1</div>')
-    .replace(/:::warning\s+([\s\S]*?):::/g, '<div class="important-alert">$1</div>');
+    .replace(/:::(tip|hint)\s+([\s\S]*?):::/g, '<div class="tip-alert">$2</div>')
+    .replace(/:::(important|warning)\s+([\s\S]*?):::/g, '<div class="important-alert">$2</div>')
+    .replace(/:::(caution)\s+([\s\S]*?):::/g, '<div class="caution-alert">$2</div>')
+    .replace(/:::(note|info)\s+([\s\S]*?):::/g, '<div class="note-alert">$2</div>')
+    .replace(/:::(good-news|success)\s+([\s\S]*?):::/g, '<div class="good-news-alert">$2</div>')
+    // Also support double-colon format
+    .replace(/::tip\s+([\s\S]*?)::/g, '<div class="tip-alert">$1</div>')
+    .replace(/::important\s+([\s\S]*?)::/g, '<div class="important-alert">$1</div>')
+    .replace(/::warning\s+([\s\S]*?)::/g, '<div class="important-alert">$1</div>')
+    .replace(/::caution\s+([\s\S]*?)::/g, '<div class="caution-alert">$1</div>')
+    .replace(/::note\s+([\s\S]*?)::/g, '<div class="note-alert">$1</div>')
+    .replace(/::success\s+([\s\S]*?)::/g, '<div class="good-news-alert">$1</div>');
 
   return (
     <motion.div
@@ -52,6 +59,9 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
               }
               if (children.startsWith('<div class="caution-alert">') && children.endsWith('</div>')) {
                 return <ImportantAlert>{children.slice(27, -6)}</ImportantAlert>;
+              }
+              if (children.startsWith('<div class="good-news-alert">') && children.endsWith('</div>')) {
+                return <GoodNewsAlert>{children.slice(30, -6)}</GoodNewsAlert>;
               }
             }
             return <p className="text-white/80 mb-4 leading-relaxed" {...props} />;

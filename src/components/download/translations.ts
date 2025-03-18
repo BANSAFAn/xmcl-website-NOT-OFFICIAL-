@@ -1,4 +1,3 @@
-
 export const downloadTranslations = {
   en: {
     title: "Download X Minecraft Launcher",
@@ -31,10 +30,26 @@ export const downloadTranslations = {
     downloadBtn: "下载",
     allDownloads: "所有下载可在",
     githubReleases: "GitHub Releases 获取"
+  },
+  de: {
+    title: "X Minecraft Launcher herunterladen",
+    subtitle: "Wählen Sie die Version, die am besten für Ihr System geeignet ist.",
+    currentVersion: "Aktuelle Version:",
+    downloadBtn: "Herunterladen",
+    allDownloads: "Alle Downloads sind verfügbar auf",
+    githubReleases: "GitHub Releases"
+  },
+  ja: {
+    title: "X Minecraft Launcherをダウンロード",
+    subtitle: "あなたのシステムに最適なバージョンを選んでください。",
+    currentVersion: "現在のバージョン：",
+    downloadBtn: "ダウンロード",
+    allDownloads: "すべてのダウンロードは",
+    githubReleases: "GitHub Releasesで入手可能です"
   }
 };
 
-export type LanguageKey = 'en' | 'ru' | 'uk' | 'zh';
+export type LanguageKey = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
 
 export const translations = {
   en: {
@@ -78,7 +93,7 @@ export const translations = {
       flatpak: "Установка в песочнице через Flatpak (поддерживается сообществом).",
       deb: "Для Debian, Ubuntu и производных дистрибутивов.",
       rpm: "Для Fedora, RHEL и производных дистрибутивов.",
-      arm64: "Для систем Linux на базе ARM64, таких как Raspberry Pi."
+      arm64: "Для ARM64-based Linux systems like Raspberry Pi."
     }
   },
   uk: {
@@ -92,7 +107,7 @@ export const translations = {
     },
     macos: {
       universal: "Сумісно з комп'ютерами Mac на базі Intel та Apple Silicon.",
-      arm64: "Оптимізовано для Mac з Apple Silicon (M1/M2). Забезпечує нативну продуктивність та кращу енергоефективність на цих системах. Використовуйте це, якщо у вас новий Mac з власними процесорами Apple.",
+      arm64: "Оптимізовано для Mac з Apple Silicon (M1/M2). Забезпечує нативну продуктивність та кращу енергоефективність на цих системах. Використовуйте це, якщо у вас новий Mac с власними процесорами Apple.",
       intel: "Для Mac на базі Intel. Краща сумісність зі старими системами. Якщо у вас старий Mac з процесором Intel, це версія, яку ви повинні завантажити для найкращої сумісності та продуктивності."
     },
     linux: {
@@ -123,6 +138,50 @@ export const translations = {
       deb: "适用于 Debian、Ubuntu 及衍生发行版。",
       rpm: "适用于 Fedora、RHEL 及衍生发行版。",
       arm64: "适用于基于 ARM64 的 Linux 系统，如树莓派。"
+    }
+  },
+  de: {
+    windows: {
+      installer: "Der Standard-Windows-Installer. Empfohlen für die meisten Benutzer.",
+      appx: "Windows Store-Paketformat mit automatischen Updates.",
+      portable: "Keine Installation erforderlich. Direkt von jedem Standort ausführbar.",
+      zip64: "Portables ZIP-Paket für 64-Bit-Windows-Systeme. Empfohlen für die meisten Benutzer, da keine Installation erforderlich ist und es von jedem Ort ausgeführt werden kann. Am besten für Windows 10/11 geeignet.",
+      zip32: "Legacy-ZIP-Paket für 32-Bit-Windows-Systeme. Verwenden Sie dies, wenn Sie einen älteren Computer haben oder speziell 32-Bit-Kompatibilität benötigen. Kompatibel mit Windows 7 und höher.",
+      app: "Traditioneller Windows-Installer. Installiert XMCL wie eine Standard-Windows-Anwendung mit Startmenü-Verknüpfungen und Deinstallationsoptionen. Am besten für Benutzer geeignet, die eine traditionelle Installation bevorzugen."
+    },
+    macos: {
+      universal: "Kompatibel mit Intel- und Apple Silicon-Macs.",
+      arm64: "Optimiert für Apple Silicon (M1/M2) Macs. Bietet native Leistung und bessere Energieeffizienz auf diesen Systemen. Verwenden Sie dies, wenn Sie einen neueren Mac mit Apple-eigenen Prozessoren haben.",
+      intel: "Für Intel-basierte Macs. Bessere Kompatibilität mit älteren Systemen. Wenn Sie einen älteren Mac mit Intel-Prozessor haben, ist dies die Version, die Sie für beste Kompatibilität und Leistung herunterladen sollten."
+    },
+    linux: {
+      appimage: "Läuft auf jeder Linux-Distribution ohne Installation.",
+      flatpak: "Sandboxed Installation über Flatpak (von der Community gepflegt).",
+      deb: "Für Debian, Ubuntu und abgeleitete Distributionen.",
+      rpm: "Für Fedora, RHEL und abgeleitete Distributionen.",
+      arm64: "Für ARM64-basierte Linux-Systeme wie Raspberry Pi."
+    }
+  },
+  ja: {
+    windows: {
+      installer: "標準のWindowsインストーラー。ほとんどのユーザーに推奨。",
+      appx: "自動更新機能付きのWindows Storeパッケージ形式。",
+      portable: "インストール不要。どこからでも直接実行可能。",
+      zip64: "64ビットWindows用のポータブルZIPパッケージ。インストールが不要で任意の場所から実行できるため、ほとんどのユーザーに推奨されます。Windows 10/11に最適です。",
+      zip32: "32ビットWindows用のレガシーZIPパッケージ。古いコンピュータをお持ちの場合や、特に32ビット互換性が必要な場合に使用してください。Windows 7以降と互換性があります。",
+      app: "従来のWindowsインストーラー。スタートメニューのショートカットとアンインストールオプションを備えた標準のWindowsアプリケーションとしてXMCLをインストールします。従来のインストールを好むユ���ザーに最適です。"
+    },
+    macos: {
+      universal: "IntelとApple SiliconのMacの両方と互換性があります。",
+      arm64: "Apple Silicon（M1/M2）Mac向けに最適化。これらのシステムでネイティブなパフォーマンスと優れたエネルギー効率を提供します。Appleの独自プロセッサを搭載した新しいMacをお持ちの場合はこちらを使用してください。",
+      intel: "Intel搭載のMac向け。古いシステムとの互換性が向上しています。Intel搭載の古いMacをお持ちの場合は、互換性とパフォーマンスを最大限に高めるためにこのバージョンをダウンロードする必要があります。"
+    },
+    linux: {
+      appimage: "インストールせずに任意のLinuxディストリビューションで実行できます。",
+      flatpak: "Flatpak経由のサンドボックスインストール（コミュニティメンテナンス）。",
+      deb: "Debian、Ubuntu、および派生ディストリビューション向け。",
+      rpm: "Fedora、RHEL、および派生ディストリビューション向け。",
+      arm64: "Raspberry PiなどのARM64ベースのLinuxシステム向け。"
     }
   }
 };

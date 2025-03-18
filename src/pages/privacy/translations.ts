@@ -1,5 +1,4 @@
-
-export type LanguageKey = 'en' | 'ru' | 'uk' | 'zh';
+export type LanguageKey = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
 
 // Privacy page translations
 export const privacyTranslations = {
@@ -95,7 +94,7 @@ export const privacyTranslations = {
         "С участниками и сопровождающими Лаунчера с целью улучшения программного обеспечения и предоставления поддержки",
         "Когда это требуется применимым законодательством или в ответ на юридический запрос",
         "Для защиты прав, собственности или безопасности Организации, ее пользователей или других лиц",
-        "В составе агрегированного и анонимизированного набора данных, который не идентифицирует отдельных пользователей"
+        "В составе агрегированного и анонимизированного набора данных, который не идентифицирует отдельных пол��зователей"
       ]
     },
     dataSecurity: {
@@ -166,11 +165,11 @@ export const privacyTranslations = {
     },
     children: {
       title: "6. Конфіденційність дітей",
-      content: "Лаунчер не призначений для використання особами молодше 13 років. Організація свідомо не збирає особисту інформацію від дітей молодше 13 років. Якщо ви вважаєте, що ми зібрали особисту інформацію від дитини молодше 13 років, будь ласка, негайно зв'яжіться з нами."
+      content: "Лаунчер не ��ризначений для використання особами молодше 13 років. Організація свідомо не збирає особисту інформацію від дітей молодше 13 років. Якщо ви вважаєте, що ми зібрали особисту інформацію від дитини молодше 13 років, будь ласка, негайно зв'яжіться з нами."
     },
     changes: {
       title: "7. Зміни в цих положеннях про конфіденційність",
-      content: "Організація залишає за собою право оновлювати або змінювати цей документ про положення конфіденційності в будь-який час. Ми повідомимо вас про будь-які суттєві зміни, розмістивши оновлену версію на нашому веб-сайті або через інші канали зв'язку."
+      content: "Організація залишає за собою право оновлювати або змінювати цей документ про положення конфіденційності в будь-який час. Ми повідомимо вас про будь-які суттєві зміни, розмістивши оновлену версію на нашому веб-сайте або через інші канали зв'язку."
     },
     contact: {
       title: "8. Зв'яжіться з нами",
@@ -223,7 +222,7 @@ export const privacyTranslations = {
       content: "启动器可能与第三方服务或网站集成或提供链接。组织不对这些第三方的隐私实践或内容负责。在提供任何个人信息之前，我们鼓励您查看这些第三方的隐私政策。"
     },
     children: {
-      title: "6. 儿童隐私",
+      title: "6. 儿��隐私",
       content: "启动器不适用于13岁以下的个人。组织不会故意收集13岁以下儿童的个人信息。如果您认为我们收集了13岁以下儿童的个人信息，请立即联系我们。"
     },
     changes: {
@@ -233,6 +232,122 @@ export const privacyTranslations = {
     contact: {
       title: "8. 联系我们",
       content: "如果您对本隐私条款文档或我们的隐私实践有任何问题或疑虑，请通过cijhn@hotmail.com联系我们。"
+    }
+  },
+  de: {
+    title: "X Minecraft Launcher Datenschutzbestimmungen",
+    introduction: {
+      title: "1. Einleitung",
+      content: "Vielen Dank für die Nutzung des X Minecraft Launchers (\"der Launcher\"), entwickelt vom XMCL-Entwicklerteam (\"die Organisation\"). Dieses Dokument beschreibt die Datenschutzbestimmungen und Praktiken, die die Erfassung, Verwendung und den Schutz bestimmter Informationen bei der Nutzung des Launchers regeln. Durch die Nutzung des Launchers stimmen Sie den in diesem Dokument dargelegten Bedingungen zu."
+    },
+    informationCollection: {
+      title: "2. Informationssammlung und -nutzung",
+      usageInfo: {
+        title: "2.1. Nutzungsinformationen",
+        content: "Der Launcher sammelt folgende Nutzungsinformationen:",
+        items: ["Minecraft-Spielstart-Ereignis", "Minecraft-Spielbeendigungs-Ereignis", "Benutzeranmeldeereignis"]
+      },
+      additionalInfo: {
+        title: "2.2. Zusätzliche Informationen",
+        content: "Zusätzlich zu den oben genannten Nutzungsinformationen sammelt der Launcher auch die folgenden Daten:",
+        items: ["Minecraft-Startargumente", "Spielbeendigungscode", "Benutzeranmeldedienstname"]
+      },
+      deviceId: {
+        title: "2.3. Geräteidentifikation",
+        content: "Der Launcher generiert eine eindeutige ID für Ihr Gerät. Diese ID wird verwendet, um Ihr Gerät als einzelnen Benutzer zu identifizieren. Es werden keine persönlich identifizierbaren Informationen mit dieser Geräte-ID verknüpft."
+      },
+      errorReporting: {
+        title: "2.4. Fehlerberichte",
+        content: "Der Launcher sammelt unerwartete Fehler und die zugehörigen Fehlerstapel, um Probleme zu identifizieren und zu beheben. Diese Informationen werden verwendet, um die Stabilität und Leistung des Launchers zu verbessern und werden nicht für andere Zwecke verwendet."
+      }
+    },
+    dataSharing: {
+      title: "3. Datenaustausch und Offenlegung",
+      content: "Die Organisation kann die gesammelten Informationen unter folgenden Umständen weitergeben:",
+      items: [
+        "Mit Mitwirkenden und Betreibern des Launchers zum Zweck der Verbesserung der Software und der Bereitstellung von Support",
+        "Wenn dies nach geltendem Recht erforderlich ist oder als Reaktion auf eine rechtliche Anfrage",
+        "Zum Schutz der Rechte, des Eigentums oder der Sicherheit der Organisation, ihrer Benutzer oder anderer",
+        "Als Teil eines aggregierten und anonymisierten Datensatzes, der einzelne Benutzer nicht identifiziert"
+      ]
+    },
+    dataSecurity: {
+      title: "4. Datensicherheit",
+      content: "Die Organisation ergreift angemessene Maßnahmen, um die gesammelten Informationen vor unbefugtem Zugriff, Verwendung oder Offenlegung zu schützen. Bitte beachten Sie jedoch, dass keine Methode der Übertragung über das Internet oder der elektronischen Speicherung zu 100% sicher ist."
+    },
+    thirdParty: {
+      title: "5. Dienste von Drittanbietern",
+      content: "Der Launcher kann in Dienste von Drittanbietern integriert sein oder Links zu diesen enthalten. Die Organisation ist nicht verantwortlich für die Datenschutzpraktiken oder Inhalte dieser Dritten. Wir empfehlen Ihnen, die Datenschutzrichtlinien dieser Dritten zu überprüfen, bevor Sie personenbezogene Daten angeben."
+    },
+    children: {
+      title: "6. Datenschutz für Kinder",
+      content: "Der Launcher ist nicht für die Nutzung durch Personen unter 13 Jahren bestimmt. Die Organisation sammelt wissentlich keine personenbezogenen Daten von Kindern unter 13 Jahren. Wenn Sie glauben, dass wir personenbezogene Daten von einem Kind unter 13 Jahren gesammelt haben, kontaktieren Sie uns bitte sofort."
+    },
+    changes: {
+      title: "7. Änderungen dieser Datenschutzbestimmungen",
+      content: "Die Organisation behält sich das Recht vor, dieses Dokument zu den Datenschutzbestimmungen jederzeit zu aktualisieren oder zu ändern. Wir werden Sie über wesentliche Änderungen informieren, indem wir die aktualisierte Version auf unserer Website oder über andere Kommunikationskanäle veröffentlichen."
+    },
+    contact: {
+      title: "8. Kontaktieren Sie uns",
+      content: "Wenn Sie Fragen oder Bedenken zu diesem Dokument zu den Datenschutzbestimmungen oder unseren Datenschutzpraktiken haben, kontaktieren Sie uns bitte unter cijhn@hotmail.com."
+    }
+  },
+  ja: {
+    title: "X Minecraft Launcher プライバシー規約",
+    introduction: {
+      title: "1. はじめに",
+      content: "XMCLデベロッパーチーム（\"組織\"）が開発したX Minecraft Launcher（\"ランチャー\"）をご利用いただきありがとうございます。このドキュメントでは、ランチャーを使用する際の特定情報の収集、使用、保護に関するプライバシー規約と実践について概説しています。ランチャーを使用することにより、あなたはこのドキュメントに概説されている条件に同意したことになります。"
+    },
+    informationCollection: {
+      title: "2. 情報収集と使用",
+      usageInfo: {
+        title: "2.1. 使用情報",
+        content: "ランチャーは次の使用情報を収集します：",
+        items: ["Minecraftゲーム開始イベント", "Minecraftゲーム終了イベント", "ユーザーログインイベント"]
+      },
+      additionalInfo: {
+        title: "2.2. 追加情報",
+        content: "上記の使用情報に加えて、ランチャーは次のデータも収集します：",
+        items: ["Minecraft起動引数", "ゲーム終了コード", "ユーザーログインサービス名"]
+      },
+      deviceId: {
+        title: "2.3. デバイス識別",
+        content: "ランチャーはあなたのデバイスに一意のIDを生成します。このIDはあなたのデバイスを単一ユーザーとして識別するために使用されます。このデバイスIDに個人を特定できる情報は関連付けられていません。"
+      },
+      errorReporting: {
+        title: "2.4. エラー報告",
+        content: "ランチャーは予期しないエラーとそれに関連するエラースタックを収集し、問題を特定して解決することを目的としています。この情報はランチャーの安定性とパフォーマンスを向上させるために使用され、他の目的には使用されません。"
+      }
+    },
+    dataSharing: {
+      title: "3. データ共有と開示",
+      content: "組織は以下の状況で収集した情報を共有することがあります：",
+      items: [
+        "ソフトウェアの改善とサポート提供を目的としたランチャーの貢献者とメンテナーとの共有",
+        "適用法で要求される場合また��法的要請に応じて",
+        "組織、そのユーザー、または他者の権利、財産、または安全を保護するため",
+        "個別ユーザーを特定しない集計および匿名化されたデータセットの一部として"
+      ]
+    },
+    dataSecurity: {
+      title: "4. データセキュリティ",
+      content: "組織は収集した情報を不正アクセス、使用、または開示から保護するための合理的な措置を講じています。ただし、インターネットを介した転送または電子保存のどの方法も100％安全ではないことにご注意ください。"
+    },
+    thirdParty: {
+      title: "5. サードパーティサービス",
+      content: "ランチャーはサードパーティのサービスやウェブサイトと統合したり、リンクを提供したりする場合があります。組織はこれらのサードパーティのプライバシー慣行やコンテンツについて責任を負いません。個人情報を提供する前に、これらのサードパーティのプライバシーポリシーを確認することをお勧めします。"
+    },
+    children: {
+      title: "6. 子どものプライバシー",
+      content: "ランチャーは13歳未満の個人による使用を意図していません。組織は13歳未満の子どもから意図的に個人情報を収集することはありません。13歳未満の子どもから個人情報を収集したと思われる場合は、すぐにご連絡ください。"
+    },
+    changes: {
+      title: "7. このプライバシー規約の変更",
+      content: "組織はいつでもこのプライバシー規約文書を更新または修正する権利を留保します。重要な変更がある場合は、更新版をウェブサイトに掲載するか、他のコミュニケーションチャネルを通じてお知らせします。"
+    },
+    contact: {
+      title: "8. お問い合わせ",
+      content: "このプライバシー規約文書または私たちのプライバシー慣行について質問や懸念がある場合は、cijhn@hotmail.comまでお問い合わせください。"
     }
   }
 };

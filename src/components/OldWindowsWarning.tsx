@@ -45,6 +45,16 @@ export function OldWindowsWarning() {
       title: "不支持的 Windows 版本",
       message: "您正在使用 Windows XP、Vista、7 或 8。XMCL 不再支持这些 Windows 版本。您可以浏览网站，但启动器下载将无法在您的系统上运行。",
       button: "我明白了"
+    },
+    de: {
+      title: "Nicht unterstützte Windows-Version",
+      message: "Sie verwenden Windows XP, Vista, 7 oder 8. Diese Windows-Versionen werden von XMCL nicht mehr unterstützt. Sie können die Website durchsuchen, aber das Herunterladen des Launchers wird auf Ihrem System nicht funktionieren.",
+      button: "Ich verstehe"
+    },
+    ja: {
+      title: "サポートされていないWindowsバージョン",
+      message: "Windows XP、Vista、7、または8を使用しています。これらのWindowsバージョンはXMCLではもうサポートされていません。ウェブサイトは閲覧できますが、ランチャーのダウンロードはお使いのシステムでは動作しません。",
+      button: "理解しました"
     }
   };
 
