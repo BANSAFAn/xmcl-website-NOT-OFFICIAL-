@@ -57,7 +57,84 @@ export const ReleaseItem = ({ release, formatDate, viewOnGithubText, index }: Re
         </div>
       </motion.div>
       
-      <div className="changelog-content">
+      <div className="changelog-content markdown-content">
+        <style jsx global>{`
+          .markdown-content a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.125rem 0.25rem;
+            margin: -0.125rem -0.25rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+            position: relative;
+            background: rgba(56, 189, 248, 0.1);
+          }
+          
+          .markdown-content a:hover {
+            color: #7dd3fc;
+            background: rgba(56, 189, 248, 0.2);
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+          }
+          
+          .markdown-content a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0.25rem;
+            right: 0.25rem;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.4;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+          }
+          
+          .markdown-content a:hover::after {
+            transform: scaleX(1);
+          }
+          
+          .markdown-content h1, 
+          .markdown-content h2, 
+          .markdown-content h3, 
+          .markdown-content h4 {
+            color: #38bdf8;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+          }
+          
+          .markdown-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+          }
+          
+          .markdown-content li {
+            margin-bottom: 0.5rem;
+          }
+          
+          .markdown-content code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+          }
+          
+          .markdown-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+          }
+          
+          .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+          }
+        `}</style>
         <MarkdownRender 
           content={release.body} 
           className="prose-a:text-accent prose-a:font-medium hover:prose-a:text-accent/80 prose-a:transition-colors prose-headings:text-accent prose-headings:transition-colors hover:prose-headings:text-accent/90"
@@ -65,4 +142,4 @@ export const ReleaseItem = ({ release, formatDate, viewOnGithubText, index }: Re
       </div>
     </motion.div>
   );
-};
+}

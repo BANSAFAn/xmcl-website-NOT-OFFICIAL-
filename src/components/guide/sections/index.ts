@@ -6,3 +6,4 @@ export * from "./InstallationGuide";
 export * from "./DataStorageGuide";
 export * from "./MultiplayerGuide";
 export * from "./UpdateGuide";
+export * from "./ProtocolGuide";
