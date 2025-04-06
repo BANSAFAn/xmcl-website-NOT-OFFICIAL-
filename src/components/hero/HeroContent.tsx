@@ -30,7 +30,7 @@ export function HeroContent({
           className="max-w-3xl space-y-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5, type: "tween" }}
         >
           <AnimatedTitle title={title} />
           <AnimatedSubtitle subtitle={subtitle} />

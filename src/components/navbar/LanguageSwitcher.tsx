@@ -43,6 +43,7 @@ export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
             onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.15, type: "tween" }}
           >
             <span className="text-lg">{languageFlags[currentLanguage as keyof typeof languageFlags]}</span>
             <span className="text-sm font-medium hidden md:block">
@@ -62,7 +63,7 @@ export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15, type: "tween" }}
           >
             {languages.map((lang, index) => (
               <motion.button

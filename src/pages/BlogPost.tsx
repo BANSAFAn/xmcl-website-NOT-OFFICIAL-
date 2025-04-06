@@ -68,7 +68,8 @@ const BlogPost = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.4, type: "tween" }} // Оптимизировано для Firefox
+                  style={{ willChange: "transform, opacity" }} // Подсказка браузеру для оптимизации
                 >
                   {/* Featured image */}
                   <div className="rounded-xl overflow-hidden mb-8 max-h-[400px] relative group">

@@ -106,16 +106,16 @@ const NavbarContent = ({
         }`}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: "easeOut", type: "tween" }}
       >
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 transition-all duration-300 hover:opacity-90">
             <motion.div 
               whileHover={{ rotate: 5, scale: 1.05 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.2, type: "tween" }}
             >
-              <img src="/lovable-uploads/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-7 w-7" />
+              <img src="/XMCL/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-7 w-7" />
             </motion.div>
             <span className="font-bold text-base tracking-tight">XMCL</span>
           </Link>
@@ -171,6 +171,7 @@ const NavbarContent = ({
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
               whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.15, type: "tween" }}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </motion.button>
