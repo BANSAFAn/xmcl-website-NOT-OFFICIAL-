@@ -6,7 +6,9 @@ import { useKeyboardEasterEggs } from "./hero/useKeyboardEasterEggs";
 import { SecretMessage } from "./hero/SecretMessage";
 import { LinuxTerminal } from "./hero/LinuxTerminal";
 import { HeroContent } from "./hero/HeroContent";
+import { BlueScreenOfDeath } from "./hero/BlueScreenOfDeath";
 import { Apple } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 
 export function Hero() {
   const { text } = useLanguage();
@@ -16,7 +18,9 @@ export function Hero() {
     setShowSecretMessage, 
     showLinuxTerminal, 
     setShowLinuxTerminal,
-    showAppleMode 
+    showAppleMode,
+    showBlueScreen,
+    setShowBlueScreen
   } = useKeyboardEasterEggs();
 
   if (showSecretMessage) {
@@ -33,6 +37,13 @@ export function Hero() {
         showLinuxTerminal={showLinuxTerminal} 
         setShowLinuxTerminal={setShowLinuxTerminal} 
       />
+      
+      {/* Windows Blue Screen Easter Egg */}
+      <AnimatePresence>
+        {showBlueScreen && (
+          <BlueScreenOfDeath onClose={() => setShowBlueScreen(false)} />
+        )}
+      </AnimatePresence>
       
       {/* Content container */}
       <HeroContent 
