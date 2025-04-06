@@ -38,6 +38,9 @@ const Index = () => {
       window.dispatchEvent(new Event('languageUpdated'));
     };
     
+    // Apply smooth scrolling to the entire document
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
     // Listen for custom language change events
     window.addEventListener('languageChange', handleLanguageChange);
     

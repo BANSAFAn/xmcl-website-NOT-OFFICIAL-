@@ -58,7 +58,7 @@ export const ReleaseItem = ({ release, formatDate, viewOnGithubText, index }: Re
       </motion.div>
       
       <div className="changelog-content markdown-content">
-        <style jsx global>{`
+        <style dangerouslySetInnerHTML={{ __html: `
           .markdown-content a {
             color: #38bdf8;
             text-decoration: none;
@@ -134,7 +134,7 @@ export const ReleaseItem = ({ release, formatDate, viewOnGithubText, index }: Re
             background: transparent;
             padding: 0;
           }
-        `}</style>
+        `}} />
         <MarkdownRender 
           content={release.body} 
           className="prose-a:text-accent prose-a:font-medium hover:prose-a:text-accent/80 prose-a:transition-colors prose-headings:text-accent prose-headings:transition-colors hover:prose-headings:text-accent/90"

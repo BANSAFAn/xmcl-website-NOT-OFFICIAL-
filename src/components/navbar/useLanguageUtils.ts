@@ -18,9 +18,19 @@ export function useLanguageStorage() {
     setCurrentLanguage(lang);
     localStorage.setItem('language', lang);
     
-    // Dispatch events to notify other components
-    window.dispatchEvent(new Event('languageChange'));
+    // Ensure all components get notified of language change
+    // Use a CustomEvent to allow passing data with the event
+    const event = new CustomEvent('languageChange', { detail: { language: lang } });
+    window.dispatchEvent(event);
+    
+    // Dispatch storage event for other tabs/windows
     window.dispatchEvent(new StorageEvent('storage', { key: 'language', newValue: lang }));
+    
+    // Force a re-render of the entire application
+    document.documentElement.setAttribute('lang', lang);
+    
+    // Update any components that might be using redux or other state management
+    window.dispatchEvent(new Event('languageUpdated'));
   };
   
   return { currentLanguage, setCurrentLanguage: handleLanguageChange };

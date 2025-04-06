@@ -5,14 +5,15 @@ export function useKeyboardEasterEggs() {
   const [showSecretMessage, setShowSecretMessage] = useState(false);
   const [showLinuxTerminal, setShowLinuxTerminal] = useState(false);
   const [showAppleMode, setShowAppleMode] = useState(false);
+  const [showBlueScreen, setShowBlueScreen] = useState(false);
 
   // Listen for keyboard input for easter eggs
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       setSecretCommand(prev => {
         const newCommand = prev + e.key;
-        // Keep only the last 5 characters
-        const trimmedCommand = newCommand.slice(-5);
+        // Keep only the last 10 characters
+        const trimmedCommand = newCommand.slice(-10);
         
         // Check if the command is 'CIO10'
         if (trimmedCommand === 'CIO10') {
@@ -39,6 +40,12 @@ export function useKeyboardEasterEggs() {
           document.body.classList.remove('apple-mode');
         }, 10000);
       }
+      
+      // Check for the windows easter egg
+      if (secretCommand.endsWith('window') && e.key === 's') {
+        setShowBlueScreen(true);
+        // No need to reset, the component will handle it
+      }
     };
     
     window.addEventListener('keydown', handleKeyDown);
@@ -51,6 +58,8 @@ export function useKeyboardEasterEggs() {
     setShowSecretMessage,
     showLinuxTerminal,
     setShowLinuxTerminal,
-    showAppleMode
+    showAppleMode,
+    showBlueScreen,
+    setShowBlueScreen
   };
 }

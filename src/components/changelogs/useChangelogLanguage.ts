@@ -11,14 +11,20 @@ export function useChangelogLanguage() {
       setCurrentLanguage(savedLang as TranslationKey);
     };
     
+    // Initial language setup
     updateLanguage();
     
+    // Listen for custom language change events
+    const handleLanguageChange = (e: Event) => {
+      updateLanguage();
+    };
+    
     window.addEventListener('storage', updateLanguage);
-    window.addEventListener('languageChange', updateLanguage);
+    window.addEventListener('languageChange', handleLanguageChange);
     
     return () => {
       window.removeEventListener('storage', updateLanguage);
-      window.removeEventListener('languageChange', updateLanguage);
+      window.removeEventListener('languageChange', handleLanguageChange);
     };
   }, []);
 
