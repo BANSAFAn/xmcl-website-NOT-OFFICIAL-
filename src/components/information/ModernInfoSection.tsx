@@ -207,7 +207,7 @@ export function ModernInfoSection() {
                         whileTap={{ scale: 0.95 }}
                       >
                         <span className="text-sm md:font-semibold">{link.name}</span>
-                        <ExternalLink size={14} md:size={16} />
+                        <ExternalLink size={14} className="md:w-4 md:h-4 w-3.5 h-3.5" />
                       </motion.a>
                     ))}
                   </div>
@@ -224,7 +224,7 @@ export function ModernInfoSection() {
                     whileTap={{ scale: 0.95 }}
                   >
                     <span className="text-sm md:text-base">View on GitHub</span>
-                    <ExternalLink size={16} md:size={18} />
+                    <ExternalLink size={16} className="md:w-4.5 md:h-4.5 w-4 h-4" />
                   </motion.a>
                 )}
 
