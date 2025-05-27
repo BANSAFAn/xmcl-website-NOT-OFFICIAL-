@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
       input: {
         main: path.resolve(__dirname, 'index.html'),
       },
-      treeshake: false,
+      treeshake: true, // Enable tree-shaking
     },
   },
   plugins: [react()].filter(Boolean),
