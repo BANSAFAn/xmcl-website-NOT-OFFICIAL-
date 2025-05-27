@@ -13,6 +13,7 @@ import Testing from '@/pages/Testing';
 import Issues from '@/pages/Issues';
 import NotFound from '@/pages/NotFound';
 import Changelogs from '@/pages/Changelogs';
+import RSSFeed from '@/pages/RSSFeed';
 import { OSProvider } from '@/context/OSContext';
 import { LanguageProvider } from '@/components/navbar/LanguageContext';
 import './App.css';
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/testing" element={<Testing />} />
                 <Route path="/issues" element={<Issues />} />
+                <Route path="/api/rss" element={<RSSFeed />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Toaster />

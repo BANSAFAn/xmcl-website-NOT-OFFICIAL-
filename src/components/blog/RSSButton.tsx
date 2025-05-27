@@ -33,31 +33,9 @@ export function RSSButton() {
 
   const text = rssTexts[currentLanguage as keyof typeof rssTexts] || rssTexts.en;
 
-  const handleRSSClick = async () => {
-    const rssUrl = `${window.location.origin}/api/rss`;
-    
-    try {
-      await navigator.clipboard.writeText(rssUrl);
-      toast({
-        title: text.copied,
-        description: rssUrl,
-        variant: "default",
-      });
-    } catch (error) {
-      // Fallback for browsers that don't support clipboard API
-      const textArea = document.createElement('textarea');
-      textArea.value = rssUrl;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      
-      toast({
-        title: text.copied,
-        description: rssUrl,
-        variant: "default",
-      });
-    }
+  const handleRSSClick = () => {
+    // Redirect to the RSS feed URL
+    window.location.href = `${window.location.origin}/api/rss`;
   };
 
   return (

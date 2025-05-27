@@ -1,7 +1,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Github, FileText, Home, Download, Info, BookOpen, Clock, Mail, Globe, MessageSquare } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Github, FileText, Home, Download, Info, BookOpen, Clock, Mail, Globe, MessageSquare, TestTube, Newspaper, Users } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useLanguage } from './LanguageContext';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ interface MobileMenuProps {
 export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProps) {
   const { translations } = useLanguage();
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  const location = useLocation();
 
   // Animation variants
   const menuVariants = {
@@ -50,19 +51,20 @@ export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProp
   };
 
   const menuItems = [
-    { name: translations.guideLocal || 'Home', icon: <Home size={18} />, path: '/' },
-    { name: translations.guide || 'Guide', icon: <BookOpen size={18} />, path: '/guide' },
-    { name: translations.download || 'Download', icon: <Download size={18} />, path: '/#download' },
-    { name: translations.about || 'About', icon: <Info size={18} />, path: '/about' },
-    { name: translations.contact || 'Contact', icon: <Mail size={18} />, path: '/contact' },
+    { name: 'Home', icon: <Home size={18} />, path: '/' },
+    { name: translations.guideLocal || 'Guide', icon: <BookOpen size={18} />, path: '/guide' },
+    { name: 'Testing', icon: <TestTube size={18} />, path: '/testing' },
     { name: translations.changelogs || 'Changelogs', icon: <Clock size={18} />, path: '/changelogs' },
-    { name: translations.blogs || 'Blog', icon: <MessageSquare size={18} />, path: '/blogs' },
-    { name: 'GitHub', icon: <Github size={18} />, path: 'https://github.com/Voxelum/x-minecraft-launcher', external: true },
+    { name: translations.blogs || 'Blogs', icon: <Newspaper size={18} />, path: '/blogs' },
+    { name: translations.about || 'About', icon: <Users size={18} />, path: '/about' },
+    { name: 'Issues', icon: <Github size={18} />, path: '/issues' },
+    { name: translations.contactUs || 'Contact', icon: <Mail size={18} />, path: '/contact' },
+    { name: translations.privacy || 'Privacy', icon: <FileText size={18} />, path: '/privacy' },
   ];
 
   return (
     <motion.div 
-      className="fixed inset-x-0 top-[56px] bg-black/80 backdrop-blur-md border-b border-white/10 p-4 shadow-lg"
+      className="fixed inset-x-0 top-[56px] bg-black/80 backdrop-blur-md border-b border-white/10 p-4 shadow-lg mobile-nav-fix"
       initial="closed"
       animate="open"
       exit="closed"
@@ -105,31 +107,38 @@ export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProp
 
       <div className="container mx-auto px-2 pb-14">
         <motion.div className="grid grid-cols-2 gap-3 mb-4" variants={itemVariants}>
-          {menuItems.map((item) => (
-            <motion.div key={item.name} variants={itemVariants}>
-              {item.external ? (
-                <a 
-                  href={item.path} 
-                  className="flex items-center space-x-2 py-2 px-3 rounded-md bg-white/5 hover:bg-white/10 transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={onClose}
-                >
-                  {item.icon}
-                  <span>{item.name}</span>
-                </a>
-              ) : (
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <motion.div key={item.name} variants={itemVariants}>
                 <Link 
                   to={item.path} 
-                  className="flex items-center space-x-2 py-2 px-3 rounded-md bg-white/5 hover:bg-white/10 transition-colors"
+                  className={`flex items-center space-x-2 py-2 px-3 rounded-md transition-all duration-300 ${isActive 
+                    ? 'bg-gradient-to-r from-blue-600/60 via-purple-600/60 to-cyan-600/60 text-white shadow-xl border border-blue-500/50 backdrop-blur-sm'
+                    : 'bg-white/5 hover:bg-white/10 border border-transparent hover:border-white/30'}`}
                   onClick={onClose}
                 >
-                  {item.icon}
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {item.icon}
+                  </motion.div>
                   <span>{item.name}</span>
+                  
+                  {/* Active indicator */}
+                  {isActive && (
+                    <motion.div
+                      className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full"
+                      layoutId="navbar-indicator-mobile"
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
                 </Link>
-              )}
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </motion.div>
         
         <motion.div 
