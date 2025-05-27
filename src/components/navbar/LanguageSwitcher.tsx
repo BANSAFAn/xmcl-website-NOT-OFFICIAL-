@@ -8,19 +8,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { languages, useLanguage } from './LanguageContext';
+import { flagComponents } from './FlagSVGs';
 
 interface LanguageSwitcherProps {
   onChange?: (code: string) => void;
 }
-
-const languageFlags = {
-  en: "🇬🇧",
-  ru: "🇷🇺",
-  uk: "🇺🇦",
-  zh: "🇨🇳",
-  de: "🇩🇪",
-  ja: "🇯🇵"
-};
 
 export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
@@ -34,6 +26,8 @@ export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
     }
   };
 
+  const CurrentFlag = flagComponents[currentLanguage as keyof typeof flagComponents];
+
   return (
     <div className="relative">
       <Tooltip>
@@ -43,9 +37,8 @@ export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
             onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.15, type: "tween" }}
           >
-            <span className="text-lg">{languageFlags[currentLanguage as keyof typeof languageFlags]}</span>
+            <CurrentFlag className="w-6 h-4" />
             <span className="text-sm font-medium hidden md:block">
               {languages.find(l => l.code === currentLanguage)?.name}
             </span>
@@ -63,24 +56,27 @@ export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.15, type: "tween" }}
+            transition={{ duration: 0.2 }}
           >
-            {languages.map((lang, index) => (
-              <motion.button
-                key={lang.code}
-                onClick={() => handleLanguageChange(lang.code)}
-                className={`w-full text-left p-2 rounded-md flex items-center gap-2 ${
-                  currentLanguage === lang.code ? 'bg-white/10' : 'hover:bg-white/5'
-                }`}
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.2 }}
-                whileHover={{ x: 3 }}
-              >
-                <span className="text-lg">{languageFlags[lang.code as keyof typeof languageFlags]}</span>
-                <span className="text-sm">{lang.name}</span>
-              </motion.button>
-            ))}
+            {languages.map((lang, index) => {
+              const FlagComponent = flagComponents[lang.code as keyof typeof flagComponents];
+              return (
+                <motion.button
+                  key={lang.code}
+                  onClick={() => handleLanguageChange(lang.code)}
+                  className={`w-full text-left p-2 rounded-md flex items-center gap-2 ${
+                    currentLanguage === lang.code ? 'bg-white/10' : 'hover:bg-white/5'
+                  }`}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.2 }}
+                  whileHover={{ x: 3 }}
+                >
+                  <FlagComponent className="w-6 h-4" />
+                  <span className="text-sm">{lang.name}</span>
+                </motion.button>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>

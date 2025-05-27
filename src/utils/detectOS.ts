@@ -28,31 +28,64 @@ const LINUX_DISTRIBUTIONS: LinuxDistribution[] = [
 export interface OSInfo {
   name: string;
   displayName: string;
-  category: "windows" | "macos" | "linux" | "unknown";
+  category: "windows" | "macos" | "linux" | "android" | "ios" | "unknown";
   distribution?: string;
+  version?: string;
 }
 
 /**
- * Detects user's operating system and Linux distribution if applicable
+ * Detects user's operating system including mobile platforms
  */
 export function detectOS(): OSInfo {
   const userAgent = navigator.userAgent.toLowerCase();
+  const platform = navigator.platform?.toLowerCase() || '';
   
-  // Windows detection
-  if (userAgent.indexOf("win") !== -1) {
+  // iOS detection (iPhone, iPad, iPod)
+  if (/iphone|ipad|ipod/.test(userAgent) || (platform === 'macintel' && navigator.maxTouchPoints > 1)) {
+    const version = userAgent.match(/os (\d+)_(\d+)/);
     return {
-      name: "windows",
-      displayName: "Windows",
-      category: "windows"
+      name: "ios",
+      displayName: "iOS",
+      category: "ios",
+      version: version ? `${version[1]}.${version[2]}` : undefined
     };
   }
   
-  // macOS detection
-  if (userAgent.indexOf("mac") !== -1) {
+  // Android detection
+  if (userAgent.indexOf("android") !== -1) {
+    const version = userAgent.match(/android (\d+\.?\d*)/);
+    return {
+      name: "android",
+      displayName: "Android",
+      category: "android",
+      version: version ? version[1] : undefined
+    };
+  }
+  
+  // Windows detection
+  if (userAgent.indexOf("win") !== -1) {
+    let version = "Unknown";
+    if (userAgent.indexOf("windows nt 10.0") !== -1) version = "10/11";
+    else if (userAgent.indexOf("windows nt 6.3") !== -1) version = "8.1";
+    else if (userAgent.indexOf("windows nt 6.2") !== -1) version = "8";
+    else if (userAgent.indexOf("windows nt 6.1") !== -1) version = "7";
+    
+    return {
+      name: "windows",
+      displayName: "Windows",
+      category: "windows",
+      version
+    };
+  }
+  
+  // macOS detection (desktop only, not iOS)
+  if (userAgent.indexOf("mac") !== -1 && navigator.maxTouchPoints === 0) {
+    const version = userAgent.match(/mac os x (\d+[._]\d+)/);
     return {
       name: "macos",
       displayName: "macOS",
-      category: "macos"
+      category: "macos",
+      version: version ? version[1].replace('_', '.') : undefined
     };
   }
   

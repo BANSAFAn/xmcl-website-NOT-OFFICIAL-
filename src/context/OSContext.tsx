@@ -29,7 +29,13 @@ export function OSProvider({ children }: { children: ReactNode }) {
     // Detect OS on client-side only
     const detected = detectOS();
     setOSInfo(detected);
-    setSelectedOS(detected.category);
+    
+    // Set appropriate default OS for desktop platforms
+    if (detected.category === "android" || detected.category === "ios") {
+      setSelectedOS("windows"); // Default to Windows for mobile users
+    } else {
+      setSelectedOS(detected.category);
+    }
   }, []);
   
   const acknowledgeWarning = () => {
@@ -42,8 +48,11 @@ export function OSProvider({ children }: { children: ReactNode }) {
       osInfo,
       selectedOS,
       setSelectedOS: (os: string) => {
-        // If trying to select a different OS than detected and not acknowledged
-        if (os !== osInfo.category && !warningAcknowledged) {
+        // Show warning for mobile users trying to download desktop apps
+        if ((osInfo.category === "android" || osInfo.category === "ios") && !warningAcknowledged) {
+          setShowOSWarning(true);
+        } else if (os !== osInfo.category && !warningAcknowledged && 
+                  !(osInfo.category === "android" || osInfo.category === "ios")) {
           setShowOSWarning(true);
         } else {
           setSelectedOS(os);

@@ -12,8 +12,8 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   const [cubes, setCubes] = useState<{ x: number; y: number; size: number; delay: number; color: string }[]>([]);
   
   useEffect(() => {
-    // Generate random cubes for the background - оптимизировано для Firefox (меньше кубов)
-    const newCubes = Array.from({ length: 20 }).map(() => ({
+    // Generate random cubes for the background
+    const newCubes = Array.from({ length: 30 }).map(() => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 30 + 10,
@@ -74,15 +74,10 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
                   rotateZ: [0, 180, 360],
                 }}
                 transition={{
-                  duration: 10 + cube.delay * 3, // Уменьшено время для Firefox
+                  duration: 10 + cube.delay * 5,
                   ease: "linear",
                   repeat: Infinity,
-                  delay: cube.delay,
-                  type: "tween" // Явно указываем тип анимации для Firefox
-                }}
-                style={{
-                  willChange: "transform", // Подсказка браузеру для оптимизации
-                  transform: "translateZ(0)" // Включаем аппаратное ускорение
+                  delay: cube.delay
                 }}
               />
             ))}

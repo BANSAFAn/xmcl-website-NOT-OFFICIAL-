@@ -16,7 +16,7 @@ export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProp
   const { translations } = useLanguage();
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
 
-  // Animation variants - оптимизировано для Firefox
+  // Animation variants
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -24,19 +24,17 @@ export function MobileMenu({ isOpen, onClose, onLanguageChange }: MobileMenuProp
       transition: {
         duration: 0.2,
         staggerDirection: -1,
-        staggerChildren: 0.03,
-        when: "afterChildren",
-        type: "tween"
+        staggerChildren: 0.05,
+        when: "afterChildren"
       }
     },
     open: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.25,
-        staggerChildren: 0.05,
-        delayChildren: 0.05,
-        type: "tween"
+        duration: 0.3,
+        staggerChildren: 0.07,
+        delayChildren: 0.1
       }
     }
   };

@@ -55,9 +55,8 @@ export const SupportDropdown = () => {
                 )}
               >
                 <motion.div
-                  whileHover={{ rotate: [0, -5, 5, 0] }} // Упрощенная анимация для Firefox
-                  transition={{ duration: 0.3, type: "tween" }} // Оптимизированные параметры
-                  style={{ willChange: "transform" }} // Подсказка браузеру для оптимизации
+                  whileHover={{ rotate: [0, -10, 10, -5, 5, 0] }}
+                  transition={{ duration: 0.5 }}
                 >
                   <Mail size={18} />
                 </motion.div>

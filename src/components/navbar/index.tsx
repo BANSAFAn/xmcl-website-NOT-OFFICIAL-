@@ -1,13 +1,11 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Download, Home, MessageSquare, Info } from 'lucide-react';
+import { Menu, X, Home, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NavItems } from './NavItems';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { SocialLinks } from './SocialLinks';
-import { DownloadButton } from './DownloadButton';
 import { MobileMenu } from './MobileMenu';
 import { LanguageProvider, useLanguage } from './LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -101,51 +99,83 @@ const NavbarContent = ({
   return (
     <TooltipProvider>
       <motion.header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-black/30 backdrop-blur-md py-2 shadow-md border-b border-white/5' : 'bg-transparent py-3'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled 
+            ? 'bg-black/40 backdrop-blur-xl py-2 shadow-2xl border-b border-white/10' 
+            : 'bg-transparent py-4'
         }`}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut", type: "tween" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 transition-all duration-300 hover:opacity-90">
+        {/* Glowing top border */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+        
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          {/* Enhanced Logo */}
+          <Link to="/" className="flex items-center gap-3 group transition-all duration-300 hover:opacity-90">
             <motion.div 
+              className="relative"
               whileHover={{ rotate: 5, scale: 1.05 }}
-              transition={{ duration: 0.2, type: "tween" }}
+              transition={{ duration: 0.3, type: "spring" }}
             >
-              <img src="/XMCL/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-7 w-7" />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <img src="/public/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-8 w-8 relative z-10" />
             </motion.div>
-            <span className="font-bold text-base tracking-tight">XMCL</span>
+            <motion.div
+              className="flex items-center gap-2"
+              whileHover={{ x: 2 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">XMCL</span>
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+              >
+                <Sparkles className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </motion.div>
+            </motion.div>
           </Link>
           
-          {/* Desktop Navigation - Centered */}
-          <div className="hidden lg:flex items-center justify-center flex-1">
+          {/* Enhanced Desktop Navigation - Увеличенная ширина */}
+          <div className="hidden lg:flex items-center justify-center flex-1 max-w-4xl mx-8">
             <motion.nav 
-              className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden flex items-center shadow-sm"
+              className="relative bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden flex items-center shadow-2xl border border-white/10 w-full"
               whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.08)" }}
               transition={{ duration: 0.3 }}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
             >
+              {/* Glowing border effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-2xl blur-lg opacity-60"></div>
+              
               <motion.div 
-                className="flex items-center mx-1 my-1 gap-1"
+                className="relative flex items-center justify-center mx-2 my-2 gap-2 w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.2 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
               >
-                <Link to="/" className={`relative px-4 py-1.5 rounded-md transition-all ${
+                <Link to="/" className={`relative px-4 py-2.5 rounded-xl transition-all duration-300 ${
                   location.pathname === '/' 
-                    ? 'bg-accent/90 text-white' 
+                    ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-white shadow-lg' 
                     : 'text-white/80 hover:text-white hover:bg-white/10'
                 }`}>
                   <motion.div 
-                    className="flex items-center gap-1.5"
+                    className="flex items-center gap-2"
                     whileHover={{ x: 2 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    <Home size={16} />
-                    <span className="text-sm">Home</span>
+                    <Home size={18} />
+                    <span className="font-medium">Home</span>
                   </motion.div>
+                  {location.pathname === '/' && (
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl"
+                      layoutId="navbar-indicator"
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
                 </Link>
                 
                 <NavItems />
@@ -153,27 +183,41 @@ const NavbarContent = ({
             </motion.nav>
           </div>
           
-          <div className="hidden lg:flex items-center gap-2">
-            <LanguageSwitcher />
-            <SocialLinks />
-            <DownloadButton />
+          {/* Enhanced Right Side Controls */}
+          <div className="hidden lg:flex items-center gap-3">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <LanguageSwitcher />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <SocialLinks />
+            </motion.div>
           </div>
           
-          {/* Mobile Navigation */}
-          <div className="lg:hidden flex items-center gap-2 mt-2 md:mt-0">
-            <Link to="/#download" className="flex items-center gap-1 px-2 py-1.5 bg-accent/80 backdrop-blur-sm text-white rounded-md text-sm">
-              <Download size={15} />
-              <span className="text-xs font-medium">{translations.downloadNow}</span>
-            </Link>
-            
+          {/* Enhanced Mobile Controls */}
+          <div className="lg:hidden flex items-center gap-3">
             <motion.button 
-              className="text-white p-1.5 bg-white/5 rounded-full backdrop-blur-sm" 
+              className="text-white p-2.5 bg-white/5 rounded-xl backdrop-blur-sm border border-white/10 shadow-lg" 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
               whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.15, type: "tween" }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.5 }}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <motion.div
+                animate={{ rotate: mobileMenuOpen ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </motion.div>
             </motion.button>
           </div>
         </div>

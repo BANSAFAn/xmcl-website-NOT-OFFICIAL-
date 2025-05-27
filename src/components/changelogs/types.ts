@@ -13,4 +13,5 @@ export type Release = {
   body: string;
   html_url: string;
   assets: ReleaseAsset[];
+  prerelease: boolean;
 };

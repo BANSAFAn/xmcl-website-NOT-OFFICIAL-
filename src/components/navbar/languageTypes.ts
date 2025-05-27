@@ -38,6 +38,27 @@ export interface Translations {
   homeMessage: string;
   search: string;
   submit: string;
+  reportBug: string;
+  testing: string;
+  issues: string;
+  latestBuilds: string;
+  deployRelease: string;
+  validate: string;
+  build: string;
+  branch: string;
+  updated: string;
+  news: string;
+  readMore: string;
+  appearanceGuide: string;
+  underConstruction: string;
+  colorPaletteThemes: string;
+  tip: string;
+  cardColor: string;
+  topBarColor: string;
+  sidebarColor: string;
+  backgroundColor: string;
+  basicComponentHighlight: string;
+  errorColor: string;
 }
 
 export interface LanguageContextProps {
