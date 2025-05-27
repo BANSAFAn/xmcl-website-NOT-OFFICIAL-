@@ -8,6 +8,14 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
+      treeshake: false,
+    },
+  },
   plugins: [react()].filter(Boolean),
   resolve: {
     alias: {
