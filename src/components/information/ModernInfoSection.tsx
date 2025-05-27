@@ -61,11 +61,11 @@ export function ModernInfoSection() {
   const features: Feature[] = [
     {
       ...text.features[0], // Modern Interface
-      image: "public/2.gif"
+      image: "/public/XMCL/2.gif"
     },
     {
       ...text.features[1], // Mod Management with links
-      image: "public/3.gif",
+      image: "/public/XMCL/3.gif",
       links: [
         { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
         { name: "Fabric", url: "https://fabricmc.net/" },
@@ -75,15 +75,15 @@ export function ModernInfoSection() {
     },
     {
       ...text.features[2], // Cross Platform
-      image: "public/2.gif"
+      image: "/public/XMCL/2.gif"
     },
     {
       ...text.features[3], // Easy Installation
-      image: "public/4.gif"
+      image: "/public/XMCL/4.gif"
     },
     {
       ...text.features[4], // Open Source with GitHub link
-      image: "public/5.gif",
+      image: "/public/XMCL/5.gif",
       link: "https://github.com/Voxelum"
     }
   ];
