@@ -120,7 +120,7 @@ const NavbarContent = ({
               transition={{ duration: 0.3, type: "spring" }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <img src="/public/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-8 w-8 relative z-10" />
+              <img src="/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-8 w-8 relative z-10" />
             </motion.div>
             <motion.div
               className="flex items-center gap-2"
