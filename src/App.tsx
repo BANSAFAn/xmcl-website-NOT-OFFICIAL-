@@ -12,6 +12,7 @@ import Contact from '@/pages/Contact';
 import Testing from '@/pages/Testing';
 import Issues from '@/pages/Issues';
 import NotFound from '@/pages/NotFound';
+import Changelogs from '@/pages/Changelogs';
 import { OSProvider } from '@/context/OSContext';
 import { LanguageProvider } from '@/components/navbar/LanguageContext';
 import './App.css';
@@ -35,8 +36,10 @@ function App() {
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/guide" element={<Guide />} />
+                <Route path="/blogs/:year/:month/:slug" element={<BlogPost />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/blogs" element={<Blogs />} />
+                <Route path="/changelogs" element={<Changelogs />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/contact" element={<Contact />} />
