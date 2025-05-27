@@ -98,9 +98,9 @@ export function ModernInfoSection() {
     >
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 rounded-full filter blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full filter blur-[150px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/4 w-80 h-80 bg-gradient-to-r from-green-500/10 to-cyan-500/10 rounded-full filter blur-[100px]"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 rounded-full filter blur-[120px] animate-pulse md:w-[500px] md:h-[500px]"></div>
+        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full filter blur-[150px] animate-pulse md:w-[700px] md:h-[700px]" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/4 w-80 h-80 bg-gradient-to-r from-green-500/10 to-cyan-500/10 rounded-full filter blur-[100px] md:w-[400px] md:h-[400px]"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -135,7 +135,7 @@ export function ModernInfoSection() {
           />
           
           <motion.p 
-            className="text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed"
             variants={itemVariants}
           >
             {text.subtitle}
@@ -150,7 +150,7 @@ export function ModernInfoSection() {
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center group`}
+              className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 md:gap-12 items-center group`}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -171,43 +171,43 @@ export function ModernInfoSection() {
                   
                   {/* Icon overlay */}
                   <motion.div 
-                    className="absolute top-6 right-6 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
+                    className="absolute top-4 right-4 md:top-6 md:right-6 p-3 md:p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <span className="text-4xl">{feature.icon}</span>
+                    <span className="text-3xl md:text-4xl">{feature.icon}</span>
                   </motion.div>
                 </div>
               </div>
               
               {/* Content Container */}
-              <div className="flex-1 space-y-6">
+              <div className="flex-1 space-y-4 md:space-y-6">
                 <motion.h3 
-                  className="text-4xl md:text-5xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-500"
+                  className="text-3xl md:text-4xl lg:text-5xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-500"
                   whileHover={{ scale: 1.05 }}
                 >
                   {feature.title}
                 </motion.h3>
                 
-                <p className="text-xl text-white/80 leading-relaxed group-hover:text-white/95 transition-colors duration-500">
+                <p className="text-base md:text-xl text-white/80 leading-relaxed group-hover:text-white/95 transition-colors duration-500">
                   {feature.description}
                 </p>
 
                 {/* Links for features */}
                 {feature.links && (
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 md:gap-3">
                     {feature.links.map((link, linkIndex) => (
                       <motion.a
                         key={linkIndex}
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-lg border border-blue-500/30 text-blue-400 hover:text-white hover:bg-blue-500/30 transition-all duration-300"
+                        className="inline-flex items-center gap-1 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-lg border border-blue-500/30 text-blue-400 hover:text-white hover:bg-blue-500/30 transition-all duration-300"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <span className="font-semibold">{link.name}</span>
-                        <ExternalLink size={16} />
+                        <span className="text-sm md:font-semibold">{link.name}</span>
+                        <ExternalLink size={14} md:size={16} />
                       </motion.a>
                     ))}
                   </div>
@@ -219,12 +219,12 @@ export function ModernInfoSection() {
                     href={feature.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-xl border border-green-500/30 text-green-400 hover:text-white hover:bg-green-500/30 transition-all duration-300 font-semibold"
+                    className="inline-flex items-center gap-1 md:gap-2 px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-xl border border-green-500/30 text-green-400 hover:text-white hover:bg-green-500/30 transition-all duration-300 font-semibold"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span>View on GitHub</span>
-                    <ExternalLink size={18} />
+                    <span className="text-sm md:text-base">View on GitHub</span>
+                    <ExternalLink size={16} md:size={18} />
                   </motion.a>
                 )}
 
