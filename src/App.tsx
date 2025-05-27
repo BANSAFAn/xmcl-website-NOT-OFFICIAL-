@@ -37,7 +37,6 @@ function App() {
                 <Route path="/guide" element={<Guide />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/blogs" element={<Blogs />} />
-                <Route path="/devlog/:slug" element={<DevLogPost />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/contact" element={<Contact />} />
