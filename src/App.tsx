@@ -6,8 +6,6 @@ import Index from '@/pages/Index';
 import Guide from '@/pages/Guide';
 import BlogPost from '@/pages/BlogPost';
 import Blogs from '@/pages/Blogs';
-import DevLogPost from '@/pages/DevLogPost';
-// import Changelogs from '@/pages/Changelogs';
 import About from '@/pages/About';
 import Privacy from '@/pages/Privacy';
 import Contact from '@/pages/Contact';
