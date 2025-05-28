@@ -156,6 +156,33 @@
       @apply px-2 py-1.5 text-xs min-w-[80px];
     }
   }
+
+  /* Responsive fixes for small mobile devices */
+  @media (max-width: 380px) {
+    .container {
+      @apply px-2;
+    }
+    
+    h1 {
+      @apply text-2xl;
+    }
+    
+    h2 {
+      @apply text-xl;
+    }
+    
+    .py-16 {
+      @apply py-10;
+    }
+    
+    .py-12 {
+      @apply py-8;
+    }
+    
+    .space-y-6 {
+      @apply space-y-4;
+    }
+  }
   
   /* Better focus states */
   .focus-visible-custom:focus-visible {
@@ -203,19 +230,23 @@
   html {
     @apply scroll-smooth;
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-minecraft-dark-blue text-foreground antialiased;
+    @apply bg-minecraft-dark-blue text-foreground antialased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
     text-rendering: optimizeSpeed;
     text-align: left;
+    overflow-x: hidden;
+    touch-action: manipulation;
   }
   
   #root {
     text-align: left;
     width: 100%;
     min-height: 100vh;
+    overflow-x: hidden;
   }
   
   .text-center-forced {
@@ -308,6 +339,7 @@ body {
   .mobile-nav-fix {
     transform: translateZ(0);
     will-change: transform;
+    backface-visibility: hidden;
   }
 }
 
@@ -315,5 +347,32 @@ body {
   .mobile-nav-fix {
     transform: translateZ(0);
     will-change: transform;
+    backface-visibility: hidden;
+  }
+}
+
+/* Fixes for Firefox mobile */
+@-moz-document url-prefix() {
+  @media (max-width: 768px) {
+    body {
+      overflow-x: hidden;
+    }
+    
+    .mobile-nav-fix {
+      position: fixed !important;
+    }
+  }
+}
+
+/* Fixes for Chrome mobile */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  @media (max-width: 768px) {
+    body {
+      overflow-x: hidden;
+    }
+    
+    .mobile-nav-fix {
+      position: fixed !important;
+    }
   }
 }
