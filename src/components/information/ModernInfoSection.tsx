@@ -1,8 +1,429 @@
 
 import { motion } from "framer-motion";
-import { useLanguage } from "@/components/navbar/LanguageContext";
+import { useLanguage } from "@/hooks/useLanguage";
 import { informationTranslations, LanguageKey } from "./translations";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, FolderOpen, File, ChevronDown, ChevronRight, Github, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { CodeBlock } from "@/components/markdown/CodeBlock";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+
+// Интерфейсы для GitHub API
+interface GitHubFileItem {
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: string | null;
+  type: "file" | "dir";
+  _links: {
+    self: string;
+    git: string;
+    html: string;
+  };
+}
+
+interface GitHubFileContent {
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: string;
+  type: "file";
+  content: string;
+  encoding: string;
+  _links: {
+    self: string;
+    git: string;
+    html: string;
+  };
+}
+
+// Компонент для отображения файла репозитория
+function RepoFile({ file, onSelect }: { file: GitHubFileItem; onSelect: (file: GitHubFileItem) => void }) {
+  return (
+    <div 
+      className="flex items-center gap-2 p-2 hover:bg-gray-800/50 rounded cursor-pointer"
+      onClick={() => onSelect(file)}
+    >
+      <File className="h-4 w-4 text-blue-400" />
+      <span className="text-sm">{file.name}</span>
+    </div>
+  );
+}
+
+// Компонент для отображения директории репозитория
+function RepoDirectory({ 
+  directory, 
+  onSelect, 
+  fetchContents 
+}: { 
+  directory: GitHubFileItem; 
+  onSelect: (file: GitHubFileItem) => void;
+  fetchContents: (path: string) => Promise<GitHubFileItem[]>;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [contents, setContents] = useState<GitHubFileItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const toggleDirectory = async () => {
+    if (!isOpen && contents.length === 0) {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const items = await fetchContents(directory.path);
+        setContents(items);
+      } catch (err) {
+        setError("Failed to load directory contents");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div>
+      <div 
+        className="flex items-center gap-2 p-2 hover:bg-gray-800/50 rounded cursor-pointer"
+        onClick={toggleDirectory}
+      >
+        {isOpen ? 
+          <ChevronDown className="h-4 w-4 text-gray-400" /> : 
+          <ChevronRight className="h-4 w-4 text-gray-400" />
+        }
+        <FolderOpen className="h-4 w-4 text-yellow-400" />
+        <span className="text-sm">{directory.name}</span>
+      </div>
+      
+      <Collapsible open={isOpen}>
+        <CollapsibleContent>
+          <div className="ml-6 border-l border-gray-700 pl-2">
+            {isLoading && (
+              <div className="p-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full mt-2" />
+                <Skeleton className="h-4 w-3/4 mt-2" />
+              </div>
+            )}
+            
+            {error && (
+              <div className="p-2 text-sm text-red-400">{error}</div>
+            )}
+            
+            {!isLoading && !error && contents.map(item => (
+              <div key={item.path}>
+                {item.type === "dir" ? (
+                  <RepoDirectory 
+                    directory={item} 
+                    onSelect={onSelect} 
+                    fetchContents={fetchContents} 
+                  />
+                ) : (
+                  <RepoFile file={item} onSelect={onSelect} />
+                )}
+              </div>
+            ))}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
+  );
+}
+
+// Компонент для отображения содержимого файла
+function FileViewer({ file, content, isLoading, error }: { 
+  file: GitHubFileItem | null; 
+  content: string | null;
+  isLoading: boolean;
+  error: string | null;
+}) {
+  if (!file) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-gray-400">Select a file to view its contents</p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="p-4">
+        <div className="flex items-center gap-2 mb-4">
+          <File className="h-4 w-4 text-blue-400" />
+          <span className="font-medium">{file.name}</span>
+        </div>
+        <Skeleton className="h-6 w-full" />
+        <Skeleton className="h-6 w-full mt-2" />
+        <Skeleton className="h-6 w-full mt-2" />
+        <Skeleton className="h-6 w-3/4 mt-2" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4">
+        <div className="flex items-center gap-2 mb-4">
+          <File className="h-4 w-4 text-blue-400" />
+          <span className="font-medium">{file.name}</span>
+        </div>
+        <p className="text-red-400">{error}</p>
+      </div>
+    );
+  }
+
+  // Определение языка на основе расширения файла
+  const getLanguage = (filename: string) => {
+    const ext = filename.split('.').pop()?.toLowerCase();
+    const languageMap: Record<string, string> = {
+      'js': 'javascript',
+      'jsx': 'jsx',
+      'ts': 'typescript',
+      'tsx': 'tsx',
+      'html': 'html',
+      'css': 'css',
+      'json': 'json',
+      'md': 'markdown',
+      'py': 'python',
+      'java': 'java',
+      'c': 'c',
+      'cpp': 'cpp',
+      'cs': 'csharp',
+      'go': 'go',
+      'rs': 'rust',
+      'sh': 'bash',
+      'yml': 'yaml',
+      'yaml': 'yaml',
+      'xml': 'xml',
+      'svg': 'svg',
+      'sql': 'sql',
+      'rb': 'ruby',
+      'php': 'php',
+      'kt': 'kotlin',
+      'swift': 'swift',
+      'dart': 'dart',
+    };
+    return ext ? (languageMap[ext] || 'text') : 'text';
+  };
+
+  return (
+    <div className="p-4">
+      <div className="flex items-center gap-2 mb-4">
+        <File className="h-4 w-4 text-blue-400" />
+        <span className="font-medium">{file.name}</span>
+      </div>
+      {content && (
+        <CodeBlock language={getLanguage(file.name)} showLineNumbers={true}>
+          {content}
+        </CodeBlock>
+      )}
+    </div>
+  );
+}
+
+// Компонент для просмотра репозитория
+function RepositoryViewer({ repoUrl }: { repoUrl: string }) {
+  const [rootContents, setRootContents] = useState<GitHubFileItem[]>([]);
+  const [isLoadingRoot, setIsLoadingRoot] = useState(true);
+  const [rootError, setRootError] = useState<string | null>(null);
+  
+  const [selectedFile, setSelectedFile] = useState<GitHubFileItem | null>(null);
+  const [fileContent, setFileContent] = useState<string | null>(null);
+  const [isLoadingContent, setIsLoadingContent] = useState(false);
+  const [contentError, setContentError] = useState<string | null>(null);
+
+  // Извлекаем owner и repo из URL
+  const getRepoInfo = (url: string) => {
+    // Поддерживаем форматы: https://github.com/owner/repo и github.com/owner/repo
+    const regex = /github\.com\/([^\/]+)\/([^\/]+)/;
+    const match = url.match(regex);
+    if (match && match.length >= 3) {
+      return { owner: match[1], repo: match[2] };
+    }
+    return null;
+  };
+
+  const repoInfo = getRepoInfo(repoUrl);
+
+  // Функция для получения содержимого директории
+  const fetchDirectoryContents = async (path: string = '') => {
+    if (!repoInfo) throw new Error("Invalid repository URL");
+    
+    const { owner, repo } = repoInfo;
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch directory contents: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  };
+
+  // Функция для получения содержимого файла
+  const fetchFileContent = async (file: GitHubFileItem) => {
+    setSelectedFile(file);
+    setIsLoadingContent(true);
+    setContentError(null);
+    setFileContent(null);
+    
+    try {
+      if (!file.download_url) {
+        throw new Error("No download URL available for this file");
+      }
+      
+      const response = await fetch(file.download_url);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch file content: ${response.statusText}`);
+      }
+      
+      const content = await response.text();
+      setFileContent(content);
+    } catch (err) {
+      console.error("Error fetching file content:", err);
+      setContentError(err instanceof Error ? err.message : "Failed to load file content");
+    } finally {
+      setIsLoadingContent(false);
+    }
+  };
+
+  // Загрузка корневого содержимого репозитория при монтировании
+  useEffect(() => {
+    const loadRootContents = async () => {
+      if (!repoInfo) {
+        setRootError("Invalid repository URL");
+        setIsLoadingRoot(false);
+        return;
+      }
+      
+      try {
+        const contents = await fetchDirectoryContents();
+        setRootContents(contents);
+      } catch (err) {
+        console.error("Error loading repository contents:", err);
+        setRootError(err instanceof Error ? err.message : "Failed to load repository contents");
+      } finally {
+        setIsLoadingRoot(false);
+      }
+    };
+    
+    loadRootContents();
+  }, [repoUrl]);
+
+  // Обработчик выбора файла
+  const handleFileSelect = (file: GitHubFileItem) => {
+    if (file.type === "file") {
+      fetchFileContent(file);
+    }
+  };
+
+  return (
+    <div className="bg-gray-900 rounded-lg overflow-hidden border border-gray-800 h-[600px] flex flex-col">
+      <div className="flex items-center justify-between bg-gray-800 p-3">
+        <div className="flex items-center gap-2">
+          <Github className="h-5 w-5 text-white" />
+          <span className="font-medium text-white">
+            {repoInfo ? `${repoInfo.owner}/${repoInfo.repo}` : "Repository Viewer"}
+          </span>
+        </div>
+        <a 
+          href={repoUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
+        >
+          <ExternalLink className="h-4 w-4" />
+          <span>Open on GitHub</span>
+        </a>
+      </div>
+      
+      <div className="flex flex-1 overflow-hidden">
+        {/* Файловая структура */}
+        <div className="w-1/3 border-r border-gray-800 overflow-y-auto bg-gray-900">
+          {isLoadingRoot && (
+            <div className="p-4">
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-6 w-full mt-2" />
+              <Skeleton className="h-6 w-3/4 mt-2" />
+            </div>
+          )}
+          
+          {rootError && (
+            <div className="p-4 text-red-400">{rootError}</div>
+          )}
+          
+          {!isLoadingRoot && !rootError && rootContents.map(item => (
+            <div key={item.path}>
+              {item.type === "dir" ? (
+                <RepoDirectory 
+                  directory={item} 
+                  onSelect={handleFileSelect} 
+                  fetchContents={fetchDirectoryContents} 
+                />
+              ) : (
+                <RepoFile file={item} onSelect={handleFileSelect} />
+              )}
+            </div>
+          ))}
+        </div>
+        
+        {/* Просмотр содержимого файла */}
+        <div className="flex-1 overflow-y-auto bg-gray-950">
+          <ScrollArea className="h-full">
+            <FileViewer 
+              file={selectedFile} 
+              content={fileContent} 
+              isLoading={isLoadingContent} 
+              error={contentError} 
+            />
+          </ScrollArea>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Компонент для диалогового окна просмотра репозитория
+function RepositoryViewerDialog({ repoUrl }: { repoUrl: string }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-2">
+          <FolderOpen className="h-4 w-4" />
+          <span>View Repository Files</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-5xl h-[80vh] p-0">
+        <DialogHeader className="p-4 border-b border-gray-800">
+          <DialogTitle className="flex items-center gap-2">
+            <Github className="h-5 w-5" />
+            <span>Repository File Viewer</span>
+          </DialogTitle>
+          <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+        </DialogHeader>
+        <div className="p-0 h-full">
+          <RepositoryViewer repoUrl={repoUrl} />
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 
 interface FeatureWithLinks {
   title: string;
@@ -84,7 +505,7 @@ export function ModernInfoSection() {
     {
       ...text.features[4], // Open Source with GitHub link
       image: "/XMCL/5.gif",
-      link: "https://github.com/Voxelum"
+      link: "https://github.com/voxelum/x-minecraft-launcher"
     }
   ];
 
@@ -213,17 +634,38 @@ export function ModernInfoSection() {
                   </div>
                 )}
 
-                {/* Single link for Open Source */}
-                {feature.link && (
+                {/* GitHub Repository Feature */}
+                {feature.link && feature.link.includes('github.com') && (
+                  <div className="flex flex-col gap-3 mt-4">
+                    {/* Repository Viewer Dialog */}
+                    <RepositoryViewerDialog repoUrl={feature.link} />
+                    
+                    {/* GitHub Link */}
+                    <motion.a
+                      href={feature.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 md:gap-2 px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-xl border border-green-500/30 text-green-400 hover:text-white hover:bg-green-500/30 transition-all duration-300 font-semibold"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span className="text-sm md:text-base">View on GitHub</span>
+                      <ExternalLink size={16} className="md:w-4.5 md:h-4.5 w-4 h-4" />
+                    </motion.a>
+                  </div>
+                )}
+                
+                {/* Non-GitHub Single Link */}
+                {feature.link && !feature.link.includes('github.com') && (
                   <motion.a
                     href={feature.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 md:gap-2 px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-xl border border-green-500/30 text-green-400 hover:text-white hover:bg-green-500/30 transition-all duration-300 font-semibold"
+                    className="inline-flex items-center gap-1 md:gap-2 px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl border border-blue-500/30 text-blue-400 hover:text-white hover:bg-blue-500/30 transition-all duration-300 font-semibold mt-4"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span className="text-sm md:text-base">View on GitHub</span>
+                    <span className="text-sm md:text-base">Learn More</span>
                     <ExternalLink size={16} className="md:w-4.5 md:h-4.5 w-4 h-4" />
                   </motion.a>
                 )}
