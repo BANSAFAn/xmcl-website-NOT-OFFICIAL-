@@ -59,6 +59,12 @@ export interface Translations {
   backgroundColor: string;
   basicComponentHighlight: string;
   errorColor: string;
+  features: string;
+  advanced: string;
+  powerful: string;
+  modern: string;
+  crossPlatform: string;
+  openSource: string;
 }
 
 export interface LanguageContextProps {

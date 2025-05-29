@@ -9,29 +9,29 @@ import { Navbar } from "@/components/navbar";
 import { OSIndicator } from "@/components/OSIndicator";
 import { OSWarningDialog } from "@/components/download/OSWarningDialog";
 
-// Animation variants for page elements
+// Simplified animation variants for better performance
 const pageVariants = {
   initial: { opacity: 0 },
   animate: { 
     opacity: 1,
     transition: { 
-      staggerChildren: 0.15,
-      delayChildren: 0.2
+      staggerChildren: 0.1,
+      delayChildren: 0.1
     }
   }
 };
 
 const sectionVariants = {
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 10 },
   animate: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.7 }
+    transition: { duration: 0.5 }
   }
 };
 
 const Index = () => {
-  // Setup card event listeners for scrolling
+  // Setup optimized event listeners
   useEffect(() => {
     const handleLanguageChange = () => {
       // Force re-render on language change
@@ -51,7 +51,7 @@ const Index = () => {
   
   return (
     <motion.div 
-      className="min-h-screen bg-minecraft-dark-blue"
+      className="min-h-screen bg-gradient-to-b from-slate-900 to-black"
       variants={pageVariants}
       initial="initial"
       animate="animate"
@@ -78,71 +78,33 @@ const Index = () => {
         </motion.div>
       </div>
       
-      {/* Global style for image hover effects and easter eggs */}
+      {/* Optimized global styles - removed heavy effects */}
       <style dangerouslySetInnerHTML={{ __html: `
         .info-image {
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: transform 0.3s ease;
         }
         
         .info-image:hover {
-          transform: scale(1.05);
-          box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+          transform: scale(1.02);
         }
         
-        .bg-grid-pattern {
-          background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-          background-size: 20px 20px;
-        }
-        
-        /* Enhanced hover animations for section headers */
+        /* Simplified hover animations */
         .info-section h3 {
-          transition: all 0.3s ease;
+          transition: color 0.3s ease;
           display: inline-block;
         }
         
         .info-section h3:hover {
-          transform: scale(1.05);
-          text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
           color: #38bdf8;
         }
         
-        /* Apple mode Easter Egg */
-        .apple-mode * {
-          font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, sans-serif !important;
-        }
-        
-        .apple-mode p, .apple-mode span, .apple-mode h1, .apple-mode h2, .apple-mode h3, .apple-mode h4, .apple-mode h5, .apple-mode h6, .apple-mode a {
-          position: relative;
-        }
-        
-        .apple-mode p::after, .apple-mode span::after, .apple-mode h1::after, .apple-mode h2::after, .apple-mode h3::after, .apple-mode h4::after, .apple-mode h5::after, .apple-mode h6::after, .apple-mode a::after {
-          content: "🍎";
-          position: relative;
-          display: inline-block;
-          animation: float 3s ease-in-out infinite;
-          margin-left: 4px;
-          font-size: 0.8em;
-        }
-        
-        @keyframes float {
-          0% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-          100% { transform: translateY(0px); }
-        }
-        
-        .apple-mode button {
-          background: linear-gradient(to bottom, #4f93ce, #1e5799) !important;
-          border-radius: 8px !important;
-          border: 1px solid rgba(255, 255, 255, 0.2) !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
-        }
-        
-        .apple-mode .container {
-          background-color: rgba(255, 255, 255, 0.05) !important;
-          backdrop-filter: blur(10px) !important;
-          border-radius: 16px !important;
-          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
         }
       `}} />
     </motion.div>

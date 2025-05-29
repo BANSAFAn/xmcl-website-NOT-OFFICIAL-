@@ -1,10 +1,12 @@
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Github, ExternalLink, MessageCircle, Clock, User, Tag } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Github, ExternalLink, MessageCircle, Clock, User, Tag, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/navbar";
 import { useQuery } from "@tanstack/react-query";
+import { IssuePreview } from "@/components/issues/IssuePreview";
+import { useLanguage } from "@/components/navbar/LanguageContext";
 
 interface GitHubIssue {
   id: number;
@@ -24,6 +26,7 @@ interface GitHubIssue {
     name: string;
     color: string;
   }>;
+  comments: number;
 }
 
 const fetchIssues = async (): Promise<GitHubIssue[]> => {
@@ -34,7 +37,52 @@ const fetchIssues = async (): Promise<GitHubIssue[]> => {
   return response.json();
 };
 
+// Translations for the Issues page
+const issueTranslations = {
+  en: {
+    title: "GitHub Issues",
+    subtitle: "Browse and participate in X Minecraft Launcher development",
+    createIssue: "Create New Issue",
+    loading: "Loading issues...",
+    error: "Failed to load issues. Please try again later.",
+    open: "open",
+    closed: "closed",
+    preview: "Preview",
+    comments: "comments",
+    by: "by"
+  },
+  ru: {
+    title: "GitHub Issues",
+    subtitle: "Просматривайте и участвуйте в разработке X Minecraft Launcher",
+    createIssue: "Создать новый Issue",
+    loading: "Загрузка issues...",
+    error: "Не удалось загрузить issues. Попробуйте позже.",
+    open: "открыто",
+    closed: "закрыто",
+    preview: "Предпросмотр",
+    comments: "комментариев",
+    by: "от"
+  },
+  uk: {
+    title: "GitHub Issues",
+    subtitle: "Переглядайте та беріть участь у розробці X Minecraft Launcher",
+    createIssue: "Створити новий Issue",
+    loading: "Завантаження issues...",
+    error: "Не вдалося завантажити issues. Спробуйте пізніше.",
+    open: "відкрито",
+    closed: "закрито",
+    preview: "Попередній перегляд",
+    comments: "коментарів",
+    by: "від"
+  }
+};
+
 const Issues = () => {
+  const [selectedIssue, setSelectedIssue] = useState<GitHubIssue | null>(null);
+  const { currentLanguage } = useLanguage();
+  
+  const text = issueTranslations[currentLanguage as keyof typeof issueTranslations] || issueTranslations.en;
+  
   const { data: issues, isLoading, error } = useQuery({
     queryKey: ['github-issues'],
     queryFn: fetchIssues,
@@ -42,7 +90,8 @@ const Issues = () => {
   });
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    const locale = currentLanguage === 'ru' ? 'ru-RU' : currentLanguage === 'uk' ? 'uk-UA' : 'en-US';
+    return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -73,7 +122,7 @@ const Issues = () => {
             transition={{ duration: 0.6 }}
           >
             <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-              GitHub Issues
+              {text.title}
             </span>
           </motion.h1>
           
@@ -83,7 +132,7 @@ const Issues = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Browse and contribute to X Minecraft Launcher development
+            {text.subtitle}
           </motion.p>
 
           <motion.a
@@ -95,7 +144,7 @@ const Issues = () => {
             whileTap={{ scale: 0.95 }}
           >
             <MessageCircle size={20} />
-            Create New Issue
+            {text.createIssue}
             <ExternalLink size={16} />
           </motion.a>
         </motion.div>
@@ -110,13 +159,13 @@ const Issues = () => {
           {isLoading && (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400"></div>
-              <p className="text-white/60 mt-4">Loading issues...</p>
+              <p className="text-white/60 mt-4">{text.loading}</p>
             </div>
           )}
 
           {error && (
             <div className="text-center py-20">
-              <p className="text-red-400 text-lg">Failed to load issues. Please try again later.</p>
+              <p className="text-red-400 text-lg">{text.error}</p>
             </div>
           )}
 
@@ -125,7 +174,7 @@ const Issues = () => {
               {issues.map((issue, index) => (
                 <motion.div
                   key={issue.id}
-                  className="bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm rounded-xl border border-white/20 p-6 hover:border-blue-500/40 transition-all duration-300"
+                  className="bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm rounded-xl border border-white/20 p-6 hover:border-blue-500/40 transition-all duration-300 group"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -145,20 +194,18 @@ const Issues = () => {
                             ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                             : 'bg-red-500/20 text-red-400 border border-red-500/30'
                         }`}>
-                          {issue.state}
+                          {issue.state === 'open' ? text.open : text.closed}
                         </span>
                         <span className="text-white/60 text-sm">#{issue.number}</span>
                       </div>
                       
                       <h3 className="text-xl font-semibold text-white mb-2 hover:text-blue-400 transition-colors">
-                        <a 
-                          href={issue.html_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:underline"
+                        <button 
+                          onClick={() => setSelectedIssue(issue)}
+                          className="hover:underline text-left w-full"
                         >
                           {issue.title}
-                        </a>
+                        </button>
                       </h3>
                       
                       {issue.body && (
@@ -189,6 +236,7 @@ const Issues = () => {
                       <div className="flex items-center gap-4 text-sm text-white/60">
                         <div className="flex items-center gap-1">
                           <User size={14} />
+                          <span>{text.by}</span>
                           <a 
                             href={issue.user.html_url}
                             target="_blank"
@@ -202,17 +250,34 @@ const Issues = () => {
                           <Clock size={14} />
                           {formatDate(issue.created_at)}
                         </div>
+                        {issue.comments > 0 && (
+                          <div className="flex items-center gap-1">
+                            <MessageCircle size={14} />
+                            <span>{issue.comments} {text.comments}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                     
-                    <a
-                      href={issue.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-                    >
-                      <ExternalLink size={16} className="text-white/80" />
-                    </a>
+                    <div className="flex flex-col gap-2">
+                      <motion.button
+                        onClick={() => setSelectedIssue(issue)}
+                        className="p-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors border border-blue-500/30 opacity-0 group-hover:opacity-100"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        title={text.preview}
+                      >
+                        <Eye size={16} className="text-blue-400" />
+                      </motion.button>
+                      <a
+                        href={issue.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                      >
+                        <ExternalLink size={16} className="text-white/80" />
+                      </a>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -220,6 +285,17 @@ const Issues = () => {
           )}
         </motion.div>
       </div>
+
+      {/* Issue Preview Modal */}
+      <AnimatePresence>
+        {selectedIssue && (
+          <IssuePreview
+            issue={selectedIssue}
+            isOpen={!!selectedIssue}
+            onClose={() => setSelectedIssue(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

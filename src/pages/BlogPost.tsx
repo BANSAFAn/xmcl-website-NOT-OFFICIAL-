@@ -10,7 +10,7 @@ import { getBlogPost, BlogPost as BlogPostType } from "@/utils/blogUtils";
 import { useToast } from "@/hooks/use-toast";
 
 const BlogPost = () => {
-  const { year, month, slug } = useParams<{ year?: string, month?: string, slug?: string }>();
+  const { year, month, slug } = useParams<{ year: string, month: string, slug: string }>();
   const [post, setPost] = useState<BlogPostType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -98,39 +98,33 @@ const BlogPost = () => {
                         <span>{post.author}</span>
                       </div>
                       
-                      {post.tags && post.tags.length > 0 && (
-                        <div className="flex items-center flex-wrap gap-2">
-                          <Tag size={16} className="mr-1" />
-                          {post.tags.map((tag, index) => (
-                            <span 
-                              key={index}
-                              className="px-2 py-1 bg-white/10 rounded-full text-xs"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                      <div className="flex items-center">
+                        <Tag size={16} className="mr-2" />
+                        <span className="text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+                          {post.category}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Post content */}
-                  <div className="prose prose-invert prose-blue max-w-none">
-                    <MarkdownRenderer content={post.content} />
-                  </div>
+                  <MarkdownRenderer content={post.content} />
                 </motion.div>
               </>
             ) : (
-              <div className="text-center py-16">
-                <h2 className="text-2xl font-bold text-white mb-4">Статья не найдена</h2>
-                <p className="text-white/70 mb-8">Запрошенная статья не существует или была удалена.</p>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-12"
+              >
+                <p className="text-white/70 text-lg">Статья не найдена. Возможно, она была удалена или URL неверный.</p>
                 <Link
                   to="/blogs"
-                  className="px-6 py-2 bg-accent rounded-md hover:bg-accent/80 transition-colors"
+                  className="inline-flex items-center text-accent hover:text-accent/80 mt-4 transition-colors"
                 >
-                  Вернуться к списку статей
+                  Вернуться к блогу
                 </Link>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>

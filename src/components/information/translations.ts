@@ -1,221 +1,191 @@
+export interface LanguageKey {
+  en: string;
+  ru: string;
+  uk: string;
+  zh: string;
+}
 
 export const informationTranslations = {
   en: {
-    title: "Why Choose X Minecraft Launcher?",
-    subtitle: "Experience Minecraft like never before with our advanced launcher",
+    title: "Why Choose XMCL?",
+    subtitle: "Experience the ultimate Minecraft launcher with powerful features designed for modern gameplay",
     features: [
       {
-        title: "Lightning Fast",
-        description: "Optimized performance for quick game launches and smooth gameplay experience",
-        icon: "⚡"
+        title: "Modern Interface",
+        description: "Clean, intuitive design that makes mod management effortless. Built with the latest technologies for the best user experience.",
+        icon: "🎨",
+        image: "/XMCL/2.gif"
       },
       {
-        title: "Mod Support",
-        description: "Built-in support for Forge, Fabric, and other popular mod loaders",
-        icon: "🔧"
-      },
-      {
-        title: "Multiple Versions",
-        description: "Manage and play any Minecraft version from classic to the latest releases",
-        icon: "📦"
-      },
-      {
-        title: "User Friendly",
-        description: "Intuitive interface designed for both beginners and advanced users",
-        icon: "👤"
+        title: "Universal Mod Support",
+        description: "Seamlessly integrates with all major modding platforms for complete compatibility and easy installation.",
+        icon: "⚡",
+        image: "/XMCL/3.gif",
+        links: [
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Quilt", url: "https://quiltmc.org/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
+          { name: "Laby Mod", url: "https://www.labymod.net/" },
+          { name: "NeoForge", url: "https://neoforged.net/" }
+        ]
       },
       {
         title: "Cross Platform",
-        description: "Available for Windows, macOS, and Linux with native performance",
-        icon: "💻"
+        description: "Available on Windows, macOS, and Linux. One launcher that works everywhere you play.",
+        icon: "🌐",
+        image: "/XMCL/4.gif"
+      },
+      {
+        title: "Easy Installation",
+        description: "Get started in minutes with our streamlined installation process. No technical knowledge required.",
+        icon: "📦",
+        image: "/XMCL/5.gif"
       },
       {
         title: "Open Source",
-        description: "Completely open source and free to use with active community support",
-        icon: "🔓"
+        description: "Completely free and open source. Join our community of developers and contributors on GitHub.",
+        icon: "💻",
+        image: "/a39086fb-5549-43c0-a69e-217c717d938e.png",
+        link: "https://github.com/Voxelum/x-minecraft-launcher"
       }
     ]
   },
   ru: {
-    title: "Почему стоит выбрать X Minecraft Launcher?",
-    subtitle: "Испытайте Minecraft как никогда раньше с нашим продвинутым лаунчером",
+    title: "Почему выбирают XMCL?",
+    subtitle: "Испытайте лучший лаунчер Minecraft с мощными функциями для современной игры",
     features: [
       {
-        title: "Молниеносная скорость",
-        description: "Оптимизированная производительность для быстрого запуска игры и плавного игрового процесса",
-        icon: "⚡"
+        title: "Современный интерфейс",
+        description: "Чистый, интуитивно понятный дизайн, который делает управление модами легким. Создан с использованием новейших технологий для лучшего пользовательского опыта.",
+        icon: "🎨",
+        image: "/XMCL/2.gif"
       },
       {
-        title: "Поддержка модов",
-        description: "Встроенная поддержка Forge, Fabric и других популярных загрузчиков модов",
-        icon: "🔧"
-      },
-      {
-        title: "Множество версий",
-        description: "Управляйте и играйте в любую версию Minecraft от классической до последних релизов",
-        icon: "📦"
-      },
-      {
-        title: "Удобство использования",
-        description: "Интуитивный интерфейс, разработанный как для новичков, так и для опытных пользователей",
-        icon: "👤"
+        title: "Универсальная поддержка модов",
+        description: "Плавно интегрируется со всеми основными платформами модов для полной совместимости и легкой установки.",
+        icon: "⚡",
+        image: "/XMCL/3.gif",
+        links: [
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Quilt", url: "https://quiltmc.org/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
+          { name: "Laby Mod", url: "https://www.labymod.net/" },
+          { name: "NeoForge", url: "https://neoforged.net/" }
+        ]
       },
       {
         title: "Кроссплатформенность",
-        description: "Доступен для Windows, macOS и Linux с нативной производительностью",
-        icon: "💻"
+        description: "Доступен на Windows, macOS и Linux. Один лаунчер, который работает везде, где вы играете.",
+        icon: "🌐",
+        image: "/XMCL/4.gif"
+      },
+      {
+        title: "Легкая установка",
+        description: "Начните за несколько минут с нашим упрощенным процессом установки. Технические знания не требуются.",
+        icon: "📦",
+        image: "/XMCL/5.gif"
       },
       {
         title: "Открытый исходный код",
-        description: "Полностью открытый исходный код и бесплатный для использования с активной поддержкой сообщества",
-        icon: "🔓"
+        description: "Полностью бесплатный и с открытым исходным кодом. Присоединяйтесь к нашему сообществу разработчиков и участников на GitHub.",
+        icon: "💻",
+        image: "/a39086fb-5549-43c0-a69e-217c717d938e.png",
+        link: "https://github.com/Voxelum/x-minecraft-launcher"
       }
     ]
   },
   uk: {
-    title: "Чому варто обрати X Minecraft Launcher?",
-    subtitle: "Відчуйте Minecraft як ніколи раніше з нашим просунутим лаунчером",
+    title: "Чому обирають XMCL?",
+    subtitle: "Відчуйте найкращий лаунчер Minecraft з потужними функціями для сучасної гри",
     features: [
       {
-        title: "Блискавична швидкість",
-        description: "Оптимізована продуктивність для швидкого запуску гри та плавного ігрового процесу",
-        icon: "⚡"
+        title: "Сучасний інтерфейс",
+        description: "Чистий, інтуїтивно зрозумілий дизайн, який робить керування модами легким. Створений з використанням найновіших технологій для найкращого користувацького досвіду.",
+        icon: "🎨",
+        image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1920&h=1080&q=80"
       },
       {
-        title: "Підтримка модів",
-        description: "Вбудована підтримка Forge, Fabric та інших популярних завантажувачів модів",
-        icon: "🔧"
-      },
-      {
-        title: "Безліч версій",
-        description: "Керуйте та грайте в будь-яку версію Minecraft від класичної до останніх релізів",
-        icon: "📦"
-      },
-      {
-        title: "Зручність використання",
-        description: "Інтуїтивний інтерфейс, розроблений як для новачків, так і для досвідчених користувачів",
-        icon: "👤"
+        title: "Універсальна підтримка модів",
+        description: "Плавно інтегрується з усіма основними платформами модів для повної сумісності та легкого встановлення.",
+        icon: "⚡",
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&h=1080&q=80",
+        links: [
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Quilt", url: "https://quiltmc.org/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
+          { name: "Laby Mod", url: "https://www.labymod.net/" },
+          { name: "NeoForge", url: "https://neoforged.net/" }
+        ]
       },
       {
         title: "Кросплатформеність",
-        description: "Доступний для Windows, macOS та Linux з нативною продуктивністю",
-        icon: "💻"
+        description: "Доступний на Windows, macOS та Linux. Один лаунчер, який працює скрізь, де ви граєте.",
+        icon: "🌐",
+        image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1920&h=1080&q=80"
+      },
+      {
+        title: "Легке встановлення",
+        description: "Почніть за кілька хвилин з нашим спрощеним процесом встановлення. Технічні знання не потрібні.",
+        icon: "📦",
+        image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&h=1080&q=80"
       },
       {
         title: "Відкритий вихідний код",
-        description: "Повністю відкритий вихідний код та безкоштовний для використання з активною підтримкою спільноти",
-        icon: "🔓"
+        description: "Повністю безкоштовний та з відкритим вихідним кодом. Приєднуйтесь до нашої спільноти розробників та учасників на GitHub.",
+        icon: "💻",
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&h=1080&q=80",
+        link: "https://github.com/Voxelum/x-minecraft-launcher"
       }
     ]
   },
   zh: {
-    title: "为什么选择 X Minecraft Launcher？",
-    subtitle: "使用我们的高级启动器体验前所未有的 Minecraft",
+    title: "为什么选择 XMCL？",
+    subtitle: "体验终极 Minecraft 启动器，配备为现代游戏设计的强大功能",
     features: [
       {
-        title: "闪电般快速",
-        description: "优化性能，快速启动游戏，流畅的游戏体验",
-        icon: "⚡"
+        title: "现代界面",
+        description: "清洁、直观的设计使模组管理变得轻松。采用最新技术构建，提供最佳用户体验。",
+        icon: "🎨",
+        image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1920&h=1080&q=80"
       },
       {
-        title: "模组支持",
-        description: "内置支持 Forge、Fabric 和其他流行的模组加载器",
-        icon: "🔧"
-      },
-      {
-        title: "多个版本",
-        description: "管理和游玩从经典到最新版本的任何 Minecraft 版本",
-        icon: "📦"
-      },
-      {
-        title: "用户友好",
-        description: "为初学者和高级用户设计的直观界面",
-        icon: "👤"
+        title: "通用模组支持",
+        description: "与所有主要模组平台无缝集成，实现完全兼容性和轻松安装。",
+        icon: "⚡",
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&h=1080&q=80",
+        links: [
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Quilt", url: "https://quiltmc.org/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
+          { name: "Laby Mod", url: "https://www.labymod.net/" },
+          { name: "NeoForge", url: "https://neoforged.net/" }
+        ]
       },
       {
         title: "跨平台",
-        description: "适用于 Windows、macOS 和 Linux，具有原生性能",
-        icon: "💻"
+        description: "适用于 Windows、macOS 和 Linux。一个启动器，在您游戏的任何地方都能工作。",
+        icon: "🌐",
+        image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1920&h=1080&q=80"
+      },
+      {
+        title: "轻松安装",
+        description: "通过我们简化的安装过程，几分钟内即可开始使用。无需技术知识。",
+        icon: "📦",
+        image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&h=1080&q=80"
       },
       {
         title: "开源",
-        description: "完全开源且免费使用，拥有活跃的社区支持",
-        icon: "🔓"
-      }
-    ]
-  },
-  de: {
-    title: "Warum X Minecraft Launcher wählen?",
-    subtitle: "Erleben Sie Minecraft wie nie zuvor mit unserem fortschrittlichen Launcher",
-    features: [
-      {
-        title: "Blitzschnell",
-        description: "Optimierte Leistung für schnelle Spielstarts und reibungslose Spielerfahrung",
-        icon: "⚡"
-      },
-      {
-        title: "Mod-Unterstützung",
-        description: "Eingebaute Unterstützung für Forge, Fabric und andere beliebte Mod-Loader",
-        icon: "🔧"
-      },
-      {
-        title: "Mehrere Versionen",
-        description: "Verwalten und spielen Sie jede Minecraft-Version von klassisch bis zu den neuesten Releases",
-        icon: "📦"
-      },
-      {
-        title: "Benutzerfreundlich",
-        description: "Intuitive Benutzeroberfläche für Anfänger und fortgeschrittene Benutzer",
-        icon: "👤"
-      },
-      {
-        title: "Plattformübergreifend",
-        description: "Verfügbar für Windows, macOS und Linux mit nativer Leistung",
-        icon: "💻"
-      },
-      {
-        title: "Open Source",
-        description: "Vollständig Open Source und kostenlos zu verwenden mit aktiver Community-Unterstützung",
-        icon: "🔓"
-      }
-    ]
-  },
-  ja: {
-    title: "なぜ X Minecraft Launcher を選ぶのか？",
-    subtitle: "私たちの高度なランチャーで、これまでにない Minecraft を体験してください",
-    features: [
-      {
-        title: "超高速",
-        description: "最適化されたパフォーマンスで、ゲームの高速起動とスムーズなゲーム体験を実現",
-        icon: "⚡"
-      },
-      {
-        title: "Mod サポート",
-        description: "Forge、Fabric、その他の人気 Mod ローダーの内蔵サポート",
-        icon: "🔧"
-      },
-      {
-        title: "複数のバージョン",
-        description: "クラシックから最新リリースまで、あらゆる Minecraft バージョンを管理・プレイ",
-        icon: "📦"
-      },
-      {
-        title: "ユーザーフレンドリー",
-        description: "初心者から上級者まで対応した直感的なインターフェース",
-        icon: "👤"
-      },
-      {
-        title: "クロスプラットフォーム",
-        description: "Windows、macOS、Linux でネイティブパフォーマンスを実現",
-        icon: "💻"
-      },
-      {
-        title: "オープンソース",
-        description: "完全オープンソースで無料使用可能、活発なコミュニティサポート付き",
-        icon: "🔓"
+        description: "完全免费且开源。在 GitHub 上加入我们的开发者和贡献者社区。",
+        icon: "💻",
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&h=1080&q=80",
+        link: "https://github.com/Voxelum/x-minecraft-launcher"
       }
     ]
   }
 };
 
-export type LanguageKey = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
+export type LanguageKeyType = 'en' | 'ru' | 'uk' | 'zh';

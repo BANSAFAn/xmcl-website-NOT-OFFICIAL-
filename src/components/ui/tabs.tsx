@@ -3,22 +3,28 @@ import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const Tabs = TabsPrimitive.Root
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.List
-    ref={ref}
-    className={cn(
-      "inline-flex h-auto w-full bg-gradient-to-r from-slate-900/80 via-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-white/20 p-1.5 rounded-2xl shadow-2xl relative overflow-hidden",
-      className
-    )}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  const isMobile = useIsMobile();
+  
+  return (
+    <TabsPrimitive.List
+      ref={ref}
+      className={cn(
+        "inline-flex h-auto w-full bg-gradient-to-r from-slate-900/80 via-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden",
+        isMobile ? "p-1 flex-col" : "p-1.5 flex-row",
+        className
+      )}
+      {...props}
+    />
+  );
+});
 TabsList.displayName = TabsPrimitive.List.displayName
 
 const TabsTrigger = React.forwardRef<
@@ -26,12 +32,16 @@ const TabsTrigger = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => {
   const [isHovered, setIsHovered] = React.useState(false);
+  const isMobile = useIsMobile();
   
   return (
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
-        "relative inline-flex items-center justify-center whitespace-nowrap rounded-xl px-4 py-3 text-sm font-medium ring-offset-background transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600/40 data-[state=active]:via-purple-600/40 data-[state=active]:to-cyan-600/40 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/30 hover:bg-gradient-to-r hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:text-white text-white/80 min-h-[48px] flex-1 md:flex-none md:min-w-[120px] overflow-hidden group border border-transparent data-[state=active]:border-blue-500/50 hover:border-white/30",
+        "relative inline-flex items-center justify-center whitespace-nowrap rounded-xl transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600/40 data-[state=active]:via-purple-600/40 data-[state=active]:to-cyan-600/40 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/30 hover:bg-gradient-to-r hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:text-white text-white/80 overflow-hidden group border border-transparent data-[state=active]:border-blue-500/50 hover:border-white/30",
+        isMobile 
+          ? "px-4 py-4 text-sm font-medium min-h-[56px] w-full mb-1 last:mb-0" 
+          : "px-4 py-3 text-sm font-medium min-h-[48px] flex-1 md:flex-none md:min-w-[120px]",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -56,7 +66,10 @@ const TabsTrigger = React.forwardRef<
       
       {/* Content container */}
       <motion.div
-        className="relative z-10 flex items-center gap-3 w-full"
+        className={cn(
+          "relative z-10 flex items-center gap-3 w-full",
+          isMobile ? "justify-start" : "justify-center"
+        )}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         transition={{ duration: 0.2 }}
@@ -75,18 +88,19 @@ const TabsTrigger = React.forwardRef<
                 </motion.div>
               );
             }
-            // Text (show on hover or always on desktop)
+            // Text (always show on mobile, show on hover/active on desktop)
             return (
               <motion.span
-                className="text-sm font-semibold whitespace-nowrap min-w-0"
-                initial={{ opacity: 0, width: 0, marginLeft: 0 }}
+                className={cn(
+                  "text-sm font-semibold whitespace-nowrap min-w-0",
+                  isMobile ? "block" : "hidden md:block"
+                )}
+                initial={{ opacity: isMobile ? 1 : 0, width: isMobile ? "auto" : 0 }}
                 animate={{ 
-                  opacity: 1,
-                  width: "auto",
-                  marginLeft: "0.75rem"
+                  opacity: isMobile ? 1 : 1,
+                  width: isMobile ? "auto" : "auto"
                 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                style={{ display: "block" }}
               >
                 {child}
               </motion.span>
@@ -98,7 +112,10 @@ const TabsTrigger = React.forwardRef<
       
       {/* Active indicator */}
       <motion.div
-        className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full scale-x-0 group-data-[state=active]:scale-x-100"
+        className={cn(
+          "absolute bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full scale-x-0 group-data-[state=active]:scale-x-100",
+          isMobile ? "left-1 top-1/2 -translate-y-1/2 w-1 h-8" : "bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1"
+        )}
         transition={{ duration: 0.3, ease: "easeOut" }}
       />
       
