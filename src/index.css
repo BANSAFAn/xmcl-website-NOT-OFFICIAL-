@@ -156,33 +156,6 @@
       @apply px-2 py-1.5 text-xs min-w-[80px];
     }
   }
-
-  /* Responsive fixes for small mobile devices */
-  @media (max-width: 380px) {
-    .container {
-      @apply px-2;
-    }
-    
-    h1 {
-      @apply text-2xl;
-    }
-    
-    h2 {
-      @apply text-xl;
-    }
-    
-    .py-16 {
-      @apply py-10;
-    }
-    
-    .py-12 {
-      @apply py-8;
-    }
-    
-    .space-y-6 {
-      @apply space-y-4;
-    }
-  }
   
   /* Better focus states */
   .focus-visible-custom:focus-visible {
@@ -230,7 +203,6 @@
   html {
     @apply scroll-smooth;
     scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -238,15 +210,12 @@
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
     text-rendering: optimizeSpeed;
     text-align: left;
-    overflow-x: hidden;
-    touch-action: manipulation;
   }
   
   #root {
     text-align: left;
     width: 100%;
     min-height: 100vh;
-    overflow-x: hidden;
   }
   
   .text-center-forced {
@@ -287,92 +256,5 @@
       rgba(18, 25, 38, 0.95) 100%);
     background-attachment: fixed;
     transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-}
-
-/* Firefox scrollbar styling */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(56, 189, 248, 0.3) rgba(0, 0, 0, 0.2);
-}
-
-/* Cross-browser optimizations */
-body {
-  /* Improve text rendering in Firefox and Chrome */
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
-  /* Improve performance for animations */
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
-  
-  /* Prevent content shifting */
-  overflow-y: scroll;
-}
-
-/* Fix z-index stacking context for Firefox */
-.tooltip-wrapper {
-  position: relative;
-  z-index: 100;
-}
-
-/* Improve tooltip performance in Firefox */
-@-moz-document url-prefix() {
-  [data-radix-popper-content-wrapper] {
-    transform: translateZ(0) !important;
-    will-change: transform;
-  }
-}
-
-/* Improve tooltip performance in Chrome */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  [data-radix-popper-content-wrapper] {
-    transform: translateZ(0) !important;
-    will-change: transform;
-  }
-}
-
-/* Fix for mobile navigation in Firefox and Chrome */
-@supports (-moz-appearance:none) {
-  .mobile-nav-fix {
-    transform: translateZ(0);
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-}
-
-@supports (-webkit-appearance:none) {
-  .mobile-nav-fix {
-    transform: translateZ(0);
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-}
-
-/* Fixes for Firefox mobile */
-@-moz-document url-prefix() {
-  @media (max-width: 768px) {
-    body {
-      overflow-x: hidden;
-    }
-    
-    .mobile-nav-fix {
-      position: fixed !important;
-    }
-  }
-}
-
-/* Fixes for Chrome mobile */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  @media (max-width: 768px) {
-    body {
-      overflow-x: hidden;
-    }
-    
-    .mobile-nav-fix {
-      position: fixed !important;
-    }
   }
 }

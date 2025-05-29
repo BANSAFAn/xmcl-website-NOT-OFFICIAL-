@@ -29,33 +29,26 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen pt-32 pb-20 flex flex-col justify-center overflow-hidden">
-      {/* Blurred background light effects */}
       <BackgroundEffects />
       
-      {/* Linux Terminal Easter Egg */}
       <LinuxTerminal 
         showLinuxTerminal={showLinuxTerminal} 
         setShowLinuxTerminal={setShowLinuxTerminal} 
       />
       
-      {/* Windows Blue Screen Easter Egg */}
       <AnimatePresence>
         {showBlueScreen && (
           <BlueScreenOfDeath onClose={() => setShowBlueScreen(false)} />
         )}
       </AnimatePresence>
       
-      {/* Content container */}
       <HeroContent 
         title={text.title}
         subtitle={text.subtitle}
-        downloadText={text.download}
-        githubText={text.github}
         description={text.description}
         onNumberEffect={generateRandomNumbers}
       />
       
-      {/* Apple mode indicator (only visible when active) */}
       {showAppleMode && (
         <div className="fixed bottom-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full">
           <Apple className="text-white h-6 w-6" />

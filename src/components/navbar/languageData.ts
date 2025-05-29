@@ -68,7 +68,13 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     sidebarColor: 'Sidebar color',
     backgroundColor: 'Background color',
     basicComponentHighlight: 'Basic component highlight color',
-    errorColor: 'Error color'
+    errorColor: 'Error color',
+    features: 'Features',
+    advanced: 'Advanced',
+    powerful: 'Powerful',
+    modern: 'Modern',
+    crossPlatform: 'Cross-Platform',
+    openSource: 'Open Source'
   },
   ru: {
     guide: 'Руководство',
@@ -127,7 +133,13 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     sidebarColor: 'Цвет боковой панели',
     backgroundColor: 'Цвет фона',
     basicComponentHighlight: 'Цвет подсветки базовых компонентов',
-    errorColor: 'Цвет ошибок'
+    errorColor: 'Цвет ошибок',
+    features: 'Возможности',
+    advanced: 'Продвинутые',
+    powerful: 'Мощные',
+    modern: 'Современные',
+    crossPlatform: 'Кроссплатформенные',
+    openSource: 'Открытый исходный код'
   },
   uk: {
     guide: 'Керівництво',
@@ -186,7 +198,13 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     sidebarColor: 'Колір бічної панелі',
     backgroundColor: 'Колір фону',
     basicComponentHighlight: 'Колір підсвітки базових компонентів',
-    errorColor: 'Колір помилок'
+    errorColor: 'Колір помилок',
+    features: 'Можливості',
+    advanced: 'Розширені',
+    powerful: 'Потужні',
+    modern: 'Сучасні',
+    crossPlatform: 'Кросплатформні',
+    openSource: 'Відкритий вихідний код'
   },
   zh: {
     guide: '指南',
@@ -245,7 +263,13 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     sidebarColor: '侧边栏颜色',
     backgroundColor: '背景颜色',
     basicComponentHighlight: '基本组件高亮颜色',
-    errorColor: '错误颜色'
+    errorColor: '错误颜色',
+    features: '功能',
+    advanced: '高级',
+    powerful: '强大',
+    modern: '现代',
+    crossPlatform: '跨平台',
+    openSource: '开源'
   },
   de: {
     guide: 'Anleitung',
@@ -304,7 +328,13 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     sidebarColor: 'Seitenleistenfarbe',
     backgroundColor: 'Hintergrundfarbe',
     basicComponentHighlight: 'Grundkomponenten-Hervorhebungsfarbe',
-    errorColor: 'Fehlerfarbe'
+    errorColor: 'Fehlerfarbe',
+    features: 'Funktionen',
+    advanced: 'Erweitert',
+    powerful: 'Leistungsstark',
+    modern: 'Modern',
+    crossPlatform: 'Plattformübergreifend',
+    openSource: 'Open Source'
   },
   ja: {
     guide: 'ガイド',
@@ -363,6 +393,12 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     sidebarColor: 'サイドバーの色',
     backgroundColor: '背景色',
     basicComponentHighlight: '基本コンポーネントのハイライト色',
-    errorColor: 'エラーカラー'
+    errorColor: 'エラーカラー',
+    features: '機能',
+    advanced: '高度な',
+    powerful: '強力な',
+    modern: 'モダンな',
+    crossPlatform: 'クロスプラットフォーム',
+    openSource: 'オープンソース'
   }
 };

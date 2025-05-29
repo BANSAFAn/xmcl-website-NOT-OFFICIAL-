@@ -1,6 +1,6 @@
 
 import { BlogPost } from '@/types/blog';
-// Удаляем импорт BLOG_POSTS, так как файл был удален
+import { BLOG_POSTS } from '@/data/blogPosts';
 import { parseRussianDate } from './dateUtils';
 import { fetchBlogPosts, fetchBlogPost } from './blogFetcher';
 
@@ -19,9 +19,13 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       });
     }
     
-    // Если JSON не найден, возвращаем пустой массив вместо использования BLOG_POSTS
-    console.log("No blog posts found in JSON");
-    return [];
+    // Fallback to hardcoded data if JSON fetch fails
+    console.log("Falling back to hardcoded blog posts");
+    return [...BLOG_POSTS].sort((a, b) => {
+      const dateA = parseRussianDate(a.date);
+      const dateB = parseRussianDate(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
   } catch (error) {
     console.error("Error getting all blog posts:", error);
     return [];
@@ -34,7 +38,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   // Clean up the slug (remove any path components from URLs if present)
   const cleanSlug = slug.split('/').pop() || slug;
   
-  // Try to fetch from the JSON/markdown system
+  // First try to fetch from the JSON/markdown system
   try {
     const jsonPost = await fetchBlogPost(cleanSlug);
     if (jsonPost) {
@@ -44,9 +48,15 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
     console.error(`Error fetching JSON blog post: ${error}`);
   }
   
-  // Если пост не найден, выбрасываем ошибку
-  throw new Error(`Blog post with slug "${cleanSlug}" not found`);
+  // Fallback to hardcoded data
+  const post = BLOG_POSTS.find(post => post.slug === cleanSlug);
+  
+  if (!post) {
+    throw new Error(`Blog post with slug "${cleanSlug}" not found`);
+  }
+  
+  return post;
 }
 
-// Реэкспортируем тип BlogPost для удобства
+// Re-export the BlogPost type for convenience
 export type { BlogPost } from '@/types/blog';

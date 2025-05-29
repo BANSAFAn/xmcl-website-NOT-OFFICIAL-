@@ -9,7 +9,6 @@ import {
   GoodNewsAlert 
 } from '@/components/guide/GuideAlerts';
 import remarkGfm from 'remark-gfm';
-import { CodeBlock } from '@/components/markdown/CodeBlock';
 
 interface MarkdownRendererProps {
   content: string;
@@ -18,16 +17,6 @@ interface MarkdownRendererProps {
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   // Process custom alerts in the content
   const processedContent = content
-    // First, save code blocks to prevent processing their contents
-    .replace(/```([\s\S]*?)```/g, (match) => {
-      return match.replace(/</g, '§LT§').replace(/>/g, '§GT§');
-    })
-    // Process HTML tags to escape them properly
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    // Then restore actual HTML tags that should be rendered
-    .replace(/&lt;\/?(?:div|span|p|h[1-6]|ul|ol|li|a|img|code|pre|blockquote|strong|em|table|thead|tbody|tr|th|td|br)([^&]*?)&gt;/g, '<$1$2>')
-    // Process custom alerts with triple colon syntax
     .replace(/:::(tip|hint)\s+([\s\S]*?):::/g, '<div class="tip-alert">$2</div>')
     .replace(/:::(important|warning)\s+([\s\S]*?):::/g, '<div class="important-alert">$2</div>')
     .replace(/:::(caution)\s+([\s\S]*?):::/g, '<div class="caution-alert">$2</div>')
@@ -39,11 +28,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     .replace(/::warning\s+([\s\S]*?)::/g, '<div class="important-alert">$1</div>')
     .replace(/::caution\s+([\s\S]*?)::/g, '<div class="caution-alert">$1</div>')
     .replace(/::note\s+([\s\S]*?)::/g, '<div class="note-alert">$1</div>')
-    .replace(/::success\s+([\s\S]*?)::/g, '<div class="good-news-alert">$1</div>')
-    // Restore code blocks
-    .replace(/```([\s\S]*?)```/g, (match) => {
-      return match.replace(/§LT§/g, '<').replace(/§GT§/g, '>');
-    });
+    .replace(/::success\s+([\s\S]*?)::/g, '<div class="good-news-alert">$1</div>');
 
   return (
     <motion.div
@@ -102,28 +87,21 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           tr: ({ node, ...props }) => <tr className="hover:bg-gray-800/50 transition-colors" {...props} />,
           th: ({ node, ...props }) => <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider" {...props} />,
           td: ({ node, ...props }) => <td className="px-4 py-3 text-sm" {...props} />,
-          code: ({ node, className, inline, children, ...props }) => {
+          code: ({ node, className, children, ...props }) => {
             // Check if this is an inline code block based on whether it has a className
-            const match = /language-(\w+)/.exec(className || '');
-            const language = match ? match[1] : '';
+            const isInline = !className;
             
-            if (inline) {
+            if (isInline) {
               return <code className="bg-white/10 px-1.5 py-0.5 rounded text-sm" {...props}>{children}</code>;
             }
             
-            // For code blocks, use our custom CodeBlock component
             return (
-              <CodeBlock 
-                language={language} 
-                value={String(children).replace(/\n$/, '')}
-                className={className}
-              />
+              <div className="bg-black/30 rounded-md p-4 my-4 overflow-x-auto">
+                <code className="text-sm text-white/90 font-mono" {...props}>{children}</code>
+              </div>
             );
           },
-          pre: ({ node, children, ...props }) => {
-            // The code component will handle the rendering of code blocks
-            return <>{children}</>;
-          },
+          pre: ({ node, ...props }) => <pre className="overflow-auto" {...props} />,
           blockquote: ({ node, ...props }) => (
             <blockquote className="border-l-4 border-accent/50 pl-4 italic text-white/70 my-4" {...props} />
           ),

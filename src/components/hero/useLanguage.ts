@@ -1,30 +1,32 @@
 
-import { useState, useEffect } from "react";
-import { translations, LanguageCode, TranslationsType } from "./translations";
-import { useLanguage as useNavbarLanguage } from "../navbar/LanguageContext";
+import { useState, useEffect } from 'react';
+import { useLanguage as useGlobalLanguage } from '@/components/navbar/LanguageContext';
+import { heroTranslations, LanguageKey } from './translations';
 
 export function useLanguage() {
-  const { currentLanguage } = useNavbarLanguage();
-  const [text, setText] = useState(translations.en);
-  
-  // Update text when language changes
+  const { currentLanguage } = useGlobalLanguage();
+  const [text, setText] = useState(heroTranslations[currentLanguage as LanguageKey] || heroTranslations.en);
+
   useEffect(() => {
-    // Immediately update text when currentLanguage changes
-    setText(translations[currentLanguage as LanguageCode] || translations.en);
-    
-    // Also listen for language change events for immediate updates
-    const handleLanguageChange = (e: Event) => {
-      const event = e as CustomEvent;
-      const lang = event.detail?.language || currentLanguage;
-      setText(translations[lang as LanguageCode] || translations.en);
+    const updateText = () => {
+      setText(heroTranslations[currentLanguage as LanguageKey] || heroTranslations.en);
     };
-    
-    window.addEventListener('languageChange', handleLanguageChange as EventListener);
-    
+
+    updateText();
+
+    // Listen for language change events
+    const handleLanguageChange = () => {
+      updateText();
+    };
+
+    window.addEventListener('languageChange', handleLanguageChange);
+    window.addEventListener('languageUpdated', handleLanguageChange);
+
     return () => {
-      window.removeEventListener('languageChange', handleLanguageChange as EventListener);
+      window.removeEventListener('languageChange', handleLanguageChange);
+      window.removeEventListener('languageUpdated', handleLanguageChange);
     };
   }, [currentLanguage]);
 
-  return { currentLanguage, text };
+  return { text };
 }

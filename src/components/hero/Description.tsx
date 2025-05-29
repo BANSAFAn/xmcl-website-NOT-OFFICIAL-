@@ -2,20 +2,18 @@
 import { motion } from "framer-motion";
 
 interface DescriptionProps {
-  text: string;
+  description: string;
 }
 
-export function Description({ text }: DescriptionProps) {
+export function Description({ description }: DescriptionProps) {
   return (
-    <motion.div 
-      className="mt-20 max-w-3xl"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.7, delay: 0.8 }}
+    <motion.p 
+      className="text-xl md:text-2xl text-white/90 mb-8 max-w-4xl mx-auto leading-relaxed"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.8 }}
     >
-      <p className="text-lg text-white/80">
-        {text}
-      </p>
-    </motion.div>
+      {description}
+    </motion.p>
   );
 }

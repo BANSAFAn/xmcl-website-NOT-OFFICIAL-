@@ -1,48 +1,47 @@
 
-export const translations = {
+export const heroTranslations = {
   en: {
     title: "X Minecraft Launcher",
-    subtitle: "An Open Source launcher with Modern UX",
-    download: "Download v0.49.1",
-    github: "GitHub Repository",
-    description: "X Minecraft Launcher (XMCL) is a modern Minecraft launcher that efficiently manages your modpacks, resource packs, mods, and shader packs. It integrates with Minecraft Forge, Fabric, Quilt, CurseForge and Modrinth."
+    subtitle: "The Ultimate Minecraft Experience",
+    description: "An open-source launcher with modern UX design, supporting multiple mod loaders and platforms for the best Minecraft experience.",
+    download: "Download Now",
+    github: "GitHub Repository"
   },
   ru: {
     title: "X Minecraft Launcher",
-    subtitle: "Лаунчер с открытым исходным кодом и современным интерфейсом",
-    download: "Скачать v0.49.1",
-    github: "GitHub Репозиторий",
-    description: "X Minecraft Launcher (XMCL) - это современный лаунчер Minecraft, который эффективно управляет вашими модпаками, ресурспаками, модами и шейдерами. Он интегрируется с Minecraft Forge, Fabric, Quilt, CurseForge и Modrinth."
+    subtitle: "Превосходный опыт Minecraft",
+    description: "Лаунчер с открытым исходным кодом и современным UX дизайном, поддерживающий множество загрузчиков модов и платформ для лучшего опыта Minecraft.",
+    download: "Скачать сейчас",
+    github: "GitHub Репозиторий"
   },
   uk: {
     title: "X Minecraft Launcher",
-    subtitle: "Лаунчер з відкритим вихідним кодом та сучасним інтерфейсом",
-    download: "Завантажити v0.49.1",
-    github: "GitHub Репозиторій",
-    description: "X Minecraft Launcher (XMCL) - це сучасний лаунчер Minecraft, який ефективно керує вашими модпаками, ресурспаками, модами та шейдерами. Він інтегрується з Minecraft Forge, Fabric, Quilt, CurseForge та Modrinth."
+    subtitle: "Найкращий досвід Minecraft",
+    description: "Лаунчер з відкритим вихідним кодом та сучасним UX дизайном, що підтримує кілька завантажувачів модів та платформ для найкращого досвіду Minecraft.",
+    download: "Завантажити зараз",
+    github: "GitHub Репозиторій"
   },
   zh: {
-    title: "X Minecraft 启动器",
-    subtitle: "具有现代用户体验的开源启动器",
-    download: "下载 v0.49.1",
-    github: "GitHub 仓库",
-    description: "X Minecraft 启动器 (XMCL) 是一个现代化的 Minecraft 启动器，可以高效管理您的模组包、资源包、模组和光影包。它与 Minecraft Forge、Fabric、Quilt、CurseForge 和 Modrinth 集成。"
+    title: "X Minecraft Launcher",
+    subtitle: "终极 Minecraft 体验",
+    description: "一个开源启动器，具有现代UX设计，支持多个模组加载器和平台，为您提供最佳的Minecraft体验。",
+    download: "立即下载",
+    github: "GitHub 仓库"
   },
   de: {
     title: "X Minecraft Launcher",
-    subtitle: "Ein Open-Source-Launcher mit moderner Benutzeroberfläche",
-    download: "Download v0.49.1",
-    github: "GitHub Repository",
-    description: "X Minecraft Launcher (XMCL) ist ein moderner Minecraft-Launcher, der Ihre Modpacks, Ressourcenpakete, Mods und Shader-Pakete effizient verwaltet. Er integriert sich mit Minecraft Forge, Fabric, Quilt, CurseForge und Modrinth."
+    subtitle: "Das ultimative Minecraft-Erlebnis",
+    description: "Ein Open-Source-Launcher mit modernem UX-Design, der mehrere Mod-Loader und Plattformen für das beste Minecraft-Erlebnis unterstützt.",
+    download: "Jetzt herunterladen",
+    github: "GitHub Repository"
   },
   ja: {
-    title: "X Minecraft ランチャー",
-    subtitle: "モダンなUXを備えたオープンソースランチャー",
-    download: "ダウンロード v0.49.1",
-    github: "GitHub リポジトリ",
-    description: "X Minecraft ランチャー（XMCL）は、モッドパック、リソースパック、MOD、シェーダーパックを効率的に管理する現代的なMinecraftランチャーです。Minecraft Forge、Fabric、Quilt、CurseForge、Modrinthと統合されています。"
+    title: "X Minecraft Launcher",
+    subtitle: "究極の Minecraft 体験",
+    description: "モダンなUXデザインを備えたオープンソースランチャーで、複数のMODローダーとプラットフォームをサポートし、最高のMinecraft体験を提供します。",
+    download: "今すぐダウンロード",
+    github: "GitHub リポジトリ"
   }
 };
 
-export type TranslationsType = typeof translations;
-export type LanguageCode = keyof TranslationsType;
+export type LanguageKey = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
