@@ -127,6 +127,177 @@ export function FeatureShowcase() {
             borderColor: "border-minecraft-accent-yellow/30"
           }
         ];
+      case 'zh':
+        return [
+          {
+            title: "不用担心游戏安装",
+            description: "XMCL支持安装原版Minecraft、Minecraft Forge、Fabric，甚至Optifine，全部集成在一起！您可以在启动器中的单一位置安装它们。它还支持第三方镜像链接BMCL API。您甚至可以在启动器中自定义自己的镜像。",
+            highlightText: "BMCL API",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-orange">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                  <line x1="12" y1="22" x2="12" y2="12"></line>
+                </svg>,
+            color: "text-minecraft-accent-orange",
+            bgColor: "bg-minecraft-accent-orange/20",
+            borderColor: "border-minecraft-accent-orange/30"
+          },
+          {
+            title: "大量资源的最佳磁盘空间利用",
+            description: "XMCL将所有模组、资源包、着色器包和整合包存储在单一位置。当您尝试使用任何已知资源时，它将使用硬链接将资源安装到实例中，无需复制。这意味着您在/mods文件夹中再也不会看到任何重复的副本。",
+            highlightText: "硬链接, 符号链接",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-green">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>,
+            color: "text-minecraft-accent-green",
+            bgColor: "bg-minecraft-accent-green/20",
+            borderColor: "border-minecraft-accent-green/30"
+          },
+          {
+            title: "多实例保持工作空间整洁",
+            description: "XMCL内置支持多实例。您可以轻松创建多个实例。因此，您不必担心不同启动设置的混合。",
+            highlightText: "",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-cyan">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <path d="M3.29 7.05 12 12l8.71-4.95"></path>
+                  <path d="M12 12v9.95"></path>
+                  <path d="M12 12 7 8.8"></path>
+                </svg>,
+            color: "text-minecraft-accent-cyan",
+            bgColor: "bg-minecraft-accent-cyan/20",
+            borderColor: "border-minecraft-accent-cyan/30"
+          },
+          {
+            title: "与多个社区集成",
+            description: "XMCL内置支持Curseforge和Modrinth。它还提供支持自定义用户账户/皮肤系统（如Blessing Skin）的能力。",
+            highlightText: "Curseforge, Modrinth, Blessing Skin, Authlib Injector",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-yellow">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>,
+            color: "text-minecraft-accent-yellow",
+            bgColor: "bg-minecraft-accent-yellow/20",
+            borderColor: "border-minecraft-accent-yellow/30"
+          }
+        ];
+      case 'de':
+        return [
+          {
+            title: "Keine Sorgen mehr bei der Spielinstallation",
+            description: "XMCL unterstützt die Installation von Vanilla Minecraft, Minecraft Forge, Fabric und sogar Optifine - alles in einem! Sie können sie an einem einzigen Ort im Launcher installieren. Es unterstützt auch den Drittanbieter-Spiegellink BMCL API. Sie können sogar Ihren eigenen Spiegel im Launcher anpassen.",
+            highlightText: "BMCL API",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-orange">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                  <line x1="12" y1="22" x2="12" y2="12"></line>
+                </svg>,
+            color: "text-minecraft-accent-orange",
+            bgColor: "bg-minecraft-accent-orange/20",
+            borderColor: "border-minecraft-accent-orange/30"
+          },
+          {
+            title: "Optimaler Festplattenplatz mit massiven Ressourcen",
+            description: "XMCL speichert alle Mods, Ressourcenpakete, Shader-Pakete und Modpacks an einem einzigen Speicherort. Wenn Sie versuchen, eine bekannte Ressource zu verwenden, wird ein Hard-Link verwendet, um die Ressource ohne Kopieren in die Instanz zu installieren. Das bedeutet, dass Sie nie wieder doppelte Kopien im /mods-Ordner sehen werden.",
+            highlightText: "Hard-Link, Symbolischer Link",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-green">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>,
+            color: "text-minecraft-accent-green",
+            bgColor: "bg-minecraft-accent-green/20",
+            borderColor: "border-minecraft-accent-green/30"
+          },
+          {
+            title: "Halten Sie Ihren Arbeitsbereich mit Multi-Instanzen sauber",
+            description: "XMCL hat eingebaute Unterstützung für Multi-Instanzen. Sie können mehrere Instanzen einfach erstellen. So müssen Sie sich keine Sorgen mehr über die Vermischung verschiedener Starteinstellungen machen.",
+            highlightText: "",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-cyan">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <path d="M3.29 7.05 12 12l8.71-4.95"></path>
+                  <path d="M12 12v9.95"></path>
+                  <path d="M12 12 7 8.8"></path>
+                </svg>,
+            color: "text-minecraft-accent-cyan",
+            bgColor: "bg-minecraft-accent-cyan/20",
+            borderColor: "border-minecraft-accent-cyan/30"
+          },
+          {
+            title: "Integration mit mehreren Communities",
+            description: "XMCL hat eingebaute Unterstützung für Curseforge und Modrinth. Es bietet auch die Möglichkeit, benutzerdefinierte Benutzerkonten/Skin-Systeme wie Blessing Skin zu unterstützen.",
+            highlightText: "Curseforge, Modrinth, Blessing Skin, Authlib Injector",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-yellow">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>,
+            color: "text-minecraft-accent-yellow",
+            bgColor: "bg-minecraft-accent-yellow/20",
+            borderColor: "border-minecraft-accent-yellow/30"
+          }
+        ];
+      case 'ja':
+        return [
+          {
+            title: "ゲームインストールの心配はもうありません",
+            description: "XMCLはバニラMinecraft、Minecraft Forge、Fabric、さらにはOptifineのインストールをオールインワンでサポートしています！ランチャー内の一箇所でそれらをインストールできます。また、サードパーティのミラーリンクBMCL APIもサポートしています。ランチャーで独自のミラーをカスタマイズすることもできます。",
+            highlightText: "BMCL API",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-orange">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                  <line x1="12" y1="22" x2="12" y2="12"></line>
+                </svg>,
+            color: "text-minecraft-accent-orange",
+            bgColor: "bg-minecraft-accent-orange/20",
+            borderColor: "border-minecraft-accent-orange/30"
+          },
+          {
+            title: "大量のリソースで最適なディスク容量",
+            description: "XMCLはすべてのMod、リソースパック、シェーダーパック、Modpackを単一の保存場所に保存します。既知のリソースを使用しようとすると、コピーせずにハードリンクを使用してリソースをインスタンスにインストールします。これにより、/modsフォルダに重複したコピーが表示されることはもうありません。",
+            highlightText: "ハードリンク, シンボリックリンク",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-green">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>,
+            color: "text-minecraft-accent-green",
+            bgColor: "bg-minecraft-accent-green/20",
+            borderColor: "border-minecraft-accent-green/30"
+          },
+          {
+            title: "マルチインスタンスでワークスペースをクリーンに保つ",
+            description: "XMCLにはマルチインスタンスのサポートが組み込まれています。複数のインスタンスを簡単に作成できます。そのため、異なる起動設定の混在について心配する必要はありません。",
+            highlightText: "",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-cyan">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <path d="M3.29 7.05 12 12l8.71-4.95"></path>
+                  <path d="M12 12v9.95"></path>
+                  <path d="M12 12 7 8.8"></path>
+                </svg>,
+            color: "text-minecraft-accent-cyan",
+            bgColor: "bg-minecraft-accent-cyan/20",
+            borderColor: "border-minecraft-accent-cyan/30"
+          },
+          {
+            title: "複数のコミュニティと統合",
+            description: "XMCLにはCurseforgeとModrinthのサポートが組み込まれています。また、Blessing Skinのようなカスタムユーザーアカウント/スキンシステムをサポートする機能も提供しています。",
+            highlightText: "Curseforge, Modrinth, Blessing Skin, Authlib Injector",
+            icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-minecraft-accent-yellow">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>,
+            color: "text-minecraft-accent-yellow",
+            bgColor: "bg-minecraft-accent-yellow/20",
+            borderColor: "border-minecraft-accent-yellow/30"
+          }
+        ];
       default: // English
         return [
           {

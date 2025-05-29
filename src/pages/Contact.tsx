@@ -75,6 +75,134 @@ export default function Contact() {
         value: "加入中文社区",
         description: "Присоединяйтесь к китайскому сообществу XMCL."
       }
+    },
+    uk: {
+      contactUs: "Зв'яжіться з нами",
+      allContacts: "Всі контакти",
+      support: "Підтримка",
+      community: "Спільнота",
+      donate: "Підтримати нас",
+      email: {
+        title: "Електронна пошта",
+        value: "cijhn@hotmail.com",
+        description: "Для підтримки, відгуків та ділових запитів."
+      },
+      discord: {
+        title: "Discord",
+        value: "Приєднуйтесь до спільноти",
+        description: "Спілкуйтеся з розробниками та іншими користувачами."
+      },
+      kofi: {
+        title: "Ko-fi",
+        value: "Підтримайте наш розвиток",
+        description: "Допоможіть нам продовжувати вдосконалювати XMCL своєю підтримкою."
+      },
+      afdian: {
+        title: "Afdian",
+        value: "支持我们的发展",
+        description: "Інший спосіб підтримати розробку XMCL."
+      },
+      kook: {
+        title: "Kook",
+        value: "加入中文社区",
+        description: "Приєднуйтесь до китайської спільноти XMCL."
+      }
+    },
+    zh: {
+      contactUs: "联系我们",
+      allContacts: "所有联系方式",
+      support: "支持",
+      community: "社区",
+      donate: "支持我们",
+      email: {
+        title: "电子邮件",
+        value: "cijhn@hotmail.com",
+        description: "用于支持、反馈和商业咨询。"
+      },
+      discord: {
+        title: "Discord",
+        value: "加入我们的社区",
+        description: "与开发者和其他用户聊天。"
+      },
+      kofi: {
+        title: "Ko-fi",
+        value: "支持我们的开发",
+        description: "通过您的支持帮助我们继续改进XMCL。"
+      },
+      afdian: {
+        title: "爱发电",
+        value: "支持我们的发展",
+        description: "另一种支持XMCL开发的方式。"
+      },
+      kook: {
+        title: "Kook",
+        value: "加入中文社区",
+        description: "加入XMCL的中文社区交流。"
+      }
+    },
+    de: {
+      contactUs: "Kontaktieren Sie uns",
+      allContacts: "Alle Kontakte",
+      support: "Support",
+      community: "Community",
+      donate: "Unterstützen Sie uns",
+      email: {
+        title: "E-Mail",
+        value: "cijhn@hotmail.com",
+        description: "Für Support, Feedback und geschäftliche Anfragen."
+      },
+      discord: {
+        title: "Discord",
+        value: "Treten Sie unserer Community bei",
+        description: "Chatten Sie mit Entwicklern und anderen Benutzern."
+      },
+      kofi: {
+        title: "Ko-fi",
+        value: "Unterstützen Sie unsere Entwicklung",
+        description: "Helfen Sie uns, XMCL mit Ihrer Unterstützung weiter zu verbessern."
+      },
+      afdian: {
+        title: "Afdian",
+        value: "支持我们的发展",
+        description: "Eine andere Möglichkeit, die Entwicklung von XMCL zu unterstützen."
+      },
+      kook: {
+        title: "Kook",
+        value: "加入中文社区",
+        description: "Treten Sie der chinesischen XMCL-Community bei."
+      }
+    },
+    ja: {
+      contactUs: "お問い合わせ",
+      allContacts: "すべての連絡先",
+      support: "サポート",
+      community: "コミュニティ",
+      donate: "サポートする",
+      email: {
+        title: "メール",
+        value: "cijhn@hotmail.com",
+        description: "サポート、フィードバック、ビジネスに関するお問い合わせ。"
+      },
+      discord: {
+        title: "Discord",
+        value: "コミュニティに参加する",
+        description: "開発者や他のユーザーとチャットする。"
+      },
+      kofi: {
+        title: "Ko-fi",
+        value: "開発をサポートする",
+        description: "あなたのサポートでXMCLの改善を続けるのを手伝ってください。"
+      },
+      afdian: {
+        title: "Afdian",
+        value: "支持我们的发展",
+        description: "XMCLの開発をサポートする別の方法。"
+      },
+      kook: {
+        title: "Kook",
+        value: "加入中文社区",
+        description: "XMCL中国語コミュニティに参加する。"
+      }
     }
   };
 

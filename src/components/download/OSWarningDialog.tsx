@@ -47,6 +47,13 @@ const translations: Record<string, Translations> = {
     warning: "Das Ansehen von Downloads für andere Betriebssysteme ist möglicherweise nicht für Ihr Gerät geeignet. Sind Sie sicher, dass Sie fortfahren möchten?",
     proceed: "Trotzdem fortfahren",
     wait: "Bitte warten..."
+  },
+  ja: {
+    title: "オペレーティングシステムの不一致",
+    detected: "あなたが使用しているのは",
+    warning: "他のオペレーティングシステム向けのダウンロードを表示することは、お使いのデバイスに適していない可能性があります。続行してもよろしいですか？",
+    proceed: "とにかく続行する",
+    wait: "お待ちください..."
   }
 };
 

@@ -1,5 +1,5 @@
 
-export type TranslationKey = 'en' | 'ru' | 'uk' | 'zh';
+export type TranslationKey = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
 
 export interface ChangelogTranslations {
   title: string;
@@ -47,5 +47,23 @@ export const translations: Record<TranslationKey, ChangelogTranslations> = {
     viewOnGithub: "在 GitHub 上查看",
     loading: "正在加载发布信息...",
     error: "加载发布信息失败。请稍后再试。",
+  },
+  de: {
+    title: "Änderungsprotokoll",
+    subtitle: "Bleiben Sie auf dem Laufenden über die neuesten Verbesserungen und Fehlerbehebungen für X Minecraft Launcher",
+    version: "Version",
+    released: "Veröffentlicht",
+    viewOnGithub: "Auf GitHub ansehen",
+    loading: "Lade Veröffentlichungen...",
+    error: "Fehler beim Laden der Veröffentlichungen. Bitte versuchen Sie es später erneut.",
+  },
+  ja: {
+    title: "更新履歴",
+    subtitle: "X Minecraft Launcherの最新の改善点や修正点を常に把握できます",
+    version: "バージョン",
+    released: "リリース日",
+    viewOnGithub: "GitHubで表示",
+    loading: "リリース情報を読み込み中...",
+    error: "リリース情報の読み込みに失敗しました。後でもう一度お試しください。",
   }
 };
