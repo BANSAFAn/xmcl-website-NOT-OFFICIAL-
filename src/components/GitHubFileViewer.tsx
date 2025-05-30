@@ -445,7 +445,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                         >
                           {copied ? <Check size={14} className="mr-2" /> : <Copy size={14} className="mr-2" />}
-                          {copied ? 'Copied!' : 'Copy'}
+                          {copied ? translations.githubFileViewer.copied || 'Copied!' : translations.githubFileViewer.copy || 'Copy'}
                         </Button>
                         <Button
                           variant="outline"
@@ -459,7 +459,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                         >
                           <Download size={14} className="mr-2" />
-                          Download
+                          {translations.githubFileViewer.downloadFile || 'Download'}
                         </Button>
                       </div>
                     </div>
@@ -468,7 +468,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                         {loading ? (
                           <div className="text-center py-8">
                             <div className="animate-spin w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full mx-auto"></div>
-                            <p className="text-slate-400 mt-2">Loading file content...</p>
+                            <p className="text-slate-400 mt-2">{translations.githubFileViewer.loadingContent || "Loading file content..."}</p>
                           </div>
                         ) : (
                           <div className="font-mono text-sm leading-relaxed">
@@ -484,8 +484,8 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                       <div className="p-6 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-3xl border border-cyan-500/20 mb-6">
                         <Code size={64} className="text-cyan-400 mx-auto" />
                       </div>
-                      <p className="text-slate-300 text-xl font-semibold mb-2">Select a file to view its content</p>
-                      <p className="text-slate-500">Browse the repository files on the left panel</p>
+                      <p className="text-slate-300 text-xl font-semibold mb-2">{translations.githubFileViewer.selectFileToView || "Select a file to view its content"}</p>
+                      <p className="text-slate-500">{translations.githubFileViewer.browseFiles || "Browse the repository files on the left panel"}</p>
                     </div>
                   </div>
                 )}

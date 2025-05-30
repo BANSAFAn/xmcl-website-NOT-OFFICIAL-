@@ -4,6 +4,7 @@ import { Download, Github, Code } from "lucide-react";
 import { HashLink } from "react-router-hash-link";
 import { useState } from "react";
 import { GitHubFileViewer } from "../GitHubFileViewer";
+import { useLanguage } from "../navbar/LanguageContext";
 
 interface ActionButtonsProps {
   isMobile?: boolean;
@@ -11,6 +12,7 @@ interface ActionButtonsProps {
 
 export function ActionButtons({ isMobile = false }: ActionButtonsProps) {
   const [showGitHubViewer, setShowGitHubViewer] = useState(false);
+  const { translations } = useLanguage();
 
   return (
     <>
@@ -54,7 +56,7 @@ export function ActionButtons({ isMobile = false }: ActionButtonsProps) {
             className={`relative flex items-center gap-3 ${isMobile ? 'px-6 py-3 text-base' : 'px-8 py-4 text-lg'} bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white font-bold rounded-2xl border border-slate-600 shadow-2xl transition-all duration-300 group-hover:shadow-slate-500/50 group-hover:border-slate-400 z-10`}
           >
             <Code size={isMobile ? 20 : 24} />
-            <span>View Code</span>
+            <span>{translations.githubFileViewer.viewCode || "View Code"}</span>
             
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 rounded-2xl blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300 -z-10"
