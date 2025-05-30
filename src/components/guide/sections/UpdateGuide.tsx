@@ -21,7 +21,7 @@ export function UpdateGuide() {
         
         <Tabs defaultValue="appx" className="w-full mb-6">
           <TabsList>
-            <TabsTrigger value="appx">Windows (APPX)</TabsTrigger>
+            <TabsTrigger value="appx" tooltip="Windows APPX installation path">Windows (APPX)</TabsTrigger>
           </TabsList>
           <TabsContent value="appx" className="p-4 bg-black/30 rounded-lg">
             <CodeBlock>%LocalAppData%\Packages\XMCL_ncdvebj03zfcm\LocalCache\Roaming\xmcl</CodeBlock>
@@ -32,7 +32,7 @@ export function UpdateGuide() {
         
         <Tabs defaultValue="appx" className="w-full mb-6">
           <TabsList>
-            <TabsTrigger value="appx">Windows (APPX)</TabsTrigger>
+            <TabsTrigger value="appx" tooltip="Windows APPX installation path for new version">Windows (APPX)</TabsTrigger>
           </TabsList>
           <TabsContent value="appx" className="p-4 bg-black/30 rounded-lg">
             <CodeBlock>%LocalAppData%\Packages\XMCL_68mcaawk44tpj\LocalCache\Roaming\xmcl</CodeBlock>
@@ -52,32 +52,25 @@ export function UpdateGuide() {
       <Separator className="my-8 bg-white/10" />
       
       <section className="space-y-4">
-        <h3 className="text-2xl font-bold">Other updates require reinstallation</h3>
-        <p>This situation does not actually require backup, because only APPX will clear XMCL's data files. Of course, you can back up if you want to, and the data files will be located in the following locations:</p>
+        <h3 className="text-2xl font-bold">How to update</h3>
+        <p>The launcher will automatically check for updates when it starts. If there is an update, it will prompt you to update. You can also manually check for updates in the settings page.</p>
         
         <Tabs defaultValue="windows" className="w-full mb-6">
           <TabsList className="grid grid-cols-3">
-            <TabsTrigger value="windows">Windows</TabsTrigger>
-            <TabsTrigger value="macos">macOS</TabsTrigger>
-            <TabsTrigger value="linux">Linux</TabsTrigger>
+            <TabsTrigger value="windows" tooltip="Windows update instructions">Windows</TabsTrigger>
+            <TabsTrigger value="macos" tooltip="macOS update instructions">macOS</TabsTrigger>
+            <TabsTrigger value="linux" tooltip="Linux update instructions">Linux</TabsTrigger>
           </TabsList>
           <TabsContent value="windows" className="p-4 bg-black/30 rounded-lg">
-            <CodeBlock>%AppData%\xmcl</CodeBlock>
+            <p>For Windows, the launcher will download the update and install it automatically. You just need to restart the launcher after the update is complete.</p>
           </TabsContent>
           <TabsContent value="macos" className="p-4 bg-black/30 rounded-lg">
-            <p>Standard macOS Application Support directory.</p>
+            <p>For macOS, the launcher will download the update and install it automatically. You just need to restart the launcher after the update is complete.</p>
           </TabsContent>
           <TabsContent value="linux" className="p-4 bg-black/30 rounded-lg">
-            <p>Standard Linux data directory.</p>
+            <p>For Linux, the update method depends on how you installed the launcher. If you installed it through a package manager, you should update it through the package manager. If you downloaded the AppImage, you can download the new version from the official website.</p>
           </TabsContent>
         </Tabs>
-      </section>
-
-      <Separator className="my-8 bg-white/10" />
-      
-      <section className="space-y-4">
-        <h3 className="text-2xl font-bold">Other version updates failed</h3>
-        <p className="text-xl italic">Just redownload it...</p>
       </section>
     </div>
   );

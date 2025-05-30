@@ -3,6 +3,7 @@ import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card"
 
 const Tabs = TabsPrimitive.Root
 
@@ -21,13 +22,17 @@ const TabsList = React.forwardRef<
 ))
 TabsList.displayName = TabsPrimitive.List.displayName
 
+interface TabsTriggerProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> {
+  tooltip?: string;
+}
+
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, children, ...props }, ref) => {
+  TabsTriggerProps
+>(({ className, children, tooltip, ...props }, ref) => {
   const [isHovered, setIsHovered] = React.useState(false);
   
-  return (
+  const triggerContent = (
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
@@ -109,6 +114,23 @@ const TabsTrigger = React.forwardRef<
       />
     </TabsPrimitive.Trigger>
   );
+
+  // If tooltip is provided, wrap with HoverCard
+  if (tooltip) {
+    return (
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          {triggerContent}
+        </HoverCardTrigger>
+        <HoverCardContent className="bg-slate-900/90 backdrop-blur-xl border border-white/20 text-white p-3">
+          {tooltip}
+        </HoverCardContent>
+      </HoverCard>
+    );
+  }
+
+  // Otherwise return the trigger directly
+  return triggerContent;
 });
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 

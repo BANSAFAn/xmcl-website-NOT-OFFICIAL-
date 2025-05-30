@@ -21,10 +21,10 @@ export function DataStorageGuide() {
         
         <Tabs defaultValue="windows" className="w-full mb-6">
           <TabsList className="grid grid-cols-4 mb-4">
-            <TabsTrigger value="windows">Windows</TabsTrigger>
-            <TabsTrigger value="appx">Windows (APPX)</TabsTrigger>
-            <TabsTrigger value="macos">macOS</TabsTrigger>
-            <TabsTrigger value="linux">Linux</TabsTrigger>
+            <TabsTrigger value="windows" tooltip="Windows storage location">Windows</TabsTrigger>
+            <TabsTrigger value="appx" tooltip="Windows APPX storage location">Windows (APPX)</TabsTrigger>
+            <TabsTrigger value="macos" tooltip="macOS storage location">macOS</TabsTrigger>
+            <TabsTrigger value="linux" tooltip="Linux storage location">Linux</TabsTrigger>
           </TabsList>
           <TabsContent value="windows" className="p-4 bg-black/30 rounded-lg">
             <CodeBlock>%AppData%\xmcl</CodeBlock>
@@ -48,33 +48,35 @@ export function DataStorageGuide() {
         
         <ul className="list-disc pl-6 space-y-2">
           <li><strong>User data.</strong> Stores users' accounts, skin links, etc. Stored in the /user.json file.</li>
-          <li><strong>Global settings.</strong> Global settings, such as language, proxy URL, download node, etc. Stored in the /settings.json file.</li>
-          <li><strong>Instance cache.</strong> Records the last selected instance path and the paths of all known instances. Stored in the /instances.json file.</li>
-          <li><strong>Java cache.</strong> Records detected Java paths, version information, etc. Stored in the /java.json file.</li>
+          <li><strong>Instance data.</strong> Stores instance configurations, such as Java path, memory allocation, etc. Stored in the /instances.json file.</li>
           <li><strong>Resource database.</strong> Metadata for resource files, such as parsed mod information. Stored in leveldb format, in the /resources-v2 folder.</li>
-          <li><strong>Logs.</strong> XMCL historical logs. Stored in the /logs folder.</li>
         </ul>
       </section>
 
       <Separator className="my-8 bg-white/10" />
       
       <section className="space-y-4">
-        <h3 className="text-2xl font-bold">Minecraft-related data</h3>
-        <p>I believe you are very familiar with the directory structure of Minecraft data. The data directory of XMCL is slightly different from that of Minecraft:</p>
+        <h3 className="text-2xl font-bold">Minecraft related data</h3>
+        <p>Minecraft related data is stored in the .minecraft folder, which is located in the following path:</p>
         
-        <CodeBlock>
-{`"Public Data folder"
-└─ 📂mods # Shared mods folder for all instances
-  └─ modA.jar # A specific mod file, instance might link mods from it.
-├─ 📂resourcepacks # Shared resourcepacks folder for all instances
-├─ 📂shaderpacks # Shared shaderpacks folder for all instances
-├─ 📂versions # Shared versions folder for all instances
-├─ 📂assets # Shared assets folder for all instances
-├─ 📂libraries # Shared libraries folder for all instances
-└─ 📂instances # Contains the instances created by XMCL`}
-        </CodeBlock>
+        <Tabs defaultValue="windows" className="w-full mb-6">
+          <TabsList className="grid grid-cols-3 mb-4">
+            <TabsTrigger value="windows" tooltip="Windows Minecraft data location">Windows</TabsTrigger>
+            <TabsTrigger value="macos" tooltip="macOS Minecraft data location">macOS</TabsTrigger>
+            <TabsTrigger value="linux" tooltip="Linux Minecraft data location">Linux</TabsTrigger>
+          </TabsList>
+          <TabsContent value="windows" className="p-4 bg-black/30 rounded-lg">
+            <CodeBlock>%AppData%\.minecraft</CodeBlock>
+          </TabsContent>
+          <TabsContent value="macos" className="p-4 bg-black/30 rounded-lg">
+            <CodeBlock>~/Library/Application Support/minecraft</CodeBlock>
+          </TabsContent>
+          <TabsContent value="linux" className="p-4 bg-black/30 rounded-lg">
+            <CodeBlock>~/.minecraft</CodeBlock>
+          </TabsContent>
+        </Tabs>
         
-        <p>Most of the content is actually the same as Minecraft, among which the instances folder contains all instance files.</p>
+        <p>This is the default location, but you can change it in the settings. If you have multiple instances, each instance can have its own .minecraft folder.</p>
       </section>
     </div>
   );

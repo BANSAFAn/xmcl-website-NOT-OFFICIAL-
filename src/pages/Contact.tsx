@@ -289,10 +289,10 @@ export default function Contact() {
             
             <Tabs defaultValue="all" className="w-full">
               <TabsList className="mb-8 w-full justify-center bg-white/5 backdrop-blur-sm border border-white/10">
-                <TabsTrigger value="all" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.allContacts}</TabsTrigger>
-                <TabsTrigger value="support" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.support}</TabsTrigger>
-                <TabsTrigger value="community" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.community}</TabsTrigger>
-                <TabsTrigger value="donate" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.donate}</TabsTrigger>
+                <TabsTrigger value="all" tooltip={text.allContacts} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.allContacts}</TabsTrigger>
+                <TabsTrigger value="support" tooltip={text.support} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.support}</TabsTrigger>
+                <TabsTrigger value="community" tooltip={text.community} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.community}</TabsTrigger>
+                <TabsTrigger value="donate" tooltip={text.donate} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.donate}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="all" className="space-y-6">
