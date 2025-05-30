@@ -1,8 +1,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, Folder, File, ChevronRight, ChevronDown, ChevronLeft, Code, Download, Copy, Check } from "lucide-react";
+import { X, ExternalLink, Folder, File, ChevronRight, ChevronDown, ChevronLeft, Code, Download, Copy, Check, ArrowUpDown, Calendar, AlignLeft } from "lucide-react";
 import { Button } from "./ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { useLanguage } from "./navbar/LanguageContext";
 
 interface GitHubFile {
   name: string;
@@ -10,6 +12,9 @@ interface GitHubFile {
   type: "file" | "dir";
   size?: number;
   download_url?: string;
+  sha?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface GitHubFileViewerProps {
@@ -18,6 +23,7 @@ interface GitHubFileViewerProps {
 }
 
 export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
+  const { translations } = useLanguage();
   const [files, setFiles] = useState<GitHubFile[]>([]);
   const [currentPath, setCurrentPath] = useState("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -25,6 +31,8 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
   const [loading, setLoading] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState(false);
+  const [sortType, setSortType] = useState<"name" | "date" | "none">("none");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const repoUrl = "https://api.github.com/repos/Voxelum/x-minecraft-launcher/contents";
 
@@ -39,7 +47,30 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     try {
       const response = await fetch(`${repoUrl}${path ? `/${path}` : ""}`);
       const data = await response.json();
-      setFiles(Array.isArray(data) ? data : []);
+      const filesData = Array.isArray(data) ? data : [];
+      
+      // Fetch additional metadata for each file if needed
+      const filesWithMetadata = await Promise.all(filesData.map(async (file) => {
+        // For simplicity, we'll use the commit data to get the last updated date
+        // In a real implementation, you might want to cache this data
+        if (file.type === "file") {
+          try {
+            const commitResponse = await fetch(`https://api.github.com/repos/Voxelum/x-minecraft-launcher/commits?path=${file.path}&page=1&per_page=1`);
+            const commitData = await commitResponse.json();
+            if (commitData && commitData.length > 0) {
+              return {
+                ...file,
+                updated_at: commitData[0].commit.committer.date
+              };
+            }
+          } catch (err) {
+            console.error("Error fetching commit data:", err);
+          }
+        }
+        return file;
+      }));
+      
+      setFiles(sortFiles(filesWithMetadata, sortType, sortOrder));
       setCurrentPath(path);
     } catch (error) {
       console.error("Error fetching files:", error);
@@ -76,6 +107,51 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     setExpandedFolders(newExpanded);
   };
 
+  const sortFiles = (filesToSort: GitHubFile[], type: "name" | "date" | "none", order: "asc" | "desc") => {
+    if (type === "none") {
+      // Default sorting: directories first, then files alphabetically
+      return [...filesToSort].sort((a, b) => {
+        if (a.type !== b.type) {
+          return a.type === "dir" ? -1 : 1;
+        }
+        return a.name.localeCompare(b.name);
+      });
+    }
+    
+    return [...filesToSort].sort((a, b) => {
+      // Always keep directories at the top
+      if (a.type !== b.type) {
+        return a.type === "dir" ? -1 : 1;
+      }
+      
+      if (type === "name") {
+        const result = a.name.localeCompare(b.name);
+        return order === "asc" ? result : -result;
+      } else if (type === "date" && a.updated_at && b.updated_at) {
+        const dateA = new Date(a.updated_at).getTime();
+        const dateB = new Date(b.updated_at).getTime();
+        const result = dateA - dateB;
+        return order === "asc" ? result : -result;
+      }
+      
+      return 0;
+    });
+  };
+  
+  const handleSort = (type: "name" | "date") => {
+    if (sortType === type) {
+      // Toggle order if same type is selected
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // Set new type and default to ascending
+      setSortType(type);
+      setSortOrder("asc");
+    }
+    
+    // Re-sort the files
+    setFiles(sortFiles(files, type, sortOrder === "asc" ? "desc" : "asc"));
+  };
+  
   const getFileIcon = (file: GitHubFile) => {
     if (file.type === "dir") {
       return expandedFolders.has(file.path) ? <ChevronDown size={16} /> : <ChevronRight size={16} />;
@@ -122,14 +198,65 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     
     // Add basic syntax highlighting classes for different languages
     const lines = content.split('\n');
-    return lines.map((line, index) => (
-      <div key={index} className="flex">
-        <span className="select-none text-slate-500 text-right pr-4 w-12 text-sm">
-          {index + 1}
-        </span>
-        <span className="text-slate-200 font-mono text-sm">{line || ' '}</span>
-      </div>
-    ));
+    const language = getLanguageFromExtension(extension);
+    
+    return lines.map((line, index) => {
+      // Basic syntax highlighting
+      let formattedLine = line;
+      
+      // Apply syntax highlighting based on language
+      if (language === 'javascript' || language === 'typescript') {
+        // Keywords
+        formattedLine = formattedLine.replace(
+          /\b(const|let|var|function|return|if|else|for|while|class|import|export|from|async|await|try|catch|throw)\b/g, 
+          '<span class="text-purple-400">$1</span>'
+        );
+        // Strings
+        formattedLine = formattedLine.replace(
+          /(["'])(.*?)\1/g, 
+          '<span class="text-green-400">$1$2$1</span>'
+        );
+        // Comments
+        formattedLine = formattedLine.replace(
+          /(\/\/.*$)/g, 
+          '<span class="text-slate-500">$1</span>'
+        );
+      } else if (language === 'html' || language === 'xml') {
+        // Tags
+        formattedLine = formattedLine.replace(
+          /(&lt;\/?)(\w+)(.*?)(&gt;)/g, 
+          '$1<span class="text-orange-400">$2</span>$3$4'
+        );
+        // Attributes
+        formattedLine = formattedLine.replace(
+          /(\s+)(\w+)(=)(["'])(.*?)\4/g, 
+          '$1<span class="text-yellow-400">$2</span>$3$4<span class="text-green-400">$5</span>$4'
+        );
+      } else if (language === 'css' || language === 'scss') {
+        // Properties
+        formattedLine = formattedLine.replace(
+          /(\s+)([-\w]+)(:)/g, 
+          '$1<span class="text-blue-400">$2</span>$3'
+        );
+        // Values
+        formattedLine = formattedLine.replace(
+          /(:)(\s+)([^;]+)(;?)/g, 
+          '$1$2<span class="text-green-400">$3</span>$4'
+        );
+      }
+      
+      return (
+        <div key={index} className="flex hover:bg-slate-800/50 transition-colors">
+          <span className="select-none text-slate-500 text-right pr-4 w-12 text-sm border-r border-slate-700 mr-4">
+            {index + 1}
+          </span>
+          <span 
+            className="text-slate-200 font-mono text-sm flex-1 overflow-x-auto"
+            dangerouslySetInnerHTML={{ __html: formattedLine || ' ' }}
+          />
+        </div>
+      );
+    });
   };
 
   const copyToClipboard = async () => {
@@ -186,7 +313,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                   className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                 >
                   <ExternalLink size={16} className="mr-2" />
-                  Open on GitHub
+                  {translations.githubFileViewer.openOnGitHub || "Open on GitHub"}
                 </Button>
                 <Button
                   variant="ghost"
@@ -204,9 +331,37 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
               {/* Enhanced File Explorer */}
               <div className="w-1/3 border-r border-slate-700 bg-slate-800/30 overflow-y-auto">
                 <div className="p-4">
-                  <div className="flex items-center gap-2 mb-4 text-sm text-slate-400 bg-slate-800/50 p-3 rounded-lg">
-                    <Folder size={16} />
-                    <span>/{currentPath || "root"}</span>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2 text-sm text-slate-400 bg-slate-800/50 p-3 rounded-lg flex-1">
+                      <Folder size={16} />
+                      <span>/{currentPath || "root"}</span>
+                    </div>
+                    
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="ml-2 bg-slate-700 border-slate-600 hover:bg-slate-600 text-white">
+                          <ArrowUpDown size={14} className="mr-2" />
+                          {sortType === "name" ? translations.githubFileViewer.name || "Name" : sortType === "date" ? translations.githubFileViewer.date || "Date" : translations.githubFileViewer.sort || "Sort"}
+                          {sortType !== "none" && (sortOrder === "asc" ? " ↑" : " ↓")}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
+                        <DropdownMenuItem 
+                          onClick={() => handleSort("name")} 
+                          className={`flex items-center ${sortType === "name" ? "text-cyan-400" : "text-slate-300"}`}
+                        >
+                          <AlignLeft size={14} className="mr-2" />
+                          {translations.githubFileViewer.name || "Name"} {sortType === "name" && (sortOrder === "asc" ? "↑" : "↓")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => handleSort("date")} 
+                          className={`flex items-center ${sortType === "date" ? "text-cyan-400" : "text-slate-300"}`}
+                        >
+                          <Calendar size={14} className="mr-2" />
+                          {translations.githubFileViewer.date || "Date"} {sortType === "date" && (sortOrder === "asc" ? "↑" : "↓")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                   
                   {loading ? (

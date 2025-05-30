@@ -75,7 +75,22 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     powerful: 'Puissantes',
     modern: 'Modernes',
     crossPlatform: 'Multi-plateformes',
-    openSource: 'Open Source'
+    openSource: 'Open Source',
+    // GitHub File Viewer translations
+    viewCode: 'Voir le code',
+    sortBy: 'Trier par',
+    sortByName: 'Nom',
+    sortByDate: 'Date',
+    ascending: 'Croissant',
+    descending: 'Décroissant',
+    parentDirectory: 'Dossier parent',
+    fileExplorer: 'Explorateur de fichiers',
+    noFileSelected: 'Aucun fichier sélectionné',
+    selectFileToView: 'Sélectionnez un fichier pour afficher son contenu',
+    loading: 'Chargement...',
+    copy: 'Copier',
+    copied: 'Copié',
+    downloadFile: 'Télécharger'
   },
   en: {
     guide: 'Guide',
@@ -140,7 +155,22 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     powerful: 'Powerful',
     modern: 'Modern',
     crossPlatform: 'Cross-Platform',
-    openSource: 'Open Source'
+    openSource: 'Open Source',
+    // GitHub File Viewer translations
+    viewCode: 'View Code',
+    sortBy: 'Sort by',
+    sortByName: 'Name',
+    sortByDate: 'Date',
+    ascending: 'Ascending',
+    descending: 'Descending',
+    parentDirectory: 'Parent Directory',
+    fileExplorer: 'File Explorer',
+    noFileSelected: 'No file selected',
+    selectFileToView: 'Select a file to view its content',
+    loading: 'Loading...',
+    copy: 'Copy',
+    copied: 'Copied',
+    downloadFile: 'Download'
   },
   ru: {
     guide: 'Руководство',
@@ -205,7 +235,22 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     powerful: 'Мощные',
     modern: 'Современные',
     crossPlatform: 'Кроссплатформенные',
-    openSource: 'Открытый исходный код'
+    openSource: 'Открытый исходный код',
+    // GitHub File Viewer translations
+    viewCode: 'Просмотр кода',
+    sortBy: 'Сортировать по',
+    sortByName: 'Имени',
+    sortByDate: 'Дате',
+    ascending: 'По возрастанию',
+    descending: 'По убыванию',
+    parentDirectory: 'Родительская директория',
+    fileExplorer: 'Проводник',
+    noFileSelected: 'Файл не выбран',
+    selectFileToView: 'Выберите файл для просмотра содержимого',
+    loading: 'Загрузка...',
+    copy: 'Копировать',
+    copied: 'Скопировано',
+    downloadFile: 'Скачать'
   },
   uk: {
     guide: 'Керівництво',
@@ -270,7 +315,22 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     powerful: 'Потужні',
     modern: 'Сучасні',
     crossPlatform: 'Кросплатформні',
-    openSource: 'Відкритий вихідний код'
+    openSource: 'Відкритий вихідний код',
+    // GitHub File Viewer translations
+    viewCode: 'Перегляд коду',
+    sortBy: 'Сортувати за',
+    sortByName: 'Ім\'ям',
+    sortByDate: 'Датою',
+    ascending: 'За зростанням',
+    descending: 'За спаданням',
+    parentDirectory: 'Батьківська директорія',
+    fileExplorer: 'Провідник',
+    noFileSelected: 'Файл не вибрано',
+    selectFileToView: 'Виберіть файл для перегляду вмісту',
+    loading: 'Завантаження...',
+    copy: 'Копіювати',
+    copied: 'Скопійовано',
+    downloadFile: 'Завантажити'
   },
   zh: {
     guide: '指南',
@@ -335,7 +395,22 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     powerful: '强大',
     modern: '现代',
     crossPlatform: '跨平台',
-    openSource: '开源'
+    openSource: '开源',
+    // GitHub File Viewer translations
+    viewCode: '查看代码',
+    sortBy: '排序方式',
+    sortByName: '名称',
+    sortByDate: '日期',
+    ascending: '升序',
+    descending: '降序',
+    parentDirectory: '上级目录',
+    fileExplorer: '文件浏览器',
+    noFileSelected: '未选择文件',
+    selectFileToView: '选择一个文件查看其内容',
+    loading: '加载中...',
+    copy: '复制',
+    copied: '已复制',
+    downloadFile: '下载'
   },
   de: {
     guide: 'Anleitung',
@@ -400,7 +475,22 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     powerful: 'Leistungsstark',
     modern: 'Modern',
     crossPlatform: 'Plattformübergreifend',
-    openSource: 'Open Source'
+    openSource: 'Open Source',
+    // GitHub File Viewer translations
+    viewCode: 'Code anzeigen',
+    sortBy: 'Sortieren nach',
+    sortByName: 'Name',
+    sortByDate: 'Datum',
+    ascending: 'Aufsteigend',
+    descending: 'Absteigend',
+    parentDirectory: 'Übergeordnetes Verzeichnis',
+    fileExplorer: 'Datei-Explorer',
+    noFileSelected: 'Keine Datei ausgewählt',
+    selectFileToView: 'Wählen Sie eine Datei aus, um ihren Inhalt anzuzeigen',
+    loading: 'Wird geladen...',
+    copy: 'Kopieren',
+    copied: 'Kopiert',
+    downloadFile: 'Herunterladen'
   },
   ja: {
     guide: 'ガイド',
@@ -465,6 +555,21 @@ export const defaultTranslations: Record<LanguageCode, Translations> = {
     powerful: '強力な',
     modern: 'モダンな',
     crossPlatform: 'クロスプラットフォーム',
-    openSource: 'オープンソース'
+    openSource: 'オープンソース',
+    // GitHub File Viewer translations
+    viewCode: 'コードを表示',
+    sortBy: '並び替え',
+    sortByName: '名前',
+    sortByDate: '日付',
+    ascending: '昇順',
+    descending: '降順',
+    parentDirectory: '親ディレクトリ',
+    fileExplorer: 'ファイルエクスプローラー',
+    noFileSelected: 'ファイルが選択されていません',
+    selectFileToView: 'ファイルを選択して内容を表示',
+    loading: '読み込み中...',
+    copy: 'コピー',
+    copied: 'コピーしました',
+    downloadFile: 'ダウンロード'
   }
 };
