@@ -12,6 +12,7 @@ import Privacy from '@/pages/Privacy';
 import Contact from '@/pages/Contact';
 import Testing from '@/pages/Testing';
 import Issues from '@/pages/Issues';
+import RSSFeed from '@/pages/RSSFeed';
 import NotFound from '@/pages/NotFound';
 import { OSProvider } from '@/context/OSContext';
 import { LanguageProvider } from '@/components/navbar/LanguageContext';
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/testing" element={<Testing />} />
                 <Route path="/issues" element={<Issues />} />
+                <Route path="/rss" element={<RSSFeed />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Toaster />

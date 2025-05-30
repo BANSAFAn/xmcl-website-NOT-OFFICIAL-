@@ -5,16 +5,20 @@ import { HashLink } from "react-router-hash-link";
 import { useState } from "react";
 import { GitHubFileViewer } from "../GitHubFileViewer";
 
-export function ActionButtons() {
+interface ActionButtonsProps {
+  isMobile?: boolean;
+}
+
+export function ActionButtons({ isMobile = false }: ActionButtonsProps) {
   const [showGitHubViewer, setShowGitHubViewer] = useState(false);
 
   return (
     <>
       <motion.div 
-        className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12"
+        className={`flex flex-col ${isMobile ? 'gap-4' : 'gap-6'} ${isMobile ? 'sm:flex-row' : 'flex-col sm:flex-row'} justify-center items-center ${isMobile ? 'mt-8' : 'mt-12'}`}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
+        transition={{ duration: isMobile ? 0.6 : 0.8, delay: isMobile ? 0.7 : 1 }}
       >
         {/* Download Button */}
         <motion.div
@@ -25,11 +29,11 @@ export function ActionButtons() {
           <HashLink
             smooth
             to="/#download"
-            className="relative flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-white font-bold text-lg rounded-2xl shadow-2xl transition-all duration-300 group-hover:shadow-cyan-500/50 z-10"
+            className={`relative flex items-center gap-3 ${isMobile ? 'px-6 py-3 text-base' : 'px-8 py-4 text-lg'} bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-2xl transition-all duration-300 group-hover:shadow-cyan-500/50 z-10`}
             onMouseEnter={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
           >
-            <Download size={24} />
+            <Download size={isMobile ? 20 : 24} />
             <span>Download Now</span>
             
             <motion.div
@@ -47,9 +51,9 @@ export function ActionButtons() {
         >
           <button
             onClick={() => setShowGitHubViewer(true)}
-            className="relative flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white font-bold text-lg rounded-2xl border border-slate-600 shadow-2xl transition-all duration-300 group-hover:shadow-slate-500/50 group-hover:border-slate-400 z-10"
+            className={`relative flex items-center gap-3 ${isMobile ? 'px-6 py-3 text-base' : 'px-8 py-4 text-lg'} bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white font-bold rounded-2xl border border-slate-600 shadow-2xl transition-all duration-300 group-hover:shadow-slate-500/50 group-hover:border-slate-400 z-10`}
           >
-            <Code size={24} />
+            <Code size={isMobile ? 20 : 24} />
             <span>View Code</span>
             
             <motion.div
@@ -69,11 +73,11 @@ export function ActionButtons() {
             href="https://github.com/Voxelum/x-minecraft-launcher"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex items-center gap-3 px-6 py-3 bg-transparent text-white font-semibold text-base rounded-xl border-2 border-white/30 transition-all duration-300 group-hover:border-white/60 group-hover:bg-white/10 z-10"
+            className={`relative flex items-center gap-3 ${isMobile ? 'px-5 py-2.5 text-sm' : 'px-6 py-3 text-base'} bg-transparent text-white font-semibold rounded-xl border-2 border-white/30 transition-all duration-300 group-hover:border-white/60 group-hover:bg-white/10 z-10`}
             onMouseEnter={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
           >
-            <Github size={20} />
+            <Github size={isMobile ? 18 : 20} />
             <span>GitHub</span>
           </a>
         </motion.div>

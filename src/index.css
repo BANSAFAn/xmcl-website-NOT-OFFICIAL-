@@ -157,6 +157,36 @@
     }
   }
   
+  /* Mobile and tablet specific improvements */
+  @media (max-width: 768px) {
+    /* Ensure content is visible on mobile */
+    body, #root {
+      min-height: 100vh;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    
+    /* Fix for iOS/Android viewport height issues */
+    .min-h-screen {
+      min-height: 100vh;
+      /* Use fallback for browsers that don't support dvh */
+      min-height: -webkit-fill-available;
+      min-height: 100dvh;
+    }
+    
+    /* Improve touch targets */
+    button, a {
+      @apply py-2;
+      min-height: 44px; /* Apple's recommended minimum touch target size */
+    }
+    
+    /* Prevent horizontal overflow */
+    .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  
   /* Better focus states */
   .focus-visible-custom:focus-visible {
     @apply outline-none ring-2 ring-blue-500/50 ring-offset-2 ring-offset-transparent;
