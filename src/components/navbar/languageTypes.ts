@@ -1,5 +1,5 @@
 
-export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
+export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja' | 'fr';
 
 export interface GitHubFileViewerTranslations {
   openOnGitHub: string;
@@ -35,6 +35,69 @@ export interface Translations {
   blogSection: BlogTranslations;
   changelogSection: ChangelogTranslations;
   githubFileViewer?: GitHubFileViewerTranslations;
+  about: string;
+  contact: string;
+  contactUs: string;
+  email: string;
+  patreon: string;
+  afdian: string;
+  kook: string;
+  supportUs: string;
+  joinCommunity: string;
+  communityPlatforms: string;
+  resources: string;
+  support: string;
+  documentation: string;
+  blogPosts: string;
+  privacyPolicy: string;
+  error404: string;
+  pageNotFound: string;
+  backToHome: string;
+  homeMessage: string;
+  search: string;
+  submit: string;
+  reportBug: string;
+  testing: string;
+  issues: string;
+  latestBuilds: string;
+  deployRelease: string;
+  validate: string;
+  build: string;
+  branch: string;
+  updated: string;
+  news: string;
+  readMore: string;
+  appearanceGuide: string;
+  underConstruction: string;
+  colorPaletteThemes: string;
+  tip: string;
+  cardColor: string;
+  topBarColor: string;
+  sidebarColor: string;
+  backgroundColor: string;
+  basicComponentHighlight: string;
+  errorColor: string;
+  features: string;
+  advanced: string;
+  powerful: string;
+  modern: string;
+  crossPlatform: string;
+  openSource: string;
+  // GitHub File Viewer translations
+  viewCode: string;
+  sortBy: string;
+  sortByName: string;
+  sortByDate: string;
+  ascending: string;
+  descending: string;
+  parentDirectory: string;
+  fileExplorer: string;
+  noFileSelected: string;
+  selectFileToView: string;
+  loading: string;
+  copy: string;
+  copied: string;
+  downloadFile: string;
 }
 
 export interface LanguageContextProps {

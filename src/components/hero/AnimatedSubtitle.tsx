@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 
 interface AnimatedSubtitleProps {
   subtitle: string;
+  isMobile?: boolean;
 }
 
-export function AnimatedSubtitle({ subtitle }: AnimatedSubtitleProps) {
+export function AnimatedSubtitle({ subtitle, isMobile = false }: AnimatedSubtitleProps) {
   // Animation variants for the subtitle letters
   const subtitleAnimation = {
     hidden: { opacity: 0 },
@@ -13,8 +14,8 @@ export function AnimatedSubtitle({ subtitle }: AnimatedSubtitleProps) {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.5 + i * 0.05,
-        duration: 0.5,
+        delay: isMobile ? (0.3 + i * 0.03) : (0.5 + i * 0.05),
+        duration: isMobile ? 0.4 : 0.5,
         ease: [0.22, 1, 0.36, 1]
       }
     })
@@ -22,10 +23,10 @@ export function AnimatedSubtitle({ subtitle }: AnimatedSubtitleProps) {
 
   return (
     <motion.h2 
-      className="text-2xl sm:text-3xl font-bold leading-tight"
+      className={`${isMobile ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-bold leading-tight`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
+      transition={{ duration: isMobile ? 0.4 : 0.5, delay: isMobile ? 0.3 : 0.4 }}
     >
       <span className="text-gradient-green inline-block">
         {subtitle.split('').map((char, index) => (

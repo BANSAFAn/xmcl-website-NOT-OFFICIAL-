@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, Folder, File, ChevronRight, ChevronDown, ChevronLeft, Code, Download, Copy, Check } from "lucide-react";
+import { X, ExternalLink, Folder, File, ChevronRight, ChevronDown, ChevronLeft, Code, Download, Copy, Check, ArrowUpDown, Calendar, AlignLeft } from "lucide-react";
 import { Button } from "./ui/button";
 import { useLanguage } from "./navbar/LanguageContext";
 
@@ -21,6 +21,8 @@ const defaultGitHubFileViewerTranslations = {
   size: "Size",
   type: "Type"
 };
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { useLanguage } from "./navbar/LanguageContext";
 
 interface GitHubFile {
   name: string;
@@ -28,6 +30,9 @@ interface GitHubFile {
   type: "file" | "dir";
   size?: number;
   download_url?: string;
+  sha?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface GitHubFileViewerProps {
@@ -35,7 +40,25 @@ interface GitHubFileViewerProps {
   onClose: () => void;
 }
 
-export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
+export const GitHubFileViewer = ({ isOpen, onClose }: GitHubFileViewerProps) => {
+  const { translations } = useLanguage();
+  // Ensure translations.githubFileViewer exists
+  const githubFileViewerTranslations = translations?.githubFileViewer || {
+    viewCode: "View Code",
+    close: "Close",
+    loading: "Loading...",
+    noFiles: "No files found",
+    sortBy: "Sort by",
+    name: "Name",
+    date: "Date",
+    size: "Size",
+    type: "Type",
+    copy: "Copy",
+    copied: "Copied!",
+    download: "Download",
+    viewOnGithub: "View on GitHub",
+    back: "Back"
+  };
   const [files, setFiles] = useState<GitHubFile[]>([]);
   const [currentPath, setCurrentPath] = useState("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -52,6 +75,8 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     ...defaultGitHubFileViewerTranslations,
     ...(translations.githubFileViewer || {})
   };
+  const [sortType, setSortType] = useState<"name" | "date" | "none">("none");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const repoUrl = "https://api.github.com/repos/Voxelum/x-minecraft-launcher/contents";
 
@@ -66,7 +91,30 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     try {
       const response = await fetch(`${repoUrl}${path ? `/${path}` : ""}`);
       const data = await response.json();
-      setFiles(Array.isArray(data) ? data : []);
+      const filesData = Array.isArray(data) ? data : [];
+      
+      // Fetch additional metadata for each file if needed
+      const filesWithMetadata = await Promise.all(filesData.map(async (file) => {
+        // For simplicity, we'll use the commit data to get the last updated date
+        // In a real implementation, you might want to cache this data
+        if (file.type === "file") {
+          try {
+            const commitResponse = await fetch(`https://api.github.com/repos/Voxelum/x-minecraft-launcher/commits?path=${file.path}&page=1&per_page=1`);
+            const commitData = await commitResponse.json();
+            if (commitData && commitData.length > 0) {
+              return {
+                ...file,
+                updated_at: commitData[0].commit.committer.date
+              };
+            }
+          } catch (err) {
+            console.error("Error fetching commit data:", err);
+          }
+        }
+        return file;
+      }));
+      
+      setFiles(sortFiles(filesWithMetadata, sortType, sortOrder));
       setCurrentPath(path);
     } catch (error) {
       console.error("Error fetching files:", error);
@@ -103,6 +151,51 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     setExpandedFolders(newExpanded);
   };
 
+  const sortFiles = (filesToSort: GitHubFile[], type: "name" | "date" | "none", order: "asc" | "desc") => {
+    if (type === "none") {
+      // Default sorting: directories first, then files alphabetically
+      return [...filesToSort].sort((a, b) => {
+        if (a.type !== b.type) {
+          return a.type === "dir" ? -1 : 1;
+        }
+        return a.name.localeCompare(b.name);
+      });
+    }
+    
+    return [...filesToSort].sort((a, b) => {
+      // Always keep directories at the top
+      if (a.type !== b.type) {
+        return a.type === "dir" ? -1 : 1;
+      }
+      
+      if (type === "name") {
+        const result = a.name.localeCompare(b.name);
+        return order === "asc" ? result : -result;
+      } else if (type === "date" && a.updated_at && b.updated_at) {
+        const dateA = new Date(a.updated_at).getTime();
+        const dateB = new Date(b.updated_at).getTime();
+        const result = dateA - dateB;
+        return order === "asc" ? result : -result;
+      }
+      
+      return 0;
+    });
+  };
+  
+  const handleSort = (type: "name" | "date") => {
+    if (sortType === type) {
+      // Toggle order if same type is selected
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // Set new type and default to ascending
+      setSortType(type);
+      setSortOrder("asc");
+    }
+    
+    // Re-sort the files
+    setFiles(sortFiles(files, type, sortOrder === "asc" ? "desc" : "asc"));
+  };
+  
   const getFileIcon = (file: GitHubFile) => {
     if (file.type === "dir") {
       return expandedFolders.has(file.path) ? <ChevronDown size={16} /> : <ChevronRight size={16} />;
@@ -149,14 +242,65 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     
     // Add basic syntax highlighting classes for different languages
     const lines = content.split('\n');
-    return lines.map((line, index) => (
-      <div key={index} className="flex">
-        <span className="select-none text-slate-500 text-right pr-4 w-12 text-sm">
-          {index + 1}
-        </span>
-        <span className="text-slate-200 font-mono text-sm">{line || ' '}</span>
-      </div>
-    ));
+    const language = getLanguageFromExtension(extension);
+    
+    return lines.map((line, index) => {
+      // Basic syntax highlighting
+      let formattedLine = line;
+      
+      // Apply syntax highlighting based on language
+      if (language === 'javascript' || language === 'typescript') {
+        // Keywords
+        formattedLine = formattedLine.replace(
+          /\b(const|let|var|function|return|if|else|for|while|class|import|export|from|async|await|try|catch|throw)\b/g, 
+          '<span class="text-purple-400">$1</span>'
+        );
+        // Strings
+        formattedLine = formattedLine.replace(
+          /(["'])(.*?)\1/g, 
+          '<span class="text-green-400">$1$2$1</span>'
+        );
+        // Comments
+        formattedLine = formattedLine.replace(
+          /(\/\/.*$)/g, 
+          '<span class="text-slate-500">$1</span>'
+        );
+      } else if (language === 'html' || language === 'xml') {
+        // Tags
+        formattedLine = formattedLine.replace(
+          /(&lt;\/?)(\w+)(.*?)(&gt;)/g, 
+          '$1<span class="text-orange-400">$2</span>$3$4'
+        );
+        // Attributes
+        formattedLine = formattedLine.replace(
+          /(\s+)(\w+)(=)(["'])(.*?)\4/g, 
+          '$1<span class="text-yellow-400">$2</span>$3$4<span class="text-green-400">$5</span>$4'
+        );
+      } else if (language === 'css' || language === 'scss') {
+        // Properties
+        formattedLine = formattedLine.replace(
+          /(\s+)([-\w]+)(:)/g, 
+          '$1<span class="text-blue-400">$2</span>$3'
+        );
+        // Values
+        formattedLine = formattedLine.replace(
+          /(:)(\s+)([^;]+)(;?)/g, 
+          '$1$2<span class="text-green-400">$3</span>$4'
+        );
+      }
+      
+      return (
+        <div key={index} className="flex hover:bg-slate-800/50 transition-colors">
+          <span className="select-none text-slate-500 text-right pr-4 w-12 text-sm border-r border-slate-700 mr-4">
+            {index + 1}
+          </span>
+          <span 
+            className="text-slate-200 font-mono text-sm flex-1 overflow-x-auto"
+            dangerouslySetInnerHTML={{ __html: formattedLine || ' ' }}
+          />
+        </div>
+      );
+    });
   };
 
   const copyToClipboard = async () => {
@@ -175,6 +319,11 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
   };
+
+  // Ensure the component is properly initialized
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <AnimatePresence>
@@ -214,6 +363,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                 >
                   <ExternalLink size={16} className="mr-2" />
                   {githubFileViewerTranslations.openOnGitHub}
+                  {githubFileViewerTranslations.openOnGitHub || "Open on GitHub"}
                 </Button>
                 <Button
                   variant="ghost"
@@ -234,6 +384,37 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                   <div className="flex items-center gap-2 mb-4 text-sm text-slate-400 bg-slate-800/50 p-3 rounded-lg">
                     <Folder size={16} />
                     <span>/{currentPath || githubFileViewerTranslations.root}</span>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2 text-sm text-slate-400 bg-slate-800/50 p-3 rounded-lg flex-1">
+                      <Folder size={16} />
+                      <span>/{currentPath || "root"}</span>
+                    </div>
+                    
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="ml-2 bg-slate-700 border-slate-600 hover:bg-slate-600 text-white">
+                          <ArrowUpDown size={14} className="mr-2" />
+                          {sortType === "name" ? githubFileViewerTranslations.name || "Name" : sortType === "date" ? githubFileViewerTranslations.date || "Date" : githubFileViewerTranslations.sort || "Sort"}
+                          {sortType !== "none" && (sortOrder === "asc" ? " ↑" : " ↓")}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
+                        <DropdownMenuItem 
+                          onClick={() => handleSort("name")} 
+                          className={`flex items-center ${sortType === "name" ? "text-cyan-400" : "text-slate-300"}`}
+                        >
+                          <AlignLeft size={14} className="mr-2" />
+                          {githubFileViewerTranslations.name || "Name"} {sortType === "name" && (sortOrder === "asc" ? "↑" : "↓")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => handleSort("date")} 
+                          className={`flex items-center ${sortType === "date" ? "text-cyan-400" : "text-slate-300"}`}
+                        >
+                          <Calendar size={14} className="mr-2" />
+                          {githubFileViewerTranslations.date || "Date"} {sortType === "date" && (sortOrder === "asc" ? "↑" : "↓")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                   
                   {loading ? (
@@ -318,6 +499,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                         >
                           {copied ? <Check size={14} className="mr-2" /> : <Copy size={14} className="mr-2" />}
                           {copied ? githubFileViewerTranslations.copied : githubFileViewerTranslations.copy}
+                          {copied ? githubFileViewerTranslations.copied || 'Copied!' : githubFileViewerTranslations.copy || 'Copy'}
                         </Button>
                         <Button
                           variant="outline"
@@ -332,6 +514,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                         >
                           <Download size={14} className="mr-2" />
                           {githubFileViewerTranslations.download}
+                          {githubFileViewerTranslations.downloadFile || 'Download'}
                         </Button>
                       </div>
                     </div>
@@ -341,6 +524,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           <div className="text-center py-8">
                             <div className="animate-spin w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full mx-auto"></div>
                             <p className="text-slate-400 mt-2">{githubFileViewerTranslations.loadingFileContent}</p>
+                            <p className="text-slate-400 mt-2">{githubFileViewerTranslations.loadingContent || "Loading file content..."}</p>
                           </div>
                         ) : (
                           <div className="font-mono text-sm leading-relaxed">
@@ -358,6 +542,8 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                       </div>
                       <p className="text-slate-300 text-xl font-semibold mb-2">{githubFileViewerTranslations.selectFile}</p>
                       <p className="text-slate-500">{githubFileViewerTranslations.browseFiles}</p>
+                      <p className="text-slate-300 text-xl font-semibold mb-2">{githubFileViewerTranslations.selectFileToView || "Select a file to view its content"}</p>
+                      <p className="text-slate-500">{githubFileViewerTranslations.browseFiles || "Browse the repository files on the left panel"}</p>
                     </div>
                   </div>
                 )}
