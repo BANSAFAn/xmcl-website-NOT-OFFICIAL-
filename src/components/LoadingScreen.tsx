@@ -11,6 +11,12 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [cubes, setCubes] = useState<{ x: number; y: number; size: number; delay: number; color: string }[]>([]);
   
+  // Функция для завершения загрузки
+  const completeLoading = () => {
+    setIsLoading(false);
+    if (onLoadingComplete) onLoadingComplete();
+  };
+  
   useEffect(() => {
     // Генерируем меньше кубов для фона (10 вместо 30)
     const newCubes = Array.from({ length: 10 }).map(() => ({
@@ -28,21 +34,25 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
         // Более предсказуемые инкременты для плавности
         const increment = 2 + (prev > 80 ? 1 : 2);
         const newProgress = prev + increment;
-        return newProgress >= 100 ? 100 : newProgress;
+        if (newProgress >= 100) {
+          // Когда прогресс достигает 100%, завершаем загрузку через небольшую задержку
+          setTimeout(completeLoading, 500);
+          return 100;
+        }
+        return newProgress;
       });
     }, 150); // Увеличиваем интервал для снижения нагрузки
     
     // Сокращаем время загрузки с 3000мс до 2000мс
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      if (onLoadingComplete) onLoadingComplete();
-    }, 2000);
+    // Добавляем резервный таймер на случай, если прогресс не достигнет 100%
+    const timer = setTimeout(completeLoading, 5000);
     
     return () => {
       clearInterval(interval);
       clearTimeout(timer);
     };
   }, [onLoadingComplete]);
+  
   
   return (
     <AnimatePresence>
@@ -142,6 +152,16 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
                 Tip: XMCL supports multiple Minecraft versions and mod loaders.
               </p>
             </div>
+            
+            {/* Кнопка пропуска загрузки */}
+            <motion.button
+              onClick={completeLoading}
+              className="mt-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Пропустить загрузку
+            </motion.button>
           </div>
           
           {/* Interactive floating particles */}
