@@ -9,7 +9,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author: "Команда XMCL",
     excerpt: "Как мы используем Azure Application Insights и Azure Storage для безопасного управления исходными картами в нашем лаунчере.",
     category: "Разработка",
-    image: "/lovable-uploads/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
+    image: "/assets/images/9206c4a4-93f9-458c-ab4b-e28e0e96e071.png",
     content: `
 # Оптимизация X Minecraft Launcher: Azure Application Insights для управления исходными картами
 

@@ -95,26 +95,11 @@ export const JPFlag = ({ className }: FlagProps) => (
   </motion.svg>
 );
 
-export const FRFlag = ({ className }: FlagProps) => (
-  <motion.svg 
-    className={className} 
-    viewBox="0 0 24 16" 
-    fill="none"
-    whileHover={{ scale: 1.1, rotate: 5 }}
-    transition={{ duration: 0.2 }}
-  >
-    <rect width="8" height="16" fill="#0055A4"/>
-    <rect x="8" width="8" height="16" fill="#FFFFFF"/>
-    <rect x="16" width="8" height="16" fill="#EF4135"/>
-  </motion.svg>
-);
-
 export const flagComponents = {
   en: GBFlag,
   ru: RUFlag,
   uk: UAFlag,
   zh: CNFlag,
   de: DEFlag,
-  ja: JPFlag,
-  fr: FRFlag
+  ja: JPFlag
 };

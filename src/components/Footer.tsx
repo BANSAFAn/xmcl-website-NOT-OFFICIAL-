@@ -125,7 +125,7 @@ export function Footer() {
                 whileHover={{ rotate: 360, scale: 1.1 }}
                 transition={{ duration: 0.5 }}
               >
-                <img src="/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="XMCL" className="h-8 w-8" />
+                <img src="/assets/images/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="XMCL" className="h-8 w-8" />
               </motion.div>
               <motion.span 
                 className="font-bold text-xl bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent"

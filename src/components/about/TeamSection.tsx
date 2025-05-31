@@ -6,7 +6,7 @@ export function TeamSection() {
   const teamMember = {
     name: "ci010",
     role: "Lead Developer & Project Founder",
-    avatar: "/lovable-uploads/dd52656a-b3bb-4590-80c0-4e3d32bcb862.png",
+    avatar: "/assets/images/dd52656a-b3bb-4590-80c0-4e3d32bcb862.png",
     description: "Passionate developer creating modern tools for the Minecraft community. Dedicated to building open-source software that enhances the gaming experience.",
     github: "https://github.com/ci010"
   };
