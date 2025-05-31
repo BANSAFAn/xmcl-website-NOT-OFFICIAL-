@@ -3,6 +3,24 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, Folder, File, ChevronRight, ChevronDown, ChevronLeft, Code, Download, Copy, Check } from "lucide-react";
 import { Button } from "./ui/button";
+import { useLanguage } from "./navbar/LanguageContext";
+
+// Default translations for GitHubFileViewer
+const defaultGitHubFileViewerTranslations = {
+  openOnGitHub: "Open on GitHub",
+  loading: "Loading...",
+  loadingFileContent: "Loading file content...",
+  selectFile: "Select a file to view its content",
+  browseFiles: "Browse the repository files on the left panel",
+  copy: "Copy",
+  copied: "Copied!",
+  download: "Download",
+  root: "root",
+  name: "Name",
+  date: "Date",
+  size: "Size",
+  type: "Type"
+};
 
 interface GitHubFile {
   name: string;
@@ -25,6 +43,15 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
   const [loading, setLoading] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState(false);
+  
+  // Get language context
+  const { translations } = useLanguage();
+  
+  // Create a merged translations object with fallbacks
+  const githubFileViewerTranslations = {
+    ...defaultGitHubFileViewerTranslations,
+    ...(translations.githubFileViewer || {})
+  };
 
   const repoUrl = "https://api.github.com/repos/Voxelum/x-minecraft-launcher/contents";
 
@@ -186,7 +213,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                   className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                 >
                   <ExternalLink size={16} className="mr-2" />
-                  Open on GitHub
+                  {githubFileViewerTranslations.openOnGitHub}
                 </Button>
                 <Button
                   variant="ghost"
@@ -206,13 +233,13 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                 <div className="p-4">
                   <div className="flex items-center gap-2 mb-4 text-sm text-slate-400 bg-slate-800/50 p-3 rounded-lg">
                     <Folder size={16} />
-                    <span>/{currentPath || "root"}</span>
+                    <span>/{currentPath || githubFileViewerTranslations.root}</span>
                   </div>
                   
                   {loading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full mx-auto"></div>
-                      <p className="text-slate-400 mt-2">Loading...</p>
+                      <p className="text-slate-400 mt-2">{githubFileViewerTranslations.loading}</p>
                     </div>
                   ) : (
                     <div className="space-y-1">
@@ -290,7 +317,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                         >
                           {copied ? <Check size={14} className="mr-2" /> : <Copy size={14} className="mr-2" />}
-                          {copied ? 'Copied!' : 'Copy'}
+                          {copied ? githubFileViewerTranslations.copied : githubFileViewerTranslations.copy}
                         </Button>
                         <Button
                           variant="outline"
@@ -304,7 +331,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                         >
                           <Download size={14} className="mr-2" />
-                          Download
+                          {githubFileViewerTranslations.download}
                         </Button>
                       </div>
                     </div>
@@ -313,7 +340,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                         {loading ? (
                           <div className="text-center py-8">
                             <div className="animate-spin w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full mx-auto"></div>
-                            <p className="text-slate-400 mt-2">Loading file content...</p>
+                            <p className="text-slate-400 mt-2">{githubFileViewerTranslations.loadingFileContent}</p>
                           </div>
                         ) : (
                           <div className="font-mono text-sm leading-relaxed">
@@ -329,8 +356,8 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                       <div className="p-6 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-3xl border border-cyan-500/20 mb-6">
                         <Code size={64} className="text-cyan-400 mx-auto" />
                       </div>
-                      <p className="text-slate-300 text-xl font-semibold mb-2">Select a file to view its content</p>
-                      <p className="text-slate-500">Browse the repository files on the left panel</p>
+                      <p className="text-slate-300 text-xl font-semibold mb-2">{githubFileViewerTranslations.selectFile}</p>
+                      <p className="text-slate-500">{githubFileViewerTranslations.browseFiles}</p>
                     </div>
                   </div>
                 )}
