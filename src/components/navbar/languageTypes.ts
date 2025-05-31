@@ -1,5 +1,5 @@
 
-export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
+export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja' | 'fr';
 
 export interface Translations {
   guide: string;
@@ -65,6 +65,21 @@ export interface Translations {
   modern: string;
   crossPlatform: string;
   openSource: string;
+  // GitHub File Viewer translations
+  viewCode: string;
+  sortBy: string;
+  sortByName: string;
+  sortByDate: string;
+  ascending: string;
+  descending: string;
+  parentDirectory: string;
+  fileExplorer: string;
+  noFileSelected: string;
+  selectFileToView: string;
+  loading: string;
+  copy: string;
+  copied: string;
+  downloadFile: string;
 }
 
 export interface LanguageContextProps {

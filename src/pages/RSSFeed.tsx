@@ -22,15 +22,35 @@ const RSSFeed = () => {
         setLoading(true);
         // Get all blog posts
         const posts = await getAllBlogPosts();
+        
+        if (!posts || posts.length === 0) {
+          setError('No blog posts found. RSS feed cannot be generated.');
+          setLoading(false);
+          return;
+        }
+        
         setBlogPosts(posts);
         
+        // Make sure we're in a browser environment
+        let origin = '';
+        if (typeof window !== 'undefined') {
+          origin = window.location.origin;
+          console.log('Using origin:', origin);
+        } else {
+          console.warn('Not in browser environment, using empty origin');
+        }
+        
         // Generate RSS XML
-        const rssXml = generateRSSFeed(posts, window.location.origin);
-        setRssContent(rssXml);
-        setLoading(false);
+        const rssXml = generateRSSFeed(posts, origin);
+        if (rssXml) {
+          setRssContent(rssXml);
+          setLoading(false);
+        } else {
+          throw new Error('Failed to generate RSS XML');
+        }
       } catch (error) {
         console.error('Error generating RSS feed:', error);
-        setError('Failed to load RSS feed. Please try again later.');
+        setError(`Failed to load RSS feed: ${error instanceof Error ? error.message : 'Unknown error'}`);
         setLoading(false);
       }
     };

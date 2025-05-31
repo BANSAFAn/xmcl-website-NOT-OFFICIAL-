@@ -6,7 +6,8 @@ import { BlogPost } from '@/types/blog';
  */
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   try {
-    const response = await fetch('/blogs.json');
+    // Use window.location.origin to ensure we're using an absolute URL
+    const response = await fetch(`${window.location.origin}/blogs.json`);
     if (!response.ok) {
       throw new Error('Failed to fetch blog posts');
     }
@@ -31,8 +32,10 @@ export async function fetchBlogPost(slug: string): Promise<BlogPost | null> {
       return null;
     }
     
-    // Now fetch the markdown content
-    const contentResponse = await fetch(post.path);
+    // Now fetch the markdown content using absolute path
+    // Ensure the path is absolute by prepending the origin if it's a relative path
+    const contentPath = post.path.startsWith('http') ? post.path : `${window.location.origin}${post.path}`;
+    const contentResponse = await fetch(contentPath);
     if (!contentResponse.ok) {
       throw new Error('Failed to fetch blog content');
     }

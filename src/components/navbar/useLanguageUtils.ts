@@ -53,5 +53,5 @@ export function useLanguageStorage() {
 
 // Helper function to validate language codes
 function isValidLanguage(lang: string): lang is LanguageCode {
-  return ['en', 'ru', 'uk', 'zh', 'de', 'ja'].includes(lang);
+  return ['en', 'ru', 'uk', 'zh', 'de', 'ja', 'fr'].includes(lang);
 }

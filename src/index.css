@@ -4,9 +4,11 @@
 @tailwind utilities;
 
 @layer utilities {
+  /* Оптимизированная анимация shimmer - уменьшена частота обновления */
   .animate-shimmer {
-    animation: shimmer 2s infinite linear;
+    animation: shimmer 3s infinite linear;
     background-size: 200% 100%;
+    will-change: background-position;
   }
   
   @keyframes shimmer {
@@ -18,16 +20,17 @@
     }
   }
   
+  /* Оптимизированная анимация пульсации - увеличен период */
   .animate-pulse-slow {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
   
   @keyframes pulse {
     0%, 100% {
-      opacity: 0.5;
+      opacity: 0.6;
     }
     50% {
-      opacity: 1;
+      opacity: 0.9;
     }
   }
 
@@ -51,7 +54,7 @@
     @apply hover:scale-105 transition-transform duration-300 ease-in-out;
   }
   
-  /* Shiny effect - optimized */
+  /* Упрощенный эффект блеска - меньше нагрузка на GPU */
   .shiny {
     position: relative;
     overflow: hidden;
@@ -67,16 +70,20 @@
     background: linear-gradient(
       to bottom right,
       rgba(255,255,255,0) 0%,
-      rgba(255,255,255,0.1) 100%
+      rgba(255,255,255,0.08) 100%
     );
     transform: rotate(30deg);
     pointer-events: none;
     z-index: 10;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s ease-out;
+    will-change: transform;
   }
   
-  .shiny:hover::before {
-    transform: rotate(30deg) translate(10%, 10%);
+  /* Применяем эффект только на десктопах, где производительность выше */
+  @media (hover: hover) {
+    .shiny:hover::before {
+      transform: rotate(30deg) translate(10%, 10%);
+    }
   }
   
   /* Glass card - optimized for performance */
@@ -84,16 +91,16 @@
     @apply bg-white/5 backdrop-blur-[2px] border border-white/10 shadow-sm;
   }
   
-  /* Improved gradient transitions */
+  /* Оптимизированные градиентные переходы - меньше нагрузка на GPU */
   .gradient-transition {
     background: linear-gradient(135deg, 
       rgba(59, 130, 246, 0.1) 0%,
-      rgba(147, 51, 234, 0.1) 35%,
-      rgba(236, 72, 153, 0.1) 65%,
+      rgba(147, 51, 234, 0.1) 50%,
       rgba(14, 165, 233, 0.1) 100%);
-    background-size: 300% 300%;
-    animation: gradientShift 8s ease infinite;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background-size: 200% 200%;
+    animation: gradientShift 12s ease infinite;
+    transition: all 0.6s ease-out;
+    will-change: background-position;
   }
   
   @keyframes gradientShift {
@@ -154,6 +161,36 @@
     /* Better mobile tab handling */
     .mobile-tab {
       @apply px-2 py-1.5 text-xs min-w-[80px];
+    }
+  }
+  
+  /* Mobile and tablet specific improvements */
+  @media (max-width: 768px) {
+    /* Ensure content is visible on mobile */
+    body, #root {
+      min-height: 100vh;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    
+    /* Fix for iOS/Android viewport height issues */
+    .min-h-screen {
+      min-height: 100vh;
+      /* Use fallback for browsers that don't support dvh */
+      min-height: -webkit-fill-available;
+      min-height: 100dvh;
+    }
+    
+    /* Improve touch targets */
+    button, a {
+      @apply py-2;
+      min-height: 44px; /* Apple's recommended minimum touch target size */
+    }
+    
+    /* Prevent horizontal overflow */
+    .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
     }
   }
   

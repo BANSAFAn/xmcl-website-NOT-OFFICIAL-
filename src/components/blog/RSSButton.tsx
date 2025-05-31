@@ -36,6 +36,9 @@ export function RSSButton() {
   const handleRSSClick = async () => {
     const rssUrl = `${window.location.origin}/api/rss`;
     
+    // Open the RSS feed in a new tab
+    window.open(rssUrl, '_blank');
+    
     try {
       await navigator.clipboard.writeText(rssUrl);
       toast({

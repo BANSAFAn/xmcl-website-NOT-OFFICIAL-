@@ -9,10 +9,12 @@ import { HeroContent } from "./hero/HeroContent";
 import { BlueScreenOfDeath } from "./hero/BlueScreenOfDeath";
 import { Apple } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Hero() {
   const { text } = useLanguage();
   const generateRandomNumbers = useNumberParticles();
+  const isMobile = useIsMobile();
   const { 
     showSecretMessage, 
     setShowSecretMessage, 
@@ -28,13 +30,16 @@ export function Hero() {
   }
 
   return (
-    <section className="relative min-h-screen pt-32 pb-20 flex flex-col justify-center overflow-hidden">
-      <BackgroundEffects />
+    <section className={`relative min-h-screen flex flex-col justify-center overflow-hidden ${isMobile ? 'pt-24 pb-16' : 'pt-32 pb-20'}`}>
+      <BackgroundEffects isMobile={isMobile} />
       
-      <LinuxTerminal 
-        showLinuxTerminal={showLinuxTerminal} 
-        setShowLinuxTerminal={setShowLinuxTerminal} 
-      />
+      {/* Only show terminal on desktop */}
+      {!isMobile && (
+        <LinuxTerminal 
+          showLinuxTerminal={showLinuxTerminal} 
+          setShowLinuxTerminal={setShowLinuxTerminal} 
+        />
+      )}
       
       <AnimatePresence>
         {showBlueScreen && (
@@ -47,6 +52,7 @@ export function Hero() {
         subtitle={text.subtitle}
         description={text.description}
         onNumberEffect={generateRandomNumbers}
+        isMobile={isMobile}
       />
       
       {showAppleMode && (
