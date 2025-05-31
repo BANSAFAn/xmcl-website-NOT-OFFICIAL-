@@ -147,7 +147,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 <div align="center">
 
-**[View Demo](https://xmcl-website-not-official.vercel.app/) | [Report Bug](https://github.com/baneronetwo/xmcl-website-NOT-OFFICIAL-/issues) | [Request Feature](https://github.com/baneronetwo/xmcl-website-NOT-OFFICIAL-/issues)**
+**[View Demo](https://xmcl-website-not-official.vercel.app/) | [Report Bug](https://github.com/BANSAFAn/xmcl-website-NOT-OFFICIAL-/issues) | [Request Feature](https://github.com/BANSAFAn/xmcl-website-NOT-OFFICIAL-/issues)**
 
 *✨ This unofficial project is community-created and is not affiliated with the official XMCL development team. ✨*
 

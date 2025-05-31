@@ -12,30 +12,31 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   const [cubes, setCubes] = useState<{ x: number; y: number; size: number; delay: number; color: string }[]>([]);
   
   useEffect(() => {
-    // Generate random cubes for the background
-    const newCubes = Array.from({ length: 30 }).map(() => ({
+    // Генерируем меньше кубов для фона (10 вместо 30)
+    const newCubes = Array.from({ length: 10 }).map(() => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 30 + 10,
-      delay: Math.random() * 2,
-      color: `rgba(${Math.random() * 100 + 100}, ${Math.random() * 100 + 100}, ${Math.random() * 255}, ${Math.random() * 0.2 + 0.1})`
+      size: Math.random() * 20 + 10, // Уменьшаем разброс размеров
+      delay: Math.random() * 1, // Уменьшаем задержку
+      color: `rgba(100, 150, 255, ${Math.random() * 0.15 + 0.05})` // Упрощаем цвета
     }));
     setCubes(newCubes);
     
-    // Simulate loading progress
+    // Более стабильный прогресс загрузки
     const interval = setInterval(() => {
       setProgress(prev => {
-        const increment = Math.random() * 5 + (prev > 80 ? 1 : 3);
+        // Более предсказуемые инкременты для плавности
+        const increment = 2 + (prev > 80 ? 1 : 2);
         const newProgress = prev + increment;
         return newProgress >= 100 ? 100 : newProgress;
       });
-    }, 100);
+    }, 150); // Увеличиваем интервал для снижения нагрузки
     
-    // Complete loading after reaching 100%
+    // Сокращаем время загрузки с 3000мс до 2000мс
     const timer = setTimeout(() => {
       setIsLoading(false);
       if (onLoadingComplete) onLoadingComplete();
-    }, 3000);
+    }, 2000);
     
     return () => {
       clearInterval(interval);
@@ -52,8 +53,8 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="fixed inset-0 bg-minecraft-darker-blue z-50 flex flex-col items-center justify-center overflow-hidden"
         >
-          {/* 3D Cube Background */}
-          <div className="absolute inset-0 perspective-1000 overflow-hidden opacity-20">
+          {/* Оптимизированный фон с кубами */}
+          <div className="absolute inset-0 perspective-500 overflow-hidden opacity-10">
             {cubes.map((cube, index) => (
               <motion.div
                 key={index}
@@ -64,17 +65,12 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
                   width: `${cube.size}px`,
                   height: `${cube.size}px`,
                   backgroundColor: cube.color,
-                  rotateX: 0,
-                  rotateY: 0,
-                  rotateZ: 0,
                 }}
                 animate={{ 
-                  rotateX: [0, 180, 360],
-                  rotateY: [0, 180, 360],
-                  rotateZ: [0, 180, 360],
+                  rotateY: [0, 360], // Упрощаем анимацию до одной оси
                 }}
                 transition={{
-                  duration: 10 + cube.delay * 5,
+                  duration: 8, // Фиксированная длительность
                   ease: "linear",
                   repeat: Infinity,
                   delay: cube.delay
@@ -87,152 +83,65 @@ export const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
           
           <div className="relative z-10 flex flex-col items-center max-w-md px-6">
-            {/* Main XMCL logo with 3D rotation effect */}
+            {/* Максимально упрощенный логотип XMCL */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="mb-8 relative"
-            >
-              <motion.div
-                className="perspective-1000"
-                animate={{
-                  rotateY: [0, 10, 0, -10, 0],
-                  rotateX: [0, 5, 0, -5, 0],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <motion.h1 
-                  className="text-7xl font-bold tracking-tighter transform-style-3d"
-                  animate={{ 
-                    textShadow: [
-                      "0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3), 0 0 15px rgba(59, 130, 246, 0.2)",
-                      "0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4)",
-                      "0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3), 0 0 15px rgba(59, 130, 246, 0.2)",
-                    ]
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity, 
-                    repeatType: "mirror" 
-                  }}
-                >
-                  <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">XMCL</span>
-                </motion.h1>
-              </motion.div>
-              
-              {/* Orbiting minecraft blocks */}
-              {[...Array(4)].map((_, index) => (
-                <motion.div 
-                  key={index}
-                  className="absolute w-4 h-4 rounded-sm bg-accent/60"
-                  initial={{ 
-                    scale: 0 
-                  }}
-                  animate={{ 
-                    scale: [0, 1, 1, 0],
-                    x: [0, Math.cos(index * Math.PI/2) * 80],
-                    y: [0, Math.sin(index * Math.PI/2) * 80],
-                    opacity: [0, 0.8, 0.8, 0]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    delay: index * 1,
-                    times: [0, 0.3, 0.7, 1]
-                  }}
-                  style={{
-                    top: "50%",
-                    left: "50%",
-                    transformOrigin: "center center"
-                  }}
-                />
-              ))}
-            </motion.div>
-            
-            {/* Animated subtitle */}
-            <motion.p 
-              className="text-xl text-white/70 mb-8 relative"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+              transition={{ duration: 0.3 }}
+              className="mb-6 relative"
             >
-              <span className="relative">
-                X Minecraft Launcher
-                <motion.span 
-                  className="absolute bottom-0 left-0 w-full h-0.5 bg-accent/50"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 1.5, delay: 1 }}
-                />
-              </span>
-            </motion.p>
-            
-            {/* Advanced loading bar */}
-            <div className="w-full max-w-sm relative">
-              <motion.div 
-                className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-2"
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.4 }}
-              >
-                <motion.div 
-                  className="h-full bg-gradient-to-r from-blue-600 via-accent to-blue-600 rounded-full relative"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    animate={{ x: ["-100%", "100%"] }}
-                    transition={{ 
-                      repeat: Infinity, 
-                      duration: 1.5,
-                      ease: "linear"
-                    }}
-                  />
-                </motion.div>
-              </motion.div>
+              <h1 className="text-7xl font-bold tracking-tighter">
+                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">XMCL</span>
+              </h1>
               
+              {/* Один орбитальный блок с простой анимацией */}
               <motion.div 
-                className="flex justify-between text-sm text-white/50"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.4 }}
-              >
-                <span>{Math.floor(progress)}%</span>
-                <motion.p
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                >
-                  Loading game resources...
-                </motion.p>
-              </motion.div>
+                className="absolute w-4 h-4 rounded-sm bg-accent/40"
+                animate={{ 
+                  x: [0, 40, 0, -40, 0],
+                  y: [0, -40, 0, 40, 0],
+                  opacity: [0.2, 0.4, 0.2]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                style={{
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)"
+                }}
+              />
+            </motion.div>
+            
+            {/* Статический подзаголовок без анимации */}
+            <p className="text-xl text-white/70 mb-8">
+              X Minecraft Launcher
+            </p>
+            
+            {/* Упрощенный индикатор загрузки */}
+            <div className="w-64 h-2 bg-gray-800 rounded-full overflow-hidden mb-4">
+              <motion.div 
+                className="h-full bg-blue-500 rounded-full"
+                style={{ width: `${progress}%` }}
+                // Убираем transition для более быстрого обновления
+              />
             </div>
             
-            {/* Loading tips */}
-            <motion.div
-              className="mt-8 text-white/40 text-sm max-w-xs text-center"
-              initial={{ opacity: 0 }}
-              animate={{ 
-                opacity: [0, 1, 1, 0],
-                y: [10, 0, 0, -10]
-              }}
-              transition={{ 
-                duration: 6, 
-                repeat: Infinity,
-                times: [0, 0.1, 0.9, 1]
-              }}
-            >
-              <motion.p>
-                Tip: XMCL supports Forge, Fabric, and Quilt modloaders
-              </motion.p>
-            </motion.div>
+            {/* Простой текст загрузки без анимации */}
+            <div className="text-center">
+              <p className="text-gray-400 text-sm">
+                Loading XMCL... {Math.round(progress)}%
+              </p>
+            </div>
+            
+            {/* Статическая подсказка */}
+            <div className="mt-6 max-w-xs text-center opacity-50">
+              <p className="text-gray-500 text-xs">
+                Tip: XMCL supports multiple Minecraft versions and mod loaders.
+              </p>
+            </div>
           </div>
           
           {/* Interactive floating particles */}
