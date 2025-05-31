@@ -57,7 +57,7 @@ export const MainNavItems = () => {
   ];
 
   return (
-    <div className="flex items-center gap-1 w-full justify-center">
+    <div className="flex items-center gap-1 flex-1 justify-center max-w-3xl">
       {allNavItems.map((item) => {
         const isActive = location.pathname === item.path;
         
@@ -66,24 +66,24 @@ export const MainNavItems = () => {
             <TooltipTrigger asChild>
               <Link
                 to={item.path}
-                className={`group relative px-3 py-3 rounded-xl transition-all duration-300 flex items-center justify-center min-w-fit overflow-hidden ${
+                className={`group relative px-4 py-3 rounded-2xl transition-all duration-400 flex items-center justify-center overflow-hidden border ${
                   isActive
-                    ? 'bg-gradient-to-r from-blue-600/60 via-purple-600/60 to-cyan-600/60 text-white shadow-xl border border-blue-500/50 backdrop-blur-sm'
-                    : 'text-white/80 hover:text-white hover:bg-gradient-to-r hover:from-white/10 hover:via-white/15 hover:to-white/10 border border-transparent hover:border-white/30 backdrop-blur-sm'
+                    ? 'bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 text-white shadow-xl shadow-blue-500/15 border-blue-400/25'
+                    : 'text-white/70 hover:text-white hover:bg-gradient-to-r hover:from-white/8 hover:via-white/12 hover:to-white/8 border-transparent hover:border-white/20'
                 }`}
               >
                 {/* Background glow effect */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 rounded-xl"
-                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 bg-gradient-to-r from-blue-400/10 via-purple-400/10 to-cyan-400/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-400"
                 />
                 
-                {/* Icon container */}
+                {/* Icon container with enhanced animation */}
                 <div className="relative z-10 flex items-center justify-center">
                   <motion.div
                     className="flex items-center justify-center"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ duration: 0.2 }}
+                    whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.4 }}
                   >
                     {item.icon}
                   </motion.div>
@@ -92,23 +92,32 @@ export const MainNavItems = () => {
                 {/* Active indicator */}
                 {isActive && (
                   <motion.div
-                    className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full"
-                    layoutId="navbar-indicator"
+                    className="absolute bottom-0.5 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full shadow-lg shadow-blue-400/50"
+                    layoutId="main-navbar-indicator"
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
                 )}
                 
-                {/* Hover shimmer effect */}
+                {/* Premium shimmer effect */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl"
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
                 />
+                
+                {/* Subtle pulse effect for active items */}
+                {isActive && (
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5 rounded-2xl"
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                )}
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="bottom" className="bg-black/90 text-white border-white/20">
-              <p>{item.label}</p>
+            <TooltipContent side="bottom" className="bg-slate-900/95 text-white border-white/20 backdrop-blur-lg">
+              <p className="font-medium">{item.label}</p>
             </TooltipContent>
           </Tooltip>
         );

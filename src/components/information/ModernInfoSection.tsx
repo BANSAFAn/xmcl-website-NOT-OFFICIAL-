@@ -49,23 +49,23 @@ export function ModernInfoSection() {
   const features: Feature[] = [
     {
       ...text.features[0], // Modern Interface
-      image: "/XMCL/2.gif"
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1920&h=1080&q=80"
     },
     {
       ...text.features[1], // Mod Management with links
-      image: "/XMCL/3.gif"
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&h=1080&q=80"
     },
     {
       ...text.features[2], // Cross Platform
-      image: "/XMCL/4.gif"
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1920&h=1080&q=80"
     },
     {
       ...text.features[3], // Easy Installation
-      image: "/XMCL/5.gif"
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&h=1080&q=80"
     },
     {
       ...text.features[4], // Open Source with GitHub link
-      image: "/XMCL/1.gif"
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&h=1080&q=80"
     }
   ];
 

@@ -1,22 +1,13 @@
+
 [
   {
-    "slug": "Optimizing X Minecraft Launcher Using Azure Application Insights and Azure Storage for Secure Sourcemap Management",
-    "title": "Optimizing X Minecraft Launcher Using Azure Application Insights and Azure Storage for Secure Sourcemap Management",
+    "slug": "new-website",
+    "title": "Welcome to Our New Website",
     "date": "2025-03-15",
-    "author": "CIO10",
-    "excerpt": "Use azure applicationinsights in Electron with sourcemap configuration in azure storage blob.",
-    "category": "Blogs",
-    "image": "https://hub.kyivstar.ua/assets/cms/uploads/Shho_take_Microsoft_Azure_Najvazhlivishe_pro_globalnu_hmarnu_platformu_a7fbcc385a.png",
-    "path": "/blogs/2025-03/Optimizing X Minecraft Launcher Using Azure Application Insights and Azure Storage for Secure Sourcemap Management.md"
-  },
-  {
-    "slug": "Website Update Announcement",
-    "title": "Website Update Announcement",
-    "date": "2025-03-17",
-    "author": "Baneronetwo",
-    "excerpt": "This is our first update announcement for the website! Let's talk about the important changes that have been implemented.",
-    "category": "Web News",
-    "image": "https://i.gifer.com/origin/cd/cdbc14c7aee69fe1054ad2536d28de05_w200.gif",
-    "path": "/blogs/2025-03/17.3.25.md"
+    "author": "XMCL Team",
+    "excerpt": "We're excited to announce the launch of our brand new website for X Minecraft Launcher.",
+    "category": "News",
+    "image": "/assets/images/bc119197-ca8b-4f7f-8988-823cc947ad73.png",
+    "path": "/blogs/2025-03/new-website.md"
   }
 ]

@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, Sparkles } from 'lucide-react';
+import { Menu, X, Home, Sparkles, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NavItems } from './NavItems';
@@ -10,17 +11,13 @@ import { MobileMenu } from './MobileMenu';
 import { LanguageProvider, useLanguage } from './LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 
-export function Navbar() {
+export function ModernNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -33,18 +30,12 @@ export function Navbar() {
     const handleKeyDown = (e: KeyboardEvent) => {
       clearTimeout(typingTimer);
       typedString += e.key.toLowerCase();
-
-      // Keep only the last 5 characters
       if (typedString.length > 5) {
         typedString = typedString.slice(-5);
       }
-
-      // Check if the string matches
       if (typedString === 'baner') {
         window.dispatchEvent(new CustomEvent('banerEasterEgg'));
       }
-
-      // Reset the string after a delay
       typingTimer = setTimeout(() => {
         typedString = '';
       }, 2000);
@@ -58,7 +49,7 @@ export function Navbar() {
 
   return (
     <LanguageProvider>
-      <NavbarContent 
+      <ModernNavbarContent 
         scrolled={scrolled} 
         mobileMenuOpen={mobileMenuOpen} 
         setMobileMenuOpen={setMobileMenuOpen} 
@@ -67,17 +58,17 @@ export function Navbar() {
   );
 }
 
-interface NavbarContentProps {
+interface ModernNavbarContentProps {
   scrolled: boolean;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
 }
 
-const NavbarContent = ({
+const ModernNavbarContent = ({
   scrolled,
   mobileMenuOpen,
   setMobileMenuOpen
-}: NavbarContentProps) => {
+}: ModernNavbarContentProps) => {
   const { translations } = useLanguage();
   const location = useLocation();
   const { toast } = useToast();

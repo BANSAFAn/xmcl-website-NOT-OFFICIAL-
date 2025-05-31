@@ -17,8 +17,10 @@ const TabsList = React.forwardRef<
     <TabsPrimitive.List
       ref={ref}
       className={cn(
-        "inline-flex h-auto w-full bg-gradient-to-r from-slate-900/80 via-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden",
-        isMobile ? "p-1 flex-col" : "p-1.5 flex-row",
+        "inline-flex h-auto w-full relative overflow-hidden",
+        isMobile 
+          ? "bg-gradient-to-r from-slate-900/90 via-slate-800/90 to-slate-900/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-1 flex-col" 
+          : "bg-gradient-to-r from-slate-900/70 via-slate-800/70 to-slate-900/70 backdrop-blur-md border border-white/10 rounded-xl shadow-xl p-1 flex-row max-w-fit mx-auto",
         className
       )}
       {...props}
@@ -38,10 +40,15 @@ const TabsTrigger = React.forwardRef<
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
-        "relative inline-flex items-center justify-center whitespace-nowrap rounded-xl transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600/40 data-[state=active]:via-purple-600/40 data-[state=active]:to-cyan-600/40 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/30 hover:bg-gradient-to-r hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:text-white text-white/80 overflow-hidden group border border-transparent data-[state=active]:border-blue-500/50 hover:border-white/30",
+        "relative inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 overflow-hidden group border border-transparent",
+        "data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500/20 data-[state=active]:via-blue-500/20 data-[state=active]:to-purple-500/20",
+        "data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-cyan-500/20",
+        "data-[state=active]:border-cyan-400/30",
+        "hover:bg-gradient-to-r hover:from-white/5 hover:via-white/8 hover:to-white/5 hover:text-white hover:border-white/20",
+        "text-white/70 font-medium",
         isMobile 
-          ? "px-4 py-4 text-sm font-medium min-h-[56px] w-full mb-1 last:mb-0" 
-          : "px-4 py-3 text-sm font-medium min-h-[48px] flex-1 md:flex-none md:min-w-[120px]",
+          ? "px-4 py-4 text-sm min-h-[56px] w-full mb-1 last:mb-0" 
+          : "px-6 py-2.5 text-sm min-h-[40px] mx-0.5",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -50,15 +57,15 @@ const TabsTrigger = React.forwardRef<
     >
       {/* Animated background effect */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 group-data-[state=active]:opacity-60"
+        className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 group-data-[state=active]:opacity-50"
         initial={false}
         animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2 }}
       />
       
       {/* Shimmer effect */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100"
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100"
         initial={{ x: "-100%" }}
         animate={{ x: isHovered ? "100%" : "-100%" }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
@@ -67,12 +74,12 @@ const TabsTrigger = React.forwardRef<
       {/* Content container */}
       <motion.div
         className={cn(
-          "relative z-10 flex items-center gap-3 w-full",
+          "relative z-10 flex items-center gap-2 w-full",
           isMobile ? "justify-start" : "justify-center"
         )}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: 0.1 }}
       >
         {React.Children.map(children, (child, index) => {
           if (React.isValidElement(child)) {
@@ -88,19 +95,16 @@ const TabsTrigger = React.forwardRef<
                 </motion.div>
               );
             }
-            // Text (always show on mobile, show on hover/active on desktop)
+            // Text (always show on mobile, show on desktop too but smaller)
             return (
               <motion.span
                 className={cn(
-                  "text-sm font-semibold whitespace-nowrap min-w-0",
-                  isMobile ? "block" : "hidden md:block"
+                  "font-semibold whitespace-nowrap min-w-0",
+                  isMobile ? "text-sm block" : "text-sm block"
                 )}
-                initial={{ opacity: isMobile ? 1 : 0, width: isMobile ? "auto" : 0 }}
-                animate={{ 
-                  opacity: isMobile ? 1 : 1,
-                  width: isMobile ? "auto" : "auto"
-                }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
               >
                 {child}
               </motion.span>
@@ -113,15 +117,15 @@ const TabsTrigger = React.forwardRef<
       {/* Active indicator */}
       <motion.div
         className={cn(
-          "absolute bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full scale-x-0 group-data-[state=active]:scale-x-100",
-          isMobile ? "left-1 top-1/2 -translate-y-1/2 w-1 h-8" : "bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1"
+          "absolute bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 rounded-full scale-x-0 group-data-[state=active]:scale-x-100",
+          isMobile ? "left-1 top-1/2 -translate-y-1/2 w-1 h-8" : "bottom-0.5 left-1/2 transform -translate-x-1/2 w-8 h-0.5"
         )}
         transition={{ duration: 0.3, ease: "easeOut" }}
       />
       
       {/* Glow effect for active state */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-cyan-500/30 rounded-xl opacity-0 group-data-[state=active]:opacity-100 blur-sm"
+        className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 blur-sm"
         transition={{ duration: 0.3 }}
       />
     </TabsPrimitive.Trigger>
@@ -134,15 +138,15 @@ const TabsContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -20 }}
-    transition={{ duration: 0.4, ease: "easeOut" }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.3, ease: "easeOut" }}
   >
     <TabsPrimitive.Content
       ref={ref}
       className={cn(
-        "mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-left",
+        "mt-6 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-left",
         className
       )}
       {...props}

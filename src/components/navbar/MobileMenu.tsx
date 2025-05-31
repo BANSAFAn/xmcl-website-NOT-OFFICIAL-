@@ -80,7 +80,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <img src="/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="XMCL" className="h-8 w-8" />
+                  <img src="/assets/images/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="XMCL" className="h-8 w-8" />
                   <span className="font-bold text-xl bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                     XMCL
                   </span>
