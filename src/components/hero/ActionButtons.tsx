@@ -86,10 +86,12 @@ export function ActionButtons({ isMobile = false }: ActionButtonsProps) {
       </motion.div>
 
       {/* GitHub File Viewer */}
-      <GitHubFileViewer 
-        isOpen={showGitHubViewer} 
-        onClose={() => setShowGitHubViewer(false)} 
-      />
+      {typeof GitHubFileViewer !== 'undefined' && (
+        <GitHubFileViewer 
+          isOpen={showGitHubViewer} 
+          onClose={() => setShowGitHubViewer(false)} 
+        />
+      )}
     </>
   );
 }

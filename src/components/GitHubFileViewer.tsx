@@ -22,8 +22,25 @@ interface GitHubFileViewerProps {
   onClose: () => void;
 }
 
-export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
+export const GitHubFileViewer = ({ isOpen, onClose }: GitHubFileViewerProps) => {
   const { translations } = useLanguage();
+  // Ensure translations.githubFileViewer exists
+  const githubFileViewerTranslations = translations?.githubFileViewer || {
+    viewCode: "View Code",
+    close: "Close",
+    loading: "Loading...",
+    noFiles: "No files found",
+    sortBy: "Sort by",
+    name: "Name",
+    date: "Date",
+    size: "Size",
+    type: "Type",
+    copy: "Copy",
+    copied: "Copied!",
+    download: "Download",
+    viewOnGithub: "View on GitHub",
+    back: "Back"
+  };
   const [files, setFiles] = useState<GitHubFile[]>([]);
   const [currentPath, setCurrentPath] = useState("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -276,6 +293,11 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
     return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
   };
 
+  // Ensure the component is properly initialized
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -313,7 +335,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                   className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                 >
                   <ExternalLink size={16} className="mr-2" />
-                  {translations.githubFileViewer.openOnGitHub || "Open on GitHub"}
+                  {githubFileViewerTranslations.openOnGitHub || "Open on GitHub"}
                 </Button>
                 <Button
                   variant="ghost"
@@ -341,7 +363,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="sm" className="ml-2 bg-slate-700 border-slate-600 hover:bg-slate-600 text-white">
                           <ArrowUpDown size={14} className="mr-2" />
-                          {sortType === "name" ? translations.githubFileViewer.name || "Name" : sortType === "date" ? translations.githubFileViewer.date || "Date" : translations.githubFileViewer.sort || "Sort"}
+                          {sortType === "name" ? githubFileViewerTranslations.name || "Name" : sortType === "date" ? githubFileViewerTranslations.date || "Date" : githubFileViewerTranslations.sort || "Sort"}
                           {sortType !== "none" && (sortOrder === "asc" ? " ↑" : " ↓")}
                         </Button>
                       </DropdownMenuTrigger>
@@ -351,14 +373,14 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           className={`flex items-center ${sortType === "name" ? "text-cyan-400" : "text-slate-300"}`}
                         >
                           <AlignLeft size={14} className="mr-2" />
-                          {translations.githubFileViewer.name || "Name"} {sortType === "name" && (sortOrder === "asc" ? "↑" : "↓")}
+                          {githubFileViewerTranslations.name || "Name"} {sortType === "name" && (sortOrder === "asc" ? "↑" : "↓")}
                         </DropdownMenuItem>
                         <DropdownMenuItem 
                           onClick={() => handleSort("date")} 
                           className={`flex items-center ${sortType === "date" ? "text-cyan-400" : "text-slate-300"}`}
                         >
                           <Calendar size={14} className="mr-2" />
-                          {translations.githubFileViewer.date || "Date"} {sortType === "date" && (sortOrder === "asc" ? "↑" : "↓")}
+                          {githubFileViewerTranslations.date || "Date"} {sortType === "date" && (sortOrder === "asc" ? "↑" : "↓")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -445,7 +467,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                         >
                           {copied ? <Check size={14} className="mr-2" /> : <Copy size={14} className="mr-2" />}
-                          {copied ? translations.githubFileViewer.copied || 'Copied!' : translations.githubFileViewer.copy || 'Copy'}
+                          {copied ? githubFileViewerTranslations.copied || 'Copied!' : githubFileViewerTranslations.copy || 'Copy'}
                         </Button>
                         <Button
                           variant="outline"
@@ -459,7 +481,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                           className="bg-slate-700 border-slate-600 hover:bg-slate-600 text-white"
                         >
                           <Download size={14} className="mr-2" />
-                          {translations.githubFileViewer.downloadFile || 'Download'}
+                          {githubFileViewerTranslations.downloadFile || 'Download'}
                         </Button>
                       </div>
                     </div>
@@ -468,7 +490,7 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                         {loading ? (
                           <div className="text-center py-8">
                             <div className="animate-spin w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full mx-auto"></div>
-                            <p className="text-slate-400 mt-2">{translations.githubFileViewer.loadingContent || "Loading file content..."}</p>
+                            <p className="text-slate-400 mt-2">{githubFileViewerTranslations.loadingContent || "Loading file content..."}</p>
                           </div>
                         ) : (
                           <div className="font-mono text-sm leading-relaxed">
@@ -484,8 +506,8 @@ export function GitHubFileViewer({ isOpen, onClose }: GitHubFileViewerProps) {
                       <div className="p-6 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-3xl border border-cyan-500/20 mb-6">
                         <Code size={64} className="text-cyan-400 mx-auto" />
                       </div>
-                      <p className="text-slate-300 text-xl font-semibold mb-2">{translations.githubFileViewer.selectFileToView || "Select a file to view its content"}</p>
-                      <p className="text-slate-500">{translations.githubFileViewer.browseFiles || "Browse the repository files on the left panel"}</p>
+                      <p className="text-slate-300 text-xl font-semibold mb-2">{githubFileViewerTranslations.selectFileToView || "Select a file to view its content"}</p>
+                      <p className="text-slate-500">{githubFileViewerTranslations.browseFiles || "Browse the repository files on the left panel"}</p>
                     </div>
                   </div>
                 )}
