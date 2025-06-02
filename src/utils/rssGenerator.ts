@@ -35,24 +35,57 @@ export function generateRSSFeed(posts: BlogPost[], siteUrl: string = window.loca
 </rss>`;
 }
 
-export async function downloadRSSFeed() {
+export async function downloadRSSFeed(format: 'xml' | 'json' = 'xml') {
   try {
     const { getAllBlogPosts } = await import('./blogUtils');
     const posts = await getAllBlogPosts();
-    const rssContent = generateRSSFeed(posts);
     
-    const blob = new Blob([rssContent], { type: 'application/rss+xml' });
+    let content: string;
+    let mimeType: string;
+    let fileName: string;
+    
+    if (format === 'xml') {
+      content = generateRSSFeed(posts);
+      mimeType = 'application/rss+xml';
+      fileName = 'xmcl-blog.xml';
+    } else {
+      // Generate JSON format
+      const jsonContent = {
+        title: 'XMCL Blog',
+        link: `${window.location.origin}/blogs`,
+        description: 'Latest updates and insights from the XMCL team',
+        language: 'en',
+        lastBuildDate: new Date().toISOString(),
+        generator: 'XMCL Website',
+        items: posts.map(post => ({
+          title: post.title,
+          link: `${window.location.origin}/blogs/${post.slug}`,
+          guid: `${window.location.origin}/blogs/${post.slug}`,
+          description: post.excerpt,
+          pubDate: new Date(post.date).toISOString(),
+          author: post.author,
+          category: post.category
+        }))
+      };
+      content = JSON.stringify(jsonContent, null, 2);
+      mimeType = 'application/json';
+      fileName = 'xmcl-blog.json';
+    }
+    
+    const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
     
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'xmcl-blog.xml';
+    link.download = fileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
     URL.revokeObjectURL(url);
+    return { success: true };
   } catch (error) {
-    console.error('Error generating RSS feed:', error);
+    console.error(`Error generating ${format.toUpperCase()} feed:`, error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 }

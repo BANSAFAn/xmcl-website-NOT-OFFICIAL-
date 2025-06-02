@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { Star, GitFork, Download, Tag, Users, Activity } from "lucide-react";
 import { useGitHubRepoStats } from "@/hooks/useGitHubRepoStats";
 import { useGitHubStats } from "@/hooks/useGitHubStats";
+import { useI18n } from "@/i18n/context";
 
 export function RepoStats() {
   const { formattedStars, formattedForks, isLoading: repoLoading } = useGitHubRepoStats();
   const { formattedDownloads, releases, isLoading: statsLoading } = useGitHubStats();
+  const { t } = useI18n();
 
   const latestVersion = releases?.[0]?.tag_name || "v0.0.0";
 
@@ -14,28 +16,28 @@ export function RepoStats() {
     {
       icon: Star,
       value: formattedStars,
-      label: "Stars",
+      label: t('social.stats.stars'),
       color: "from-yellow-400 to-orange-500",
       delay: 0.1
     },
     {
       icon: GitFork,
       value: formattedForks,
-      label: "Forks",
+      label: t('social.stats.forks'),
       color: "from-blue-400 to-cyan-500",
       delay: 0.2
     },
     {
       icon: Download,
       value: formattedDownloads,
-      label: "Downloads",
+      label: t('social.stats.downloads'),
       color: "from-green-400 to-emerald-500",
       delay: 0.3
     },
     {
       icon: Tag,
       value: latestVersion,
-      label: "Latest",
+      label: t('social.stats.latest'),
       color: "from-purple-400 to-pink-500",
       delay: 0.4
     }

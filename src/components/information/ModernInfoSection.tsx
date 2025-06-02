@@ -49,23 +49,23 @@ export function ModernInfoSection() {
   const features: Feature[] = [
     {
       ...text.features[0], // Modern Interface
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1920&h=1080&q=80"
+      image: "/XMCL/2.gif"
     },
     {
       ...text.features[1], // Mod Management with links
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&h=1080&q=80"
+      image: "/XMCL/3.gif"
     },
     {
       ...text.features[2], // Cross Platform
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1920&h=1080&q=80"
+      image: "/XMCL/4.gif"
     },
     {
       ...text.features[3], // Easy Installation
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&h=1080&q=80"
+      image: "/XMCL/5.gif"
     },
     {
       ...text.features[4], // Open Source with GitHub link
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&h=1080&q=80"
+      image: "/XMCL/2.gif" // Повторно используем первый GIF, так как у нас только 4 GIF-файла
     }
   ];
 

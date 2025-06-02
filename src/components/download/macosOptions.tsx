@@ -4,7 +4,7 @@ import { DownloadOption } from './types';
 import { MacOSAssets } from './types';
 import { useOSAssets } from './fetchReleases';
 import { ExtendedTranslations } from './types';
-import { useLanguage } from '@/components/navbar/LanguageContext';
+import { useI18n } from '@/i18n/context';
 
 type RenderFunctionProps = {
   getTranslation: (key: keyof ExtendedTranslations) => string;
@@ -20,9 +20,9 @@ export const renderMacOSOptions = ({
   setShowConfirmation
 }: RenderFunctionProps): DownloadOption[] => {
   // Get macOS assets from GitHub
-  const { assets } = useOSAssets('macos');
+  const { t } = useI18n();
+  const { assets } = useOSAssets('macos', t);
   const macOSAssets = assets as MacOSAssets;
-  const { currentLanguage } = useLanguage();
   
   const options: DownloadOption[] = [];
 

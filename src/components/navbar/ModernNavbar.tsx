@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Home, Sparkles, ChevronDown } from 'lucide-react';
@@ -112,7 +111,7 @@ const ModernNavbarContent = ({
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-2 rounded-2xl border border-white/10 backdrop-blur-sm">
-                <img src="/assets/images/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-10 w-10" />
+                <img src="/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-10 w-10" />
               </div>
             </motion.div>
             <motion.div
@@ -250,7 +249,6 @@ const ModernNavbarContent = ({
             <MobileMenu 
               isOpen={mobileMenuOpen} 
               onClose={() => setMobileMenuOpen(false)} 
-              onLanguageChange={() => {}}
             />
           )}
         </AnimatePresence>

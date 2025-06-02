@@ -1,9 +1,10 @@
 
-import { Download, Package, FileArchive } from "lucide-react";
+import { Archive, Package, Layers, Github } from "lucide-react";
 import { DownloadOption } from './types';
 import { LinuxAssets } from './types';
 import { useOSAssets } from './fetchReleases';
 import { ExtendedTranslations } from './types';
+import { useI18n } from '@/i18n/context';
 import { useLanguage } from '@/components/navbar/LanguageContext';
 
 type RenderFunctionProps = {
@@ -19,7 +20,8 @@ export const renderLinuxOptions = ({
   setCurrentAsset,
   setShowConfirmation
 }: RenderFunctionProps): DownloadOption[] => {
-  const { assets } = useOSAssets('linux');
+  const { t } = useI18n();
+  const { assets } = useOSAssets('linux', t);
   const linuxAssets = assets as LinuxAssets;
   const { currentLanguage } = useLanguage();
   

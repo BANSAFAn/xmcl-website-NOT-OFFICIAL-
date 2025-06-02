@@ -35,9 +35,13 @@ const Changelogs = () => {
       case 'latest':
         return releases.slice(0, 1);
       case 'newest':
-        return releases.slice(0, 5);
+        return releases.slice(0, 10);
+      case 'newest-25':
+        return releases.slice(0, 25);
       case 'oldest':
-        return releases.slice(-5).reverse();
+        return releases.slice(-10).reverse();
+      case 'oldest-25':
+        return releases.slice(-25).reverse();
       default:
         return releases;
     }

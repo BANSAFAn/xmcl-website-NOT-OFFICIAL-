@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Home, Sparkles } from 'lucide-react';
@@ -10,9 +11,14 @@ import { MobileMenu } from './MobileMenu';
 import { LanguageProvider, useLanguage } from './LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 
+// Re-export ModernNavbar for backward compatibility
+export { ModernNavbar } from './ModernNavbar';
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navbarVisible, setNavbarVisible] = useState(false);
+  const [triggerHovered, setTriggerHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +32,29 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Keyboard handler for "M" key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'm' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        // Check if we're not in an input field
+        const activeElement = document.activeElement;
+        if (activeElement && (
+          activeElement.tagName === 'INPUT' || 
+          activeElement.tagName === 'TEXTAREA' || 
+          activeElement.getAttribute('contenteditable') === 'true'
+        )) {
+          return;
+        }
+        
+        e.preventDefault();
+        setNavbarVisible(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // Easter egg for when user types "baner"
   useEffect(() => {
     let typedString = '';
@@ -34,17 +63,14 @@ export function Navbar() {
       clearTimeout(typingTimer);
       typedString += e.key.toLowerCase();
 
-      // Keep only the last 5 characters
       if (typedString.length > 5) {
         typedString = typedString.slice(-5);
       }
 
-      // Check if the string matches
       if (typedString === 'baner') {
         window.dispatchEvent(new CustomEvent('banerEasterEgg'));
       }
 
-      // Reset the string after a delay
       typingTimer = setTimeout(() => {
         typedString = '';
       }, 2000);
@@ -56,12 +82,50 @@ export function Navbar() {
     };
   }, []);
 
+  const handleTriggerMouseEnter = () => {
+    setTriggerHovered(true);
+    setNavbarVisible(true);
+  };
+
+  const handleTriggerMouseLeave = () => {
+    setTriggerHovered(false);
+    // Небольшая задержка перед скрытием
+    setTimeout(() => {
+      if (!triggerHovered && !navbarVisible) {
+        setNavbarVisible(false);
+      }
+    }, 300);
+  };
+
+  const handleNavbarMouseLeave = () => {
+    setTimeout(() => {
+      setNavbarVisible(false);
+    }, 500);
+  };
+
   return (
     <LanguageProvider>
+      {/* Navbar trigger tab - только для ПК */}
+      <motion.div 
+        className="fixed top-0 left-1/2 transform -translate-x-1/2 z-[60] lg:block hidden pointer-events-auto"
+        initial={{ y: -50 }}
+        animate={{ y: triggerHovered ? 0 : -40 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        onMouseEnter={handleTriggerMouseEnter}
+        onMouseLeave={handleTriggerMouseLeave}
+      >
+        <div className="bg-gradient-to-r from-blue-500/90 to-purple-500/90 backdrop-blur-xl px-6 py-3 rounded-b-2xl border-l border-r border-b border-white/20 shadow-xl">
+          <span className="text-sm text-white/90 font-medium">Menu (M)</span>
+        </div>
+      </motion.div>
+      
       <NavbarContent 
         scrolled={scrolled} 
         mobileMenuOpen={mobileMenuOpen} 
-        setMobileMenuOpen={setMobileMenuOpen} 
+        setMobileMenuOpen={setMobileMenuOpen}
+        navbarVisible={navbarVisible}
+        setNavbarVisible={setNavbarVisible}
+        onMouseLeave={handleNavbarMouseLeave}
       />
     </LanguageProvider>
   );
@@ -71,12 +135,18 @@ interface NavbarContentProps {
   scrolled: boolean;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
+  navbarVisible: boolean;
+  setNavbarVisible: (visible: boolean) => void;
+  onMouseLeave: () => void;
 }
 
 const NavbarContent = ({
   scrolled,
   mobileMenuOpen,
-  setMobileMenuOpen
+  setMobileMenuOpen,
+  navbarVisible,
+  setNavbarVisible,
+  onMouseLeave
 }: NavbarContentProps) => {
   const { translations } = useLanguage();
   const location = useLocation();
@@ -96,17 +166,26 @@ const NavbarContent = ({
     return () => window.removeEventListener('banerEasterEgg', handleEasterEgg);
   }, [toast]);
 
+  const isVisible = navbarVisible || window.innerWidth < 1024;
+
   return (
     <TooltipProvider>
       <motion.header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
           scrolled 
-            ? 'bg-slate-900/85 backdrop-blur-2xl py-3 shadow-2xl shadow-black/50 border-b border-white/5' 
+            ? 'bg-slate-900/90 backdrop-blur-2xl py-3 shadow-2xl shadow-black/50 border-b border-white/5' 
             : 'bg-transparent py-5'
         }`}
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        animate={{ 
+          y: isVisible ? 0 : -100, 
+          opacity: isVisible ? 1 : 0 
+        }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        style={{
+          pointerEvents: isVisible ? 'auto' : 'none'
+        }}
+        onMouseLeave={onMouseLeave}
       >
         {/* Premium gradient border */}
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-400/60 via-purple-400/60 to-transparent"></div>
@@ -121,7 +200,7 @@ const NavbarContent = ({
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-2 rounded-2xl border border-white/10 backdrop-blur-sm">
-                <img src="/assets/images/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-10 w-10" />
+                <img src="/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="X Minecraft Launcher" className="h-10 w-10" />
               </div>
             </motion.div>
             <motion.div
@@ -153,12 +232,8 @@ const NavbarContent = ({
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              {/* Main navigation container */}
               <div className="relative bg-gradient-to-r from-slate-900/70 via-slate-800/60 to-slate-900/70 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl shadow-black/40 overflow-hidden">
-                {/* Animated background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 via-cyan-600/10 to-blue-600/10 opacity-0 hover:opacity-100 transition-opacity duration-700"></div>
-                
-                {/* Subtle inner glow */}
                 <div className="absolute inset-[1px] bg-gradient-to-r from-blue-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
                 
                 <motion.div 
@@ -167,7 +242,6 @@ const NavbarContent = ({
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
                 >
-                  {/* Home button */}
                   <Link to="/" className={`group relative px-5 py-3 rounded-2xl transition-all duration-400 flex items-center gap-3 overflow-hidden ${
                     location.pathname === '/' 
                       ? 'bg-gradient-to-r from-blue-500/25 via-purple-500/25 to-cyan-500/25 text-white shadow-xl shadow-blue-500/20 border border-blue-400/30' 
@@ -187,7 +261,6 @@ const NavbarContent = ({
                       <span className="font-semibold text-sm">Home</span>
                     </motion.div>
                     
-                    {/* Active indicator */}
                     {location.pathname === '/' && (
                       <motion.div
                         className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full shadow-lg shadow-blue-400/50"
@@ -196,7 +269,6 @@ const NavbarContent = ({
                       />
                     )}
                     
-                    {/* Shimmer effect */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl"
                       initial={{ x: "-100%" }}
@@ -205,10 +277,8 @@ const NavbarContent = ({
                     />
                   </Link>
                   
-                  {/* Navigation separator */}
                   <div className="w-px h-6 bg-gradient-to-b from-transparent via-white/20 to-transparent mx-1"></div>
                   
-                  {/* Main navigation items */}
                   <NavItems />
                 </motion.div>
               </div>
@@ -253,13 +323,11 @@ const NavbarContent = ({
           </div>
         </div>
 
-        {/* Mobile menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <MobileMenu 
               isOpen={mobileMenuOpen} 
               onClose={() => setMobileMenuOpen(false)} 
-              onLanguageChange={() => {}}
             />
           )}
         </AnimatePresence>

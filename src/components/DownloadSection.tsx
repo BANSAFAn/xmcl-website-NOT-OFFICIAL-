@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Download, ExternalLink } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useI18n } from "@/i18n/context";
 
 type ReleaseAsset = {
   name: string;
@@ -19,9 +20,11 @@ type Release = {
 };
 
 const formatFileSize = (bytes: number): string => {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  const { t } = useI18n();
+  
+  if (bytes < 1024) return `${bytes} ${t.common.fileSize.bytes}`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} ${t.common.fileSize.kb}`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} ${t.common.fileSize.mb}`;
 };
 
 
