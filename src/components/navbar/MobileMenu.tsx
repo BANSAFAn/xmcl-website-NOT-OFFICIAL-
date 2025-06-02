@@ -2,20 +2,18 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Home, Globe } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { MainNavItems } from './MainNavItems';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { SocialLinks } from './SocialLinks';
-import { useLanguage } from './LanguageContext';
+import { useI18n } from '@/i18n/context';
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onLanguageChange: () => void;
 }
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const location = useLocation();
-  const { translations } = useLanguage();
+  const { t } = useI18n();
 
   const menuVariants = {
     closed: {
@@ -56,23 +54,23 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999998]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
 
-          {/* Menu Panel */}
+          {/* Menu Panel - увеличиваем z-index и фиксируем размеры */}
           <motion.div
-            className="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-white/20 shadow-2xl z-50 lg:hidden overflow-y-auto"
+            className="fixed top-0 right-0 h-screen w-screen max-w-sm bg-gradient-to-b from-slate-900/98 via-slate-800/98 to-slate-900/98 backdrop-blur-xl border-l border-white/20 shadow-2xl z-[999999] overflow-y-auto overscroll-contain"
             variants={menuVariants}
             initial="closed"
             animate="open"
             exit="closed"
           >
             {/* Header */}
-            <div className="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-white/10 p-6">
+            <div className="sticky top-0 bg-slate-900/95 backdrop-blur-md border-b border-white/10 p-6 z-10">
               <div className="flex items-center justify-between">
                 <motion.div
                   className="flex items-center gap-3"
@@ -98,7 +96,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </div>
 
             {/* Navigation */}
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-6 pb-20">
               {/* Home Link */}
               <motion.div
                 custom={0}
@@ -116,7 +114,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   }`}
                 >
                   <Home size={20} />
-                  <span className="font-medium">Главная</span>
+                  <span className="font-medium">{t.nav.home}</span>
                 </Link>
               </motion.div>
 
@@ -133,14 +131,14 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 </h3>
                 <div className="space-y-2">
                   {[
-                    { path: '/guide', label: translations.guideLocal, icon: '📖' },
-                    { path: '/testing', label: 'Testing', icon: '🧪' },
-                    { path: '/changelogs', label: translations.changelogs, icon: '💬' },
-                    { path: '/blogs', label: translations.blogs, icon: '📰' },
-                    { path: '/about', label: translations.about, icon: '👥' },
-                    { path: '/issues', label: 'Issues', icon: '🐛' },
-                    { path: '/contact', label: translations.contactUs || 'Contact', icon: '📧' },
-                    { path: '/privacy', label: translations.privacy || 'Privacy', icon: '📄' }
+                    { path: '/guide', label: t.nav.guide, icon: '📖' },
+                    { path: '/testing', label: t.nav.testing, icon: '🧪' },
+                    { path: '/changelogs', label: t.nav.changelogs, icon: '💬' },
+                    { path: '/blogs', label: t.nav.blogs, icon: '📰' },
+                    { path: '/about', label: t.nav.about, icon: '👥' },
+                    { path: '/issues', label: t.nav.issues, icon: '🐛' },
+                    { path: '/contact', label: t.nav.contact, icon: '📧' },
+                    { path: '/privacy', label: t.nav.privacy, icon: '📄' }
                   ].map((item, index) => (
                     <Link
                       key={item.path}

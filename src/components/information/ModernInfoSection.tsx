@@ -65,7 +65,7 @@ export function ModernInfoSection() {
     },
     {
       ...text.features[4], // Open Source with GitHub link
-      image: "/XMCL/1.gif"
+      image: "/XMCL/2.gif" // Повторно используем первый GIF, так как у нас только 4 GIF-файла
     }
   ];
 

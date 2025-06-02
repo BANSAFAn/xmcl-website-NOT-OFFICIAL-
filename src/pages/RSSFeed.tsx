@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { generateRSSFeed } from '@/utils/rssGenerator';
+import { generateRSSFeed, downloadRSSFeed } from '@/utils/rssGenerator';
 import { getAllBlogPosts } from '@/utils/blogUtils';
 import { BlogPost } from '@/types/blog';
 import { Link } from 'react-router-dom';
-import { Rss, Download, ExternalLink, Calendar, User, Tag } from 'lucide-react';
+import { Rss, Download, ExternalLink, Calendar, User, Tag, FileJson } from 'lucide-react';
+import { useI18n } from '@/i18n/context';
 
 /**
  * Component that generates and serves an RSS feed
@@ -11,6 +12,7 @@ import { Rss, Download, ExternalLink, Calendar, User, Tag } from 'lucide-react';
  * and also provides a download option
  */
 const RSSFeed = () => {
+  const { t } = useI18n();
   const [rssContent, setRssContent] = useState<string>('');
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -24,7 +26,7 @@ const RSSFeed = () => {
         const posts = await getAllBlogPosts();
         
         if (!posts || posts.length === 0) {
-          setError('No blog posts found. RSS feed cannot be generated.');
+          setError(t.errors.noBlogPosts || 'No blog posts found. RSS feed cannot be generated.');
           setLoading(false);
           return;
         }
@@ -50,7 +52,7 @@ const RSSFeed = () => {
         }
       } catch (error) {
         console.error('Error generating RSS feed:', error);
-        setError(`Failed to load RSS feed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        setError(`${t.errors.failedToLoadRSS || 'Failed to load RSS feed'}: ${error instanceof Error ? error.message : t.errors.unknownError || 'Unknown error'}`);
         setLoading(false);
       }
     };
@@ -58,27 +60,15 @@ const RSSFeed = () => {
     generateAndServeRSS();
   }, []);
   
-  const handleDownloadRSS = () => {
+  const handleDownloadRSS = async (format: 'xml' | 'json' = 'xml') => {
     try {
-      // Create a blob with the RSS content
-      const blob = new Blob([rssContent], { type: 'application/rss+xml' });
-      
-      // Create a URL for the blob
-      const url = URL.createObjectURL(blob);
-      
-      // Create a link element to download the RSS feed
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'xmcl-blog.xml';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Clean up the URL object
-      URL.revokeObjectURL(url);
+      const result = await downloadRSSFeed(format);
+      if (!result.success) {
+        throw new Error(result.error || 'Unknown error');
+      }
     } catch (error) {
-      console.error('Error downloading RSS feed:', error);
-      setError('Failed to download RSS feed. Please try again later.');
+      console.error(`Error downloading ${format.toUpperCase()} feed:`, error);
+      setError(`${t.errors.failedToDownload || 'Failed to download'} ${format.toUpperCase()} ${t.errors.feedTryAgain || 'feed. Please try again later.'}`);
     }
   };
   
@@ -97,18 +87,27 @@ const RSSFeed = () => {
       <div className="flex flex-col items-center justify-center text-center mb-8">
         <div className="flex items-center gap-2 mb-2">
           <Rss size={24} className="text-orange-400" />
-          <h1 className="text-3xl font-bold">XMCL Blog RSS Feed</h1>
+          <h1 className="text-3xl font-bold">{t.blogs.rssFeedTitle || 'XMCL Blog RSS Feed'}</h1>
         </div>
-        <p className="text-lg text-white/70 mb-6">Subscribe to our RSS feed to stay updated with the latest blog posts</p>
+        <p className="text-lg text-white/70 mb-6">{t.blogs.rssFeedDescription || 'Subscribe to our RSS feed to stay updated with the latest blog posts'}</p>
         
         <div className="flex flex-wrap gap-4 justify-center">
           <button 
-            onClick={handleDownloadRSS}
+            onClick={() => handleDownloadRSS('xml')}
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
             disabled={loading || !rssContent}
           >
             <Download size={18} />
-            Download RSS Feed
+            {t.blogs.downloadXmlFeed || 'Download XML Feed'}
+          </button>
+          
+          <button 
+            onClick={() => handleDownloadRSS('json')}
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
+            disabled={loading || !rssContent}
+          >
+            <FileJson size={18} />
+            {t.blogs.downloadJsonFeed || 'Download JSON Feed'}
           </button>
           
           <a 
@@ -119,14 +118,14 @@ const RSSFeed = () => {
             disabled={loading || !rssContent}
           >
             <ExternalLink size={18} />
-            View Raw XML
+            {t.blogs.viewRawXml || 'View Raw XML'}
           </a>
         </div>
       </div>
       
       <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
-        <h2 className="text-xl font-semibold mb-2">How to Subscribe</h2>
-        <p className="mb-4">Add this URL to your RSS reader to subscribe:</p>
+        <h2 className="text-xl font-semibold mb-2">{t.blogs.howToSubscribe || 'How to Subscribe'}</h2>
+        <p className="mb-4">{t.blogs.addRssUrl || 'Add this URL to your RSS reader to subscribe:'}</p>
         <div className="bg-gray-900 p-3 rounded flex items-center justify-between">
           <code className="text-sm text-white/90">{window.location.origin}/api/rss</code>
           <button 
@@ -134,7 +133,7 @@ const RSSFeed = () => {
               navigator.clipboard.writeText(`${window.location.origin}/api/rss`);
             }}
             className="text-white/70 hover:text-white p-1 rounded hover:bg-white/10 transition-colors"
-            title="Copy to clipboard"
+            title={t.ui.copyToClipboard || 'Copy to clipboard'}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -144,7 +143,7 @@ const RSSFeed = () => {
         </div>
       </div>
       
-      <h2 className="text-2xl font-bold mb-6">Recent Posts</h2>
+      <h2 className="text-2xl font-bold mb-6">{t.blogs.recentPosts || 'Recent Posts'}</h2>
       
       {loading ? (
         <div className="flex justify-center items-center py-12">
@@ -156,7 +155,7 @@ const RSSFeed = () => {
         </div>
       ) : blogPosts.length === 0 ? (
         <div className="bg-gray-800/50 rounded-lg p-8 text-center">
-          <p className="text-white/70">No blog posts found. Check back later!</p>
+          <p className="text-white/70">{t.blogs.noBlogPostsFound || 'No blog posts found. Check back later!'}</p>
         </div>
       ) : (
         <div className="grid gap-6">
@@ -190,7 +189,7 @@ const RSSFeed = () => {
                   to={`/blogs/${post.slug}`}
                   className="inline-flex items-center gap-1 text-accent hover:text-accent/80 transition-colors"
                 >
-                  Read more
+                  {t.ui.readMore || 'Read more'}
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>

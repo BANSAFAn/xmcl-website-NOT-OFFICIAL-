@@ -5,6 +5,7 @@ import { WindowsAssets } from './types';
 import { useOSAssets } from './fetchReleases';
 import { ExtendedTranslations } from './types';
 import { useLanguage } from '@/components/navbar/LanguageContext';
+import { useI18n } from '@/i18n/context';
 
 type RenderFunctionProps = {
   getTranslation: (key: keyof ExtendedTranslations) => string;
@@ -19,7 +20,8 @@ export const renderWindowsOptions = ({
   setCurrentAsset,
   setShowConfirmation
 }: RenderFunctionProps): DownloadOption[] => {
-  const { assets } = useOSAssets('windows');
+  const { t } = useI18n();
+  const { assets } = useOSAssets('windows', t);
   const windowsAssets = assets as WindowsAssets;
   const { currentLanguage } = useLanguage();
 

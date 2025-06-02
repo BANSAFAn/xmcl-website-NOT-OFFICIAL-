@@ -1,26 +1,12 @@
 
 import { BlogPost } from '@/types/blog';
 
-export function generateRSSFeed(posts: BlogPost[], siteUrl: string = typeof window !== 'undefined' ? window.location.origin : ''): string {
-  // Ensure we have a valid siteUrl
-  if (!siteUrl) {
-    console.warn('No siteUrl provided for RSS feed generation, using fallback');
-    siteUrl = 'https://xmcl-website-not-official.vercel.app';
-  }
-  
+export function generateRSSFeed(posts: BlogPost[], siteUrl: string = window.location.origin): string {
   const now = new Date().toISOString();
   
   const rssItems = posts.map(post => {
-    // Ensure we have a valid date
-    let pubDate: string;
-    try {
-      pubDate = new Date(post.date).toUTCString();
-    } catch (e) {
-      console.warn(`Invalid date format for post ${post.slug}:`, e);
-      pubDate = new Date().toUTCString(); // Fallback to current date
-    }
-    
-    const postUrl = `${siteUrl}/blog/${post.slug}`;
+    const postUrl = `${siteUrl}/blogs/${post.slug}`;
+    const pubDate = new Date(post.date).toUTCString();
     
     return `
     <item>
@@ -49,39 +35,57 @@ export function generateRSSFeed(posts: BlogPost[], siteUrl: string = typeof wind
 </rss>`;
 }
 
-export async function downloadRSSFeed() {
+export async function downloadRSSFeed(format: 'xml' | 'json' = 'xml') {
   try {
-    // Check if we're in a browser environment
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      console.error('Cannot download RSS feed in a non-browser environment');
-      return;
-    }
-    
     const { getAllBlogPosts } = await import('./blogUtils');
     const posts = await getAllBlogPosts();
     
-    if (posts.length === 0) {
-      console.error('No blog posts found. RSS feed cannot be generated.');
-      return;
+    let content: string;
+    let mimeType: string;
+    let fileName: string;
+    
+    if (format === 'xml') {
+      content = generateRSSFeed(posts);
+      mimeType = 'application/rss+xml';
+      fileName = 'xmcl-blog.xml';
+    } else {
+      // Generate JSON format
+      const jsonContent = {
+        title: 'XMCL Blog',
+        link: `${window.location.origin}/blogs`,
+        description: 'Latest updates and insights from the XMCL team',
+        language: 'en',
+        lastBuildDate: new Date().toISOString(),
+        generator: 'XMCL Website',
+        items: posts.map(post => ({
+          title: post.title,
+          link: `${window.location.origin}/blogs/${post.slug}`,
+          guid: `${window.location.origin}/blogs/${post.slug}`,
+          description: post.excerpt,
+          pubDate: new Date(post.date).toISOString(),
+          author: post.author,
+          category: post.category
+        }))
+      };
+      content = JSON.stringify(jsonContent, null, 2);
+      mimeType = 'application/json';
+      fileName = 'xmcl-blog.json';
     }
     
-    const rssContent = generateRSSFeed(posts, window.location.origin);
-    
-    const blob = new Blob([rssContent], { type: 'application/rss+xml' });
+    const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
     
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'xmcl-blog.xml';
+    link.download = fileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
     URL.revokeObjectURL(url);
-    
-    return true; // Indicate success
+    return { success: true };
   } catch (error) {
-    console.error('Error generating RSS feed:', error);
-    return false; // Indicate failure
+    console.error(`Error generating ${format.toUpperCase()} feed:`, error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 }

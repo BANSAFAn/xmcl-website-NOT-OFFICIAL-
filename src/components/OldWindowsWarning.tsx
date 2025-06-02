@@ -2,12 +2,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertCircle, X } from "lucide-react";
-import { useLanguage } from "@/components/navbar/LanguageContext";
+import { useI18n } from "@/i18n/context";
 
 export function OldWindowsWarning() {
   const [isOldWindows, setIsOldWindows] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const { currentLanguage } = useLanguage();
+  const { t } = useI18n();
 
   // Detect old Windows versions
   useEffect(() => {
@@ -25,41 +25,6 @@ export function OldWindowsWarning() {
   // Only show if it's an old Windows version
   if (!isOldWindows) return null;
 
-  const translations = {
-    en: {
-      title: "Unsupported Windows Version",
-      message: "You are using Windows XP, Vista, 7, or 8. These Windows versions are no longer supported by XMCL. You can browse the website, but downloading the launcher will not work on your system.",
-      button: "I understand"
-    },
-    ru: {
-      title: "Неподдерживаемая версия Windows",
-      message: "Вы используете Windows XP, Vista, 7 или 8. Эти версии Windows больше не поддерживаются XMCL. Вы можете просматривать сайт, но скачивание лаунчера не будет работать на вашей системе.",
-      button: "Я понимаю"
-    },
-    uk: {
-      title: "Непідтримувана версія Windows",
-      message: "Ви використовуєте Windows XP, Vista, 7 або 8. Ці версії Windows більше не підтримуються XMCL. Ви можете переглядати сайт, але завантаження лаунчера не працюватиме на вашій системі.",
-      button: "Я розумію"
-    },
-    zh: {
-      title: "不支持的 Windows 版本",
-      message: "您正在使用 Windows XP、Vista、7 或 8。XMCL 不再支持这些 Windows 版本。您可以浏览网站，但启动器下载将无法在您的系统上运行。",
-      button: "我明白了"
-    },
-    de: {
-      title: "Nicht unterstützte Windows-Version",
-      message: "Sie verwenden Windows XP, Vista, 7 oder 8. Diese Windows-Versionen werden von XMCL nicht mehr unterstützt. Sie können die Website durchsuchen, aber das Herunterladen des Launchers wird auf Ihrem System nicht funktionieren.",
-      button: "Ich verstehe"
-    },
-    ja: {
-      title: "サポートされていないWindowsバージョン",
-      message: "Windows XP、Vista、7、または8を使用しています。これらのWindowsバージョンはXMCLではもうサポートされていません。ウェブサイトは閲覧できますが、ランチャーのダウンロードはお使いのシステムでは動作しません。",
-      button: "理解しました"
-    }
-  };
-
-  const text = translations[currentLanguage as keyof typeof translations] || translations.en;
-
   return (
     <AnimatePresence>
       {isVisible && (
@@ -76,9 +41,9 @@ export function OldWindowsWarning() {
                 <AlertCircle className="h-5 w-5 text-yellow-500" />
               </div>
               <div className="ml-3 flex-1">
-                <h3 className="text-sm font-medium text-yellow-300">{text.title}</h3>
+                <h3 className="text-sm font-medium text-yellow-300">{t.warnings?.unsupportedWindows?.title}</h3>
                 <div className="mt-2 text-sm text-yellow-200/80">
-                  <p>{text.message}</p>
+                  <p>{t.warnings?.unsupportedWindows?.message}</p>
                 </div>
                 <div className="mt-4 flex gap-3">
                   <button
@@ -86,7 +51,7 @@ export function OldWindowsWarning() {
                     onClick={() => setIsVisible(false)}
                     className="inline-flex text-xs px-3 py-1.5 rounded-md bg-yellow-800 text-yellow-200 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   >
-                    {text.button}
+                    {t.warnings?.unsupportedWindows?.button}
                   </button>
                 </div>
               </div>

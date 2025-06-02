@@ -1,40 +1,22 @@
 
-export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja' | 'fr';
-
-export interface GitHubFileViewerTranslations {
-  openOnGitHub: string;
-  loading: string;
-  loadingFileContent: string;
-  selectFile: string;
-  browseFiles: string;
-  copy: string;
-  copied: string;
-  download: string;
-  root: string;
-  name: string;
-  date: string;
-  size: string;
-  type: string;
-  noFileSelected: string;
-}
+export type LanguageCode = 'en' | 'ru' | 'uk' | 'zh' | 'de' | 'ja';
 
 export interface Translations {
   guide: string;
+  guideLocal: string;
   privacy: string;
+  changelogs: string;
+  blogs: string;
   download: string;
   github: string;
   darkMode: string;
   lightMode: string;
+  downloadNow: string;
+  changeLanguage: string;
+  githubRepo: string;
+  discordServer: string;
+  selectLanguage: string;
   language: string;
-  blog: string;
-  changelog: string;
-  hero: HeroTranslations;
-  information: InformationTranslations;
-  downloadSection: DownloadTranslations;
-  privacySection: PrivacyTranslations;
-  blogSection: BlogTranslations;
-  changelogSection: ChangelogTranslations;
-  githubFileViewer?: GitHubFileViewerTranslations;
   about: string;
   contact: string;
   contactUs: string;
@@ -83,21 +65,6 @@ export interface Translations {
   modern: string;
   crossPlatform: string;
   openSource: string;
-  // GitHub File Viewer translations
-  viewCode: string;
-  sortBy: string;
-  sortByName: string;
-  sortByDate: string;
-  ascending: string;
-  descending: string;
-  parentDirectory: string;
-  fileExplorer: string;
-  noFileSelected: string;
-  selectFileToView: string;
-  loading: string;
-  copy: string;
-  copied: string;
-  downloadFile: string;
 }
 
 export interface LanguageContextProps {
