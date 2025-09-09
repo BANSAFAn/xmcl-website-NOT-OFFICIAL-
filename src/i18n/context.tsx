@@ -51,7 +51,18 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const contextValue = {
     currentLanguage,
     setLanguage,
-    t: translations[currentLanguage],
+    t: (key: string) => {
+      const parts = key.split('.');
+      let value: any = translations[currentLanguage];
+      for (const part of parts) {
+        if (value && typeof value === 'object' && part in value) {
+          value = value[part];
+        } else {
+          return key;
+        }
+      }
+      return typeof value === 'string' ? value : key;
+    },
   };
 
   return (

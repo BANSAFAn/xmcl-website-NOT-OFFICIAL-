@@ -1,130 +1,92 @@
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import { Download, MessageCircle, Coffee, Heart, Github } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
+import { motion } from 'framer-motion';
 
-import { motion } from "framer-motion";
-import { Heart, Github, MessageCircle } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useI18n } from "@/i18n/context";
+interface FooterProps {
+  onDownloadClick: () => void;
+}
 
-export function Footer() {
-  const { t } = useI18n();
+export const Footer = ({ onDownloadClick }: FooterProps) => {
+  const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
   
-  const footerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 }
-    }
-  };
-
+  const socialLinks = [
+    { icon: Github, href: 'https://github.com/voxelum/x-minecraft-launcher', label: 'GitHub' },
+    { icon: MessageCircle, href: 'https://discord.gg/W5XVwYY7GQ', label: 'Discord' },
+    { icon: MessageCircle, href: 'https://kook.top/xxxxxx', label: 'Kook' },
+    { icon: Heart, href: 'https://afdian.com/@ci010', label: 'Afdian' },
+    { icon: Coffee, href: 'https://ko-fi.com/ci010', label: 'Ko-fi' },
+  ];
+  
   return (
-    <motion.footer 
-      className="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black border-t border-slate-800/50 overflow-hidden"
-      variants={footerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                           radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)`
-        }} />
-      </div>
-
-      <div className="relative max-w-6xl mx-auto px-6 py-16">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+    <footer className="relative py-20 mt-32 overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/20 to-blue-900/20 dark:from-slate-950 dark:via-purple-950/30 dark:to-blue-950/30" />
+      <motion.div 
+        className="absolute inset-0 opacity-30"
+        animate={{
+          background: [
+            'radial-gradient(600px circle at 20% 80%, hsl(var(--primary) / 0.15), transparent)',
+            'radial-gradient(600px circle at 80% 20%, hsl(var(--primary) / 0.15), transparent)',
+            'radial-gradient(600px circle at 40% 60%, hsl(var(--primary) / 0.15), transparent)',
+          ]
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-4xl mx-auto">
           
-          {/* Brand Section */}
-          <motion.div variants={itemVariants} className="text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-blue-500/20 rounded-xl blur-md"></div>
-                <img src="/a39086fb-5549-43c0-a69e-217c717d938e.png" alt="XMCL" className="relative h-12 w-12 rounded-xl" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-1">
-                  {t.footer.launcherName}
-                </h3>
-                <p className="text-sm text-slate-400">{t.footer.launcherShortDesc}</p>
-              </div>
-            </div>
-            <p className="text-slate-300 text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
-              {t.footer.launcherFullDesc}
-            </p>
+          {/* Social Links */}
+          <motion.div 
+            className="flex justify-center gap-3 mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            {socialLinks.map((social, index) => (
+              <motion.div 
+                key={social.label}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="w-12 h-12 p-0 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-all duration-300 backdrop-blur-sm border border-white/10 hover:border-white/20"
+                  onClick={() => window.open(social.href, '_blank')}
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-5 h-5" />
+                </Button>
+              </motion.div>
+            ))}
           </motion.div>
 
-          {/* Quick Links */}
-          <motion.div variants={itemVariants} className="text-center">
-            <h4 className="text-lg font-semibold text-white mb-6 relative">
-              {t.footer.quickLinks}
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-            </h4>
-            <div className="space-y-3">
-              <Link to="/about" className="block text-slate-300 hover:text-blue-400 transition-colors duration-300 text-sm font-medium">
-                {t.nav.about}
-              </Link>
-              <Link to="/contact" className="block text-slate-300 hover:text-blue-400 transition-colors duration-300 text-sm font-medium">
-                {t.nav.contact}
-              </Link>
-              <Link to="/privacy" className="block text-slate-300 hover:text-blue-400 transition-colors duration-300 text-sm font-medium">
-                {t.nav.privacy}
-              </Link>
-              <Link to="/changelogs" className="block text-slate-300 hover:text-blue-400 transition-colors duration-300 text-sm font-medium">
-                {t.nav.changelogs}
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Community & Support */}
-          <motion.div variants={itemVariants} className="text-center md:text-right">
-            <h4 className="text-lg font-semibold text-white mb-6 relative">
-              {t.footer.community}
-              <div className="absolute -bottom-2 left-1/2 md:right-0 md:left-auto transform -translate-x-1/2 md:translate-x-0 w-12 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>            </h4>
-            <p className="text-slate-300 text-sm leading-relaxed">
-              {t.footer.support}
+          {/* Copyright */}
+          <motion.div 
+            className="text-center pt-8 border-t border-white/10"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <p className="text-slate-400 text-sm">
+              © {currentYear} X Minecraft Launcher. All rights reserved.
             </p>
+            <motion.p 
+              className="text-slate-500 text-xs mt-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              {t('footer.madeWith')}
+            </motion.p>
           </motion.div>
         </div>
-
-        {/* Divider */}
-        <motion.div 
-          variants={itemVariants}
-          className="w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent mb-8"
-        />
-
-        {/* Bottom Section */}
-        <motion.div 
-          variants={itemVariants}
-          className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm"
-        >
-          <div className="flex items-center gap-2 text-slate-400">
-            <span>© 2022-{new Date().getFullYear()} {t.footer.launcherName}. {t.footer.websiteBy}</span>
-            <a href="https://github.com/Baneronetwo" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
-              Baneronetwo
-            </a>
-          </div>
-          
-          <div className="flex items-center gap-2 text-slate-400">
-            <span>{t.footer.madeWith}</span>
-            <Heart className="w-4 h-4 text-red-400 animate-pulse" />
-            <span>{t.footer.forCommunity}</span>
-          </div>
-        </motion.div>
       </div>
-    </motion.footer>
+    </footer>
   );
-}
+};

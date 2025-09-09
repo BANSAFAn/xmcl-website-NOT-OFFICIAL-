@@ -1,47 +1,48 @@
-
-import { motion } from "framer-motion";
-import { Monitor, Apple, Terminal } from "lucide-react";
-import { useOS } from "@/context/OSContext";
+import React from 'react';
+import { toast } from 'sonner';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface OSSelectorProps {
-  activeOS: string;
-  setActiveOS: (os: string) => void;
+  selectedOS: string;
+  onSelectOS: (os: string) => void;
 }
 
-export function OSSelector({ activeOS, setActiveOS }: OSSelectorProps) {
-  const { setSelectedOS } = useOS();
-  
-  const operatingSystems = [
-    { id: "windows", name: "Windows", icon: <Monitor className="mr-2" size={18} /> },
-    { id: "macos", name: "macOS", icon: <Apple className="mr-2" size={18} /> },
-    { id: "linux", name: "Linux", icon: <Terminal className="mr-2" size={18} /> }
+const OSSelector: React.FC<OSSelectorProps> = ({ selectedOS, onSelectOS }) => {
+  const { t } = useTranslation();
+
+  const osOptions = [
+    { id: 'windows', name: 'Windows', icon: '🪟' },
+    { id: 'macos', name: 'macOS', icon: '🍎' },
+    { id: 'linux', name: 'Linux', icon: '🐧' }
   ];
 
-  const handleOSChange = (os: string) => {
-    setSelectedOS(os); // This will check if warning should be shown
-    setActiveOS(os); // Update the local component state
+  const handleOSSelect = (osId: string, osName: string) => {
+    onSelectOS(osId);
+    toast.success(`${t('osSwitch.switchedTo')} ${osName}`);
   };
 
   return (
-    <div className="flex justify-center mb-10">
-      <div className="inline-flex bg-white/5 backdrop-blur-sm p-1 rounded-lg shadow-inner">
-        {operatingSystems.map((os) => (
-          <motion.button
-            key={os.id}
-            onClick={() => handleOSChange(os.id)}
-            className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-              activeOS === os.id
-                ? "bg-blue-500 text-white shadow-md"
-                : "text-white/70 hover:text-white hover:bg-white/10"
-            }`}
-            whileHover={{ scale: activeOS === os.id ? 1 : 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {os.icon}
-            {os.name}
-          </motion.button>
-        ))}
+    <div className="flex justify-center mb-12">
+      <div className="bg-white dark:bg-slate-800 rounded-lg p-2 shadow-lg">
+        <div className="flex gap-2">
+          {osOptions.map((os) => (
+            <button
+              key={os.id}
+              onClick={() => handleOSSelect(os.id, os.name)}
+              className={`px-6 py-3 rounded-md font-medium transition-all duration-200 flex items-center gap-2 ${
+                selectedOS === os.id
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+              }`}
+            >
+              <span>{os.icon}</span>
+              {os.name}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export { OSSelector };

@@ -1,68 +1,63 @@
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { I18nProvider } from '@/i18n/context';
-import { LanguageProvider } from '@/components/navbar/LanguageContext';
-import { OSProvider } from '@/context/OSContext';
-import { ModernNavbar } from '@/components/navbar';
-import { LoadingScreen } from '@/components/LoadingScreen';
-import { OldWindowsWarning } from '@/components/OldWindowsWarning';
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useTheme } from "@/hooks/useTheme";
+import { TranslationProvider } from '@/contexts/TranslationContext';
+import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-
-// Pages
-import Index from '@/pages/Index';
-import Guide from '@/pages/Guide';
-import About from '@/pages/About';
-import Changelogs from '@/pages/Changelogs';
-import Blogs from '@/pages/Blogs';
-import BlogPost from '@/pages/BlogPost';
-import Contact from '@/pages/Contact';
-import Testing from '@/pages/Testing';
-import Issues from '@/pages/Issues';
-import Privacy from '@/pages/Privacy';
-import NotFound from '@/pages/NotFound';
-
-import './App.css';
+import Index from "./pages/Index";
+import Blog from "./pages/Blog";
+import Guide from "./pages/Guide";
+import Changelog from "./pages/Changelog";
+import Issues from "./pages/Issues";
+import ModernChangelog from "./pages/ModernChangelog";
+import ModernIssues from "./pages/ModernIssues";
+import Testing from "./pages/Testing";
+import TestMarkdown from "./pages/TestMarkdown";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-function App() {
+const AppContent = () => {
+  useTheme(); // Initialize theme on app startup
+  
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nProvider>
-        <LanguageProvider>
-          <OSProvider>
-            <TooltipProvider>
-              <Router>
-                <div className="min-h-screen bg-minecraft-dark-blue text-white overflow-x-hidden">
-                  <LoadingScreen />
-                  <ModernNavbar />
-                  <main className="relative">
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/guide" element={<Guide />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/changelogs" element={<Changelogs />} />
-                      <Route path="/blogs" element={<Blogs />} />
-                      <Route path="/blogs/:slug" element={<BlogPost />} />
-                      <Route path="/contact" element={<Contact />} />
-                      <Route path="/testing" element={<Testing />} />
-                      <Route path="/issues" element={<Issues />} />
-                      <Route path="/privacy" element={<Privacy />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </main>
-                  <Footer />
-                  <OldWindowsWarning />
-                </div>
-              </Router>
-            </TooltipProvider>
-          </OSProvider>
-        </LanguageProvider>
-      </I18nProvider>
-    </QueryClientProvider>
+    <BrowserRouter>
+      <TranslationProvider>
+        <div className="min-h-screen bg-background text-foreground">
+          <Navigation />
+          <main>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<Blog />} />
+              <Route path="/guide" element={<Guide />} />
+              <Route path="/guide/:id" element={<Guide />} />
+              <Route path="/changelog" element={<ModernChangelog />} />
+              <Route path="/issues" element={<ModernIssues />} />
+              <Route path="/testing" element={<Testing />} />
+              <Route path="/test-markdown" element={<TestMarkdown />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer onDownloadClick={() => {}} />
+        </div>
+      </TranslationProvider>
+    </BrowserRouter>
   );
-}
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <AppContent />
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;

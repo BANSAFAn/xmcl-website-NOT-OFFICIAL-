@@ -78,7 +78,7 @@ export const MarkdownRender = ({ content, className }: MarkdownRenderProps) => {
                     <div>
                       <p className="font-medium text-green-500">Tip</p>
                       <div>
-                        {textContent.replace(/^TIP:\ |^Tip:\ /, '')}
+                        {textContent.replace(/^TIP:\s|^Tip:\s/, '')}
                       </div>
                     </div>
                   </div>

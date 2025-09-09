@@ -1,0 +1,40 @@
+
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "Advanced Mod Management (English)",
+      "excerpt": "Guide to advanced mod management in English",
+      "author": "XMCL Team",
+      "date": "2024-03-17",
+      "tags": ["advanced", "mods"],
+      "slug": "advanced-mod-management.en",
+      "readTime": "10 min",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "2",
+      "title": "Продвинутое управление модами (Русский)",
+      "excerpt": "Руководство по продвинутому управлению модами на русском",
+      "author": "XMCL Team",
+      "date": "2024-03-17",
+      "tags": ["advanced", "mods"],
+      "slug": "advanced-mod-management.ru",
+      "readTime": "10 мин",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "3",
+      "title": "Тестирование блоков Markdown",
+      "excerpt": "Тестирование различных форматов блоков markdown",
+      "author": "XMCL Team",
+      "date": "2024-03-20",
+      "tags": ["test", "markdown"],
+      "slug": "test-markdown-blocks",
+      "readTime": "5 мин",
+      "difficulty": "beginner"
+    }
+  ],
+  "categories": ["advanced", "mods", "test", "markdown"],
+  "featured": ["1", "2", "3"]
+}

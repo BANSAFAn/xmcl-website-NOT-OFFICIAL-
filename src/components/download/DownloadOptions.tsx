@@ -82,17 +82,7 @@ export function DownloadOptions({ selectedOS, setSelectedOS }: DownloadOptionsPr
     return <ErrorDisplay error={error} />;
   }
 
-  // Mobile message translations
-  const mobileMessages = {
-    en: "The launcher is only available for desktop platforms (Windows, macOS, Linux).",
-    ru: "Лаунчер доступен только для десктопных платформ (Windows, macOS, Linux).",
-    uk: "Лаунчер доступний тільки для десктопних платформ (Windows, macOS, Linux)."
-  };
-
-  // Get mobile message based on current language
-  const getMobileMessage = () => {
-    return mobileMessages[currentLanguage as keyof typeof mobileMessages] || mobileMessages.en;
-  };
+  
 
   return (
     <div className="space-y-8">
@@ -104,19 +94,19 @@ export function DownloadOptions({ selectedOS, setSelectedOS }: DownloadOptionsPr
         </div>
       ) : isMobile ? (
         <div className="p-6 border border-white/10 rounded-lg bg-white/5 backdrop-blur-sm my-8">
-          <div className="flex flex-col items-center text-center space-y-4">
-            <div className="p-4 rounded-full bg-yellow-500/20">
-              <Smartphone className="h-10 w-10 text-yellow-500" />
-            </div>
-            <h3 className="text-xl font-medium text-white">Mobile Device Detected</h3>
-            <p className="text-white/70">{getMobileMessage()}</p>
-            
-            <div className="flex items-center mt-4 text-white/60 text-sm">
-              <AlertTriangle className="h-4 w-4 mr-2 text-yellow-500" />
-              <p>Please visit this page from a desktop browser to download the launcher.</p>
-            </div>
-          </div>
-        </div>
+  <div className="flex flex-col items-center text-center space-y-4">
+    <div className="p-4 rounded-full bg-yellow-500/20">
+      <Smartphone className="h-10 w-10 text-yellow-500" />
+    </div>
+    <h3 className="text-xl font-medium text-white">{t('ui.mobileDetected')}</h3>
+    <p className="text-white/70">{t('ui.mobileMessage')}</p>
+    
+    <div className="flex items-center mt-4 text-white/60 text-sm">
+      <AlertTriangle className="h-4 w-4 mr-2 text-yellow-500" />
+      <p>{t('ui.desktopBrowserMessage')}</p>
+    </div>
+  </div>
+</div>
       ) : (
         <>
           <DownloadGrid 

@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "Update 17.3.25 (English)",
+      "excerpt": "Blog post about update 17.3.25 in English",
+      "date": "2024-03-17",
+      "author": "XMCL Team",
+      "tags": ["update", "news"],
+      "slug": "17.3.25.en",
+      "featured": true
+    }
+  ],
+  "categories": ["update", "news"],
+  "featured": ["1"]
+}

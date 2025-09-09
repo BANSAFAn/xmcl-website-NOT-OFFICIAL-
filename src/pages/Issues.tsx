@@ -1,303 +1,383 @@
+import React, { useState } from 'react';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { SafeSelect, SafeSelectItem } from "@/components/ui/safe-select";
+import { Navigation } from '@/components/Navigation';
+import { PageTransition } from '@/components/PageTransition';
+import { IssueViewer } from '@/components/IssueViewer';
+import { useTranslation } from '@/hooks/useTranslation';
+import { useGitHubApi } from '@/hooks/useGitHubApi';
+import { 
+  Search, 
+  Filter, 
+  ExternalLink, 
+  MessageCircle, 
+  Calendar, 
+  User,
+  AlertTriangle,
+  CheckCircle2,
+  Plus,
+  TrendingUp,
+  GitBranch,
+  Bug,
+  Lightbulb,
+  Zap,
+  Github
+} from "lucide-react";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Github, ExternalLink, MessageCircle, Clock, User, Tag, Eye } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Navbar } from "@/components/navbar";
-import { useQuery } from "@tanstack/react-query";
-import { IssuePreview } from "@/components/issues/IssuePreview";
-import { useLanguage } from "@/components/navbar/LanguageContext";
+export default function Issues() {
+  const { t } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [stateFilter, setStateFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('created');
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const [selectedIssue, setSelectedIssue] = useState<number | null>(null);
 
-interface GitHubIssue {
-  id: number;
-  number: number;
-  title: string;
-  body: string;
-  state: string;
-  html_url: string;
-  created_at: string;
-  updated_at: string;
-  user: {
-    login: string;
-    avatar_url: string;
-    html_url: string;
-  };
-  labels: Array<{
-    name: string;
-    color: string;
-  }>;
-  comments: number;
-}
+  const { issues, stats, loading, error } = useGitHubApi();
 
-const fetchIssues = async (): Promise<GitHubIssue[]> => {
-  const response = await fetch('https://api.github.com/repos/Voxelum/x-minecraft-launcher/issues?state=all&per_page=50');
-  if (!response.ok) {
-    throw new Error('Failed to fetch issues');
-  }
-  return response.json();
-};
+  // Filter only issues (exclude pull requests)
+  const issuesOnly = issues?.filter((issue: any) => !issue.pull_request) || [];
 
-// Translations for the Issues page
-const issueTranslations = {
-  en: {
-    title: "GitHub Issues",
-    subtitle: "Browse and participate in X Minecraft Launcher development",
-    createIssue: "Create New Issue",
-    loading: "Loading issues...",
-    error: "Failed to load issues. Please try again later.",
-    open: "open",
-    closed: "closed",
-    preview: "Preview",
-    comments: "comments",
-    by: "by"
-  },
-  ru: {
-    title: "GitHub Issues",
-    subtitle: "Просматривайте и участвуйте в разработке X Minecraft Launcher",
-    createIssue: "Создать новый Issue",
-    loading: "Загрузка issues...",
-    error: "Не удалось загрузить issues. Попробуйте позже.",
-    open: "открыто",
-    closed: "закрыто",
-    preview: "Предпросмотр",
-    comments: "комментариев",
-    by: "от"
-  },
-  uk: {
-    title: "GitHub Issues",
-    subtitle: "Переглядайте та беріть участь у розробці X Minecraft Launcher",
-    createIssue: "Створити новий Issue",
-    loading: "Завантаження issues...",
-    error: "Не вдалося завантажити issues. Спробуйте пізніше.",
-    open: "відкрито",
-    closed: "закрито",
-    preview: "Попередній перегляд",
-    comments: "коментарів",
-    by: "від"
-  }
-};
-
-const Issues = () => {
-  const [selectedIssue, setSelectedIssue] = useState<GitHubIssue | null>(null);
-  const { currentLanguage } = useLanguage();
-  
-  const text = issueTranslations[currentLanguage as keyof typeof issueTranslations] || issueTranslations.en;
-  
-  const { data: issues, isLoading, error } = useQuery({
-    queryKey: ['github-issues'],
-    queryFn: fetchIssues,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+  const filteredIssues = issuesOnly.filter((issue: any) => {
+    const matchesSearch = issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         issue.body?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         issue.user.login.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesLabels = selectedLabels.length === 0 || 
+                         selectedLabels.some(label => 
+                           issue.labels.some((issueLabel: any) => issueLabel.name === label)
+                         );
+    
+    return matchesSearch && matchesLabels;
   });
 
-  const formatDate = (dateString: string) => {
-    const locale = currentLanguage === 'ru' ? 'ru-RU' : currentLanguage === 'uk' ? 'uk-UA' : 'en-US';
-    return new Date(dateString).toLocaleDateString(locale, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
+  const uniqueLabels = issuesOnly.reduce((acc: string[], issue: any) => {
+    if (Array.isArray(issue.labels)) {
+      issue.labels.forEach((label: any) => {
+        if (label && 
+            label.name && 
+            typeof label.name === 'string' && 
+            label.name.trim() !== "" && 
+            !acc.includes(label.name)) {
+          acc.push(label.name);
+        }
+      });
+    }
+    return acc;
+  }, []);
+
+  const getStateIcon = (state: string) => {
+    return state === 'open' ? (
+      <AlertTriangle className="w-5 h-5 text-green-500" />
+    ) : (
+      <CheckCircle2 className="w-5 h-5 text-purple-500" />
+    );
   };
 
+  const getLabelColor = (color: string) => {
+    return `#${color}`;
+  };
+
+  const getIssueTypeIcon = (labels: any[]) => {
+    const hasLabel = (name: string) => labels.some(label => label.name.toLowerCase().includes(name));
+    
+    if (hasLabel('bug')) return <Bug className="w-4 h-4 text-red-500" />;
+    if (hasLabel('enhancement') || hasLabel('feature')) return <Lightbulb className="w-4 h-4 text-yellow-500" />;
+    if (hasLabel('performance')) return <Zap className="w-4 h-4 text-blue-500" />;
+    return <GitBranch className="w-4 h-4 text-slate-500" />;
+  };
+
+  if (error) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-red-50/30 to-orange-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+          <Navigation />
+          <div className="flex items-center justify-center min-h-screen px-6">
+            <Card className="p-8 max-w-md mx-auto text-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50">
+              <CardContent className="p-0">
+                <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                <h2 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">{t('issues.errorLoading')}</h2>
+                <Button onClick={() => window.location.reload()} variant="outline">
+                  {t('common.tryAgain')}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </PageTransition>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-minecraft-dark-blue to-slate-900">
-      <Navbar />
-      
-      {/* Background effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-40 left-20 w-96 h-96 bg-gradient-to-r from-blue-500/15 to-cyan-500/15 rounded-full filter blur-[120px] opacity-40 animate-pulse"></div>
-        <div className="absolute bottom-40 right-20 w-[500px] h-[500px] bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full filter blur-[150px] opacity-40 animate-pulse" style={{ animationDelay: '3s' }}></div>
-      </div>
-      
-      <div className="container mx-auto px-4 py-24 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <motion.h1 
-            className="text-5xl md:text-6xl font-bold mb-6"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-              {text.title}
-            </span>
-          </motion.h1>
-          
-          <motion.p
-            className="text-xl text-white/80 mb-8 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {text.subtitle}
-          </motion.p>
+    <PageTransition>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-30">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/15 to-pink-600/15 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
 
-          <motion.a
-            href="https://github.com/Voxelum/x-minecraft-launcher/issues/new"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <MessageCircle size={20} />
-            {text.createIssue}
-            <ExternalLink size={16} />
-          </motion.a>
-        </motion.div>
+        <Navigation />
+        
+        <div className="relative z-10 pt-20">
+          {/* Header Section */}
+          <section className="py-20 px-6">
+            <div className="max-w-7xl mx-auto text-center">
+              <div className="inline-flex items-center px-6 py-3 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-full border border-slate-200/60 dark:border-slate-700/50 shadow-lg mb-8 animate-fade-in">
+                <Bug className="w-4 h-4 mr-2 text-red-500" />
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">GitHub Issues</span>
+              </div>
+              
+              <h1 className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6 animate-fade-in">
+                {t('issues.title')}
+              </h1>
+              
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-12 animate-fade-in" style={{animationDelay: '0.2s'}}>
+                {t('issues.subtitle')}
+              </p>
 
-        {/* Issues List */}
-        <motion.div
-          className="max-w-6xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          {isLoading && (
-            <div className="text-center py-20">
-              <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400"></div>
-              <p className="text-white/60 mt-4">{text.loading}</p>
-            </div>
-          )}
+              {/* Stats Cards */}
+              {stats && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
+                  <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50 hover:scale-105 transition-all duration-300 animate-fade-in">
+                    <CardContent className="p-0">
+                      <div className="flex items-center justify-between mb-4">
+                        <AlertTriangle className="w-8 h-8 text-green-500" />
+                        <TrendingUp className="w-6 h-6 text-slate-400" />
+                      </div>
+                      <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{stats.openIssues}</div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400">{t('issues.openIssues')}</div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50 hover:scale-105 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.1s'}}>
+                    <CardContent className="p-0">
+                      <div className="flex items-center justify-between mb-4">
+                        <CheckCircle2 className="w-8 h-8 text-purple-500" />
+                        <TrendingUp className="w-6 h-6 text-slate-400" />
+                      </div>
+                      <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{stats.closedIssues}</div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400">{t('issues.closedIssues')}</div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50 hover:scale-105 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.2s'}}>
+                    <CardContent className="p-0">
+                      <div className="flex items-center justify-between mb-4">
+                        <MessageCircle className="w-8 h-8 text-blue-500" />
+                        <TrendingUp className="w-6 h-6 text-slate-400" />
+                      </div>
+                      <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{stats.openIssues + stats.closedIssues}</div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400">{t('issues.allIssues')}</div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
 
-          {error && (
-            <div className="text-center py-20">
-              <p className="text-red-400 text-lg">{text.error}</p>
-            </div>
-          )}
-
-          {issues && (
-            <div className="space-y-4">
-              {issues.map((issue, index) => (
-                <motion.div
-                  key={issue.id}
-                  className="bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm rounded-xl border border-white/20 p-6 hover:border-blue-500/40 transition-all duration-300 group"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  whileHover={{ scale: 1.02 }}
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center justify-center gap-4 mb-16 animate-fade-in" style={{animationDelay: '0.4s'}}>
+                <Button 
+                  onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/issues/new', '_blank')}
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 text-white"
                 >
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={issue.user.avatar_url}
-                      alt={issue.user.login}
-                      className="w-12 h-12 rounded-full border-2 border-blue-500/30"
-                    />
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          issue.state === 'open' 
-                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                            : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                        }`}>
-                          {issue.state === 'open' ? text.open : text.closed}
-                        </span>
-                        <span className="text-white/60 text-sm">#{issue.number}</span>
-                      </div>
-                      
-                      <h3 className="text-xl font-semibold text-white mb-2 hover:text-blue-400 transition-colors">
-                        <button 
-                          onClick={() => setSelectedIssue(issue)}
-                          className="hover:underline text-left w-full"
-                        >
-                          {issue.title}
-                        </button>
-                      </h3>
-                      
-                      {issue.body && (
-                        <p className="text-white/70 text-sm mb-3 line-clamp-2">
-                          {issue.body.substring(0, 200)}...
-                        </p>
-                      )}
-                      
-                      {issue.labels.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          {issue.labels.map((label, labelIndex) => (
-                            <span
-                              key={labelIndex}
-                              className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs border"
-                              style={{ 
-                                backgroundColor: `#${label.color}20`,
-                                borderColor: `#${label.color}40`,
-                                color: `#${label.color}`
-                              }}
-                            >
-                              <Tag size={12} />
-                              {label.name}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      
-                      <div className="flex items-center gap-4 text-sm text-white/60">
-                        <div className="flex items-center gap-1">
-                          <User size={14} />
-                          <span>{text.by}</span>
-                          <a 
-                            href={issue.user.html_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-blue-400 transition-colors"
-                          >
-                            {issue.user.login}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock size={14} />
-                          {formatDate(issue.created_at)}
-                        </div>
-                        {issue.comments > 0 && (
-                          <div className="flex items-center gap-1">
-                            <MessageCircle size={14} />
-                            <span>{issue.comments} {text.comments}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col gap-2">
-                      <motion.button
-                        onClick={() => setSelectedIssue(issue)}
-                        className="p-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors border border-blue-500/30 opacity-0 group-hover:opacity-100"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        title={text.preview}
-                      >
-                        <Eye size={16} className="text-blue-400" />
-                      </motion.button>
-                      <a
-                        href={issue.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-                      >
-                        <ExternalLink size={16} className="text-white/80" />
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t('issues.reportNewIssue')}
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/issues', '_blank')}
+                  className="hover:scale-105 transition-all duration-300 border-slate-300 dark:border-slate-600"
+                >
+                  <Github className="w-4 h-4 mr-2" />
+                  {t('issues.viewOnGitHub')}
+                </Button>
+              </div>
             </div>
-          )}
-        </motion.div>
-      </div>
+          </section>
 
-      {/* Issue Preview Modal */}
-      <AnimatePresence>
+          {/* Filters Section */}
+          <section className="px-6 mb-12">
+            <div className="max-w-7xl mx-auto">
+              <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50 animate-fade-in">
+                <CardContent className="p-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Search */}
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <Input
+                        placeholder={t('issues.searchPlaceholder')}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10 bg-slate-50/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700"
+                      />
+                    </div>
+
+                    {/* State Filter */}
+                    <SafeSelect value={stateFilter} onValueChange={setStateFilter}>
+                      <SafeSelectItem value="all">{t('common.all')}</SafeSelectItem>
+                      <SafeSelectItem value="open">{t('issues.openFilter')}</SafeSelectItem>
+                      <SafeSelectItem value="closed">{t('issues.closedFilter')}</SafeSelectItem>
+                    </SafeSelect>
+
+                    {/* Sort By */}
+                    <SafeSelect value={sortBy} onValueChange={setSortBy}>
+                      <SafeSelectItem value="created">{t('issues.newest')}</SafeSelectItem>
+                      <SafeSelectItem value="updated">{t('issues.recentlyUpdated')}</SafeSelectItem>
+                      <SafeSelectItem value="comments">{t('issues.mostCommented')}</SafeSelectItem>
+                    </SafeSelect>
+
+                    {/* Labels Filter */}
+                    <SafeSelect 
+                      value={selectedLabels.length > 0 ? selectedLabels[0] : "all-labels"} 
+                      onValueChange={(value) => {
+                        if (value === "all-labels") {
+                          setSelectedLabels([]);
+                        } else {
+                          setSelectedLabels([value]);
+                        }
+                      }} 
+                      placeholder={t('issues.filterByLabels')}
+                    >
+                      <SafeSelectItem value="all-labels">{t('common.all')}</SafeSelectItem>
+                      {uniqueLabels.map((label) => (
+                        <SafeSelectItem key={label} value={label}>
+                          {label}
+                        </SafeSelectItem>
+                      ))}
+                    </SafeSelect>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          {/* Issues List */}
+          <section className="px-6 pb-20">
+            <div className="max-w-7xl mx-auto">
+              {loading ? (
+                <div className="text-center py-20">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                  <p className="text-slate-600 dark:text-slate-400">{t('issues.loadingIssues')}</p>
+                </div>
+              ) : filteredIssues && filteredIssues.length > 0 ? (
+                <div className="space-y-6">
+                  {filteredIssues.map((issue: any, index: number) => (
+                    <Card 
+                      key={issue.id}
+                      className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50 hover:scale-[1.01] hover:shadow-xl transition-all duration-300 cursor-pointer group animate-fade-in"
+                      style={{animationDelay: `${index * 0.05}s`}}
+                      onClick={() => setSelectedIssue(issue.number)}
+                    >
+                      <CardContent className="p-0">
+                        <div className="flex items-start gap-4">
+                          <div className="flex-shrink-0 mt-1">
+                            {getStateIcon(issue.state)}
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between mb-3">
+                              <h3 className="text-lg font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                                #{issue.number} {issue.title}
+                              </h3>
+                              <div className="flex items-center gap-2 ml-4">
+                                {getIssueTypeIcon(issue.labels)}
+                                <ExternalLink className="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </div>
+                            </div>
+                            
+                            <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400 mb-4">
+                              <div className="flex items-center gap-2">
+                                <img 
+                                  src={issue.user.avatar_url} 
+                                  alt={issue.user.login}
+                                  className="w-5 h-5 rounded-full"
+                                />
+                                <span>{t('issues.createdBy')} {issue.user.login}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Calendar className="w-4 h-4" />
+                                <span>{new Date(issue.created_at).toLocaleDateString()}</span>
+                              </div>
+                              {issue.comments > 0 && (
+                                <div className="flex items-center gap-1">
+                                  <MessageCircle className="w-4 h-4" />
+                                  <span>{issue.comments}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Labels */}
+                            {issue.labels.length > 0 && (
+                              <div className="flex flex-wrap gap-2 mb-4">
+                                {issue.labels.slice(0, 5).map((label: any) => (
+                                  label.name && label.name.trim() !== "" && (
+                                    <Badge 
+                                      key={label.name}
+                                      style={{ 
+                                        backgroundColor: getLabelColor(label.color),
+                                        color: '#ffffff'
+                                      }}
+                                      className="text-xs opacity-90 hover:opacity-100 transition-opacity"
+                                    >
+                                      {label.name}
+                                    </Badge>
+                                  )
+                                ))}
+                                {issue.labels.length > 5 && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    +{issue.labels.length - 5}
+                                  </Badge>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Issue Preview */}
+                            {issue.body && (
+                              <p className="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+                                {issue.body.substring(0, 200)}...
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <Card className="p-20 text-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50 animate-fade-in">
+                  <CardContent className="p-0">
+                    <AlertTriangle className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">{t('issues.noIssuesFound')}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 mb-6">
+                      {searchTerm ? `${t('issues.noIssuesFound')} "${searchTerm}"` : t('issues.noIssuesFound')}
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setSearchTerm('');
+                        setStateFilter('all');
+                        setSelectedLabels([]);
+                      }}
+                    >
+                      {t('issues.clearFilters')}
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </section>
+        </div>
+
+        {/* Issue Viewer Modal */}
         {selectedIssue && (
-          <IssuePreview
-            issue={selectedIssue}
-            isOpen={!!selectedIssue}
-            onClose={() => setSelectedIssue(null)}
+          <IssueViewer 
+            issueNumber={selectedIssue} 
+            onClose={() => setSelectedIssue(null)} 
           />
         )}
-      </AnimatePresence>
-    </div>
+      </div>
+    </PageTransition>
   );
-};
-
-export default Issues;
+}

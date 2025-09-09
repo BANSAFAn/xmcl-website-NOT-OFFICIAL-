@@ -1,0 +1,43 @@
+{
+  "nav": {
+    "home": "首页",
+    "blog": "博客",
+    "guide": "指南",
+    "changelog": "更新日志",
+    "issues": "问题",
+    "testing": "测试"
+  },
+  "common": {
+    "learnMore": "了解更多",
+    "downloadNow": "立即下载",
+    "viewOnGithub": "在GitHub上查看",
+    "reportIssue": "报告问题",
+    "hardLink": "硬链接",
+    "symbolicLink": "符号链接",
+    "junction": "连接点",
+    "copy": "复制",
+    "move": "移动",
+    "installingFrameworks": "安装框架",
+    "downloadManage": "下载管理"
+  },
+  "home": {
+    "heroTitle": "现代跨平台Minecraft启动器",
+    "heroSubtitle": "开源、免费、跨平台的Minecraft启动器，支持模组、资源包、光影和更多功能",
+    "getStarted": "开始使用",
+    "feature1Title": "跨平台",
+    "feature1Description": "支持Windows、macOS和Linux",
+    "feature2Title": "模组支持",
+    "feature2Description": "从CurseForge、Modrinth和其他来源安装模组",
+    "feature3Title": "资源管理",
+    "feature3Description": "管理资源包、光影和世界",
+    "feature4Title": "多语言",
+    "feature4Description": "支持多种语言，包括中文",
+    "feature5Title": "速度和性能",
+    "feature5Description": "优化快速启动和低资源消耗"
+  },
+  "downloadXMCL": "下载XMCL",
+  "modernCrossplatformDescription": "现代跨平台Minecraft启动器",
+  "githubStars": "GitHub星标",
+  "forks": "分支",
+  "lastVersion": "最新版本"
+}

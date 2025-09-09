@@ -1,0 +1,22 @@
+
+{
+  "theme": {
+    "light": "Світла",
+    "dark": "Темна", 
+    "system": "Системна"
+  },
+  "downloadXMCL": "Завантажити XMCL",
+  "modernCrossplatformDescription": "Сучасний кросплатформенний лаунчер Minecraft з розширеними можливостями та підтримкою модів",
+  "githubStars": "Зірки GitHub",
+  "forks": "Форки",
+  "lastVersion": "Остання версія",
+  "issues": "Проблеми",
+  "blog": "Блог",
+  "guide": "Посібник",
+  "changelog": "Історія змін",
+  "testing": "Тестування",
+  "osSwitch": {
+    "switchedTo": "Перемкнуто на",
+    "availableFor": "Доступно для"
+  }
+}
