@@ -2,6 +2,7 @@
     "recommendations": [
         "wakatime.vscode-wakatime",
         "davidanson.vscode-markdownlint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
     ]
 }
