@@ -1,5 +1,7 @@
 {
     "recommendations": [
-        "wakatime.vscode-wakatime"
+        "wakatime.vscode-wakatime",
+        "davidanson.vscode-markdownlint",
+        "esbenp.prettier-vscode"
     ]
 }
