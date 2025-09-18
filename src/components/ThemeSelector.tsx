@@ -33,18 +33,18 @@ export const ThemeSelector = () => {
         <Button 
           variant="ghost" 
           size="sm" 
-          className="relative text-foreground/80 hover:text-foreground hover:bg-accent/50 transition-all duration-300 gap-2 px-3 py-2 rounded-lg backdrop-blur-sm"
+          className="relative h-9 w-9 sm:w-auto px-0 sm:px-3 text-foreground/80 hover:text-foreground hover:bg-accent/50 transition-all duration-300 gap-2 py-2 rounded-lg backdrop-blur-sm"
         >
           <div className="relative">
             <div className={`w-5 h-5 rounded-full bg-gradient-to-r ${currentTheme?.gradient} shadow-lg ring-2 ring-background/20`} />
             <IconComponent className="w-3 h-3 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-sm" />
           </div>
           <span className="hidden sm:inline font-medium">{currentTheme?.name}</span>
-          <ChevronDown className="w-3 h-3 opacity-60" />
+          <ChevronDown className="hidden sm:inline w-3 h-3 opacity-60" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
-        className="bg-background/95 backdrop-blur-md border border-border shadow-xl z-[60] min-w-[160px] rounded-lg"
+        className="bg-background/95 backdrop-blur-md border border-border shadow-xl z-[10000] min-w-[160px] rounded-lg"
         align="end"
       >
         {themes.map((themeOption) => {

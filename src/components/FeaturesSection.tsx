@@ -25,7 +25,7 @@ export const FeaturesSection = () => {
       icon: Code,
       title: t('home.crossPlatformSupportTitle'),
       description: t('home.crossPlatformSupportDesc'),
-      image: '/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png',
+      image: '/PhotoXMCL/logo.png',
       reverse: true,
       links: [
         { name: 'Linux', url: 'https://www.linux.org/pages/download/', color: 'bg-orange-500 hover:bg-orange-600' },

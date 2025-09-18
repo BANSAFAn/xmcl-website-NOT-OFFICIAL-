@@ -13,7 +13,7 @@ const StatusBadge: React.FC = () => {
 
   return (
     <motion.div 
-      className="inline-flex items-center px-6 py-3 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-full border border-slate-200/60 dark:border-slate-700/50 shadow-lg mb-8"
+      className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-full border border-slate-200/60 dark:border-slate-700/50 shadow-lg mb-6 sm:mb-8 mx-4 sm:mx-0"
       initial={{ opacity: 0, y: 50, scale: 0.8 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -31,7 +31,7 @@ const StatusBadge: React.FC = () => {
       <Button 
         variant="ghost" 
         size="sm" 
-        className="ml-3 p-1 h-auto hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 hover:scale-110"
+        className="ml-2 sm:ml-3 p-1 h-auto hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 hover:scale-110"
         onClick={handleGitHubClick}
       >
         <Github className="w-4 h-4" />

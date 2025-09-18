@@ -16,7 +16,6 @@ import Issues from "./pages/Issues";
 import ModernChangelog from "./pages/ModernChangelog";
 import ModernIssues from "./pages/ModernIssues";
 import Testing from "./pages/Testing";
-import TestMarkdown from "./pages/TestMarkdown";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,7 +28,7 @@ const AppContent = () => {
       <TranslationProvider>
         <div className="min-h-screen bg-background text-foreground">
           <Navigation />
-          <main>
+          <main className="pt-16 sm:pt-20">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/blog" element={<Blog />} />
@@ -39,7 +38,6 @@ const AppContent = () => {
               <Route path="/changelog" element={<ModernChangelog />} />
               <Route path="/issues" element={<ModernIssues />} />
               <Route path="/testing" element={<Testing />} />
-              <Route path="/test-markdown" element={<TestMarkdown />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

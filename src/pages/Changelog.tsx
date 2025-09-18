@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Calendar, ExternalLink, Tag, Github, Star, GitBranch } from 'lucide-react';
-import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -96,8 +95,6 @@ const Changelog = () => {
             style={{ bottom: '10%', left: '30%' }}
           />
         </div>
-        
-        <Navigation />
         
         <main className="container mx-auto px-4 py-12 relative z-10">
           <motion.div

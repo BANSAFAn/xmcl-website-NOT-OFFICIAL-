@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SafeSelect, SafeSelectItem } from "@/components/ui/safe-select";
-import { Navigation } from '@/components/Navigation';
+
 import { PageTransition } from '@/components/PageTransition';
 import { IssueViewer } from '@/components/IssueViewer';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -93,7 +93,6 @@ export default function Issues() {
     return (
       <PageTransition>
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-red-50/30 to-orange-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
-          <Navigation />
           <div className="flex items-center justify-center min-h-screen px-6">
             <Card className="p-8 max-w-md mx-auto text-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/50">
               <CardContent className="p-0">
@@ -118,7 +117,7 @@ export default function Issues() {
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/15 to-pink-600/15 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
         </div>
 
-        <Navigation />
+        
         
         <div className="relative z-10 pt-20">
           {/* Header Section */}
@@ -257,9 +256,13 @@ export default function Issues() {
           <section className="px-6 pb-20">
             <div className="max-w-7xl mx-auto">
               {loading ? (
-                <div className="text-center py-20">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-                  <p className="text-slate-600 dark:text-slate-400">{t('issues.loadingIssues')}</p>
+                <div className="text-center py-20 animate-fade-in">
+                  <div className="relative inline-block">
+                    <div className="w-16 h-16 border-4 border-blue-200 dark:border-blue-800 rounded-full animate-spin mb-6"></div>
+                    <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-20 animate-pulse"></div>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-400 text-lg font-medium">{t('issues.loadingIssues')}</p>
                 </div>
               ) : filteredIssues && filteredIssues.length > 0 ? (
                 <div className="space-y-6">

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { motion } from 'framer-motion';
-import { AlertTriangle, CheckCircle, Info, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 interface MarkdownRendererProps {
   content: string;
@@ -11,44 +10,6 @@ interface MarkdownRendererProps {
 }
 
 export const MarkdownRenderer = ({ content, className = "" }: MarkdownRendererProps) => {
-  // State to store processed content with custom alerts
-  const [processedContent, setProcessedContent] = useState(content);
-
-  useEffect(() => {
-    // Process custom alerts in the content before rendering
-    let processed = content;
-    
-    // Process triple-colon format
-    processed = processed
-      .replace(/:::(tip|hint)\s+([\s\S]*?):::/g, '> TIP: $2')
-      .replace(/:::(important|warning)\s+([\s\S]*?):::/g, '> WARNING: $2')
-      .replace(/:::(caution)\s+([\s\S]*?):::/g, '> CAUTION: $2')
-      .replace(/:::(note|info)\s+([\s\S]*?):::/g, '> NOTE: $2');
-    
-    // Process double-colon format
-    // Process ::tip blocks
-    processed = processed.replace(/::tip([\s\S]*?)::end/g, '> TIP: $1');
-    processed = processed.replace(/::tip([\s\S]*?)(?=::warning|::note|::tip|$)/g, '> TIP: $1');
-    
-    // Process ::warning blocks
-    processed = processed.replace(/::warning([\s\S]*?)::end/g, '> WARNING: $1');
-    processed = processed.replace(/::warning([\s\S]*?)(?=::tip|::note|::warning|$)/g, '> WARNING: $1');
-    
-    // Process ::note blocks
-    processed = processed.replace(/::note([\s\S]*?)::end/g, '> NOTE: $1');
-    processed = processed.replace(/::note([\s\S]*?)(?=::tip|::warning|::note|$)/g, '> NOTE: $1');
-    
-    // Also support old double-colon format
-    processed = processed
-      .replace(/::tip\s+([\s\S]*?)::/g, '> TIP: $1')
-      .replace(/::important\s+([\s\S]*?)::/g, '> IMPORTANT: $1')
-      .replace(/::warning\s+([\s\S]*?)::/g, '> WARNING: $1')
-      .replace(/::caution\s+([\s\S]*?)::/g, '> CAUTION: $1')
-      .replace(/::note\s+([\s\S]*?)::/g, '> NOTE: $1');
-    
-    setProcessedContent(processed);
-  }, [content]);
-
   return (
     <div className={`prose prose-lg max-w-none dark:prose-invert prose-headings:text-slate-900 dark:prose-headings:text-slate-100 prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-pre:bg-slate-100 dark:prose-pre:bg-slate-800 prose-blockquote:border-blue-500 prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 ${className}`}>
       <ReactMarkdown
@@ -159,91 +120,15 @@ export const MarkdownRenderer = ({ content, className = "" }: MarkdownRendererPr
               {children}
             </motion.p>
           ),
-          blockquote: ({ node, children }) => {
-            // Extract text content from blockquote children
-            let textContent = '';
-            try {
-              // Try to extract text from the first child if it's a string
-              const firstChild = React.Children.toArray(children)[0];
-              if (typeof firstChild === 'string') {
-                textContent = firstChild;
-              } else if (React.isValidElement(firstChild)) {
-                // If it's a React element, try to get its text content
-                const childrenOfFirstChild = firstChild.props?.children;
-                if (typeof childrenOfFirstChild === 'string') {
-                  textContent = childrenOfFirstChild;
-                }
-              }
-            } catch (e) {
-              // Fallback to default blockquote if extraction fails
-            }
-
-            // Check for alert patterns
-            if (textContent.startsWith('TIP:') || textContent.startsWith('Tip:')) {
-              return (
-                <motion.div 
-                  className="my-6 p-4 bg-green-100 dark:bg-green-900/20 border-l-4 border-green-500 rounded-r-md"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <div className="text-green-800 dark:text-green-200">
-                      {textContent.replace(/^TIP:\s|^Tip:\s/, '')}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            }
-            
-            if (textContent.startsWith('WARNING:') || textContent.startsWith('Warning:')) {
-              return (
-                <motion.div 
-                  className="my-6 p-4 bg-yellow-100 dark:bg-yellow-900/20 border-l-4 border-yellow-500 rounded-r-md"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-                    <div className="text-yellow-800 dark:text-yellow-200">
-                      {textContent.replace(/^WARNING:\s|^Warning:\s/, '')}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            }
-            
-            if (textContent.startsWith('NOTE:') || textContent.startsWith('Note:')) {
-              return (
-                <motion.div 
-                  className="my-6 p-4 bg-blue-100 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-md"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                    <div className="text-blue-800 dark:text-blue-200">
-                      {textContent.replace(/^NOTE:\s|^Note:\s/, '')}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            }
-            
-            // Default blockquote styling
-            return (
-              <motion.blockquote 
-                className="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 pl-6 py-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-r-lg my-6"
-                whileHover={{ x: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                {children}
-              </motion.blockquote>
-            );
-          },
+          blockquote: ({ children }) => (
+            <motion.blockquote 
+              className="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 pl-6 py-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-r-lg my-6"
+              whileHover={{ x: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              {children}
+            </motion.blockquote>
+          ),
           ul: ({ children }) => (
             <motion.ul 
               className="space-y-3 mb-6"
@@ -268,7 +153,7 @@ export const MarkdownRenderer = ({ content, className = "" }: MarkdownRendererPr
           ),
         }}
       >
-        {processedContent}
+        {content}
       </ReactMarkdown>
     </div>
   );

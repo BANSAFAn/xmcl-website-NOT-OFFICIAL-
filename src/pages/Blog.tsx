@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Navigation } from "@/components/Navigation";
+
 import { PageTransition } from "@/components/PageTransition";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -65,17 +65,37 @@ const Blog = () => {
   if (isLoading) {
     return (
       <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20">
-          <Navigation />
-          <div className="container mx-auto px-4 pt-24 pb-16">
-            <div className="text-center">
+        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20 flex items-center justify-center px-4">
+          <div className="text-center">
+            <div className="relative mb-8">
               <motion.div 
-                className="w-16 h-16 border-4 border-rose-500 border-t-transparent rounded-full mx-auto mb-6"
+                className="w-20 h-20 border-4 border-muted rounded-full mx-auto"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div 
+                className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-rose-500 border-r-rose-400 rounded-full mx-auto"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               />
-              <p className="text-slate-600 dark:text-slate-400 text-lg">{t('blog.loading')}</p>
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <motion.div
+                  className="w-3 h-3 bg-rose-500 rounded-full"
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </motion.div>
             </div>
+            <motion.p 
+              className="text-slate-600 dark:text-slate-400 text-lg font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              {t('blog.loading')}
+            </motion.p>
           </div>
         </div>
       </PageTransition>
@@ -86,8 +106,7 @@ const Blog = () => {
     return (
       <PageTransition>
         <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20">
-          <Navigation />
-          <div className="container mx-auto px-4 pt-24 pb-16">
+          <div className="container mx-auto px-4 pt-8 pb-16">
             <div className="text-center">
               <p className="text-red-600 dark:text-red-400 text-lg">{t('common.error')}</p>
             </div>
@@ -104,8 +123,7 @@ const Blog = () => {
     return (
       <PageTransition>
         <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20">
-          <Navigation />
-          <div className="container mx-auto px-4 pt-24 pb-16">
+          <div className="container mx-auto px-4 pt-8 pb-16">
             <div className="max-w-4xl mx-auto">
               {post && (
                 <motion.div 
@@ -181,7 +199,7 @@ const Blog = () => {
           />
         </div>
 
-        <Navigation />
+        
         
         {/* Filter Widget Button */}
         <motion.div 
@@ -289,26 +307,26 @@ const Blog = () => {
         <div className="relative z-10">
           {/* Header */}
           <motion.div 
-            className="text-center py-20"
+            className="text-center py-12 sm:py-16 lg:py-20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
             <div className="container mx-auto px-4">
-              <div className="inline-flex items-center gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
                 <div className="relative">
-                  <PenTool className="w-14 h-14 text-rose-600 dark:text-rose-400" />
+                  <PenTool className="w-12 h-12 sm:w-14 sm:h-14 text-rose-600 dark:text-rose-400" />
                   <motion.div 
                     className="absolute -inset-2 bg-rose-500/20 rounded-full blur-lg"
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
                 </div>
-                <h1 className="text-6xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
                   {t('blog.title')}
                 </h1>
               </div>
-              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed px-4">
                 {t('blog.subtitle')}
               </p>
             </div>
@@ -316,7 +334,7 @@ const Blog = () => {
 
           <div className="container mx-auto px-4 pb-16">
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}

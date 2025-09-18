@@ -1,5 +1,5 @@
 
-import { Navigation } from "@/components/Navigation";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Code, Book, Layers } from "lucide-react";
@@ -34,7 +34,6 @@ const Docs = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
-      <Navigation />
       
       <div className="container mx-auto px-4 pt-24 pb-16">
         <div className="text-center mb-16">

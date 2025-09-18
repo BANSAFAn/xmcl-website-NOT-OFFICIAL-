@@ -15,7 +15,7 @@ import { Release } from "@/components/changelogs/types";
 const Changelogs = () => {
   const { text } = useChangelogLanguage();
   const [selectedVersion, setSelectedVersion] = useState<string | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [selectedFilter, setSelectedFilter] = useState('newest');
 
   const { data: releases, isLoading, error } = useQuery({
     queryKey: ['githubReleases'],

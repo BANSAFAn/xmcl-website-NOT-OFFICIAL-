@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HeroSection } from '@/components/HeroSection';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import NewDownloadSection from '@/components/download/NewDownloadSection';
@@ -13,6 +13,19 @@ const Index = () => {
       downloadSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      if (window.location.hash) {
+        const el = document.querySelector(window.location.hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    window.addEventListener('hashchange', scrollToHash);
+    // Initial check on mount
+    scrollToHash();
+    return () => window.removeEventListener('hashchange', scrollToHash);
+  }, []);
 
   return (
     <PageTransition>

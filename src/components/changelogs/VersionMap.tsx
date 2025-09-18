@@ -4,6 +4,8 @@ import { ChevronRight, Calendar, Package, ArrowRight, ChevronDown, ChevronUp } f
 import { Release } from "./types";
 import { formatDate } from "./utils";
 import { useState } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface VersionMapProps {
   releases: Release[];
@@ -14,6 +16,20 @@ interface VersionMapProps {
 export function VersionMap({ releases, selectedVersion, onVersionSelect }: VersionMapProps) {
   const [showAllVersions, setShowAllVersions] = useState(false);
   const displayedReleases = showAllVersions ? releases : releases.slice(0, 12);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const hash = location.hash.slice(1);
+    if (hash && releases.some(r => r.tag_name === hash)) {
+      onVersionSelect(hash);
+    }
+  }, [location.hash, releases, onVersionSelect]);
+
+  const handleVersionClick = (version: string) => {
+    onVersionSelect(version);
+    navigate({ hash: version });
+  };
 
   return (
     <div className="bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 mb-8">
@@ -31,7 +47,7 @@ export function VersionMap({ releases, selectedVersion, onVersionSelect }: Versi
         {displayedReleases.map((release, index) => (
           <motion.button
             key={release.id}
-            onClick={() => onVersionSelect(release.tag_name)}
+            onClick={() => handleVersionClick(release.tag_name)}
             className={`relative group p-4 rounded-xl border transition-all duration-300 text-left ${
               selectedVersion === release.tag_name
                 ? 'bg-blue-500/20 border-blue-400/50 shadow-lg shadow-blue-500/20'

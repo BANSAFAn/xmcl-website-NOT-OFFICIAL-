@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Navigation } from "@/components/Navigation";
+
 import { PageTransition } from "@/components/PageTransition";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -68,20 +68,40 @@ const Testing = () => {
 
   const latestRun = workflowRuns?.workflow_runs?.[0];
 
-  if (isLoading) {
+  if (isLoading) {  
     return (
       <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-950/20 dark:to-indigo-950/20">
-          <Navigation />
-          <div className="container mx-auto px-4 pt-24 pb-16">
-            <div className="text-center">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-950/20 dark:to-indigo-950/20 flex items-center justify-center px-4">
+          <div className="text-center">
+            <div className="relative mb-8">
               <motion.div 
-                className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-6"
+                className="w-20 h-20 border-4 border-muted rounded-full mx-auto"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div 
+                className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-indigo-500 border-r-indigo-400 rounded-full mx-auto"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               />
-              <p className="text-slate-600 dark:text-slate-400 text-lg">{t('testing.loadingReleases')}</p>
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <motion.div
+                  className="w-3 h-3 bg-indigo-500 rounded-full"
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </motion.div>
             </div>
+            <motion.p 
+              className="text-slate-600 dark:text-slate-400 text-lg font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              {t('testing.loading')}
+            </motion.p>
           </div>
         </div>
       </PageTransition>
@@ -92,8 +112,7 @@ const Testing = () => {
     return (
       <PageTransition>
         <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-950/20 dark:to-indigo-950/20">
-          <Navigation />
-          <div className="container mx-auto px-4 pt-24 pb-16">
+          <div className="container mx-auto px-4 pt-8 pb-16">
             <div className="text-center">
               <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
               <p className="text-red-600 dark:text-red-400 text-lg">{t('common.error')}</p>
@@ -127,7 +146,7 @@ const Testing = () => {
           />
         </div>
 
-        <Navigation />
+        
         
         <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
           {/* Header */}

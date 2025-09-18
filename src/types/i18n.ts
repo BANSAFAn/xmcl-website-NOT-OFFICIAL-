@@ -1,17 +1,59 @@
-import type { DocsTranslations } from '../locales/modules/docs';
-import type { NavigationTranslations } from '../locales/modules/navigation';
-import type { CommonTranslations } from '../locales/modules/common';
-import type { HomeTranslations } from '../locales/modules/home';
-import type { DownloadTranslations } from '../locales/modules/downloads';
-import type { BlogTranslations } from '../locales/modules/blog';
-import type { ChangelogTranslations } from '../locales/modules/changelog';
-import type { FooterTranslations } from '../locales/modules/footer';
-import type { StatsTranslations } from '../locales/modules/stats';
-import type { TestingTranslations } from '../locales/modules/testing';
-import type { IssuesTranslations } from '../locales/modules/issues';
-import type { ThemeTranslations } from '../locales/modules/theme';
-import type { UITranslations } from '../locales/modules/ui';
-import type { GuideTranslations } from '../locales/modules/guide';
+// Type definitions for translation modules
+export interface DocsTranslations {
+  [key: string]: string | DocsTranslations;
+}
+
+export interface NavigationTranslations {
+  [key: string]: string | NavigationTranslations;
+}
+
+export interface CommonTranslations {
+  [key: string]: string | CommonTranslations;
+}
+
+export interface HomeTranslations {
+  [key: string]: string | HomeTranslations;
+}
+
+export interface DownloadTranslations {
+  [key: string]: string | DownloadTranslations;
+}
+
+export interface BlogTranslations {
+  [key: string]: string | BlogTranslations;
+}
+
+export interface ChangelogTranslations {
+  [key: string]: string | ChangelogTranslations;
+}
+
+export interface FooterTranslations {
+  [key: string]: string | FooterTranslations;
+}
+
+export interface StatsTranslations {
+  [key: string]: string | StatsTranslations;
+}
+
+export interface TestingTranslations {
+  [key: string]: string | TestingTranslations;
+}
+
+export interface IssuesTranslations {
+  [key: string]: string | IssuesTranslations;
+}
+
+export interface ThemeTranslations {
+  [key: string]: string | ThemeTranslations;
+}
+
+export interface UITranslations {
+  [key: string]: string | UITranslations;
+}
+
+export interface GuideTranslations {
+  [key: string]: string | GuideTranslations;
+}
 
 export interface DownloadMessagesTranslations {
   noVersionsAvailable: string;

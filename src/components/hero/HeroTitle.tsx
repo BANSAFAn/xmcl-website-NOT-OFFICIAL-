@@ -7,7 +7,7 @@ const HeroTitle: React.FC = () => {
 
   return (
     <motion.h1 
-      className="text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 dark:text-white leading-tight"
+      className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-slate-900 dark:text-white leading-tight px-2"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { SafeSelect, SafeSelectItem } from '@/components/ui/safe-select';
-import { Navigation } from '@/components/Navigation';
+
 import { PageTransition } from '@/components/PageTransition';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useGitHubApi } from '@/hooks/useGitHubApi';
@@ -76,7 +76,6 @@ export default function ModernIssues() {
     return (
       <PageTransition>
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-rose-50/30 to-orange-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
-          <Navigation />
           <div className="flex items-center justify-center min-h-screen px-6">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -128,8 +127,6 @@ export default function ModernIssues() {
           />
         </div>
 
-        <Navigation />
-        
         <div className="relative z-10 pt-20">
           {/* Hero Section */}
           <section className="py-20 px-6">
