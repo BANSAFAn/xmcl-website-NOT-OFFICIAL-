@@ -19,7 +19,7 @@ export function getTranslation(
   fallback: string = key
 ): string {
   const keys = key.split('.');
-  let value: any = translations[locale];
+  let value: unknown = translations[locale];
   
   for (const k of keys) {
     if (value && typeof value === 'object' && k in value) {
