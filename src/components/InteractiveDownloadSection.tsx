@@ -176,12 +176,6 @@ const InteractiveDownloadSection = () => {
         className="relative group"
       >
         <Card className="p-8 hover:shadow-2xl transition-all duration-500 relative overflow-hidden backdrop-blur-sm bg-white/90 dark:bg-slate-800/90 border-slate-200/50 dark:border-slate-700/50">
-          <motion.div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-            style={{
-              background: `radial-gradient(300px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.05), transparent)`
-            }}
-          />
           
           <div className="text-center relative z-10">
             <motion.div 

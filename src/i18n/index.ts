@@ -1,64 +1,42 @@
 import type { SupportedLocale, Translations } from '@/types/i18n';
-import en from '@/locales/en.json';
-import ru from '@/locales/ru.json';
-import ja from '@/locales/ja.json';
-import zh from '@/locales/zh.json';
-import uk from '@/locales/uk.json';
+import { languageConfigs } from './languageConfigs';
 
-// Cache for loaded translations
-const translationsCache: Map<SupportedLocale, Translations> = new Map();
+export const DEFAULT_LOCALE: SupportedLocale = 'en';
 
-// Deep merge utility functions
-function isPlainObject(obj: any): obj is Record<string, any> {
-  return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+const supportedLocales = new Set(languageConfigs.map(lang => lang.code));
+
+export function isSupportedLocale(locale: string): locale is SupportedLocale {
+  return supportedLocales.has(locale as SupportedLocale);
 }
 
-function deepMerge(base: any, override: any): any {
-  if (!isPlainObject(base) || !isPlainObject(override)) {
-    return override !== undefined ? override : base;
+const translationsCache = new Map<SupportedLocale, Promise<Translations>>();
+
+export function loadTranslations(locale: SupportedLocale): Promise<Translations> {
+  if (!isSupportedLocale(locale)) {
+    console.warn(`Attempted to load unsupported locale: ${locale}`);
+    return Promise.resolve({});
   }
 
-  const result = { ...base };
-  for (const key in override) {
-    if (Object.prototype.hasOwnProperty.call(override, key)) {
-      result[key] = deepMerge(base[key], override[key]);
-    }
-  }
-  return result;
-}
-
-const LOCALES: Record<SupportedLocale, Translations> = {
-  en: en as Translations,
-  ru: ru as Translations,
-  ja: ja as Translations,
-  zh: zh as Translations,
-  uk: uk as Translations,
-};
-
-export async function loadTranslations(locale: SupportedLocale): Promise<Translations> {
   if (translationsCache.has(locale)) {
     return translationsCache.get(locale)!;
   }
 
-  const english = LOCALES.en;
-  translationsCache.set('en', english);
+  const translationPromise = import(`@/translations/${locale}.json`)
+    .then(module => module.default)
+    .catch(error => {
+      console.error(`Failed to load translations for ${locale}:`, error);
+      translationsCache.delete(locale); // Remove from cache on failure
+      if (locale !== DEFAULT_LOCALE) {
+        console.log(`Falling back to default locale: ${DEFAULT_LOCALE}`);
+        return loadTranslations(DEFAULT_LOCALE);
+      }
+      return {}; // Return empty object if default locale also fails
+    });
 
-  if (locale === 'en') {
-    return english;
-  }
-
-  const selected = LOCALES[locale] ?? {};
-  const merged = deepMerge(english, selected) as Translations;
-  translationsCache.set(locale, merged);
-  return merged;
+  translationsCache.set(locale, translationPromise);
+  return translationPromise;
 }
 
-export function clearTranslationsCache(): void {
+export function clearTranslationsCache() {
   translationsCache.clear();
-}
-
-export const DEFAULT_LOCALE: SupportedLocale = 'en';
-
-export function isSupportedLocale(locale: string): locale is SupportedLocale {
-  return ['en', 'ru', 'ja', 'zh', 'uk'].includes(locale);
 }

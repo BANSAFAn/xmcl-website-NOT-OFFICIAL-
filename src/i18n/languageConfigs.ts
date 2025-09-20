@@ -1,9 +1,12 @@
-import type { LanguageConfig } from '@/types/i18n';
+import type { SupportedLocale } from '@/types/i18n';
 
-export const languageConfigs: LanguageConfig[] = [
-  { code: 'ru', name: 'Русский', flag: '🇷🇺', color: 'from-blue-500 to-red-500' },
-  { code: 'en', name: 'English', flag: '🇺🇸', color: 'from-blue-500 to-red-500' },
-  { code: 'ja', name: '日本語', flag: '🇯🇵', color: 'from-white to-red-500' },
-  { code: 'uk', name: 'Українська', flag: '🇺🇦', color: 'from-blue-500 to-yellow-400' },
-  { code: 'zh', name: '中文', flag: '🇨🇳', color: 'from-red-600 to-yellow-400' }
+export const languageConfigs: { code: SupportedLocale; name: string }[] = [
+  { code: 'en', name: 'English' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'ja', name: '日本語' },
+  { code: 'zh', name: '简体中文' },
+  { code: 'uk', name: 'Українська' },
+  { code: 'de', name: 'Deutsch' },
+  { code: 'ar', name: 'العربية' },
+  { code: 'zh-Hant', name: '繁體中文' },
 ];
