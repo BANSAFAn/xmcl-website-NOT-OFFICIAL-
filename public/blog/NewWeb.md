@@ -1,7 +1,3 @@
-Sure! Here's your blog post professionally translated into English, formatted in Markdown (MD), and ready for publishing — including placeholders for images (you can insert image paths or URLs where indicated). I’ve also improved the flow and grammar while preserving your original intent.
-
----
-
 # 🎉 Website Overhaul & New Features Released!
 
 ![Main Page Preview](blogphoto/home.png)  
