@@ -170,7 +170,8 @@
     "popular": "Popular",
     "recent": "Recent",
     "trending": "Trending",
-    "loading": "Loading posts..."
+    "loading": "Loading posts...",
+    "blogStats": "Blog Stats"
   },
   "guide": {
     "title": "User Guide",
@@ -195,7 +196,9 @@
     "gettingStarted": "Getting Started",
     "advanced": "Advanced",
     "troubleshooting": "Troubleshooting",
-    "loading": "Loading guides..."
+    "loading": "Loading guides...",
+    "guideStats": "Guide Stats",
+    "featured": "Featured"
   },
   "changelog": {
     "title": "Changelog",

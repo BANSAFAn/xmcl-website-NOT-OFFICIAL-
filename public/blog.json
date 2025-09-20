@@ -2,12 +2,12 @@
   "posts": [
     {
       "id": "1",
-      "title": "Update 17.3.25 (English)",
-      "excerpt": "Blog post about update 17.3.25 in English",
-      "date": "2024-03-17",
-      "author": "XMCL Team",
+      "title": "New website and new technologies!",
+      "excerpt": "Website redesign and addition of many support features",
+      "date": "2025-09-19",
+      "author": "Baneronetwo",
       "tags": ["update", "news"],
-      "slug": "17.3.25.en",
+      "slug": "NewWeb",
       "featured": true
     }
   ],
