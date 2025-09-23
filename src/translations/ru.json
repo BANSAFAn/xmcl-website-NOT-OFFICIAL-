@@ -104,7 +104,23 @@
     "moreInfo": "Подробнее",
     "sizeMB": "МБ",
     "downloadCount": "скачиваний",
-    "linuxUniversal": "Linux Универсальный"
+    "linuxUniversal": "Linux Универсальный",
+    "windowsArchiveDesc": "Скачать портативную версию для Windows",
+    "windowsStoreDesc": "Установить из Microsoft Store",
+    "wingetDesc": "Установить с помощью менеджера пакетов Winget",
+    "macosPackageDesc": "Скачать DMG-пакет для macOS",
+    "homebrewDesc": "Установить с помощью Homebrew",
+    "macosPackageArmDesc": "Скачать DMG для Apple Silicon",
+    "rpmDesc": "RPM-пакет для Fedora/Red Hat",
+    "debianDesc": "DEB-пакет для Debian/Ubuntu",
+    "tarDesc": "TAR-архив для Linux",
+    "aurDesc": "Установить из Arch User Repository",
+    "flathubDesc": "Установить из Flathub",
+    "debianArmDesc": "Скачать пакет DEB для Linux (ARM64)",
+    "rpmArmDesc": "Скачать пакет RPM для Linux (ARM64)",
+    "appImageDesc": "Скачать AppImage для Linux",
+    "appImageArmDesc": "Скачать AppImage для Linux (ARM64)",
+    "tarArmDesc": "Скачать архив TAR для Linux (ARM64)"
   },
   "downloadMessages": {
     "noVersionsAvailable": "Нет доступных версий",
@@ -198,7 +214,8 @@
     "troubleshooting": "Устранение неполадок",
     "loading": "Загрузка руководств...",
     "guideStats": "Статистика руководства",
-    "featured": "Рекомендуемые"
+    "featured": "Рекомендуемые",
+    "readMore": "Читать далее"
   },
   "changelog": {
     "title": "Журнал изменений",

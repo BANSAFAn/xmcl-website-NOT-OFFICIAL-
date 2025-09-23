@@ -1,25 +1,57 @@
 # How to Add Your Own Translation
 
-To add a new language to the XMCL website project:
+This guide will walk you through the process of adding a new language to the XMCL website.
 
-1. **Create translation files:**
-   - In `src/locales/`, create a new JSON file named after the language code (e.g., `fr.json` for French).
-   - Copy the structure from `en.json` and translate all strings.
-   - In `src/locale/`, create a new YAML file named after the language code (e.g., `fr.yaml`).
-   - Copy the structure from `en.yaml` and translate all strings.
+## 1. Create Translation File
 
-2. **Update configuration:**
-   - Edit `src/i18n/languageConfigs.ts`.
-   - Add a new entry to the `languageConfigs` array with the code, name, flag, and color gradient (e.g., { code: 'fr', name: 'Français', flag: '🇫🇷', color: 'from-blue-500 to-red-500' }).
+- Navigate to the `src/translations/` directory.
+- Create a new JSON file named after the language code you want to add (e.g., `fr.json` for French).
+- Copy the entire structure from `en.json` into your new file.
+- Translate all the string values into the new language.
 
-3. **Test the translation:**
-   - Run the development server (`npm run dev`).
-   - Select the new language from the language selector.
-   - Verify that all texts are correctly translated and displayed.
+**Example `fr.json`:**
+```json
+{
+  "nav": {
+    "home": "Accueil",
+    "blog": "Blog",
+    ...
+  },
+  ...
+}
+```
 
-4. **Contribute your changes:**
-   - Commit your changes to Git.
-   - Create a pull request on the project's GitHub repository.
+## 2. Update Language Configuration
 
-## About i18n.md
-This file serves as documentation for the internationalization (i18n) process in the project. You can add notes, examples, or additional instructions here to help other contributors understand how to maintain and add translations.
+- Open the `src/i18n/languageConfigs.ts` file.
+- Add a new object to the `languageConfigs` array for the new language.
+
+**The object should include:**
+- `code`: The language code (e.g., 'fr').
+- `name`: The name of the language in its own tongue (e.g., 'Français').
+
+**Example:**
+```typescript
+export const languageConfigs = [
+  // ... existing languages
+  {
+    code: 'fr',
+    name: 'Français',
+  },
+];
+```
+
+## 3. Test Your Translation
+
+- Start the development server by running `npm run dev` in your terminal.
+- Open the website in your browser.
+- Use the language switcher to select the new language.
+- Thoroughly check the website to ensure all text is translated correctly and the layout is not broken.
+
+## 4. Submit Your Contribution
+
+- Commit your changes with a clear and descriptive message.
+- Push your changes to your forked repository.
+- Open a pull request to the main XMCL website repository.
+
+Thank you for contributing to the XMCL project!

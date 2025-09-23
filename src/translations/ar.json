@@ -3,5 +3,36 @@
   "modernCrossplatformDescription": "مشغل ماين كرافت حديث متعدد المنصات",
   "githubStars": "نجوم GitHub",
   "forks": "تفريعات",
-  "lastVersion": "أحدث إصدار"
+  "lastVersion": "أحدث إصدار",
+  "downloadSection": {
+    "title": "تحميل",
+    "subtitle": "احصل على أحدث إصدار من XMCL لمنصتك",
+    "version": "الإصدار",
+    "releaseNotes": "ملاحظات الإصدار",
+    "download": "تحميل",
+    "installCommands": "أوامر التثبيت",
+    "moreInfo": "مزيد من المعلومات",
+    "sizeMB": "ميغابايت",
+    "downloadCount": "التحميلات",
+    "linuxUniversal": "لينكس عالمي",
+    "windowsArchiveDesc": "تحميل النسخة المحمولة لـ Windows",
+    "windowsStoreDesc": "التثبيت من Microsoft Store",
+    "wingetDesc": "التثبيت باستخدام مدير الحزم Winget",
+    "macosPackageDesc": "تحميل حزمة DMG لـ macOS",
+    "homebrewDesc": "التثبيت باستخدام Homebrew",
+    "macosPackageArmDesc": "تحميل DMG لـ Apple Silicon",
+    "rpmDesc": "حزمة RPM لـ Fedora/Red Hat",
+    "debianDesc": "حزمة DEB لـ Debian/Ubuntu",
+    "tarDesc": "أرشيف TAR لـ Linux",
+    "aurDesc": "التثبيت من Arch User Repository",
+    "flathubDesc": "التثبيت من Flathub",
+    "debianArmDesc": "تحميل حزمة DEB لـ Linux (ARM64)",
+    "rpmArmDesc": "تحميل حزمة RPM لـ Linux (ARM64)",
+    "appImageDesc": "تحميل AppImage لـ Linux",
+    "appImageArmDesc": "تحميل AppImage لـ Linux (ARM64)",
+    "tarArmDesc": "تحميل أرشيف TAR لـ Linux (ARM64)"
+  },
+  "guide": {
+    "readMore": "اقرأ المزيد"
+  }
 }

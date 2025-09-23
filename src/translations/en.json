@@ -104,7 +104,24 @@
     "moreInfo": "More Info",
     "sizeMB": "MB",
     "downloadCount": "downloads",
-    "linuxUniversal": "Linux Universal"
+    "windowsArchiveDesc": "Download portable version for Windows",
+    "windowsStoreDesc": "Install from Microsoft Store",
+    "wingetDesc": "Install with Winget package manager",
+    "rpmDesc": "Download RPM package for Linux",
+    "debianDesc": "Download DEB package for Linux",
+    "tarDesc": "Download TAR archive for Linux",
+    "linuxUniversal": "Linux Universal",
+    "windowsInstallerDesc": "Download installer for Windows",
+    "macosPackageDesc": "Download DMG package for macOS",
+    "macosPackageArmDesc": "Download DMG package for macOS (Apple Silicon)",
+    "homebrewDesc": "Install with Homebrew",
+    "aurDesc": "Install from AUR",
+    "flathubDesc": "Install from Flathub",
+    "debianArmDesc": "Download DEB package for Linux (ARM64)",
+    "rpmArmDesc": "Download RPM package for Linux (ARM64)",
+    "appImageDesc": "Download AppImage for Linux",
+    "appImageArmDesc": "Download AppImage for Linux (ARM64)",
+    "tarArmDesc": "Download TAR archive for Linux (ARM64)"
   },
   "downloadMessages": {
     "noVersionsAvailable": "No versions available",
@@ -198,7 +215,8 @@
     "troubleshooting": "Troubleshooting",
     "loading": "Loading guides...",
     "guideStats": "Guide Stats",
-    "featured": "Featured"
+    "featured": "Featured",
+    "readMore": "Read More"
   },
   "changelog": {
     "title": "Changelog",

@@ -250,7 +250,7 @@ const InteractiveDownloadSection = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
       
       <motion.div
-        className="absolute w-96 h-96 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-3xl"
+        className="pointer-events-none absolute w-96 h-96 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-3xl"
         animate={{
           x: mousePosition.x - 200,
           y: mousePosition.y - 200,

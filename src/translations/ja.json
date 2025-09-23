@@ -104,7 +104,24 @@
     "moreInfo": "詳細情報",
     "sizeMB": "MB",
     "downloadCount": "ダウンロード",
-    "linuxUniversal": "Linux ユニバーサル"
+    "linuxUniversal": "Linux ユニバーサル",
+    "windowsArchiveDesc": "Windows用ポータブルバージョンをダウンロード",
+    "windowsStoreDesc": "Microsoft Storeからインストール",
+    "wingetDesc": "Wingetパッケージマネージャーを使用してインストール",
+    "macosPackageDesc": "macOS用DMGパッケージをダウンロード",
+    "homebrewDesc": "Homebrewを使用してインストール",
+    "macosPackageArmDesc": "Apple Silicon用DMGをダウンロード",
+    "rpmDesc": "Fedora/Red Hat用RPMパッケージ",
+    "debianDesc": "Debian/Ubuntu用DEBパッケージ",
+    "tarDesc": "Linux用TARアーカイブ",
+    "aurDesc": "Arch User Repositoryからインストール",
+    "flathubDesc": "Flathubからインストール",
+    "debianArmDesc": "Linux (ARM64)用DEBパッケージをダウンロード",
+    "rpmArmDesc": "Linux (ARM64)用RPMパッケージをダウンロード",
+    "appImageDesc": "Linux用AppImageをダウンロード",
+    "appImageArmDesc": "Linux (ARM64)用AppImageをダウンロード",
+    "tarArmDesc": "Linux (ARM64)用TARアーカイブをダウンロード",
+    "windowsInstallerDesc": "Windows用インストーラーをダウンロード"
   },
   "downloadMessages": {
     "noVersionsAvailable": "利用可能なバージョンがありません",
@@ -198,7 +215,8 @@
     "troubleshooting": "トラブルシューティング",
     "loading": "ガイドを読み込み中...",
     "guideStats": "ガイド統計",
-    "featured": "おすすめ"
+    "featured": "おすすめ",
+    "readMore": "続きを読む"
   },
   "changelog": {
     "title": "変更履歴",

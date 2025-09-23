@@ -104,7 +104,24 @@
     "moreInfo": "更多信息",
     "sizeMB": "MB",
     "downloadCount": "下载次数",
-    "linuxUniversal": "Linux 通用版"
+    "linuxUniversal": "Linux 通用版",
+    "windowsArchiveDesc": "下载 Windows 便携版",
+    "windowsStoreDesc": "从 Microsoft Store 安装",
+    "wingetDesc": "使用 Winget 包管理器安装",
+    "macosPackageDesc": "下载 macOS DMG 包",
+    "homebrewDesc": "使用 Homebrew 安装",
+    "macosPackageArmDesc": "下载 Apple Silicon DMG",
+    "rpmDesc": "Fedora/Red Hat RPM 包",
+    "debianDesc": "Debian/Ubuntu DEB 包",
+    "tarDesc": "Linux TAR 存档",
+    "aurDesc": "从 Arch User Repository 安装",
+    "flathubDesc": "从 Flathub 安装",
+    "debianArmDesc": "下载适用于Linux的DEB软件包 (ARM64)",
+    "rpmArmDesc": "下载适用于Linux的RPM软件包 (ARM64)",
+    "appImageDesc": "下载适用于Linux的AppImage",
+    "appImageArmDesc": "下载适用于Linux的AppImage (ARM64)",
+    "tarArmDesc": "下载适用于Linux的TAR存档 (ARM64)",
+    "windowsInstallerDesc": "下载Windows安装程序"
   },
   "downloadMessages": {
     "noVersionsAvailable": "没有可用版本",
@@ -198,7 +215,8 @@
     "troubleshooting": "故障排除",
     "loading": "加载指南中...",
     "guideStats": "指南统计",
-    "featured": "精选"
+    "featured": "精选",
+    "readMore": "阅读更多"
   },
   "changelog": {
     "title": "更新日志",

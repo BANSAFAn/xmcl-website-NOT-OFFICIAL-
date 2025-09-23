@@ -98,7 +98,24 @@
     "moreInfo": "Докладніше",
     "sizeMB": "МБ",
     "downloadCount": "завантажень",
-    "linuxUniversal": "Linux Універсальний"
+    "linuxUniversal": "Linux Універсальний",
+    "windowsArchiveDesc": "Завантажити портативну версію для Windows",
+    "windowsStoreDesc": "Встановити з Microsoft Store",
+    "wingetDesc": "Встановити за допомогою менеджера пакетів Winget",
+    "macosPackageDesc": "Завантажити DMG-пакет для macOS",
+    "homebrewDesc": "Встановити за допомогою Homebrew",
+    "macosPackageArmDesc": "Завантажити DMG для Apple Silicon",
+    "rpmDesc": "RPM-пакет для Fedora/Red Hat",
+    "debianDesc": "DEB-пакет для Debian/Ubuntu",
+    "tarDesc": "TAR-архів для Linux",
+    "aurDesc": "Встановити з Arch User Repository",
+    "flathubDesc": "Встановити з Flathub",
+    "debianArmDesc": "Завантажити пакет DEB для Linux (ARM64)",
+    "rpmArmDesc": "Завантажити пакет RPM для Linux (ARM64)",
+    "appImageDesc": "Завантажити AppImage для Linux",
+    "appImageArmDesc": "Завантажити AppImage для Linux (ARM64)",
+    "tarArmDesc": "Завантажити архів TAR для Linux (ARM64)",
+    "windowsInstallerDesc": "Завантажити інсталятор для Windows"
   },
   "downloadMessages": {
     "noVersionsAvailable": "Немає доступних версій",
@@ -144,7 +161,7 @@
   },
   "blog": {
     "title": "Блог XMCL",
-    "subtitle": "Останні новини, керівництва та аналітика від спільноти XMCL",
+    "subtitle": "Останні новини, керівництво та аналітика від спільноти XMCL",
     "searchPosts": "Пошук постів",
     "showing": "Показано",
     "readMore": "Читати далі",
@@ -193,7 +210,8 @@
     "troubleshooting": "Усунення несправностей",
     "loading": "Завантаження керівництв...",
     "guideStats": "Статистика керівництва",
-    "featured": "Рекомендовані"
+    "featured": "Рекомендовані",
+    "readMore": "Читати далі"
   },
   "changelog": {
     "title": "Журнал змін",
