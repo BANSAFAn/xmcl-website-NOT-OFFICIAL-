@@ -1,57 +1,57 @@
-# How to Add Your Own Translation
+# Как добавить свой собственный перевод
 
-This guide will walk you through the process of adding a new language to the XMCL website.
+Это руководство проведет вас через процесс добавления нового языка на сайт XMCL.
 
-## 1. Create Translation File
+## 1. Создайте файл перевода
 
-- Navigate to the `src/translations/` directory.
-- Create a new JSON file named after the language code you want to add (e.g., `fr.json` for French).
-- Copy the entire structure from `en.json` into your new file.
-- Translate all the string values into the new language.
+- Перейдите в каталог `src/translations/`.
+- Создайте новый файл JSON, названный в соответствии с кодом языка, который вы хотите добавить (например, `ru.json` для русского).
+- Скопируйте всю структуру из `en.json` в ваш новый файл.
+- Переведите все строковые значения на новый язык.
 
-**Example `fr.json`:**
+**Пример `ru.json`:**
 ```json
 {
   "nav": {
-    "home": "Accueil",
-    "blog": "Blog",
+    "home": "Главная",
+    "blog": "Блог",
     ...
   },
   ...
 }
 ```
 
-## 2. Update Language Configuration
+## 2. Обновите конфигурацию языков
 
-- Open the `src/i18n/languageConfigs.ts` file.
-- Add a new object to the `languageConfigs` array for the new language.
+- Откройте файл `src/i18n/languageConfigs.ts`.
+- Добавьте новый объект в массив `languageConfigs` для нового языка.
 
-**The object should include:**
-- `code`: The language code (e.g., 'fr').
-- `name`: The name of the language in its own tongue (e.g., 'Français').
+**Объект должен включать:**
+- `code`: Код языка (например, 'ru').
+- `name`: Название языка на его родном языке (например, 'Русский').
 
-**Example:**
+**Пример:**
 ```typescript
 export const languageConfigs = [
-  // ... existing languages
+  // ... существующие языки
   {
-    code: 'fr',
-    name: 'Français',
+    code: 'ru',
+    name: 'Русский',
   },
 ];
 ```
 
-## 3. Test Your Translation
+## 3. Протестируйте ваш перевод
 
-- Start the development server by running `npm run dev` in your terminal.
-- Open the website in your browser.
-- Use the language switcher to select the new language.
-- Thoroughly check the website to ensure all text is translated correctly and the layout is not broken.
+- Запустите сервер для разработки, выполнив команду `npm run dev` в вашем терминале.
+- Откройте сайт в вашем браузере.
+- Используйте переключатель языков, чтобы выбрать новый язык.
+- Тщательно проверьте сайт, чтобы убедиться, что весь текст переведен правильно и верстка не нарушена.
 
-## 4. Submit Your Contribution
+## 4. Отправьте ваш вклад
 
-- Commit your changes with a clear and descriptive message.
-- Push your changes to your forked repository.
-- Open a pull request to the main XMCL website repository.
+- Закоммитьте ваши изменения с ясным и описательным сообщением.
+- Отправьте ваши изменения в ваш форкнутый репозиторий.
+- Создайте pull request в основной репозиторий сайта XMCL.
 
-Thank you for contributing to the XMCL project!
+Спасибо за ваш вклад в проект XMCL!

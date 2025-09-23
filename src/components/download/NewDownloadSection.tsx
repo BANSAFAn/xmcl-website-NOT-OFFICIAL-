@@ -473,18 +473,24 @@ const NewDownloadSection = () => {
                   Windows x64
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {platformAssets.windows.x64.map((asset, index) => (
-                    <DownloadCard
-                      key={asset.id}
-                      title={asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive'}
-                      description={getPlatformDescription('windows', asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive')}
-                      icon={<Monitor />}
-                      downloadUrl={asset.browser_download_url}
-                      size={Math.round(asset.size / 1024 / 1024)}
-                      downloads={asset.download_count}
-                      index={index}
-                    />
-                  ))}
+                  {(() => {
+                    const installer = platformAssets.windows.x64.find(a => a.name.includes('.exe'));
+                    const archive = platformAssets.windows.x64.find(a => !a.name.includes('.exe'));
+                    const assets = [installer, archive].filter(Boolean);
+
+                    return assets.map((asset, index) => (
+                      <DownloadCard
+                        key={asset.id}
+                        title={asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive'}
+                        description={getPlatformDescription('windows', asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive')}
+                        icon={<Monitor />}
+                        downloadUrl={asset.browser_download_url}
+                        size={Math.round(asset.size / 1024 / 1024)}
+                        downloads={asset.download_count}
+                        index={index}
+                      />
+                    ));
+                  })()}
                   
                   {platformAssets.windows.app.map((asset, index) => (
                     <DownloadCard
