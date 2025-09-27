@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XMCL Guides</title>
+    <link>https://xmcl-website-not-official.vercel.app/guide</link>
+    <atom:link href="https://xmcl-website-not-official.vercel.app/guide-rss.xml" rel="self" type="application/rss+xml" />
+    <description>Latest guides and tutorials from XMCL</description>
+    <language>en</language>
+    <lastBuildDate>2025-09-27T14:17:02.783Z</lastBuildDate>
+    <generator>XMCL Website</generator>
+    
+    <item>
+      <title><![CDATA[I18n Web]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/en</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/en</guid>
+      <description><![CDATA[How do I add a translation for a website?]]></description>
+      <pubDate>Sat, 20 Sep 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[web]]></category>
+      <category><![CDATA[i18n]]></category>
+    </item>
+    <item>
+      <title><![CDATA[I18n Web (Українська)]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/uk</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/uk</guid>
+      <description><![CDATA[Як мені додати переклад для веб-сайту?]]></description>
+      <pubDate>Sat, 20 Sep 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[web]]></category>
+      <category><![CDATA[i18n]]></category>
+    </item>
+    <item>
+      <title><![CDATA[I18n Web (中文)]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/zh</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/zh</guid>
+      <description><![CDATA[我如何为网站添加翻译？]]></description>
+      <pubDate>Sat, 20 Sep 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[web]]></category>
+      <category><![CDATA[i18n]]></category>
+    </item>
+  </channel>
+</rss>

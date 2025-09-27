@@ -1,5 +1,5 @@
 
-import { BlogPost } from '../types/blog.ts';
+import type { BlogPost } from '../types/blog.ts';
 import { BLOG_POSTS } from '../data/blogPosts.ts';
 import { parseRussianDate } from './dateUtils.ts';
 import { fetchBlogPosts, fetchBlogPost } from './blogFetcher.ts';

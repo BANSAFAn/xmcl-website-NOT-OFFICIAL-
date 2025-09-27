@@ -1,5 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { getAllBlogPosts } from '../src/utils/blogUtils.ts';
 import { getAllGuidePosts } from '../src/utils/guideUtils.ts';
 import { generateRSSFeed, generateGuideRSSFeed } from '../src/utils/rssGenerator.ts';

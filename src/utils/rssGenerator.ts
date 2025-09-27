@@ -1,6 +1,6 @@
 
-import { BlogPost } from '../types/blog.ts';
-import { GuidePost } from './guideUtils.ts';
+import type { BlogPost } from '../types/blog.ts';
+import type { GuidePost } from './guideUtils.ts';
 
 export function generateRSSFeed(posts: BlogPost[], siteUrl: string = window.location.origin): string {
   const now = new Date().toISOString();

@@ -1,1 +1,42 @@
-import { fetch } from 'undici'; // or whatever fetch is used, but since it's browser, no need import\n\nexport interface GuidePost {\n  id: string;\n  title: string;\n  excerpt: string;\n  author: string;\n  date: string;\n  tags: string[];\n  slug: string;\n  readTime: string;\n  difficulty: string;\n}\n\nexport async function getAllGuidePosts(): Promise<GuidePost[]> {\n  try {\n    const response = await fetch('/guides.json');\n    if (!response.ok) {\n      throw new Error('Failed to fetch guides');\n    }\n    const data = await response.json();\n    return data.posts.sort((a: GuidePost, b: GuidePost) => {\n      return new Date(b.date).getTime() - new Date(a.date).getTime();\n    });\n  } catch (error) {\n    console.error('Error fetching guide posts:', error);\n    return [];\n  }\n}
+import { fetch } from 'undici'; // or whatever fetch is used, but since it's browser, no need import
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+export interface GuidePost {
+  id: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  tags: string[];
+  slug: string;
+  readTime: string;
+  difficulty: string;
+}
+
+export async function getAllGuidePosts(): Promise<GuidePost[]> {
+  try {
+    if (typeof window === 'undefined') {
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = path.dirname(__filename);
+      const filePath = path.join(__dirname, '../../public/guides.json');
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      return data.posts.sort((a: GuidePost, b: GuidePost) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      });
+    } else {
+      const response = await fetch('/guides.json');
+      if (!response.ok) {
+        throw new Error('Failed to fetch guides');
+      }
+      const data = await response.json();
+      return data.posts.sort((a: GuidePost, b: GuidePost) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching guide posts:', error);
+    return [];
+  }
+}
