@@ -258,6 +258,8 @@ const InteractiveDownloadSection = () => {
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
       />
       
+      {/* Removed the mouse-following circle to prevent visual issues */}
+      
       <div className="container mx-auto relative z-10">
         <div className="text-center mb-16">
           <motion.h2 

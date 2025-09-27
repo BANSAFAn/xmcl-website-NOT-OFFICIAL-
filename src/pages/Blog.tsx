@@ -18,7 +18,8 @@ import {
   Sparkles,
   FileText,
   X,
-  Menu
+  Menu,
+  Rss
 } from "lucide-react";
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -325,6 +326,12 @@ const Blog = () => {
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
                   {t('blog.title')}
                 </h1>
+                <a href="/rss.xml" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-gradient-to-r from-orange-500 to-amber-500 text-white">
+                    <Rss className="w-4 h-4 mr-2" />
+                    RSS Feed
+                  </Button>
+                </a>
               </div>
               <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed px-4">
                 {t('blog.subtitle')}

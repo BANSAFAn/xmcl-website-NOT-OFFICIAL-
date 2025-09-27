@@ -53,7 +53,6 @@ const Home = () => {
             }}
             transition={{
               duration: 40,
-              repeat: Infinity,
               ease: "easeInOut"
             }}
             style={{ top: '-10%', left: '-10%' }}
@@ -68,7 +67,6 @@ const Home = () => {
             }}
             transition={{
               duration: 35,
-              repeat: Infinity,
               ease: "easeInOut",
               delay: 8
             }}
@@ -83,7 +81,6 @@ const Home = () => {
             }}
             transition={{
               duration: 30,
-              repeat: Infinity,
               ease: "easeInOut",
               delay: 15
             }}

@@ -1,5 +1,5 @@
 
-import { BlogPost } from '@/types/blog';
+import { BlogPost } from '../types/blog.ts';
 
 /**
  * Fetches all blog posts from the JSON file
