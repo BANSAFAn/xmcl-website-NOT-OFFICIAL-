@@ -69,5 +69,4 @@ Prereqs: Node.js (recommended v18+) and npm or yarn.
 - Check for a `LICENSE` file in the repository root to confirm usage terms.
 
 ---
-
-If you want a localized README or additional badges (CI, coverage, package version), specify which services to link and they will be added.
+i18n - https://github.com/BANSAFAn/xmcl-website-NOT-OFFICIAL-/blob/main/i18n.md
