@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo.png" alt="X Minecraft Launcher" width="160" />
+  <img src="public/PhotoXMCL/logo.png" alt="X Minecraft Launcher" width="160" />
 </p>
 
 # X Minecraft Launcher Web
