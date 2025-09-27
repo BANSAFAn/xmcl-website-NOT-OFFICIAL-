@@ -7,8 +7,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { languages, useLanguage } from './LanguageContext';
+import { languages } from './languageData';
 import { flagComponents } from './FlagSVGs';
+import { useI18n } from '@/i18n/context';
 
 interface LanguageSwitcherProps {
   onChange?: (code: string) => void;
@@ -16,10 +17,10 @@ interface LanguageSwitcherProps {
 
 export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
-  const { currentLanguage, setCurrentLanguage, translations } = useLanguage();
+  const { currentLanguage, setLanguage, t } = useI18n();
 
   const handleLanguageChange = (code: string) => {
-    setCurrentLanguage(code as any);
+    setLanguage(code as any);
     setLanguageMenuOpen(false);
     if (onChange) {
       onChange(code);
@@ -45,7 +46,7 @@ export const LanguageSwitcher = ({ onChange }: LanguageSwitcherProps) => {
           </motion.button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{translations.changeLanguage}</p>
+          <p>{t.ui.changeLanguage}</p>
         </TooltipContent>
       </Tooltip>
       

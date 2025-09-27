@@ -1,219 +1,442 @@
-
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Monitor, Smartphone, Server, Download, Shield, Zap, HardDrive } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { DownloadOption } from "./types";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { X, Info, Download, Package, Archive, Plane, Rocket, Monitor } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 interface PackageInfoModalProps {
-  isOpen: boolean;
+  packageType: string;
   onClose: () => void;
-  packageInfo: DownloadOption | null;
 }
 
-export function PackageInfoModal({ isOpen, onClose, packageInfo }: PackageInfoModalProps) {
-  if (!packageInfo) return null;
+const packageInfoData = {
+  'App Installer': {
+    icon: Plane,
+    title: 'App Installer (.exe)',
+    description: 'Установщик приложения для Windows',
+    features: [
+      'Автоматическая установка XMCL в систему',
+      'Создание ярлыков на рабочем столе и в меню Пуск',
+      'Интеграция с системой Windows',
+      'Автоматические обновления через Windows Update (если поддерживается)'
+    ],
+    pros: [
+      'Простая установка одним кликом',
+      'Полная интеграция с Windows',
+      'Автоматическое удаление через Панель управления'
+    ],
+    cons: [
+      'Требует прав администратора',
+      'Занимает больше места на диске'
+    ],
+    whenToUse: 'Рекомендуется для большинства пользователей Windows, которые хотят полноценную установку.'
+  },
+  'AppX Package': {
+    icon: Rocket,
+    title: 'AppX Package (.appx)',
+    description: 'Современный пакет приложения для Windows 10/11',
+    features: [
+      'Установка через Microsoft Store или напрямую',
+      'Изолированная среда выполнения',
+      'Автоматические обновления',
+      'Встроенная система безопасности Windows'
+    ],
+    pros: [
+      'Повышенная безопасность',
+      'Изоляция от системы',
+      'Простое удаление без остатков',
+      'Поддержка современных функций Windows'
+    ],
+    cons: [
+      'Только для Windows 10/11',
+      'Может требовать включения режима разработчика',
+      'Ограничения песочницы'
+    ],
+    whenToUse: 'Для пользователей Windows 10/11, которые предпочитают современные приложения с повышенной безопасностью.'
+  },
+  'Zip Archive': {
+    icon: Archive,
+    title: 'Zip Archive (.zip)',
+    description: 'Портативная версия в ZIP архиве',
+    features: [
+      'Не требует установки',
+      'Можно запускать с любого носителя',
+      'Полный контроль над файлами',
+      'Не изменяет системный реестр'
+    ],
+    pros: [
+      'Портативность',
+      'Не требует прав администратора',
+      'Можно использовать на нескольких компьютерах',
+      'Легко создать резервную копию'
+    ],
+    cons: [
+      'Нет автоматических обновлений',
+      'Нет интеграции с системой',
+      'Нужно вручную создавать ярлыки'
+    ],
+    whenToUse: 'Для опытных пользователей или когда нужна портативная версия.'
+  },
+  'App Package': {
+    icon: Package,
+    title: 'App Package (.app)',
+    description: 'Нативное приложение для macOS',
+    features: [
+      'Готовое к использованию приложение',
+      'Полная интеграция с macOS',
+      'Поддержка всех функций системы',
+      'Автоматическая установка шрифтов и зависимостей'
+    ],
+    pros: [
+      'Простая установка перетаскиванием',
+      'Полная совместимость с macOS',
+      'Поддержка всех системных функций',
+      'Нативный внешний вид'
+    ],
+    cons: [
+      'Больший размер файла',
+      'Только для macOS'
+    ],
+    whenToUse: 'Рекомендуется для всех пользователей macOS.'
+  },
+  'DMG Package': {
+    icon: Package,
+    title: 'DMG Package (.dmg)',
+    description: 'Образ диска для macOS',
+    features: [
+      'Стандартный формат установки macOS',
+      'Включает приложение и инструкции по установке',
+      'Цифровая подпись для безопасности',
+      'Сжатие для экономии места'
+    ],
+    pros: [
+      'Стандартный способ установки на Mac',
+      'Включает все необходимые файлы',
+      'Проверка целостности файлов'
+    ],
+    cons: [
+      'Нужно монтировать образ перед использованием'
+    ],
+    whenToUse: 'Стандартный выбор для пользователей macOS.'
+  },
+  'PKG Installer': {
+    icon: Package,
+    title: 'PKG Installer (.pkg)',
+    description: 'Установщик пакетов для macOS',
+    features: [
+      'Автоматическая установка с помощью мастера',
+      'Проверка зависимостей',
+      'Возможность настройки установки',
+      'Интеграция с системой управления пакетами'
+    ],
+    pros: [
+      'Автоматическая установка',
+      'Проверка совместимости',
+      'Легкое удаление'
+    ],
+    cons: [
+      'Требует прав администратора'
+    ],
+    whenToUse: 'Когда нужна полная автоматическая установка с проверкой зависимостей.'
+  },
+  'DEB Package': {
+    icon: Package,
+    title: 'DEB Package (.deb)',
+    description: 'Пакет для систем на базе Debian/Ubuntu',
+    features: [
+      'Стандартный формат для Debian/Ubuntu',
+      'Автоматическое управление зависимостями',
+      'Интеграция с системой пакетов',
+      'Простое обновление и удаление'
+    ],
+    pros: [
+      'Полная интеграция с системой',
+      'Автоматические зависимости',
+      'Легкое обновление через менеджер пакетов'
+    ],
+    cons: [
+      'Только для систем на базе Debian'
+    ],
+    whenToUse: 'Для пользователей Ubuntu, Debian и производных дистрибутивов.'
+  },
+  'RPM Package': {
+    icon: Package,
+    title: 'RPM Package (.rpm)',
+    description: 'Пакет для систем на базе Red Hat/Fedora',
+    features: [
+      'Стандартный формат для Red Hat/Fedora',
+      'Управление зависимостями',
+      'Цифровые подписи',
+      'Интеграция с системными службами'
+    ],
+    pros: [
+      'Нативная поддержка в RHEL/Fedora',
+      'Безопасность через подписи',
+      'Автоматическое управление зависимостями'
+    ],
+    cons: [
+      'Только для RPM-based дистрибутивов'
+    ],
+    whenToUse: 'Для пользователей Fedora, CentOS, RHEL и производных.'
+  },
+  'AppImage': {
+    icon: Package,
+    title: 'AppImage',
+    description: 'Универсальный портативный пакет для Linux',
+    features: [
+      'Работает на всех дистрибутивах Linux',
+      'Не требует установки',
+      'Включает все зависимости',
+      'Изоляция от системы'
+    ],
+    pros: [
+      'Универсальная совместимость',
+      'Портативность',
+      'Не влияет на систему',
+      'Простота использования'
+    ],
+    cons: [
+      'Больший размер файла',
+      'Нет автоматических обновлений'
+    ],
+    whenToUse: 'Универсальное решение для любого дистрибутива Linux.'
+  },
+  'Tar Archive': {
+    icon: Archive,
+    title: 'Tar Archive (.tar.gz)',
+    description: 'Сжатый архив для Linux',
+    features: [
+      'Портативная версия для Linux',
+      'Не требует прав root',
+      'Можно распаковать в любую папку',
+      'Включает все необходимые файлы'
+    ],
+    pros: [
+      'Максимальная совместимость',
+      'Полный контроль над установкой',
+      'Минимальный размер'
+    ],
+    cons: [
+      'Ручная настройка окружения',
+      'Нет автоматических обновлений'
+    ],
+    whenToUse: 'Для опытных пользователей Linux или серверных установок.'
+  },
+  'Flathub': {
+    icon: Monitor,
+    title: 'Flathub',
+    description: 'Универсальный пакет через Flathub',
+    features: [
+      'Установка через Flathub/Flatpak',
+      'Изолированная среда выполнения',
+      'Автоматические обновления',
+      'Работает на всех дистрибутивах'
+    ],
+    pros: [
+      'Универсальная совместимость',
+      'Безопасность через изоляцию',
+      'Простые обновления',
+      'Централизованный репозиторий'
+    ],
+    cons: [
+      'Требует Flatpak',
+      'Больший размер из-за runtime'
+    ],
+    whenToUse: 'Современное решение для Linux с максимальной совместимостью.',
+    installCommand: 'flatpak install flathub app.xmcl.voxelum'
+  },
+  'AUR': {
+    icon: Package,
+    title: 'AUR (Arch User Repository)',
+    description: 'Пакет для Arch Linux и производных',
+    features: [
+      'Установка через AUR helper (yay, paru)',
+      'Автоматическая сборка из исходников',
+      'Интеграция с pacman',
+      'Сообщество поддерживает пакет'
+    ],
+    pros: [
+      'Всегда актуальная версия',
+      'Оптимизация под систему',
+      'Интеграция с Arch Linux',
+      'Автоматические обновления'
+    ],
+    cons: [
+      'Только для Arch Linux и производных',
+      'Требует компиляции (дольше установка)',
+      'Зависит от сообщества'
+    ],
+    whenToUse: 'Для пользователей Arch Linux, Manjaro и других производных.',
+    installCommand: 'yay -S xmcl-launcher'
+  },
+  'Brew': {
+    icon: Package,
+    title: 'Homebrew',
+    description: 'Пакет через Homebrew для macOS',
+    features: [
+      'Установка через командную строку',
+      'Автоматическое управление зависимостями',
+      'Простые обновления',
+      'Интеграция с macOS'
+    ],
+    pros: [
+      'Простота установки и обновления',
+      'Автоматические зависимости',
+      'Нет GUI установщика',
+      'Популярный менеджер пакетов'
+    ],
+    cons: [
+      'Требует Homebrew',
+      'Только командная строка'
+    ],
+    whenToUse: 'Для разработчиков и опытных пользователей macOS.',
+    installCommands: [
+      'brew tap voxelum/xmcl',
+      'brew install --cask --no-quarantine voxelum/xmcl'
+    ]
+  }
+};
 
-  const getCompatibilityInfo = (id: string) => {
-    const compatibility = {
-      'win_zip64': {
-        systems: ['Windows 10', 'Windows 11'],
-        requirements: 'x64 архитектура, 4GB RAM',
-        installation: 'Распакуйте архив и запустите exe файл',
-        features: ['Портативная версия', 'Не требует установки', 'Можно запускать с USB']
-      },
-      'win_zip32': {
-        systems: ['Windows 7', 'Windows 8', 'Windows 10'],
-        requirements: 'x86 архитектура, 2GB RAM',
-        installation: 'Распакуйте архив и запустите exe файл',
-        features: ['Совместимость со старыми ПК', 'Легкая версия', 'Быстрый запуск']
-      },
-      'win_appx': {
-        systems: ['Windows 10', 'Windows 11'],
-        requirements: 'Microsoft Store, 4GB RAM',
-        installation: 'Установка через Microsoft Store',
-        features: ['Автообновления', 'Безопасная песочница', 'Интеграция с системой']
-      },
-      'macos_arm64': {
-        systems: ['macOS Big Sur', 'macOS Monterey', 'macOS Ventura'],
-        requirements: 'Apple Silicon (M1/M2/M3), 4GB RAM',
-        installation: 'Откройте DMG и перетащите в Applications',
-        features: ['Оптимизация для Apple Silicon', 'Энергоэффективность', 'Нативная производительность']
-      },
-      'macos_intel': {
-        systems: ['macOS Catalina', 'macOS Big Sur', 'macOS Monterey'],
-        requirements: 'Intel процессор, 4GB RAM',
-        installation: 'Откройте DMG и перетащите в Applications',
-        features: ['Совместимость с Intel Mac', 'Стабильная работа', 'Проверенная версия']
-      },
-      'linux_appimage': {
-        systems: ['Ubuntu', 'Fedora', 'Debian', 'Arch Linux'],
-        requirements: 'Linux kernel 3.2+, 2GB RAM',
-        installation: 'chmod +x файл.AppImage и запустите',
-        features: ['Универсальная совместимость', 'Не требует установки', 'Портативность']
-      },
-      'linux_deb': {
-        systems: ['Ubuntu', 'Debian', 'Linux Mint'],
-        requirements: 'Debian-based система, 2GB RAM',
-        installation: 'sudo dpkg -i файл.deb',
-        features: ['Системная интеграция', 'Управление зависимостями', 'Автоматические обновления']
-      },
-      'linux_rpm': {
-        systems: ['Fedora', 'RHEL', 'CentOS', 'openSUSE'],
-        requirements: 'RPM-based система, 2GB RAM',
-        installation: 'sudo rpm -i файл.rpm',
-        features: ['Red Hat совместимость', 'Системная интеграция', 'Стабильность Enterprise']
-      }
-    };
+export const PackageInfoModal = ({ packageType, onClose }: PackageInfoModalProps) => {
+  const info = packageInfoData[packageType as keyof typeof packageInfoData];
+  
+  if (!info) return null;
 
-    return compatibility[id as keyof typeof compatibility] || {
-      systems: ['Универсальная совместимость'],
-      requirements: 'Минимальные системные требования',
-      installation: 'Следуйте инструкциям установки',
-      features: ['Стандартная функциональность']
-    };
-  };
+  const IconComponent = info.icon;
 
-  const info = getCompatibilityInfo(packageInfo.id);
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-        >
-          <motion.div
-            className="bg-gradient-to-br from-slate-800 via-slate-900 to-black rounded-3xl border border-white/20 p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            onClick={(e) => e.stopPropagation()}
+  // Создаем портал для модального окна
+  const modal = (
+    <div 
+      className="fixed inset-0 z-[999999] flex items-center justify-center p-4"
+      style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        bottom: 0,
+        zIndex: 999999
+      }}
+    >
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in" 
+        onClick={onClose}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+      />
+      
+      {/* Modal Content */}
+      <Card 
+        className="relative p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 shadow-2xl animate-scale-in" 
+        onClick={(e) => e.stopPropagation()}
+        style={{ position: 'relative', zIndex: 1 }}
+      >
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <IconComponent className="w-8 h-8 text-blue-500" />
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              {info.title}
+            </h3>
+          </div>
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="sm"
+            className="hover:bg-slate-100 dark:hover:bg-slate-800"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl">
-                  {packageInfo.icon}
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-white">{packageInfo.title}</h2>
-                  <p className="text-white/70">{packageInfo.subtitle}</p>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="text-white/70 hover:text-white hover:bg-white/10 rounded-full"
-              >
-                <X className="w-5 h-5" />
-              </Button>
+            <X className="w-5 h-5" />
+          </Button>
+        </div>
+
+        <p className="text-slate-600 dark:text-slate-400 mb-6 text-lg">
+          {info.description}
+        </p>
+
+        <div className="space-y-6">
+          <div>
+            <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+              <Info className="w-5 h-5" />
+              Особенности
+            </h4>
+            <ul className="space-y-2">
+              {info.features.map((feature, index) => (
+                <li key={index} className="flex items-start gap-2 text-slate-600 dark:text-slate-400">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-lg font-semibold text-green-600 dark:text-green-400 mb-3">
+                Преимущества
+              </h4>
+              <ul className="space-y-2">
+                {info.pros.map((pro, index) => (
+                  <li key={index} className="flex items-start gap-2 text-slate-600 dark:text-slate-400">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                    {pro}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Package info */}
-            <div className="space-y-6">
-              {/* Description */}
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-blue-400" />
-                  Описание пакета
-                </h3>
-                <p className="text-white/80 leading-relaxed">{packageInfo.description}</p>
-              </div>
-
-              {/* System compatibility */}
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Monitor className="w-5 h-5 text-green-400" />
-                  Совместимые системы
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {info.systems.map((system, index) => (
-                    <Badge 
-                      key={index} 
-                      className="bg-green-500/20 text-green-300 border-green-500/30 px-3 py-1"
-                    >
-                      {system}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Requirements */}
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <HardDrive className="w-5 h-5 text-purple-400" />
-                  Системные требования
-                </h3>
-                <p className="text-white/80">{info.requirements}</p>
-              </div>
-
-              {/* Installation */}
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <Download className="w-5 h-5 text-cyan-400" />
-                  Инструкция по установке
-                </h3>
-                <p className="text-white/80 font-mono text-sm bg-black/30 p-3 rounded-lg border border-white/10">
-                  {info.installation}
-                </p>
-              </div>
-
-              {/* Features */}
-              <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-yellow-400" />
-                  Особенности
-                </h3>
-                <div className="space-y-2">
-                  {info.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                      <span className="text-white/80">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Package size */}
-              {packageInfo.size && (
-                <div className="p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl border border-blue-500/20">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-white mb-1">Размер пакета</h3>
-                      <p className="text-blue-300 text-2xl font-bold">{packageInfo.size}</p>
-                    </div>
-                    <div className="p-4 bg-blue-500/20 rounded-full">
-                      <HardDrive className="w-8 h-8 text-blue-400" />
-                    </div>
-                  </div>
-                </div>
-              )}
+            <div>
+              <h4 className="text-lg font-semibold text-orange-600 dark:text-orange-400 mb-3">
+                Недостатки
+              </h4>
+              <ul className="space-y-2">
+                {info.cons.map((con, index) => (
+                  <li key={index} className="flex items-start gap-2 text-slate-600 dark:text-slate-400">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                    {con}
+                  </li>
+                ))}
+              </ul>
             </div>
+          </div>
 
-            {/* Download button */}
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <Button
-                onClick={() => {
-                  if (packageInfo.onClick) {
-                    packageInfo.onClick();
-                  }
-                  onClose();
-                }}
-                className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
-                disabled={packageInfo.disabled}
-              >
-                <Download className="w-5 h-5 mr-2" />
-                {packageInfo.isComingSoon ? 'Скоро появится' : 'Скачать сейчас'}
-              </Button>
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+            <h4 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">
+              Когда использовать
+            </h4>
+            <p className="text-blue-700 dark:text-blue-300">
+              {info.whenToUse}
+            </p>
+          </div>
+
+          {/* Installation Commands */}
+          {(info as any).installCommand && (
+            <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                Команда установки
+              </h4>
+              <code className="text-sm font-mono bg-gray-800 dark:bg-gray-900 text-green-400 p-2 rounded block">
+                {(info as any).installCommand}
+              </code>
             </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          )}
+
+          {(info as any).installCommands && (
+            <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                Команды установки
+              </h4>
+              <div className="space-y-2">
+                {(info as any).installCommands.map((command: string, index: number) => (
+                  <code key={index} className="text-sm font-mono bg-gray-800 dark:bg-gray-900 text-green-400 p-2 rounded block">
+                    {command}
+                  </code>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+        </Card>
+      </div>
   );
-}
+
+  // Рендерим модальное окно в портале
+  return ReactDOM.createPortal(modal, document.body);
+};

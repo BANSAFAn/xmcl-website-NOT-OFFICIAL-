@@ -1,0 +1,39 @@
+{
+  "downloadXMCL": "下載XMCL",
+  "modernCrossplatformDescription": "現代跨平台Minecraft啟動器",
+  "githubStars": "GitHub星標",
+  "forks": "分支",
+  "lastVersion": "最新版本",
+  "downloadSection": {
+    "title": "下載",
+    "subtitle": "獲取適用於您的平台的最新 XMCL 版本",
+    "version": "版本",
+    "releaseNotes": "版本說明",
+    "download": "下載",
+    "installCommands": "安裝命令",
+    "moreInfo": "更多資訊",
+    "sizeMB": "MB",
+    "downloadCount": "下載次數",
+    "linuxUniversal": "Linux 通用",
+    "windowsArchiveDesc": "下載 Windows 便攜版",
+    "windowsStoreDesc": "從 Microsoft Store 安裝",
+    "wingetDesc": "使用 Winget 套件管理器安裝",
+    "macosPackageDesc": "下載 macOS DMG 套件",
+    "homebrewDesc": "使用 Homebrew 安裝",
+    "macosPackageArmDesc": "下載 Apple Silicon DMG",
+    "rpmDesc": "Fedora/Red Hat RPM 套件",
+    "debianDesc": "Debian/Ubuntu DEB 套件",
+    "tarDesc": "Linux TAR 存檔",
+    "aurDesc": "從 Arch User Repository 安裝",
+    "flathubDesc": "從 Flathub 安裝",
+    "debianArmDesc": "下載適用於Linux的DEB套件（ARM64）",
+    "rpmArmDesc": "下載適用於Linux的RPM套件（ARM64）",
+    "appImageDesc": "下載適用於Linux的AppImage",
+    "appImageArmDesc": "下載適用於Linux的AppImage（ARM64）",
+    "tarArmDesc": "下載適用於Linux的TAR存檔（ARM64）",
+    "windowsInstallerDesc": "下載Windows安裝程式"
+  },
+  "guide": {
+    "readMore": "閱讀更多"
+  }
+}

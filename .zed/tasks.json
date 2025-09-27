@@ -1,6 +1,0 @@
-[
-  {
-    "label": "Vite Dev",
-    "command": "bunx --bun vite dev"
-  }
-]

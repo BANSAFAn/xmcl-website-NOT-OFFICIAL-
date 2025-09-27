@@ -1,191 +1,263 @@
-export interface LanguageKey {
-  en: string;
-  ru: string;
-  uk: string;
-  zh: string;
-}
 
 export const informationTranslations = {
   en: {
     title: "Why Choose XMCL?",
-    subtitle: "Experience the ultimate Minecraft launcher with powerful features designed for modern gameplay",
+    subtitle: "Discover the features that make XMCL the preferred choice for Minecraft enthusiasts worldwide.",
     features: [
       {
-        title: "Modern Interface",
-        description: "Clean, intuitive design that makes mod management effortless. Built with the latest technologies for the best user experience.",
+        title: "🎨 Modern Interface",
+        description: "Experience a sleek, intuitive user interface designed with modern UX principles. Our interface adapts to your workflow and provides a seamless experience across all platforms.",
         icon: "🎨",
-        image: "/XMCL/2.gif"
-      },
-      {
-        title: "Universal Mod Support",
-        description: "Seamlessly integrates with all major modding platforms for complete compatibility and easy installation.",
-        icon: "⚡",
-        image: "/XMCL/3.gif",
         links: [
-          { name: "OptiFine", url: "https://optifine.net/" },
-          { name: "Quilt", url: "https://quiltmc.org/" },
-          { name: "Fabric", url: "https://fabricmc.net/" },
-          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
-          { name: "Laby Mod", url: "https://www.labymod.net/" },
-          { name: "NeoForge", url: "https://neoforged.net/" }
+          { name: "UI Preview", url: "https://github.com/voxelum/x-minecraft-launcher" },
+          { name: "Themes", url: "https://github.com/voxelum/x-minecraft-launcher/wiki/Themes" }
         ]
       },
       {
-        title: "Cross Platform",
-        description: "Available on Windows, macOS, and Linux. One launcher that works everywhere you play.",
-        icon: "🌐",
-        image: "/XMCL/4.gif"
+        title: "⚡ Advanced Mod Management", 
+        description: "Effortlessly install, update, and manage mods from multiple sources. Support for CurseForge, Modrinth, and direct downloads with automatic dependency resolution.",
+        icon: "⚡",
+        links: [
+          { name: "CurseForge", url: "https://www.curseforge.com/" },
+          { name: "Modrinth", url: "https://modrinth.com/" },
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Forge", url: "https://files.minecraftforge.net/" }
+        ]
       },
       {
-        title: "Easy Installation",
-        description: "Get started in minutes with our streamlined installation process. No technical knowledge required.",
-        icon: "📦",
-        image: "/XMCL/5.gif"
+        title: "🌐 Cross-Platform Support",
+        description: "Works seamlessly on Windows, macOS, and Linux. One launcher, all platforms - maintain your setup across different operating systems.",
+        icon: "🌐"
       },
       {
-        title: "Open Source",
-        description: "Completely free and open source. Join our community of developers and contributors on GitHub.",
+        title: "📦 Easy Installation",
+        description: "Get started in minutes with our streamlined installation process. No complex configuration required - just download, install, and play.",
+        icon: "📦"
+      },
+      {
+        title: "💻 Open Source",
+        description: "Built by the community, for the community. Contribute to development, report issues, or create custom extensions with full source code access.",
         icon: "💻",
-        image: "/a39086fb-5549-43c0-a69e-217c717d938e.png",
-        link: "https://github.com/Voxelum/x-minecraft-launcher"
+        link: "https://github.com/voxelum/x-minecraft-launcher"
       }
     ]
   },
   ru: {
     title: "Почему выбирают XMCL?",
-    subtitle: "Испытайте лучший лаунчер Minecraft с мощными функциями для современной игры",
+    subtitle: "Откройте для себя функции, которые делают XMCL предпочтительным выбором для энтузиастов Minecraft по всему миру.",
     features: [
       {
-        title: "Современный интерфейс",
-        description: "Чистый, интуитивно понятный дизайн, который делает управление модами легким. Создан с использованием новейших технологий для лучшего пользовательского опыта.",
+        title: "🎨 Современный интерфейс",
+        description: "Испытайте элегантный, интуитивный пользовательский интерфейс, разработанный с современными принципами UX. Наш интерфейс адаптируется к вашему рабочему процессу и обеспечивает бесшовный опыт на всех платформах.",
         icon: "🎨",
-        image: "/XMCL/2.gif"
-      },
-      {
-        title: "Универсальная поддержка модов",
-        description: "Плавно интегрируется со всеми основными платформами модов для полной совместимости и легкой установки.",
-        icon: "⚡",
-        image: "/XMCL/3.gif",
         links: [
-          { name: "OptiFine", url: "https://optifine.net/" },
-          { name: "Quilt", url: "https://quiltmc.org/" },
-          { name: "Fabric", url: "https://fabricmc.net/" },
-          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
-          { name: "Laby Mod", url: "https://www.labymod.net/" },
-          { name: "NeoForge", url: "https://neoforged.net/" }
+          { name: "Предпросмотр UI", url: "https://github.com/voxelum/x-minecraft-launcher" },
+          { name: "Темы", url: "https://github.com/voxelum/x-minecraft-launcher/wiki/Themes" }
         ]
       },
       {
-        title: "Кроссплатформенность",
-        description: "Доступен на Windows, macOS и Linux. Один лаунчер, который работает везде, где вы играете.",
-        icon: "🌐",
-        image: "/XMCL/4.gif"
+        title: "⚡ Продвинутое управление модами",
+        description: "Легко устанавливайте, обновляйте и управляйте модами из нескольких источников. Поддержка CurseForge, Modrinth и прямых загрузок с автоматическим разрешением зависимостей.",
+        icon: "⚡",
+        links: [
+          { name: "CurseForge", url: "https://www.curseforge.com/" },
+          { name: "Modrinth", url: "https://modrinth.com/" },
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Forge", url: "https://files.minecraftforge.net/" }
+        ]
       },
       {
-        title: "Легкая установка",
-        description: "Начните за несколько минут с нашим упрощенным процессом установки. Технические знания не требуются.",
-        icon: "📦",
-        image: "/XMCL/5.gif"
+        title: "🌐 Кроссплатформенная поддержка",
+        description: "Безупречно работает на Windows, macOS и Linux. Один лаунчер, все платформы - поддерживайте свою настройку на разных операционных системах.",
+        icon: "🌐"
       },
       {
-        title: "Открытый исходный код",
-        description: "Полностью бесплатный и с открытым исходным кодом. Присоединяйтесь к нашему сообществу разработчиков и участников на GitHub.",
+        title: "📦 Простая установка",
+        description: "Начните работу за несколько минут с нашим упрощенным процессом установки. Не требуется сложная конфигурация - просто скачайте, установите и играйте.",
+        icon: "📦"
+      },
+      {
+        title: "💻 Открытый исходный код",
+        description: "Создан сообществом для сообщества. Участвуйте в разработке, сообщайте о проблемах или создавайте пользовательские расширения с полным доступом к исходному коду.",
         icon: "💻",
-        image: "/a39086fb-5549-43c0-a69e-217c717d938e.png",
-        link: "https://github.com/Voxelum/x-minecraft-launcher"
+        link: "https://github.com/voxelum/x-minecraft-launcher"
       }
     ]
   },
   uk: {
     title: "Чому обирають XMCL?",
-    subtitle: "Відчуйте найкращий лаунчер Minecraft з потужними функціями для сучасної гри",
+    subtitle: "Відкрийте для себе функції, які роблять XMCL кращим вибором для ентузіастів Minecraft по всьому світу.",
     features: [
       {
-        title: "Сучасний інтерфейс",
-        description: "Чистий, інтуїтивно зрозумілий дизайн, який робить керування модами легким. Створений з використанням найновіших технологій для найкращого користувацького досвіду.",
+        title: "🎨 Сучасний інтерфейс",
+        description: "Відчуйте елегантний, інтуїтивний користувацький інтерфейс, розроблений з сучасними принципами UX. Наш інтерфейс адаптується до вашого робочого процесу та забезпечує безшовний досвід на всіх платформах.",
         icon: "🎨",
-        image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1920&h=1080&q=80"
-      },
-      {
-        title: "Універсальна підтримка модів",
-        description: "Плавно інтегрується з усіма основними платформами модів для повної сумісності та легкого встановлення.",
-        icon: "⚡",
-        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&h=1080&q=80",
         links: [
-          { name: "OptiFine", url: "https://optifine.net/" },
-          { name: "Quilt", url: "https://quiltmc.org/" },
-          { name: "Fabric", url: "https://fabricmc.net/" },
-          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
-          { name: "Laby Mod", url: "https://www.labymod.net/" },
-          { name: "NeoForge", url: "https://neoforged.net/" }
+          { name: "Попередній перегляд UI", url: "https://github.com/voxelum/x-minecraft-launcher" },
+          { name: "Теми", url: "https://github.com/voxelum/x-minecraft-launcher/wiki/Themes" }
         ]
       },
       {
-        title: "Кросплатформеність",
-        description: "Доступний на Windows, macOS та Linux. Один лаунчер, який працює скрізь, де ви граєте.",
-        icon: "🌐",
-        image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1920&h=1080&q=80"
+        title: "⚡ Прогресивне управління модами",
+        description: "Легко встановлюйте, оновлюйте та керуйте модами з кількох джерел. Підтримка CurseForge, Modrinth та прямих завантажень з автоматичним вирішенням залежностей.",
+        icon: "⚡",
+        links: [
+          { name: "CurseForge", url: "https://www.curseforge.com/" },
+          { name: "Modrinth", url: "https://modrinth.com/" },
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Forge", url: "https://files.minecraftforge.net/" }
+        ]
       },
       {
-        title: "Легке встановлення",
-        description: "Почніть за кілька хвилин з нашим спрощеним процесом встановлення. Технічні знання не потрібні.",
-        icon: "📦",
-        image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&h=1080&q=80"
+        title: "🌐 Кросплатформена підтримка",
+        description: "Бездоганно працює на Windows, macOS та Linux. Один лаунчер, всі платформи - підтримуйте своє налаштування на різних операційних системах.",
+        icon: "🌐"
       },
       {
-        title: "Відкритий вихідний код",
-        description: "Повністю безкоштовний та з відкритим вихідним кодом. Приєднуйтесь до нашої спільноти розробників та учасників на GitHub.",
+        title: "📦 Проста установка",
+        description: "Почніть роботу за кілька хвилин з нашим спрощеним процесом встановлення. Не потрібна складна конфігурація - просто завантажте, встановіть та грайте.",
+        icon: "📦"
+      },
+      {
+        title: "💻 Відкритий вихідний код",
+        description: "Створений спільнотою для спільноти. Берете участь у розробці, повідомляйте про проблеми або створюйте користувацькі розширення з повним доступом до вихідного коду.",
         icon: "💻",
-        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&h=1080&q=80",
-        link: "https://github.com/Voxelum/x-minecraft-launcher"
+        link: "https://github.com/voxelum/x-minecraft-launcher"
       }
     ]
   },
   zh: {
     title: "为什么选择 XMCL？",
-    subtitle: "体验终极 Minecraft 启动器，配备为现代游戏设计的强大功能",
+    subtitle: "探索让 XMCL 成为全球 Minecraft 爱好者首选的功能特性。",
     features: [
       {
-        title: "现代界面",
-        description: "清洁、直观的设计使模组管理变得轻松。采用最新技术构建，提供最佳用户体验。",
+        title: "🎨 现代界面",
+        description: "体验采用现代 UX 设计原则的优雅直观用户界面。我们的界面适应您的工作流程，在所有平台上提供无缝体验。",
         icon: "🎨",
-        image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1920&h=1080&q=80"
-      },
-      {
-        title: "通用模组支持",
-        description: "与所有主要模组平台无缝集成，实现完全兼容性和轻松安装。",
-        icon: "⚡",
-        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&h=1080&q=80",
         links: [
-          { name: "OptiFine", url: "https://optifine.net/" },
-          { name: "Quilt", url: "https://quiltmc.org/" },
-          { name: "Fabric", url: "https://fabricmc.net/" },
-          { name: "Minecraft Forge", url: "https://files.minecraftforge.net/" },
-          { name: "Laby Mod", url: "https://www.labymod.net/" },
-          { name: "NeoForge", url: "https://neoforged.net/" }
+          { name: "UI 预览", url: "https://github.com/voxelum/x-minecraft-launcher" },
+          { name: "主题", url: "https://github.com/voxelum/x-minecraft-launcher/wiki/Themes" }
         ]
       },
       {
-        title: "跨平台",
-        description: "适用于 Windows、macOS 和 Linux。一个启动器，在您游戏的任何地方都能工作。",
-        icon: "🌐",
-        image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1920&h=1080&q=80"
+        title: "⚡ 高级模组管理",
+        description: "轻松安装、更新和管理来自多个来源的模组。支持 CurseForge、Modrinth 和直接下载，具有自动依赖解析功能。",
+        icon: "⚡",
+        links: [
+          { name: "CurseForge", url: "https://www.curseforge.com/" },
+          { name: "Modrinth", url: "https://modrinth.com/" },
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Forge", url: "https://files.minecraftforge.net/" }
+        ]
       },
       {
-        title: "轻松安装",
-        description: "通过我们简化的安装过程，几分钟内即可开始使用。无需技术知识。",
-        icon: "📦",
-        image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&h=1080&q=80"
+        title: "🌐 跨平台支持",
+        description: "在 Windows、macOS 和 Linux 上无缝运行。一个启动器，所有平台 - 在不同操作系统之间维护您的设置。",
+        icon: "🌐"
       },
       {
-        title: "开源",
-        description: "完全免费且开源。在 GitHub 上加入我们的开发者和贡献者社区。",
+        title: "📦 简易安装",
+        description: "通过我们简化的安装过程在几分钟内开始使用。无需复杂配置 - 只需下载、安装并开始游戏。",
+        icon: "📦"
+      },
+      {
+        title: "💻 开源",
+        description: "由社区构建，为社区服务。参与开发、报告问题或通过完整源代码访问创建自定义扩展。",
         icon: "💻",
-        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&h=1080&q=80",
-        link: "https://github.com/Voxelum/x-minecraft-launcher"
+        link: "https://github.com/voxelum/x-minecraft-launcher"
+      }
+    ]
+  },
+  de: {
+    title: "Warum XMCL wählen?",
+    subtitle: "Entdecken Sie die Funktionen, die XMCL zur bevorzugten Wahl für Minecraft-Enthusiasten weltweit machen.",
+    features: [
+      {
+        title: "🎨 Moderne Benutzeroberfläche",
+        description: "Erleben Sie eine elegante, intuitive Benutzeroberfläche, die mit modernen UX-Prinzipien entwickelt wurde. Unsere Oberfläche passt sich Ihrem Workflow an und bietet eine nahtlose Erfahrung auf allen Plattformen.",
+        icon: "🎨",
+        links: [
+          { name: "UI-Vorschau", url: "https://github.com/voxelum/x-minecraft-launcher" },
+          { name: "Themes", url: "https://github.com/voxelum/x-minecraft-launcher/wiki/Themes" }
+        ]
+      },
+      {
+        title: "⚡ Erweiterte Mod-Verwaltung",
+        description: "Installieren, aktualisieren und verwalten Sie Mods aus mehreren Quellen mühelos. Unterstützung für CurseForge, Modrinth und direkte Downloads mit automatischer Abhängigkeitsauflösung.",
+        icon: "⚡",
+        links: [
+          { name: "CurseForge", url: "https://www.curseforge.com/" },
+          { name: "Modrinth", url: "https://modrinth.com/" },
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Forge", url: "https://files.minecraftforge.net/" }
+        ]
+      },
+      {
+        title: "🌐 Plattformübergreifende Unterstützung",
+        description: "Funktioniert nahtlos unter Windows, macOS und Linux. Ein Launcher, alle Plattformen - behalten Sie Ihre Einstellungen über verschiedene Betriebssysteme hinweg bei.",
+        icon: "🌐"
+      },
+      {
+        title: "📦 Einfache Installation",
+        description: "Beginnen Sie in wenigen Minuten mit unserem optimierten Installationsprozess. Keine komplexe Konfiguration erforderlich - einfach herunterladen, installieren und spielen.",
+        icon: "📦"
+      },
+      {
+        title: "💻 Open Source",
+        description: "Von der Community für die Community entwickelt. Beteiligen Sie sich an der Entwicklung, melden Sie Probleme oder erstellen Sie benutzerdefinierte Erweiterungen mit vollständigem Quellcode-Zugang.",
+        icon: "💻",
+        link: "https://github.com/voxelum/x-minecraft-launcher"
+      }
+    ]
+  },
+  ja: {
+    title: "なぜXMCLを選ぶのか？",
+    subtitle: "XMCLを世界中のMinecraftエンスィアストの第一選択にする機能を発見してください。",
+    features: [
+      {
+        title: "🎨 モダンインターフェース",
+        description: "最新のUX原則で設計された洗練された直感的なユーザーインターフェースを体験してください。私たちのインターフェースはあなたのワークフローに適応し、すべてのプラットフォームでシームレスな体験を提供します。",
+        icon: "🎨",
+        links: [
+          { name: "UIプレビュー", url: "https://github.com/voxelum/x-minecraft-launcher" },
+          { name: "テーマ", url: "https://github.com/voxelum/x-minecraft-launcher/wiki/Themes" }
+        ]
+      },
+      {
+        title: "⚡ 高度なMod管理",
+        description: "複数のソースからModを簡単にインストール、更新、管理できます。CurseForge、Modrinth、直接ダウンロードのサポートと自動依存関係解決機能。",
+        icon: "⚡",
+        links: [
+          { name: "CurseForge", url: "https://www.curseforge.com/" },
+          { name: "Modrinth", url: "https://modrinth.com/" },
+          { name: "OptiFine", url: "https://optifine.net/" },
+          { name: "Fabric", url: "https://fabricmc.net/" },
+          { name: "Forge", url: "https://files.minecraftforge.net/" }
+        ]
+      },
+      {
+        title: "🌐 クロスプラットフォームサポート",
+        description: "Windows、macOS、Linuxでシームレスに動作します。1つのランチャー、すべてのプラットフォーム - 異なるオペレーティングシステム間で設定を維持できます。",
+        icon: "🌐"
+      },
+      {
+        title: "📦 簡単インストール",
+        description: "合理化されたインストールプロセスで数分で開始できます。複雑な設定は不要 - ダウンロード、インストール、プレイするだけです。",
+        icon: "📦"
+      },
+      {
+        title: "💻 オープンソース",
+        description: "コミュニティによって、コミュニティのために構築されました。開発に参加し、問題を報告し、完全なソースコードアクセスでカスタム拡張機能を作成してください。",
+        icon: "💻",
+        link: "https://github.com/voxelum/x-minecraft-launcher"
       }
     ]
   }
 };
 
-export type LanguageKeyType = 'en' | 'ru' | 'uk' | 'zh';
+export type LanguageKeyType = keyof typeof informationTranslations;

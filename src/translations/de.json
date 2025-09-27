@@ -1,0 +1,42 @@
+{
+  "downloadXMCL": "XMCL herunterladen",
+  "modernCrossplatformDescription": "Moderner plattformübergreifender Minecraft-Launcher",
+  "githubStars": "GitHub Sterne",
+  "forks": "Forks",
+  "lastVersion": "Neueste Version",
+  "downloadSection": {
+    "title": "Herunterladen",
+    "subtitle": "Holen Sie sich die neueste XMCL-Version für Ihre Plattform",
+    "version": "Version",
+    "releaseNotes": "Versionshinweise",
+    "download": "Herunterladen",
+    "installCommands": "Installationsbefehle",
+    "moreInfo": "Mehr Informationen",
+    "sizeMB": "MB",
+    "downloadCount": "Downloads",
+    "linuxUniversal": "Linux Universal",
+    "windowsArchiveDesc": "Portable Version für Windows herunterladen",
+    "windowsStoreDesc": "Aus dem Microsoft Store installieren",
+    "wingetDesc": "Mit Winget Paketmanager installieren",
+    "macosPackageDesc": "DMG-Paket für macOS herunterladen",
+    "homebrewDesc": "Mit Homebrew installieren",
+    "macosPackageArmDesc": "DMG für Apple Silicon herunterladen",
+    "rpmDesc": "RPM-Paket für Fedora/Red Hat",
+    "debianDesc": "DEB-Paket für Debian/Ubuntu",
+    "tarDesc": "TAR-Archiv für Linux",
+    "aurDesc": "Aus Arch User Repository installieren",
+    "flathubDesc": "Aus Flathub installieren",
+    "debianArmDesc": "DEB-Paket für Linux (ARM64) herunterladen",
+    "rpmArmDesc": "RPM-Paket für Linux (ARM64) herunterladen",
+    "appImageDesc": "AppImage für Linux herunterladen",
+    "appImageArmDesc": "AppImage für Linux (ARM64) herunterladen",
+    "tarArmDesc": "TAR-Archiv für Linux (ARM64) herunterladen"
+  },
+  "home": {
+    "feature4Title": "Optimale Speicherplatznutzung mit massiven Ressourcen",
+    "feature4Description": "XMCL speichert alle Mods, Resource Packs, Shader Packs und Modpacks an einem einzigen Speicherort. Wenn Sie eine bekannte Ressource verwenden möchten, verwendet es einen Hardlink, um die Ressource in die Instanz zu installieren, ohne zu kopieren. Das bedeutet, Sie werden keine duplizierten Kopien im /mods-Ordner mehr sehen."
+  },
+  "guide": {
+    "readMore": "Weiterlesen"
+  }
+}

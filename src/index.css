@@ -1,218 +1,64 @@
 
+@config "../tailwind.config.ts";
+@import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  /* Оптимизированная анимация shimmer - уменьшена частота обновления */
-  .animate-shimmer {
-    animation: shimmer 3s infinite linear;
-    background-size: 200% 100%;
-    will-change: background-position;
-  }
-  
-  @keyframes shimmer {
-    from {
-      background-position: 100% 0;
-    }
-    to {
-      background-position: 0 0;
-    }
-  }
-  
-  /* Оптимизированная анимация пульсации - увеличен период */
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.6;
-    }
-    50% {
-      opacity: 0.9;
-    }
-  }
-
-  .text-gradient-cyan {
-    @apply bg-gradient-to-r from-accent to-blue-400 bg-clip-text text-transparent;
-  }
-  
-  .text-gradient-green {
-    @apply bg-gradient-to-r from-minecraft-accent-green to-green-300 bg-clip-text text-transparent;
-  }
-  
-  .text-gradient-orange {
-    @apply bg-gradient-to-r from-minecraft-accent-orange to-minecraft-accent-yellow bg-clip-text text-transparent;
-  }
-  
-  .transition-all-300 {
-    @apply transition-all duration-300 ease-in-out;
-  }
-  
-  .scale-on-hover {
-    @apply hover:scale-105 transition-transform duration-300 ease-in-out;
-  }
-  
-  /* Упрощенный эффект блеска - меньше нагрузка на GPU */
-  .shiny {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .shiny::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      to bottom right,
-      rgba(255,255,255,0) 0%,
-      rgba(255,255,255,0.08) 100%
-    );
-    transform: rotate(30deg);
-    pointer-events: none;
-    z-index: 10;
-    transition: transform 0.6s ease-out;
-    will-change: transform;
-  }
-  
-  /* Применяем эффект только на десктопах, где производительность выше */
-  @media (hover: hover) {
-    .shiny:hover::before {
-      transform: rotate(30deg) translate(10%, 10%);
-    }
-  }
-  
-  /* Glass card - optimized for performance */
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-[2px] border border-white/10 shadow-sm;
-  }
-  
-  /* Оптимизированные градиентные переходы - меньше нагрузка на GPU */
-  .gradient-transition {
-    background: linear-gradient(135deg, 
-      rgba(59, 130, 246, 0.1) 0%,
-      rgba(147, 51, 234, 0.1) 50%,
-      rgba(14, 165, 233, 0.1) 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 12s ease infinite;
-    transition: all 0.6s ease-out;
-    will-change: background-position;
-  }
-  
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  
-  /* Enhanced smooth transitions */
-  .smooth-transition {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .ultra-smooth {
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  
-  /* 3D Transformation Utilities */
-  .perspective-1000 {
-    perspective: 1000px;
-  }
-  
-  .transform-style-3d {
-    transform-style: preserve-3d;
-  }
-  
-  /* Light Mode Specific Styles */
-  .light-mode {
-    @apply bg-gray-50 text-gray-800;
-  }
-  
-  /* Enhanced responsive layout improvements */
-  @media (max-width: 640px) {
-    .container {
-      @apply px-3;
-    }
-    
-    h1 {
-      @apply text-3xl;
-    }
-    
-    h2 {
-      @apply text-2xl;
-    }
-    
-    .py-24 {
-      @apply py-16;
-    }
-    
-    .py-16 {
-      @apply py-12;
-    }
-    
-    .space-y-8 {
-      @apply space-y-6;
-    }
-    
-    /* Better mobile tab handling */
-    .mobile-tab {
-      @apply px-2 py-1.5 text-xs min-w-[80px];
-    }
-  }
-  
-  /* Mobile and tablet specific improvements */
-  @media (max-width: 768px) {
-    /* Ensure content is visible on mobile */
-    body, #root {
-      min-height: 100vh;
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden;
-    }
-    
-    /* Fix for iOS/Android viewport height issues */
-    .min-h-screen {
-      min-height: 100vh;
-      /* Use fallback for browsers that don't support dvh */
-      min-height: -webkit-fill-available;
-      min-height: 100dvh;
-    }
-    
-    /* Improve touch targets */
-    button, a {
-      @apply py-2;
-      min-height: 44px; /* Apple's recommended minimum touch target size */
-    }
-    
-    /* Prevent horizontal overflow */
-    .overflow-x-auto {
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-  
-  /* Better focus states */
-  .focus-visible-custom:focus-visible {
-    @apply outline-none ring-2 ring-blue-500/50 ring-offset-2 ring-offset-transparent;
-  }
-}
-
 @layer base {
   :root {
-    --background: 222 47% 11%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 221.2 83.2% 53.3%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 221.2 83.2% 53.3%;
+  }
+
+  .dark {
+    --background: 222 84% 4.9%;
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 11%;
+    --card: 222 84% 4.9%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 11%;
+    --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -220,7 +66,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 184 86% 49%;
+    --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -228,70 +74,178 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 217.2 91.2% 59.8%;
 
-    --radius: 0.5rem;
+    --sidebar-background: 222 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217.2 91.2% 59.8%;
+    --sidebar-primary-foreground: 222.2 84% 4.9%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
+}
 
+@layer base {
   * {
     @apply border-border;
   }
-  
-  html {
-    @apply scroll-smooth;
-    scroll-behavior: smooth;
-  }
 
   body {
-    @apply bg-minecraft-dark-blue text-foreground antialiased;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-    text-rendering: optimizeSpeed;
-    text-align: left;
+    @apply bg-background text-foreground font-sans;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
-  
-  #root {
-    text-align: left;
-    width: 100%;
-    min-height: 100vh;
-  }
-  
-  .text-center-forced {
-    text-align: center;
-  }
-  
-  /* Enhanced scrollbar styling */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, rgba(56, 189, 248, 0.3), rgba(147, 51, 234, 0.3));
-    border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, rgba(56, 189, 248, 0.5), rgba(147, 51, 234, 0.5));
-  }
-  
-  /* Improve scrolling performance */
-  @media (pointer: coarse) {
-    body {
-      scroll-behavior: auto;
-    }
-  }
-  
-  /* Enhanced page transitions */
-  .page-transition {
+
+  /* Enhanced light theme background */
+  .light body {
     background: linear-gradient(135deg, 
-      rgba(18, 25, 38, 0.95) 0%,
-      rgba(12, 17, 27, 0.98) 50%,
-      rgba(18, 25, 38, 0.95) 100%);
+      hsl(220 70% 97%) 0%, 
+      hsl(240 60% 96%) 25%, 
+      hsl(260 50% 97%) 50%,
+      hsl(280 40% 98%) 75%,
+      hsl(300 30% 99%) 100%
+    );
     background-attachment: fixed;
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Enhanced dark theme background */
+  .dark body {
+    background: linear-gradient(135deg, 
+      hsl(222 84% 4.9%) 0%, 
+      hsl(230 70% 8%) 25%, 
+      hsl(240 60% 6%) 50%,
+      hsl(250 70% 7%) 75%,
+      hsl(260 80% 5%) 100%
+    );
+    background-attachment: fixed;
+  }
+
+  /* Light theme navigation improvements */
+  .light nav {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(12px);
+  }
+
+  /* Light theme card improvements */
+  .light .card-elevated {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+
+  .light .card-elevated:hover {
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.12),
+      0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  /* Footer improvements for light theme */
+  .light footer {
+    background: rgba(248, 250, 252, 0.9) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(12px);
+  }
+
+  /* Button improvements for light theme */
+  .light button[variant="ghost"] {
+    color: hsl(220 10% 30%) !important;
+  }
+
+  .light button[variant="ghost"]:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: hsl(220 15% 20%) !important;
+  }
+}
+
+/* Custom animations and utilities */
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .dark .glass-effect {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .text-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .dark .text-gradient {
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Enhanced card effects */
+  .card-elevated {
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  }
+
+  .card-elevated:hover {
+    transform: translateY(-2px);
+  }
+
+  .dark .card-elevated {
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .card-elevated:hover {
+    box-shadow: 
+      0 14px 28px rgba(0, 0, 0, 0.5),
+      0 10px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Light theme specific improvements */
+  .light-theme-text {
+    color: hsl(220 15% 25%) !important;
+  }
+
+  .light-theme-muted {
+    color: hsl(220 10% 50%) !important;
+  }
+
+  .light-theme-border {
+    border-color: hsl(220 13% 88%) !important;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+  from { 
+    box-shadow: 
+      0 0 20px rgba(59, 130, 246, 0.3),
+      0 0 40px rgba(147, 51, 234, 0.2); 
+  }
+  to { 
+    box-shadow: 
+      0 0 30px rgba(59, 130, 246, 0.5),
+      0 0 60px rgba(147, 51, 234, 0.3); 
   }
 }

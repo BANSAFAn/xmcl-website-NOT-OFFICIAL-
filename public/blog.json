@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "New website and new technologies!",
+      "excerpt": "Website redesign and addition of many support features",
+      "date": "2025-09-19",
+      "author": "Baneronetwo",
+      "tags": ["update", "news"],
+      "slug": "NewWeb",
+      "featured": true
+    }
+  ],
+  "categories": ["update", "news"],
+  "featured": ["1"]
+}

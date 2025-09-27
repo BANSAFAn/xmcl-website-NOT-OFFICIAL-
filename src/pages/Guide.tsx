@@ -1,322 +1,520 @@
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Layout, Upload, Download, Database, Users, Layers, Code, Home } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Navbar } from "@/components/navbar";
-import { Globe } from "@/components/guide/Globe";
-import {
-  AppearanceGuide,
-  AppXMigrationGuide,
-  LocalizationGuide,
-  InstallationGuide,
-  DataStorageGuide,
-  MultiplayerGuide,
-  UpdateGuide
-} from "@/components/guide/sections";
-import { ProtocolGuide } from "@/components/guide/sections/ProtocolGuide";
-import { useLanguage } from "@/components/navbar/LanguageContext";
+import React, { useState, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { PageTransition } from "@/components/PageTransition";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Search,
+  Filter,
+  BookOpen,
+  Tag,
+  Clock,
+  User,
+  ArrowRight,
+  Sparkles,
+  FileText,
+  Star
+} from "lucide-react";
+import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from '@/hooks/useTranslation';
+import { MarkdownRenderer } from '@/components/MarkdownRenderer';
+
+interface GuidePost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
+  tags: string[];
+  slug: string;
+  readTime?: string;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+}
+
+interface GuideConfig {
+  posts: GuidePost[];
+  categories: string[];
+  featured: string[];
+}
 
 const Guide = () => {
-  const [activeTab, setActiveTab] = useState("appearance");
-  const { currentLanguage } = useLanguage();
-  
-  // Translations for Guide page
-  const translations = {
-    en: {
-      title: "X Minecraft Launcher Guide",
-      subtitle: "Complete documentation for getting the most out of the X Minecraft Launcher",
-      sections: "Guide Sections",
-      returnHome: "Return to Home",
-      appearance: "Appearance Guide",
-      appxMigration: "AppX Migration",
-      localization: "Localization Guide",
-      installation: "Installation Guide",
-      dataStorage: "Data Storage",
-      multiplayer: "Multiplayer Guide",
-      protocol: "Protocol Guide",
-      update: "Update Guide"
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const { data: config, isLoading, error } = useQuery({
+    queryKey: ['guide-config'],
+    queryFn: async (): Promise<GuideConfig> => {
+                      try {
+                        const response = await fetch('/guides.json');
+                        if (!response.ok) {
+                          return {
+                            posts: [
+                              {
+                                id: '1',
+                                title: t('guide.gettingStartedWithXMCL') || 'Getting Started with XMCL',
+                                excerpt: t('guide.learnBasics') || 'Learn the basics of using X Minecraft Launcher',
+                                content: `# ${t('guide.gettingStarted') || 'Getting Started'}\n\n${t('guide.welcomeToXMCL') || 'Welcome to XMCL! This guide will help you get started.'}`,
+                                author: t('guide.xmclTeam') || 'XMCL Team',
+                                date: '2024-01-01',
+                                tags: ['beginner', 'setup'],
+                                slug: 'getting-started',
+                                readTime: `5 ${t('guide.minRead') || 'min'}`,
+                                difficulty: 'beginner'
+                              }
+                            ],
+                            categories: ['beginner', 'setup', 'advanced'],
+                            featured: ['1']
+                          };
+                        }
+        return response.json();
+      } catch (error) {
+        return {
+          posts: [],
+          categories: [],
+          featured: []
+        };
+      }
+    }
+  });
+
+  const { data: selectedPost } = useQuery({
+    queryKey: ['guide-post', id],
+    queryFn: async (): Promise<string> => {
+      if (!id) return '';
+      try {
+        const response = await fetch(`/guide/${id}.md`);
+        if (!response.ok) return `# ${t('guide.guideNotFound')}\n\n${t('guide.guideNotFoundDescription')}`;
+        return response.text();
+      } catch (error) {
+        return `# ${t('guide.errorLoadingGuide')}\n\n${t('guide.errorLoadingGuide')}`;
+      }
     },
-    ru: {
-      title: "Руководство X Minecraft Launcher",
-      subtitle: "Полная документация для максимального использования X Minecraft Launcher",
-      sections: "Разделы руководства",
-      returnHome: "Вернуться на главную",
-      appearance: "Руководство по внешнему виду",
-      appxMigration: "Миграция AppX",
-      localization: "Руководство по локализации",
-      installation: "Руководство по установке",
-      dataStorage: "Хранение данных",
-      multiplayer: "Руководство по мультиплееру",
-      protocol: "Руководство по протоколу",
-      update: "Руководство по обновлению"
-    },
-    uk: {
-      title: "Керівництво X Minecraft Launcher",
-      subtitle: "Повна документація для максимального використання X Minecraft Launcher",
-      sections: "Розділи керівництва",
-      returnHome: "Повернутися на головну",
-      appearance: "Керівництво по зовнішньому вигляду",
-      appxMigration: "Міграція AppX",
-      localization: "Керівництво по локалізації",
-      installation: "Керівництво по встановленню",
-      dataStorage: "Зберігання даних",
-      multiplayer: "Керівництво по мультиплееру",
-      protocol: "Керівництво по протоколу",
-      update: "Керівництво по оновленню"
-    },
-    zh: {
-      title: "X Minecraft 启动器指南",
-      subtitle: "充分利用 X Minecraft 启动器的完整文档",
-      sections: "指南部分",
-      returnHome: "返回首页",
-      appearance: "外观指南",
-      appxMigration: "AppX 迁移",
-      localization: "本地化指南",
-      installation: "安装指南",
-      dataStorage: "数据存储",
-      multiplayer: "多人游戏指南",
-      protocol: "协议指南",
-      update: "更新指南"
-    },
-    de: {
-      title: "X Minecraft Launcher Anleitung",
-      subtitle: "Vollständige Dokumentation für die optimale Nutzung des X Minecraft Launchers",
-      sections: "Anleitungsabschnitte",
-      returnHome: "Zurück zur Startseite",
-      appearance: "Erscheinungsbild-Anleitung",
-      appxMigration: "AppX-Migration",
-      localization: "Lokalisierungs-Anleitung",
-      installation: "Installations-Anleitung",
-      dataStorage: "Datenspeicherung",
-      multiplayer: "Multiplayer-Anleitung",
-      protocol: "Protokoll-Anleitung",
-      update: "Update-Anleitung"
-    },
-    ja: {
-      title: "X Minecraft Launcher ガイド",
-      subtitle: "X Minecraft Launcher を最大限に活用するための完全なドキュメント",
-      sections: "ガイドセクション",
-      returnHome: "ホームに戻る",
-      appearance: "外観ガイド",
-      appxMigration: "AppX マイグレーション",
-      localization: "ローカライゼーションガイド",
-      installation: "インストールガイド",
-      dataStorage: "データストレージ",
-      multiplayer: "マルチプレイヤーガイド",
-      protocol: "プロトコルガイド",
-      update: "アップデートガイド"
+    enabled: !!id
+  });
+
+  const posts = config?.posts || [];
+  const categories = config?.categories || [];
+  const featured = config?.featured || [];
+
+  const filteredPosts = useMemo(() => {
+    if (!posts.length) return [];
+    
+    return posts.filter(post => {
+      const matchesSearch = searchQuery === '' || 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesTags = selectedTags.length === 0 || 
+        selectedTags.some(tag => post.tags.includes(tag));
+      
+      return matchesSearch && matchesTags;
+    });
+  }, [posts, searchQuery, selectedTags]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const getDifficultyColor = (difficulty?: string) => {
+    switch (difficulty) {
+      case 'beginner': return 'from-green-500 to-emerald-500';
+      case 'intermediate': return 'from-yellow-500 to-orange-500';
+      case 'advanced': return 'from-red-500 to-rose-500';
+      default: return 'from-blue-500 to-indigo-500';
     }
   };
 
-  const text = translations[currentLanguage as keyof typeof translations] || translations.en;
-  
-  // Define guide sections with translations
-  const sections = [
-    {
-      id: "appearance",
-      title: text.appearance,
-      icon: <Layout className="w-5 h-5" />,
-      content: <AppearanceGuide />
-    },
-    {
-      id: "appx-migration",
-      title: text.appxMigration,
-      icon: <Upload className="w-5 h-5" />,
-      content: <AppXMigrationGuide />
-    },
-    {
-      id: "localization",
-      title: text.localization,
-      icon: <Globe className="w-5 h-5" />,
-      content: <LocalizationGuide />
-    },
-    {
-      id: "installation",
-      title: text.installation,
-      icon: <Download className="w-5 h-5" />,
-      content: <InstallationGuide />
-    },
-    {
-      id: "data-storage",
-      title: text.dataStorage,
-      icon: <Database className="w-5 h-5" />,
-      content: <DataStorageGuide />
-    },
-    {
-      id: "multiplayer",
-      title: text.multiplayer,
-      icon: <Users className="w-5 h-5" />,
-      content: <MultiplayerGuide />
-    },
-    {
-      id: "protocol",
-      title: text.protocol,
-      icon: <Code className="w-5 h-5" />,
-      content: <ProtocolGuide />
-    },
-    {
-      id: "update",
-      title: text.update,
-      icon: <Upload className="w-5 h-5" />,
-      content: <UpdateGuide />
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-minecraft-dark-blue via-slate-900 to-black relative overflow-hidden">
-      {/* Enhanced background effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full filter blur-[100px] animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full filter blur-[100px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-green-500/5 to-cyan-500/5 rounded-full filter blur-[150px]"></div>
-        
-        {/* Grid pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px'
-          }}
-        />
-      </div>
-      
-      <Navbar />
-      
-      <motion.div 
-        className="container mx-auto px-4 pt-32 pb-20 relative z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        {/* Return Home Button */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex justify-center mb-8"
-        >
-          <Link to="/" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-lg rounded-full hover:from-white/20 hover:to-white/10 transition-all duration-300 border border-white/20 hover:border-cyan-500/40">
-            <Home size={18} />
-            <span className="text-sm font-medium text-white">{text.returnHome}</span>
-          </Link>
-        </motion.div>
-
-        {/* Header */}
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <motion.h1 
-            className="text-4xl lg:text-6xl font-bold mb-6"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-              {text.title}
-            </span>
-          </motion.h1>
-          
-          <motion.div
-            className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full mb-6"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          />
-          
-          <motion.p 
-            className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            {text.subtitle}
-          </motion.p>
-        </motion.div>
-
-        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
-          {/* Enhanced Sidebar */}
-          <motion.div 
-            className="lg:w-1/4"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <div className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl rounded-2xl p-6 sticky top-24 border border-white/20 shadow-2xl">
-              <h2 className="text-xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                {text.sections}
-              </h2>
-              <nav className="flex flex-col space-y-2">
-                {sections.map((section) => (
-                  <motion.button
-                    key={section.id}
-                    onClick={() => setActiveTab(section.id)}
-                    className={`py-3 px-4 rounded-xl text-left transition-all flex items-center gap-3 relative overflow-hidden group ${
-                      activeTab === section.id
-                        ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 shadow-lg"
-                        : "hover:bg-white/10 text-white/80 hover:text-white border border-transparent hover:border-white/10"
-                    }`}
-                    whileHover={{ x: 5, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <div className={`${activeTab === section.id ? 'text-cyan-400' : 'text-white/60'} transition-colors`}>
-                      {section.icon}
-                    </div>
-                    <span className="relative z-10 font-medium">{section.title}</span>
-                    
-                    {/* Active indicator */}
-                    {activeTab === section.id && (
-                      <motion.div
-                        className="absolute right-2 w-2 h-2 bg-cyan-400 rounded-full"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 500 }}
-                      />
-                    )}
-                    
-                    {/* Hover effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
-                  </motion.button>
-                ))}
-              </nav>
-            </div>
-          </motion.div>
-          
-          {/* Enhanced Content */}
-          <motion.div 
-            className="lg:w-3/4"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            <div className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl rounded-2xl p-8 min-h-[70vh] border border-white/20 shadow-2xl relative overflow-hidden">
-              {/* Content background pattern */}
-              <div 
-                className="absolute inset-0 opacity-[0.03]"
-                style={{
-                  backgroundImage: `radial-gradient(circle at 25% 25%, rgba(139, 69, 219, 0.3) 0%, transparent 50%),
-                                  radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)`
-                }}
-              />
-              
+  if (isLoading) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-cyan-50 dark:from-slate-950 dark:via-emerald-950/20 dark:to-cyan-950/20 flex items-center justify-center px-4">
+          <div className="text-center">
+            <div className="relative mb-8">
               <motion.div 
-                className="relative z-10"
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
+                className="w-20 h-20 border-4 border-muted rounded-full mx-auto"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div 
+                className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-emerald-500 border-r-emerald-400 rounded-full mx-auto"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
               >
-                {sections.find(section => section.id === activeTab)?.content}
+                <motion.div
+                  className="w-3 h-3 bg-emerald-500 rounded-full"
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                />
               </motion.div>
             </div>
-          </motion.div>
+            <motion.p 
+              className="text-slate-600 dark:text-slate-400 text-lg font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              {t('guide.loading')}
+            </motion.p>
+          </div>
         </div>
-      </motion.div>
-    </div>
+      </PageTransition>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-slate-950 dark:via-emerald-950/20 dark:to-teal-950/20">
+          <div className="container mx-auto px-4 pt-8 pb-16">
+            <div className="text-center">
+              <p className="text-red-600 dark:text-red-400 text-lg">{t('common.error')}</p>
+            </div>
+          </div>
+        </div>
+      </PageTransition>
+    );
+  }
+
+  // If viewing a specific guide
+  if (id && selectedPost) {
+    const post = posts.find(p => p.slug === id);
+    
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-slate-950 dark:via-emerald-950/20 dark:to-teal-950/20">
+          <div className="container mx-auto px-4 pt-8 pb-16">
+            <div className="max-w-4xl mx-auto">
+              {post && (
+                <motion.div 
+                  className="mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <div className="flex items-center gap-2 mb-6">
+                    <Button
+                      onClick={() => window.history.back()}
+                      variant="ghost"
+                      className="text-emerald-600 dark:text-emerald-400"
+                    >
+                      ← {t('guide.backToGuides')}
+                    </Button>
+                  </div>
+                  
+                  <Card className="p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-2xl">
+                    <div className="mb-6">
+                      <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-200 mb-4">
+                        {post.title}
+                      </h1>
+                      <div className="flex items-center gap-4 text-slate-600 dark:text-slate-400 mb-4">
+                        <div className="flex items-center gap-2">
+                          <User className="w-4 h-4" />
+                          <span>{post.author}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          <span>{post.readTime || `5 ${t('guide.minRead')}`}</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {post.tags.map(tag => (
+                          <Badge key={tag} variant="outline" className="text-emerald-600 dark:text-emerald-400">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <MarkdownRenderer content={selectedPost} />
+                  </Card>
+                </motion.div>
+              )}
+            </div>
+          </div>
+        </div>
+      </PageTransition>
+    );
+  }
+
+  // Main guides listing page
+  return (
+    <PageTransition>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-slate-950 dark:via-emerald-950/20 dark:to-teal-950/20">
+        {/* Animated Background */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: 360,
+            }}
+            transition={{ duration: 20, repeat: Infinity }}
+          />
+          <motion.div 
+            className="absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-tr from-teal-400/20 to-cyan-400/20 rounded-full blur-3xl"
+            animate={{ 
+              scale: [1.1, 1, 1.1],
+              rotate: -360,
+            }}
+            transition={{ duration: 25, repeat: Infinity }}
+          />
+        </div>
+
+        
+        
+        <div className="relative z-10">
+          {/* Header */}
+          <motion.div 
+            className="text-center py-20"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="container mx-auto px-4">
+              <div className="inline-flex items-center gap-4 mb-6">
+                <div className="relative">
+                  <BookOpen className="w-14 h-14 text-emerald-600 dark:text-emerald-400" />
+                  <motion.div 
+                    className="absolute -inset-2 bg-emerald-500/20 rounded-full blur-lg"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </div>
+                <h1 className="text-6xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                  {t('guide.title')}
+                </h1>
+              </div>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                {t('guide.subtitle')}
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="container mx-auto px-4 pb-16">
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Sidebar */}
+              <motion.div 
+                className="lg:w-80"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <div className="sticky top-24 space-y-6">
+                  {/* Search */}
+                  <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-xl">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Search className="w-5 h-5 text-emerald-500" />
+                      <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">{t('guide.searchGuides')}</h3>
+                    </div>
+                    <Input
+                      placeholder={t('guide.searchPlaceholder')}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="bg-white/80 dark:bg-slate-700/80"
+                    />
+                  </Card>
+
+                  {/* Tags Filter */}
+                  <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-xl">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <Tag className="w-5 h-5 text-emerald-500" />
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">{t('guide.filterByTags')}</h3>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowFilters(!showFilters)}
+                      >
+                        <Filter className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    
+                    <AnimatePresence>
+                      {(showFilters || selectedTags.length > 0) && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="space-y-3"
+                        >
+                          <div className="flex flex-wrap gap-2">
+                            {categories.map(tag => (
+                              <Button
+                                key={tag}
+                                variant={selectedTags.includes(tag) ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => toggleTag(tag)}
+                                className={`${
+                                  selectedTags.includes(tag) 
+                                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white' 
+                                    : 'text-slate-600 dark:text-slate-400'
+                                }`}
+                              >
+                                {tag}
+                              </Button>
+                            ))}
+                          </div>
+                          
+                          {selectedTags.length > 0 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setSelectedTags([])}
+                              className="w-full text-slate-600 dark:text-slate-400"
+                            >
+                              {t('guide.clearFilters')}
+                            </Button>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </Card>
+
+                  {/* Quick Stats */}
+                  <Card className="p-6 bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 border-emerald-200 dark:border-emerald-700">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                      <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">{t('guide.guideStats')}</h3>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">{t('guide.totalGuides')}</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">{posts.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">{t('guide.categories')}</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">{categories.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">{t('guide.showing')}</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">{filteredPosts.length}</span>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </motion.div>
+
+              {/* Main Content */}
+              <div className="flex-1">
+                <motion.div 
+                  className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  {filteredPosts.map((post, index) => (
+                    <motion.div
+                      key={post.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                    >
+                      <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-xl hover:shadow-2xl transition-all duration-500 group h-full flex flex-col">
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                              {featured.includes(post.id) && (
+                                 <div className="flex items-center gap-2 mb-2">
+                                   <Star className="w-4 h-4 text-yellow-500" />
+                                   <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs">
+                                     {t('guide.featured')}
+                                   </Badge>
+                                 </div>
+                              )}
+                              <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                {post.title}
+                              </h3>
+                            </div>
+                            {post.difficulty && (
+                              <Badge className={`bg-gradient-to-r ${getDifficultyColor(post.difficulty)} text-white text-xs`}>
+                                {post.difficulty}
+                              </Badge>
+                            )}
+                          </div>
+
+                          <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-3">
+                            {post.excerpt}
+                          </p>
+
+                          <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-4">
+                            <div className="flex items-center gap-1">
+                              <User className="w-3 h-3" />
+                              <span>{post.author}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              <span>{post.readTime || '5 min'}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {post.tags.slice(0, 3).map(tag => (
+                              <Badge 
+                                key={tag} 
+                                variant="outline" 
+                                className="text-xs text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-700"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                            {post.tags.length > 3 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{post.tags.length - 3}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+
+                        <Button
+                          onClick={() => window.location.href = `/guide/${post.slug}`}
+                          className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white group"
+                        >
+                          <FileText className="w-4 h-4 mr-2" />
+                           {t('guide.readMore')}
+                           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                {filteredPosts.length === 0 && (
+                  <motion.div 
+                    className="text-center py-16"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <FileText className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
+                      {t('guide.noGuides')}
+                    </h3>
+                    <p className="text-slate-500 dark:text-slate-500">
+                      {t('guide.noGuidesDescription')}
+                    </p>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PageTransition>
   );
 };
 
