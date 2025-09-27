@@ -1,5 +1,6 @@
 
-import { BlogPost } from '@/types/blog';
+import type { BlogPost } from '../types/blog.ts';
+import type { GuidePost } from './guideUtils.ts';
 
 export function generateRSSFeed(posts: BlogPost[], siteUrl: string = window.location.origin): string {
   const now = new Date().toISOString();
@@ -25,7 +26,7 @@ export function generateRSSFeed(posts: BlogPost[], siteUrl: string = window.loca
   <channel>
     <title>XMCL Blog</title>
     <link>${siteUrl}/blogs</link>
-    <atom:link href="${siteUrl}/api/rss" rel="self" type="application/rss+xml" />
+    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
     <description>Latest updates and insights from the XMCL team</description>
     <language>en</language>
     <lastBuildDate>${now}</lastBuildDate>
@@ -37,7 +38,7 @@ export function generateRSSFeed(posts: BlogPost[], siteUrl: string = window.loca
 
 export async function downloadRSSFeed(format: 'xml' | 'json' = 'xml') {
   try {
-    const { getAllBlogPosts } = await import('./blogUtils');
+    const { getAllBlogPosts } = await import('./blogUtils.ts');
     const posts = await getAllBlogPosts();
     
     let content: string;
@@ -88,4 +89,40 @@ export async function downloadRSSFeed(format: 'xml' | 'json' = 'xml') {
     console.error(`Error generating ${format.toUpperCase()} feed:`, error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
+}
+
+export function generateGuideRSSFeed(guides: GuidePost[], siteUrl: string = window.location.origin): string {
+  const now = new Date().toISOString();
+  
+  const rssItems = guides.map(post => {
+    const postUrl = `${siteUrl}/guide/${post.slug}`;
+    const pubDate = new Date(post.date).toUTCString();
+    
+    const categories = post.tags.map(tag => `<category><![CDATA[${tag}]]></category>`).join('\n      ');
+    
+    return `
+    <item>
+      <title><![CDATA[${post.title}]]></title>
+      <link>${postUrl}</link>
+      <guid>${postUrl}</guid>
+      <description><![CDATA[${post.excerpt}]]></description>
+      <pubDate>${pubDate}</pubDate>
+      <author><![CDATA[${post.author}]]></author>
+      ${categories}
+    </item>`;
+  }).join('');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XMCL Guides</title>
+    <link>${siteUrl}/guide</link>
+    <atom:link href="${siteUrl}/guide-rss.xml" rel="self" type="application/rss+xml" />
+    <description>Latest guides and tutorials from XMCL</description>
+    <language>en</language>
+    <lastBuildDate>${now}</lastBuildDate>
+    <generator>XMCL Website</generator>
+    ${rssItems}
+  </channel>
+</rss>`;
 }

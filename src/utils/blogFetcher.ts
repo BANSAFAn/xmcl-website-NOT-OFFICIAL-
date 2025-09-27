@@ -1,17 +1,27 @@
 
-import { BlogPost } from '@/types/blog';
+import type { BlogPost } from '../types/blog.ts';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 /**
  * Fetches all blog posts from the JSON file
  */
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   try {
-    const response = await fetch('/blogs.json');
-    if (!response.ok) {
-      throw new Error('Failed to fetch blog posts');
+    if (typeof window === 'undefined') {
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = path.dirname(__filename);
+      const filePath = path.join(__dirname, '../../public/blog.json');
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      return data.posts;
+    } else {
+      const response = await fetch('/blog.json');
+      if (!response.ok) {
+        throw new Error('Failed to fetch blog posts');
+      }
+      return await response.json();
     }
-    const posts = await response.json();
-    return posts;
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return [];

@@ -18,7 +18,8 @@ import {
   ArrowRight,
   Sparkles,
   FileText,
-  Star
+  Star,
+  Rss
 } from "lucide-react";
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -288,16 +289,22 @@ const Guide = () => {
             <div className="container mx-auto px-4">
               <div className="inline-flex items-center gap-4 mb-6">
                 <div className="relative">
-                  <BookOpen className="w-14 h-14 text-emerald-600 dark:text-emerald-400" />
+                  <BookOpen className="w-12 h-12 sm:w-14 sm:h-14 text-emerald-600 dark:text-emerald-400" />
                   <motion.div 
                     className="absolute -inset-2 bg-emerald-500/20 rounded-full blur-lg"
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
                 </div>
-                <h1 className="text-6xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
                   {t('guide.title')}
                 </h1>
+                <a href="/guide-rss.xml" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-gradient-to-r from-orange-500 to-amber-500 text-white">
+                    <Rss className="w-4 h-4 mr-2" />
+                    RSS Feed
+                  </Button>
+                </a>
               </div>
               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
                 {t('guide.subtitle')}

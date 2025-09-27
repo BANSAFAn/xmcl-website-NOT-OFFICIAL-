@@ -1,8 +1,8 @@
 
-import { BlogPost } from '@/types/blog';
-import { BLOG_POSTS } from '@/data/blogPosts';
-import { parseRussianDate } from './dateUtils';
-import { fetchBlogPosts, fetchBlogPost } from './blogFetcher';
+import type { BlogPost } from '../types/blog.ts';
+import { BLOG_POSTS } from '../data/blogPosts.ts';
+import { parseRussianDate } from './dateUtils.ts';
+import { fetchBlogPosts, fetchBlogPost } from './blogFetcher.ts';
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   try {
@@ -59,4 +59,4 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
 }
 
 // Re-export the BlogPost type for convenience
-export type { BlogPost } from '@/types/blog';
+export type { BlogPost } from '../types/blog.ts';
