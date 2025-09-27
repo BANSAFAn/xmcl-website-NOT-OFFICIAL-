@@ -54,7 +54,7 @@ const Guide = () => {
     queryKey: ['guide-config'],
     queryFn: async (): Promise<GuideConfig> => {
                       try {
-                        const response = await fetch('/guide.json');
+                        const response = await fetch('/guides.json');
                         if (!response.ok) {
                           return {
                             posts: [

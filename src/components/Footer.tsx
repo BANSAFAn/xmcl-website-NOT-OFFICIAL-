@@ -40,7 +40,7 @@ export const Footer = ({ onDownloadClick }: FooterProps) => {
               <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
                 <img 
                   src="/PhotoXMCL/logo.png" 
-                  alt="XMCL Logo" 
+                  alt="X Minecraft Launcher logo" 
                   className="w-full h-full object-contain"
                 />
               </div>

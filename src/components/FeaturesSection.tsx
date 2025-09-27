@@ -22,32 +22,6 @@ export const FeaturesSection = () => {
       ]
     },
     {
-      icon: Code,
-      title: t('home.crossPlatformSupportTitle'),
-      description: t('home.crossPlatformSupportDesc'),
-      image: '/PhotoXMCL/logo.png',
-      reverse: true,
-      links: [
-        { name: 'Linux', url: 'https://www.linux.org/pages/download/', color: 'bg-orange-500 hover:bg-orange-600' },
-        { name: 'MacOS', url: 'https://support.apple.com', color: 'bg-blue-500 hover:bg-blue-600' },
-        { name: 'Windows', url: 'https://microsoft.com/windows', color: 'bg-cyan-500 hover:bg-cyan-600' }
-      ]
-    },
-    {
-      icon: Palette,
-      title: t('home.installingAnyFramework'),
-      description: t('home.installingAnyFrameworkDesc'),
-      image: '/PhotoXMCL/7034b047-f7c2-4650-9bec-c71f0702e64a.png',
-      reverse: false,
-      links: [
-        { name: 'Forge', url: 'https://files.minecraftforge.net/', color: 'bg-red-500 hover:bg-red-600' },
-        { name: 'Fabric', url: 'https://fabricmc.net/', color: 'bg-blue-500 hover:bg-blue-600' },
-        { name: 'NeoForge', url: 'https://neoforged.net/', color: 'bg-purple-500 hover:bg-purple-600' },
-        { name: 'Quilt', url: 'https://quiltmc.org/', color: 'bg-yellow-500 hover:bg-yellow-600' },
-        { name: 'LabyMod', url: 'https://www.labymod.net/', color: 'bg-indigo-500 hover:bg-indigo-600' }
-      ]
-    },
-    {
       icon: Zap,
       title: t('home.feature4Title'),
       description: t('home.feature4Description'),
@@ -59,11 +33,18 @@ export const FeaturesSection = () => {
       ]
     },
     {
-      icon: Shield,
-      title: t('home.feature5Title'),
-      description: t('home.feature5Description'),
-      image: '/PhotoXMCL/c84556ce-21f8-4d32-93c0-d9d6ba82f881.png',
-      reverse: false
+      icon: Palette,
+      title: t('home.installingAnyFramework'),
+      description: t('home.installingAnyFrameworkDesc'),
+      image: '/PhotoXMCL/download minecrat.png',
+      reverse: false,
+      links: [
+        { name: 'Forge', url: 'https://files.minecraftforge.net/', color: 'bg-red-500 hover:bg-red-600' },
+        { name: 'Fabric', url: 'https://fabricmc.net/', color: 'bg-blue-500 hover:bg-blue-600' },
+        { name: 'NeoForge', url: 'https://neoforged.net/', color: 'bg-purple-500 hover:bg-purple-600' },
+        { name: 'Quilt', url: 'https://quiltmc.org/', color: 'bg-yellow-500 hover:bg-yellow-600' },
+        { name: 'LabyMod', url: 'https://www.labymod.net/', color: 'bg-indigo-500 hover:bg-indigo-600' }
+      ]
     }
   ];
 

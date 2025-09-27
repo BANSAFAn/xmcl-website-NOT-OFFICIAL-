@@ -35,11 +35,6 @@ const Home = () => {
       icon: <Zap className="w-12 h-12" />,
       title: t('home.feature4Title'),
       description: t('home.feature4Description')
-    },
-    {
-      icon: <RefreshCw className="w-12 h-12" />,
-      title: t('home.feature5Title'),
-      description: t('home.feature5Description')
     }
   ];
 

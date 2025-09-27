@@ -78,8 +78,8 @@ export function useGitHubApi() {
 
         // Try to fetch real data from GitHub API
         const [issuesResponse, repoResponse] = await Promise.allSettled([
-          fetch('https://api.github.com/repos/voxelum/x-minecraft-launcher/issues?state=all&per_page=50'),
-          fetch('https://api.github.com/repos/voxelum/x-minecraft-launcher')
+          fetch('https://api.github.com/repos/Voxelum/x-minecraft-launcher/issues?state=all&per_page=50'),
+          fetch('https://api.github.com/repos/Voxelum/x-minecraft-launcher')
         ]);
 
         let issuesData = FALLBACK_DATA.issues;

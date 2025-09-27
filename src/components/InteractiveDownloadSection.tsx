@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import { Download, Github, ExternalLink, Copy, Check, Monitor, Terminal, Laptop } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -334,6 +334,46 @@ const InteractiveDownloadSection = () => {
             </div>
           </div>
         </motion.div>
+
+        <AnimatePresence mode="wait">
+          {selectedOS === 'windows' &amp;&amp; (
+            <motion.div
+              key="windows"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+            &gt;
+              // ... existing code ...
+            &lt;/motion.div&gt;
+          )}
+          {selectedOS === 'macos' &amp;&amp; (
+            <motion.div
+              key="macos"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+            &gt;
+              // ... existing code ...
+            &lt;/motion.div&gt;
+          )}
+          {selectedOS === 'linux' &amp;&amp; (
+            <motion.div
+              key="linux"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+            &gt;
+              // ... existing code ...
+            &lt;/motion.div&gt;
+          )}
+        &lt;/AnimatePresence&gt;
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {selectedOS === 'windows' && platformAssets.windows.map((asset, index) => (

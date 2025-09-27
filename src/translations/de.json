@@ -32,6 +32,10 @@
     "appImageArmDesc": "AppImage für Linux (ARM64) herunterladen",
     "tarArmDesc": "TAR-Archiv für Linux (ARM64) herunterladen"
   },
+  "home": {
+    "feature4Title": "Optimale Speicherplatznutzung mit massiven Ressourcen",
+    "feature4Description": "XMCL speichert alle Mods, Resource Packs, Shader Packs und Modpacks an einem einzigen Speicherort. Wenn Sie eine bekannte Ressource verwenden möchten, verwendet es einen Hardlink, um die Ressource in die Instanz zu installieren, ohne zu kopieren. Das bedeutet, Sie werden keine duplizierten Kopien im /mods-Ordner mehr sehen."
+  },
   "guide": {
     "readMore": "Weiterlesen"
   }

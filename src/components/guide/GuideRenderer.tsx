@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MarkdownRender } from "@/components/markdown/MarkdownRender";
-import { ArrowLeft, Clock, User, Tag } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface GuideData {
   slug: string;
@@ -21,6 +22,7 @@ interface GuideRendererProps {
 }
 
 export function GuideRenderer({ guide, onBack }: GuideRendererProps) {
+  const { t } = useTranslation();
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -85,7 +87,7 @@ export function GuideRenderer({ guide, onBack }: GuideRendererProps) {
           className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-6 group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back to Guides
+          {t('guide.backToGuides')}
         </button>
 
         <div className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
