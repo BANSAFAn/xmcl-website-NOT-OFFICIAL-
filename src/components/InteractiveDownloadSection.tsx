@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import { Download, Github, ExternalLink, Copy, Check, Monitor, Terminal, Laptop } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ interface MousePosition {
   y: number;
 }
 
-const InteractiveDownloadSection = () => {
+const InteractiveDownloadSection = memo(() => {
   const { t } = useTranslation();
   const [selectedOS, setSelectedOS] = useState('windows');
   const [copiedBrew, setCopiedBrew] = useState(false);
@@ -30,7 +30,9 @@ const InteractiveDownloadSection = () => {
       const response = await fetch('https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases');
       if (!response.ok) throw new Error('Failed to fetch releases');
       return response.json();
-    }
+    },
+    staleTime: 60000, // 1 минута кэша
+    cacheTime: 300000, // 5 минут
   });
 
   const latestRelease = releases?.[0];
@@ -156,7 +158,7 @@ const InteractiveDownloadSection = () => {
     );
   };
 
-  const DownloadCard = ({ title, description, icon, downloadUrl, size, downloads, index }: {
+  const DownloadCard = ({ title, description, icon, downloadUrl, size, downloads, index, system, features }: {
     title: string;
     description: string;
     icon: React.ReactNode;
@@ -179,8 +181,9 @@ const InteractiveDownloadSection = () => {
           
           <div className="text-center relative z-10">
             <motion.div 
-              className="text-5xl mb-6"
+              className="text-5xl mb-6 cursor-pointer"
               whileHover={{ scale: 1.1, rotate: 5 }}
+              onClick={handleInfoClick}
             >
               {icon}
             </motion.div>
@@ -529,4 +532,31 @@ const InteractiveDownloadSection = () => {
   );
 };
 
+useEffect(() => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (userAgent.includes('win')) setSelectedOS('windows');
+  else if (userAgent.includes('mac')) setSelectedOS('macos');
+  else if (userAgent.includes('linux')) setSelectedOS('linux');
+}, []);
+});
+
 export default InteractiveDownloadSection;
+
+// В местах вызова DownloadCard добавляем props
+<DownloadCard
+  key={asset.id}
+  title={asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive'}
+  description={asset.name}
+  icon={<Monitor />}
+  downloadUrl={asset.browser_download_url}
+  size={Math.round(asset.size / 1024 / 1024)}
+  downloads={asset.download_count}
+  index={index}
+  system="Windows"
+  features="Простая установка, поддержка 64-bit"
+/>
+
+// Аналогично для других ОС
+
+// Удаляем mouse-following div для фикса бага
+// Удалена строка: <motion.div className="pointer-events-none absolute w-96 h-96 ... />
