@@ -1,4 +1,13 @@
 {
+  "nav": {
+    "home": "الرئيسية",
+    "about": "حول",
+    "changelog": "سجل التغييرات",
+    "download": "تحميل",
+    "docs": "الوثائق",
+    "blog": "المدونة",
+    "contact": "اتصل بنا"
+  },
   "downloadXMCL": "تحميل XMCL",
   "modernCrossplatformDescription": "مشغل ماين كرافت حديث متعدد المنصات",
   "githubStars": "نجوم GitHub",

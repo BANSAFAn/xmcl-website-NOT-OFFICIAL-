@@ -1,4 +1,13 @@
 {
+  "nav": {
+    "home": "Startseite",
+    "about": "Über",
+    "changelog": "Änderungsprotokoll",
+    "download": "Herunterladen",
+    "docs": "Dokumentation",
+    "blog": "Blog",
+    "contact": "Kontakt"
+  },
   "downloadXMCL": "XMCL herunterladen",
   "modernCrossplatformDescription": "Moderner plattformübergreifender Minecraft-Launcher",
   "githubStars": "GitHub Sterne",

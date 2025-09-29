@@ -17,7 +17,6 @@ const InteractiveDownloadSection = memo(() => {
   const { t } = useTranslation();
   const [selectedOS, setSelectedOS] = useState('windows');
   const [copiedBrew, setCopiedBrew] = useState(false);
-  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLElement>(null);
 
   const mouseX = useMotionValue(0);
@@ -212,11 +211,17 @@ const InteractiveDownloadSection = memo(() => {
     }
 
     if (error || !latestRelease) {
+      let errorMsg = t('common.error');
+      if (error?.message?.includes('rate limit')) {
+        errorMsg = 'Превышен лимит API GitHub. Пожалуйста, попробуйте позже.';
+      } else if (!latestRelease) {
+        errorMsg = 'Релизы не найдены.';
+      }
       return (
         <section className="py-20 px-4 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
           <div className="container mx-auto text-center relative z-10">
-            <p className="text-red-600 dark:text-red-400 text-lg">{t('common.error')}</p>
+            <p className="text-red-600 dark:text-red-400 text-lg">{errorMsg}</p>
           </div>
         </section>
       );
@@ -230,17 +235,6 @@ const InteractiveDownloadSection = memo(() => {
         className="py-20 px-4 relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
-        
-        <motion.div
-          className="pointer-events-none absolute w-96 h-96 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-3xl"
-          animate={{
-            x: mousePosition.x - 200,
-            y: mousePosition.y - 200,
-          }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        />
-        
-        {/* Removed the mouse-following circle to prevent visual issues */}
         
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">

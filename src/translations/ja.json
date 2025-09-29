@@ -5,7 +5,11 @@
     "guide": "ガイド",
     "changelog": "変更履歴",
     "issues": "問題",
-    "testing": "テスト"
+    "testing": "テスト",
+    "about": "について",
+    "download": "ダウンロード",
+    "docs": "ドキュメント",
+    "contact": "お問い合わせ"
   },
   "footer": {
     "quickLinks": "クイックリンク",

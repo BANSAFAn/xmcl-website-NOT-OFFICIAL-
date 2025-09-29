@@ -13,8 +13,14 @@ Beta:
 
 The release will be when the following parts are configured:
 - Optimization
-- Astro,js
 - Full capability for older devices to view the site
 - Integration with Linux, Windows, MacOS
 
 # You can continue to make translations and thus improve the site to accelerate development.
+
+██╗  ██╗███╗   ███╗ ██████╗ ██╗     
+╚██╗██╔╝████╗ ████║██╔════╝ ██║     
+ ╚███╔╝ ██╔████╔██║██║      ██║     
+ ██╔██╗ ██║╚██╔╝██║██║      ██║     
+██╔╝ ██╗██║ ╚═╝ ██║╚██████╗ ███████╗
+╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝
