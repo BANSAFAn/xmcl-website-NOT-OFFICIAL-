@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslation } from '@/contexts/TranslationContext';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Эффект Shuffle для текста
+// Оптимизированный ShuffleText — используем memo
 const ShuffleText = ({ children }: { children: React.ReactNode }) => {
   const text = String(children);
   const [isShuffled, setIsShuffled] = useState(false);
@@ -21,8 +21,8 @@ const ShuffleText = ({ children }: { children: React.ReactNode }) => {
           animate={{
             opacity: 1,
             transition: {
-              delay: index * 0.02,
-              duration: 0.5,
+              delay: index * 0.015,
+              duration: 0.4,
               ease: 'easeOut' as const
             }
           }}
@@ -55,7 +55,9 @@ export const StaggeredMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
-  // Анимация появления пунктов меню — с эффектом Shuffle
+  // useCallback для обработчиков
+  const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
+
   const itemVariants = {
     hidden: {
       opacity: 0,
@@ -75,19 +77,17 @@ export const StaggeredMenu = () => {
     }
   };
 
-  // Анимация для всего контейнера пунктов
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        staggerChildren: 0.08,
+        delayChildren: 0.15
       }
     }
   };
 
-  // Анимация самого меню (сбоку)
   const sidebarVariants = {
     closed: {
       x: '-100%',
@@ -114,7 +114,7 @@ export const StaggeredMenu = () => {
       <Button 
         variant="ghost" 
         className="text-foreground hover:bg-accent/50" 
-        onClick={() => setIsOpen(true)}
+        onClick={toggleMenu}
       >
         Menu
       </Button>
@@ -129,22 +129,23 @@ export const StaggeredMenu = () => {
             className="fixed top-0 left-0 bg-background/95 dark:bg-background/95 z-50 flex flex-col items-start justify-start px-4 py-8 shadow-xl border-r border-accent/20 rounded-r-xl h-screen overflow-y-auto"
             style={{ width: '24rem' }}
           >
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="absolute top-4 right-4"
-              onClick={() => setIsOpen(false)}
-            >
-              <X className="w-6 h-6" />
-            </Button>
+            <div className="absolute top-4 right-4 z-10">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={toggleMenu} // Закрытие по нажатию
+                className="hover:bg-accent/30"
+              >
+                <X className="w-6 h-6" />
+              </Button>
+            </div>
 
-            {/* Обёртка для пунктов меню — центрируем по вертикали */}
-            <div className="flex flex-col w-full h-full justify-center">
+            <div className="flex flex-col w-full h-full justify-center pt-12">
               <motion.ul 
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="w-full space-y-0" // ← Убраны отступы между пунктами
+                className="w-full space-y-0"
               >
                 {navItems.map((item, index) => (
                   <motion.li 
@@ -154,17 +155,18 @@ export const StaggeredMenu = () => {
                   >
                     <Link 
                       to={item.href} 
-                      onClick={() => setIsOpen(false)}
-                      className="inline-block whitespace-nowrap group-hover:text-primary"
+                      onClick={toggleMenu}
+                      className="inline-flex items-center gap-3 group-hover:text-primary"
                     >
-                      <span className="text-xl opacity-50">{String(index + 1).padStart(2, '0')}</span>
+                      <span className="text-xl opacity-50 whitespace-nowrap">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
                       <ShuffleText>{t(item.label)}</ShuffleText>
                     </Link>
                   </motion.li>
                 ))}
               </motion.ul>
 
-              {/* Нижняя панель — языки и тема */}
               <div className="mt-auto flex gap-6 p-4 border-t border-accent/20 w-full pb-6">
                 <LanguageSelector />
                 <ThemeSelector />

@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sun, Moon, ChevronDown } from "lucide-react";
@@ -12,13 +11,13 @@ export const ThemeSelector = () => {
   const themes = [
     { 
       value: 'light' as Theme, 
-      name: 'Light', 
+      name: t('theme.light'), // ← Используем перевод
       icon: Sun,
       gradient: 'from-amber-400 via-orange-400 to-yellow-400'
     },
     { 
       value: 'dark' as Theme, 
-      name: 'Dark', 
+      name: t('theme.dark'), // ← Используем перевод
       icon: Moon,
       gradient: 'from-slate-700 via-slate-800 to-slate-900'
     }
