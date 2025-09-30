@@ -1,5 +1,4 @@
 import { getAllGuidePosts } from '@/utils/guideUtils';
-import { generateGuideRSSFeed } from '@/utils/rssGenerator';
 
 export async function getGuideRSSFeed(req: Request): Promise<Response> {
   try {
@@ -22,22 +21,7 @@ export async function getGuideRSSFeed(req: Request): Promise<Response> {
       console.warn('Could not determine site URL from request, using fallback:', siteUrl);
     }
     
-    const rssXml = generateGuideRSSFeed(posts, siteUrl);
     
-    if (!rssXml) {
-      return new Response('Failed to generate RSS XML', {
-        status: 500,
-        headers: { 'Content-Type': 'text/plain' }
-      });
-    }
-    
-    return new Response(rssXml, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/rss+xml',
-        'Cache-Control': 'max-age=3600'
-      }
-    });
   } catch (error) {
     console.error('Error generating RSS feed:', error);
     return new Response(`Failed to generate RSS feed: ${error instanceof Error ? error.message : 'Unknown error'}`, {
