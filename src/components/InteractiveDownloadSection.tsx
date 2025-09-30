@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Github, ExternalLink, Copy, Check, Monitor, Terminal, Laptop } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -13,14 +13,23 @@ interface MousePosition {
   y: number;
 }
 
+interface DownloadCardProps {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  downloadUrl: string;
+  size: number;
+  downloads: number;
+  index: number;
+  system?: string;
+  features?: string;
+}
+
 const InteractiveDownloadSection = memo(() => {
   const { t } = useTranslation();
   const [selectedOS, setSelectedOS] = useState('windows');
   const [copiedBrew, setCopiedBrew] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
 
   // Fetch latest release from GitHub
   const { data: releases, isLoading, error } = useQuery({
@@ -30,16 +39,12 @@ const InteractiveDownloadSection = memo(() => {
       if (!response.ok) throw new Error('Failed to fetch releases');
       return response.json();
     },
-    staleTime: 60000, // 1 минута кэша
-    cacheTime: 300000, // 5 минут
+    staleTime: 60000, // 1 minute cache
   });
 
   const latestRelease = releases?.[0];
 
   useEffect(() => {
-    // Change useEffect dependency to [] to add listener only on mount
-    // Removed mouse move listener for performance optimization
-
     const handleBrewCopy = () => {
       const commands = `brew tap voxelum/brew\nbrew install --cask xmcl`;
       navigator.clipboard.writeText(commands);
@@ -109,11 +114,8 @@ const InteractiveDownloadSection = memo(() => {
       isSelected: boolean;
       onClick: () => void;
     }) => {
-      const buttonRef = useRef<HTMLButtonElement>(null);
-      
       return (
         <motion.button
-          ref={buttonRef}
           onClick={onClick}
           className={`relative px-8 py-4 rounded-xl font-medium transition-all duration-300 flex items-center gap-3 overflow-hidden ${
             isSelected
@@ -123,7 +125,6 @@ const InteractiveDownloadSection = memo(() => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          {/* Removed radial gradient for performance */}
           <span className="text-2xl">{icon}</span>
           <span className="text-lg">{name}</span>
           {isSelected && (
@@ -136,32 +137,19 @@ const InteractiveDownloadSection = memo(() => {
       );
     };
 
-    const DownloadCard = ({ title, description, icon, downloadUrl, size, downloads, index, system, features }: {
-      title: string;
-      description: string;
-      icon: React.ReactNode;
-      downloadUrl: string;
-      size: number;
-      downloads: number;
-      index: number;
-    }) => {
-      const cardRef = useRef<HTMLDivElement>(null);
-      
+    const DownloadCard = ({ title, description, icon, downloadUrl, size, downloads, index, system, features }: DownloadCardProps) => {
       return (
         <motion.div
-          ref={cardRef}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: index * 0.1 }}
           className="relative group"
         >
-          <Card className="p-8 hover:shadow-2xl transition-all duration-500 relative overflow-hidden backdrop-blur-sm bg-white/90 dark:bg-slate-800/90 border-slate-200/50 dark:border-slate-700/50">
-            
+          <Card className="p-8 hover:shadow-2xl transition-all duration-500 relative overflow-hidden backdrop-blur-sm bg-white/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl shadow-sm hover:shadow-lg">
             <div className="text-center relative z-10">
               <motion.div 
-                className="text-5xl mb-6 cursor-pointer"
+                className="text-5xl mb-6"
                 whileHover={{ scale: 1.1, rotate: 5 }}
-                onClick={handleInfoClick}
               >
                 {icon}
               </motion.div>
@@ -182,7 +170,7 @@ const InteractiveDownloadSection = memo(() => {
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button
                   onClick={() => window.open(downloadUrl, '_blank')}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
                 >
                   <Download className="w-5 h-5 mr-3" />
                   {t('downloadSection.download')}
@@ -197,7 +185,6 @@ const InteractiveDownloadSection = memo(() => {
     if (isLoading) {
       return (
         <section className="py-20 px-4 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
           <div className="container mx-auto text-center relative z-10">
             <motion.div 
               className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-6"
@@ -219,7 +206,6 @@ const InteractiveDownloadSection = memo(() => {
       }
       return (
         <section className="py-20 px-4 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
           <div className="container mx-auto text-center relative z-10">
             <p className="text-red-600 dark:text-red-400 text-lg">{errorMsg}</p>
           </div>
@@ -314,7 +300,7 @@ const InteractiveDownloadSection = memo(() => {
           </motion.div>
 
           <AnimatePresence mode="wait">
-            {selectedOS === 'windows' &amp;&amp; (
+            {selectedOS === 'windows' && (
               <motion.div
                 key="windows"
                 initial={{ opacity: 0, x: 50 }}
@@ -322,22 +308,8 @@ const InteractiveDownloadSection = memo(() => {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.3 }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
-              &gt;
-                // ... existing code ...
-                
-                // Remove the gradient motion div
-                // Removed: <motion.div className="pointer-events-none absolute w-96 h-96 ... />
-                
-                <motion.div 
-                  className="text-5xl mb-6 cursor-pointer"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  onClick={() => handleInfoClick(system, features)}
-                >
-                  {icon}
-                </motion.div>
-                
-                // For windows renders:
-                {selectedOS === 'windows' && platformAssets.windows.map((asset, index) => (
+              >
+                {platformAssets.windows.map((asset: any, index: number) => (
                   <DownloadCard
                     key={asset.id}
                     title={asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive'}
@@ -347,13 +319,21 @@ const InteractiveDownloadSection = memo(() => {
                     size={Math.round(asset.size / 1024 / 1024)}
                     downloads={asset.download_count}
                     index={index}
-                    system="Windows 7+ (64-bit)"
-                    features={asset.name.includes('.exe') ? 'Простая установка, автоматическое обновление' : 'Портативная версия, без установки'}
                   />
                 ))}
-                
-                // For macos:
-                {platformAssets.macos.map((asset, index) => (
+              </motion.div>
+            )}
+
+            {selectedOS === 'macos' && (
+              <motion.div
+                key="macos"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+              >
+                {platformAssets.macos.map((asset: any, index: number) => (
                   <DownloadCard
                     key={asset.id}
                     title="macOS Package"
@@ -363,21 +343,40 @@ const InteractiveDownloadSection = memo(() => {
                     size={Math.round(asset.size / 1024 / 1024)}
                     downloads={asset.download_count}
                     index={index}
-                    system="macOS 10.13+"
-                    features="Нативное приложение, интеграция с Spotlight"
                   />
                 ))}
-                
-                // For homebrew card:
-                h3... Homebrew
-                system="macOS with Homebrew"
-                features="Установка через CLI, простые обновления"
-                
-                // Add to the motion.div for emoji:
-                onClick={() => handleInfoClick("macOS with Homebrew", "Установка через CLI, простые обновления")}
-                
-                // For linux:
-                {platformAssets.linux.map((asset, index) => {
+
+                <DownloadCard
+                  key="homebrew"
+                  title="Homebrew"
+                  description="Install via CLI"
+                  icon={<Terminal />}
+                  downloadUrl="#"
+                  size={0}
+                  downloads={0}
+                  index={0}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const commands = `brew tap voxelum/brew\nbrew install --cask xmcl`;
+                    navigator.clipboard.writeText(commands);
+                    setCopiedBrew(true);
+                    toast.success(t('downloadMessages.brewCommands'));
+                    setTimeout(() => setCopiedBrew(false), 2000);
+                  }}
+                />
+              </motion.div>
+            )}
+
+            {selectedOS === 'linux' && (
+              <motion.div
+                key="linux"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+              >
+                {platformAssets.linux.map((asset: any, index: number) => {
                   let packageType = 'Linux Package';
                   let icon = <Terminal />;
                   
@@ -405,72 +404,56 @@ const InteractiveDownloadSection = memo(() => {
                       size={asset.isExternal ? 0 : Math.round(asset.size / 1024 / 1024)}
                       downloads={asset.download_count}
                       index={index}
-                      system={system}
-                      features={features}
                     />
                   );
                 })}
-                
-                <motion.div 
-                  className="text-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <div className="flex justify-center gap-4 flex-wrap">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  variant="outline"
+                  onClick={() => window.open(latestRelease.html_url, '_blank')}
+                  className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
                 >
-                  <div className="flex justify-center gap-4 flex-wrap">
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button
-                        variant="outline"
-                        onClick={() => window.open(latestRelease.html_url, '_blank')}
-                        className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium"
-                      >
-                        <ExternalLink className="w-5 h-5 mr-3" />
-                        {t('downloadSection.releaseNotes')}
-                      </Button>
-                    </motion.div>
-                    
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button
-                        variant="outline"
-                        onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/releases', '_blank')}
-                        className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium"
-                      >
-                        <Github className="w-5 h-5 mr-3" />
-                        {t('downloadMessages.viewAllReleases')}
-                      </Button>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </div>
-            </section>
-          );
-        };
-        
-        useEffect(() => {
-          const userAgent = navigator.userAgent.toLowerCase();
-          if (userAgent.includes('win')) setSelectedOS('windows');
-          else if (userAgent.includes('mac')) setSelectedOS('macos');
-          else if (userAgent.includes('linux')) setSelectedOS('linux');
-        }, []);
-        });
-        
-        export default InteractiveDownloadSection;
-        
-        // В местах вызова DownloadCard добавляем props
-        <DownloadCard
-          key={asset.id}
-          title={asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive'}
-          description={asset.name}
-          icon={<Monitor />}
-          downloadUrl={asset.browser_download_url}
-          size={Math.round(asset.size / 1024 / 1024)}
-          downloads={asset.download_count}
-          index={index}
-          system="Windows"
-          features="Простая установка, поддержка 64-bit"
-        />
-        
-        // Аналогично для других ОС
-        
-        // Удаляем mouse-following div для фикса бага
-        // Удалена строка: <motion.div className="pointer-events-none absolute w-96 h-96 ... />
+                  <ExternalLink className="w-5 h-5 mr-3" />
+                  {t('downloadSection.releaseNotes')}
+                </Button>
+              </motion.div>
+              
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  variant="outline"
+                  onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/releases', '_blank')}
+                  className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
+                >
+                  <Github className="w-5 h-5 mr-3" />
+                  {t('downloadMessages.viewAllReleases')}
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    );
+  }, []);
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes('win')) setSelectedOS('windows');
+    else if (userAgent.includes('mac')) setSelectedOS('macos');
+    else if (userAgent.includes('linux')) setSelectedOS('linux');
+  }, []);
+
+  return null;
+});
+
+export default InteractiveDownloadSection;
