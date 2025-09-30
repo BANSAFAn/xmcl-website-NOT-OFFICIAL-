@@ -14,7 +14,7 @@ const translationsCache = new Map<SupportedLocale, Promise<Translations>>();
 export function loadTranslations(locale: SupportedLocale): Promise<Translations> {
   if (!isSupportedLocale(locale)) {
     console.warn(`Attempted to load unsupported locale: ${locale}`);
-    return Promise.resolve({});
+    return Promise.resolve({} as Translations);
   }
 
   if (translationsCache.has(locale)) {
@@ -25,12 +25,12 @@ export function loadTranslations(locale: SupportedLocale): Promise<Translations>
     .then(module => module.default)
     .catch(error => {
       console.error(`Failed to load translations for ${locale}:`, error);
-      translationsCache.delete(locale); // Remove from cache on failure
+      translationsCache.delete(locale);
       if (locale !== DEFAULT_LOCALE) {
         console.log(`Falling back to default locale: ${DEFAULT_LOCALE}`);
         return loadTranslations(DEFAULT_LOCALE);
       }
-      return {}; // Return empty object if default locale also fails
+      return {} as Translations;
     });
 
   translationsCache.set(locale, translationPromise);

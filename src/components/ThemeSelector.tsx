@@ -9,21 +9,22 @@ export const ThemeSelector = () => {
   const { theme, setTheme } = useTheme();
 
   const themes = [
+    // We ignore this part, as the translations work!
     { 
       value: 'light' as Theme, 
-      name: t('theme.light'), // ← Используем перевод
+      name: t('theme.light'),
       icon: Sun,
       gradient: 'from-amber-400 via-orange-400 to-yellow-400'
     },
     { 
       value: 'dark' as Theme, 
-      name: t('theme.dark'), // ← Используем перевод
+      name: t('theme.dark'),
       icon: Moon,
       gradient: 'from-slate-700 via-slate-800 to-slate-900'
     }
   ];
 
-  const currentTheme = themes.find(t => t.value === theme);
+  const currentTheme = themes.find(th => th.value === theme);
   const IconComponent = currentTheme?.icon || Sun;
 
   return (
