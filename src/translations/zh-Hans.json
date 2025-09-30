@@ -1,1 +1,52 @@
-{\n  "nav": {\n    "home": "首页",\n    "about": "关于",\n    "changelog": "变更日志",\n    "download": "下载",\n    "docs": "文档",\n    "blog": "博客",\n    "contact": "联系我们"\n  },\n  "downloadXMCL": "下载XMCL",\n  "modernCrossplatformDescription": "现代跨平台Minecraft启动器",\n  "githubStars": "GitHub星标",\n  "forks": "分支",\n  "lastVersion": "最新版本",\n  "downloadSection": {\n    "title": "下载",\n    "subtitle": "获取适用于您的平台的最新 XMCL 版本",\n    "version": "版本",\n    "releaseNotes": "版本说明",\n    "download": "下载",\n    "installCommands": "安装命令",\n    "moreInfo": "更多信息",\n    "sizeMB": "MB",\n    "downloadCount": "下载次数",\n    "linuxUniversal": "Linux 通用",\n    "windowsArchiveDesc": "下载 Windows 便携版",\n    "windowsStoreDesc": "从 Microsoft Store 安装",\n    "wingetDesc": "使用 Winget 包管理器安装",\n    "macosPackageDesc": "下载 macOS DMG 包",\n    "homebrewDesc": "使用 Homebrew 安装",\n    "macosPackageArmDesc": "下载 Apple Silicon DMG",\n    "rpmDesc": "Fedora/Red Hat RPM 包",\n    "debianDesc": "Debian/Ubuntu DEB 包",\n    "tarDesc": "Linux TAR 存档",\n    "aurDesc": "从 Arch User Repository 安装",\n    "flathubDesc": "从 Flathub 安装",\n    "debianArmDesc": "下载适用于Linux的DEB包（ARM64）",\n    "rpmArmDesc": "下载适用于Linux的RPM包（ARM64）",\n    "appImageDesc": "下载适用于Linux的AppImage",\n    "appImageArmDesc": "下载适用于Linux的AppImage（ARM64）",\n    "tarArmDesc": "下载适用于Linux的TAR存档（ARM64）",\n    "windowsInstallerDesc": "下载Windows安装程序"\n  },\n  "guide": {\n    "readMore": "阅读更多"\n  }\n}
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于",
+    "changelog": "变更日志",
+    "download": "下载",
+    "docs": "文档",
+    "blog": "博客",
+    "contact": "联系我们",
+    "guide": "指南",
+    "issues": "问题",
+    "testing": "测试",
+    "discordnav": "Discord"
+  },
+  "downloadXMCL": "下载XMCL",
+  "modernCrossplatformDescription": "现代跨平台Minecraft启动器",
+  "githubStars": "GitHub星标",
+  "forks": "分支",
+  "lastVersion": "最新版本",
+  "downloadSection": {
+    "title": "下载",
+    "subtitle": "获取适用于您的平台的最新 XMCL 版本",
+    "version": "版本",
+    "releaseNotes": "版本说明",
+    "download": "下载",
+    "installCommands": "安装命令",
+    "moreInfo": "更多信息",
+    "sizeMB": "MB",
+    "downloadCount": "下载次数",
+    "linuxUniversal": "Linux 通用",
+    "windowsArchiveDesc": "下载 Windows 便携版",
+    "windowsStoreDesc": "从 Microsoft Store 安装",
+    "wingetDesc": "使用 Winget 包管理器安装",
+    "macosPackageDesc": "下载 macOS DMG 包",
+    "homebrewDesc": "使用 Homebrew 安装",
+    "macosPackageArmDesc": "下载 Apple Silicon DMG",
+    "rpmDesc": "Fedora/Red Hat RPM 包",
+    "debianDesc": "Debian/Ubuntu DEB 包",
+    "tarDesc": "Linux TAR 存档",
+    "aurDesc": "从 Arch User Repository 安装",
+    "flathubDesc": "从 Flathub 安装",
+    "debianArmDesc": "下载适用于Linux的DEB包（ARM64）",
+    "rpmArmDesc": "下载适用于Linux的RPM包（ARM64）",
+    "appImageDesc": "下载适用于Linux的AppImage",
+    "appImageArmDesc": "下载适用于Linux的AppImage（ARM64）",
+    "tarArmDesc": "下载适用于Linux的TAR存档（ARM64）",
+    "windowsInstallerDesc": "下载Windows安装程序"
+  },
+  "guide": {
+    "readMore": "阅读更多"
+  }
+}
