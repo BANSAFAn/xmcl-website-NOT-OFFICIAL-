@@ -1,7 +1,7 @@
 
 import type { BlogPost } from '../types/blog.ts';
 import { BLOG_POSTS } from '../data/blogPosts.ts';
-import { parseRussianDate } from './dateUtils.ts';
+// Remove import { parseRussianDate } from './dateUtils.ts';
 import { fetchBlogPosts, fetchBlogPost } from './blogFetcher.ts';
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
@@ -60,3 +60,32 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
 
 // Re-export the BlogPost type for convenience
 export type { BlogPost } from '../types/blog.ts';
+
+// Add this function
+const russianMonths = {
+  'января': 0,
+  'февраля': 1,
+  'марта': 2,
+  'апреля': 3,
+  'мая': 4,
+  'июня': 5,
+  'июля': 6,
+  'августа': 7,
+  'сентября': 8,
+  'октября': 9,
+  'ноября': 10,
+  'декабря': 11
+};
+
+function parseRussianDate(dateStr: string): Date {
+  const parts = dateStr.split(' ');
+  if (parts.length !== 3) {
+    throw new Error(`Invalid date format: ${dateStr}`);
+  }
+  const [day, monthStr, year] = parts;
+  const month = russianMonths[monthStr.toLowerCase()];
+  if (month === undefined) {
+    throw new Error(`Invalid month: ${monthStr}`);
+  }
+  return new Date(parseInt(year), month, parseInt(day));
+}
