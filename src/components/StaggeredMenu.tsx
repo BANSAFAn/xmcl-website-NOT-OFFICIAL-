@@ -57,7 +57,7 @@ export const StaggeredMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
-  // useCallback для обработчиков
+
   const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
 
   const itemVariants = {
