@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/Footer";
-import { MarkdownRenderer } from "@/components/blog/MarkdownRenderer";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { getBlogPost, BlogPost as BlogPostType } from "@/utils/blogUtils";
 import { useToast } from "@/hooks/use-toast";
 

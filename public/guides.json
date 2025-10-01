@@ -50,12 +50,56 @@
       "excerpt": "How to store data in Minecraft?",
       "author": "CIO10",
       "date": "2025-01-10",
-      "tags": ["account", "launcher","Data-Storage"],
+      "tags": ["Data-Storage"],
       "slug": "Data-Storage",
       "readTime": "14 min",
       "difficulty": "Storage"
+    },
+    {
+      "id": "6",
+      "title": "User",
+      "excerpt": "User data is stored under",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","user"],
+      "slug": "user",
+      "readTime": "14 min",
+      "difficulty": "User"
+    },
+    {
+      "id": "7",
+      "title": "Setting",
+      "excerpt": "Global Setting",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","setting"],
+      "slug": "setting",
+      "readTime": "14 min",
+      "difficulty": "Setting"
+    },
+    {
+      "id": "8",
+      "title": "Java",
+      "excerpt": "Java Data Cache",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","java"],
+      "slug": "java",
+      "readTime": "14 min",
+      "difficulty": "Java"
+    },
+    {
+      "id": "9",
+      "title": "Instance Copy",
+      "excerpt": "How to copy an instance?",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","instance"],
+      "slug": "instance-copy",
+      "readTime": "14 min",
+      "difficulty": "Instance"
     }
   ],
-  "categories": ["advanced", "account", "launcher", "mods", "test", "markdown"],
+  "categories": ["advanced", "account", "launcher", "mods", "test", "markdown", "java", "instance"],
   "featured": ["demo-minecraft","Data-Storage"]
 }

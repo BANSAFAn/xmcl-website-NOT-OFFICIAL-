@@ -44,30 +44,46 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isCancelled = false;
+
     const loadAllTranslations = async () => {
       setIsLoading(true);
       try {
-        const promises = languageConfigs.map(async (lang) => {
-          const trans = await loadTranslations(lang.code);
-          return { code: lang.code, trans };
-        });
+        const promises = languageConfigs.map(lang => 
+          loadTranslations(lang.code).then(trans => ({ code: lang.code, trans }))
+        );
         const results = await Promise.all(promises);
-        const map = new Map(results.map(r => [r.code, r.trans]));
-        setAllTranslations(map);
-        setCurrentTranslations(map.get(locale) || map.get(DEFAULT_LOCALE)!);
+        
+        if (!isCancelled) {
+          const map = new Map(results.map(r => [r.code, r.trans]));
+          setAllTranslations(map);
+          setCurrentTranslations(map.get(locale) || map.get(DEFAULT_LOCALE)!);
+        }
       } catch (error) {
-        console.error('Failed to load translations:', error);
-        // fallback to default
-        const fallback = await loadTranslations(DEFAULT_LOCALE);
-        setAllTranslations(new Map([[DEFAULT_LOCALE, fallback]]));
-        setCurrentTranslations(fallback);
+        if (!isCancelled) {
+          console.error('Failed to load translations:', error);
+          // fallback to default
+          loadTranslations(DEFAULT_LOCALE).then(fallback => {
+            if (!isCancelled) {
+              setAllTranslations(new Map([[DEFAULT_LOCALE, fallback]]));
+              setCurrentTranslations(fallback);
+            }
+          });
+        }
       } finally {
-        setIsLoading(false);
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
       }
     };
     
     loadAllTranslations();
-  }, []); // Load once on mount
+
+    return () => {
+      isCancelled = true;
+      clearTranslationsCache();
+    };
+  }, []);
 
   const changeLanguage = (newLocale: SupportedLocale) => {
     if (allTranslations.has(newLocale)) {

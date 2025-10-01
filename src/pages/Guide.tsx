@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { PageTransition } from "@/components/PageTransition";
 import { Card } from "@/components/ui/card";
@@ -47,6 +47,7 @@ interface GuideConfig {
 const Guide = () => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -99,7 +100,10 @@ const Guide = () => {
         return `# ${t('guide.errorLoadingGuide')}\n\n${t('guide.errorLoadingGuide')}`;
       }
     },
-    enabled: !!id
+    enabled: !!id,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false
   });
 
   const posts = config?.posts || [];
@@ -113,7 +117,7 @@ const Guide = () => {
       const matchesSearch = searchQuery === '' || 
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.content.toLowerCase().includes(searchQuery.toLowerCase());
+        (post.content && post.content.toLowerCase().includes(searchQuery.toLowerCase()));
       
       const matchesTags = selectedTags.length === 0 || 
         selectedTags.some(tag => post.tags.includes(tag));
@@ -194,7 +198,7 @@ const Guide = () => {
   }
 
   // If viewing a specific guide
-  if (id && selectedPost) {
+  if (id) {
     const post = posts.find(p => p.slug === id);
     
     return (
@@ -202,23 +206,23 @@ const Guide = () => {
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-slate-950 dark:via-emerald-950/20 dark:to-teal-950/20">
           <div className="container mx-auto px-4 pt-8 pb-16">
             <div className="max-w-4xl mx-auto">
-              {post && (
-                <motion.div 
-                  className="mb-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <div className="flex items-center gap-2 mb-6">
-                    <Button
-                      onClick={() => window.history.back()}
-                      variant="ghost"
-                      className="text-emerald-600 dark:text-emerald-400"
-                    >
-                      ← {t('guide.backToGuides')}
-                    </Button>
-                  </div>
-                  
-                  <Card className="p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-2xl">
+              <motion.div 
+                className="mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="flex items-center gap-2 mb-6">
+                  <Button
+                    onClick={() => navigate(-1)}
+                    variant="ghost"
+                    className="text-emerald-600 dark:text-emerald-400"
+                  >
+                    ← {t('guide.backToGuides')}
+                  </Button>
+                </div>
+                
+                <Card className="p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-2xl">
+                  {post && (
                     <div className="mb-6">
                       <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-200 mb-4">
                         {post.title}
@@ -241,10 +245,10 @@ const Guide = () => {
                         ))}
                       </div>
                     </div>
-                    <MarkdownRenderer content={selectedPost} />
-                  </Card>
-                </motion.div>
-              )}
+                  )}
+                  {selectedPost && <MarkdownRenderer content={selectedPost} />}
+                </Card>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -489,7 +493,7 @@ const Guide = () => {
                         </div>
 
                         <Button
-                          onClick={() => window.location.href = `/guide/${post.slug}`}
+                          onClick={() => navigate(`/guide/${post.slug}`)}
                           className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white group"
                         >
                           <FileText className="w-4 h-4 mr-2" />

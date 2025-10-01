@@ -199,6 +199,8 @@
     "searchGuides": "Search Guides",
     "filterByTags": "Filter by Tags",
     "categories": "Categories",
+    "noGuides": "No guides available",
+    "noGuidesDescription": "No guides available for this category",
     "showing": "Showing",
     "backToGuides": "Back to Guides",
     "tableOfContents": "Table of Contents",
@@ -220,7 +222,8 @@
     "loading": "Loading guides...",
     "guideStats": "Guide Stats",
     "featured": "Featured",
-    "readMore": "Read More"
+    "readMore": "Read More",
+    "clearFilters": "Clear Filters"
   },
   "changelog": {
     "title": "Changelog",
