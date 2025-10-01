@@ -55,6 +55,7 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
+    "links": "Links",
     "view": "View",
     "back": "Back",
     "next": "Next",
@@ -317,7 +318,9 @@
     "stableOnly": "Stable Only",
     "prereleasesOnly": "Pre-releases Only",
     "latestVersion": "Latest Version",
-    "downloadCount": "downloads"
+    "downloadCount": "downloads",
+    "links": "Links",
+    "downloads": "Downloads"
   },
   "testing": {
     "title": "Testing Builds",
