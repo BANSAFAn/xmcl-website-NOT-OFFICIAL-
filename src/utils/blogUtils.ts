@@ -1,7 +1,7 @@
 
 import type { BlogPost } from '../types/blog.ts';
-import { BLOG_POSTS } from '../data/blogPosts.ts';
-// Remove import { parseRussianDate } from './dateUtils.ts';
+import { blogPosts } from '../data/blogPosts.ts';
+// import { parseRussianDate } from './dateUtils.ts';
 import { fetchBlogPosts, fetchBlogPost } from './blogFetcher.ts';
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
@@ -21,7 +21,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     
     // Fallback to hardcoded data if JSON fetch fails
     console.log("Falling back to hardcoded blog posts");
-    return [...BLOG_POSTS].sort((a, b) => {
+    return [...blogPosts].sort((a, b) => {
       const dateA = parseRussianDate(a.date);
       const dateB = parseRussianDate(b.date);
       return dateB.getTime() - dateA.getTime();
@@ -49,7 +49,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   }
   
   // Fallback to hardcoded data
-  const post = BLOG_POSTS.find(post => post.slug === cleanSlug);
+  const post = blogPosts.find(post => post.slug === cleanSlug);
   
   if (!post) {
     throw new Error(`Blog post with slug "${cleanSlug}" not found`);
