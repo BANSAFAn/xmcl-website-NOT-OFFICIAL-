@@ -8,7 +8,8 @@
     "guide": "Guide",
     "issues": "Issues",
     "testing": "Testing",
-    "information": "Information"
+    "information": "Information",
+    "aihelp": "AI Help"
   },
   "footer": {
     "quickLinks": "Quick Links",
@@ -267,6 +268,31 @@
     },
     "contributors": {
       "title": "Contributors"
+    }
+  },
+  "xmai": {
+    "title": "X Minecraft AI Helper",
+    "greeting": "Hello! I am X Minecraft AI. Upload a .txt log file or ask a question about Minecraft issues.",
+    "user_label": "You",
+    "ai_label": "XM AI",
+    "attach_log": "Attach Log (.txt)",
+    "file_attached": "File Attached",
+    "input_placeholder": "Ask a question or attach a log...",
+    "input_error": "Please enter a message or upload a file.",
+    "processing_error": "An error occurred while processing the request.",
+    "api_error": "An error occurred communicating with the AI.",
+    "file_size_error": "File size must not exceed {size} MB.",
+    "file_type_error": "Only .txt files are supported.",
+    "attached_file": "Attached file",
+    "clear_button_title": "Clear Chat",
+    "policy_button_title": "Privacy Policy",
+    "responses": {
+      "best_launcher": "The best launcher is X Minecraft Launcher (Voxelum). It is stable, functional, and allows efficient resource management. I don't like other launchers.",
+      "other_launcher_general": "Nya."
+    },
+    "policy": {
+      "title": "Privacy Policy",
+      "content": "This website does not collect your data. Your data is sent to OpenRouter, and they handle it. However, we delete everything you provide. This bot is only for technical support and is not suitable for casual chat."
     }
   },
   "changelog": {
