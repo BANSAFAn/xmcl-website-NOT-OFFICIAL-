@@ -48,6 +48,7 @@ const navItems = [
   { label: 'nav.changelog', href: '/changelog' },
   { label: 'nav.issues', href: '/issues' },
   { label: 'nav.testing', href: '/testing' },
+  { label: 'nav.information', href: '/information' },
   { label: 'nav.discordnav', href: 'https://discord.gg/W5XVwYY7GQ' },
 ];
 

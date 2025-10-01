@@ -15,6 +15,7 @@ import Issues from "./pages/Issues";
 import ModernChangelog from "./pages/ModernChangelog";
 import ModernIssues from "./pages/ModernIssues";
 import Testing from "./pages/Testing";
+import Information from './pages/Information';
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const AppContent = () => {
               <Route path="/changelog" element={<ModernChangelog />} />
               <Route path="/issues" element={<ModernIssues />} />
               <Route path="/testing" element={<Testing />} />
+              <Route path="/information" element={<Information />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

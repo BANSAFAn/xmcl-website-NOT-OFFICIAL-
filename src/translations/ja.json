@@ -292,5 +292,43 @@
   "docs": {
     "title": "ドキュメント",
     "search": "ドキュメントを検索"
+  },
+  "information": {
+    "title": "情報",
+    "launcher_created_by": "ランチャー作成者",
+    "features": {
+      "title": "機能",
+      "download": "ダウンロードとオートコンプリート。公式またはサードパーティのミラーからのMinecraft、Forge、Fabric、Quilt、OptiFine、JVMのダウンロードをサポートします。",
+      "fast_download": "高速ダウンロード。HTTP/HTTPSエージェントを介したソケットの再利用と、チャンクでのファイルの並列ダウンロード。",
+      "cross_platform": "クロスプラットフォーム。ランチャーはElectronベースで、Windows 10/11、MacOS、Linuxをサポートしています。",
+      "multi_instancing": "マルチインスタンス。ユーザーは複数のインスタンスを作成して、異なるバージョン、Mod、起動設定を分離できます。",
+      "manage_resources": "すべてのリソースを管理。インスタンスにリソースをインストールするために（ハード/シンボリック）リンクを使用して、ディスクを最適に使用します。Modのコピーはもうありません！",
+      "curseforge_modrinth": "CurseForge、Modrinthの組み込みサポート。ランチャーで直接リソースをダウンロードできます。",
+      "import_export": "CurseForgeとModrinthのModパックのインポート/エクスポートをサポートし、要件に準拠しています！",
+      "multi_account": "複数のアカウントシステムをサポート。MicrosoftログインとMojang Yggdrasil APIが組み込まれています。また、ely.byとlittleskin.cnの組み込みサポートもあります。サードパーティの認証サーバーを追加することもできます！",
+      "p2p": "ユーザー間のピアツーピア接続。同じ物理LAN上にいなくても、LANマルチプレイヤーゲームをプレイできます！",
+      "code_sign": "コード署名と最新のパッケージング。Windowsでは、appxとappinstallerを使用してアプリケーションをインストールできます。ブラウザからのブロックメッセージやSmartScreenエラーはもう表示されません！"
+    },
+    "sponsors": {
+      "title": "スポンサー",
+      "signpath": "Windowsでの無料コード署名はSignPath.ioによって提供され、証明書はSignPath Foundationからのものです",
+      "deno": "XMCLは、サーバーレスJavaScriptアプリケーション向けのシームレスなプラットフォームを使用しています。Deno提供",
+      "tencent": "アジア最高のCDN、エッジ、セキュリティソリューション - Tencent EdgeOne、このプロジェクトのCDNアクセラレーションとセキュリティ保護はTencent EdgeOneによって後援されています。",
+      "afdian": "AFDIAN経由で私を後援することができます"
+    },
+    "credit": {
+      "title": "クレジット",
+      "baner": "RU/UKコミュニティで私を大いに助けてくれました。",
+      "godleaveme": "AURパッケージリポジトリを維持しています。",
+      "0xc0000142": "wingetを維持しています。",
+      "marmur2020": "ウクライナ語に完全に翻訳しました！",
+      "vanja-san": "ロシア語を提供しました！",
+      "lukechu10": "ランチャーコアで私を大いに助けてくれました。",
+      "laolarou726": "ランチャーデザインで私を大いに助けてくれました。",
+      "special_thanks": "また、特別な感謝"
+    },
+    "contributors": {
+      "title": "貢献者"
+    }
   }
 }

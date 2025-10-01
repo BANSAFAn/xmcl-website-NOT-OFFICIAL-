@@ -299,5 +299,43 @@
   "docs": {
     "title": "Dokumentation",
     "search": "Dokumente durchsuchen"
+  },
+  "information": {
+    "title": "Informationen",
+    "launcher_creator": "Launcher-Ersteller",
+    "features": {
+      "title": "Funktionen",
+      "download_mods": "Mods, Modpacks, Ressource-Packs und Shader-Packs von CurseForge & Modrinth herunterladen",
+      "fast_download": "Schneller Download mit Multi-Threading und Agent-Beschleunigung",
+      "cross_platform": "Plattformübergreifend, unterstützt Windows, macOS & Linux",
+      "multi_instance": "Multi-Instanz-Verwaltung",
+      "resource_management": "Optimale Speichernutzung mit riesigen Ressourcen",
+      "support_mod_loaders": "Unterstützt Forge, Fabric, Quilt, NeoForged, OptiFine, Iris, LabyMod und mehr",
+      "import_export": "Unterstützt den Import und Export von CurseForge & Modrinth Modpacks",
+      "multi_account": "Multi-Account-Verwaltung",
+      "p2p": "P2P-Modpack-Verteilung",
+      "code_sign": "Code-signiert für Windows & macOS"
+    },
+    "sponsors": {
+      "title": "Sponsoren",
+      "signpath": "SignPath.io sponsert das kostenlose Code-Signing-Zertifikat für Windows",
+      "deno": "Deno sponsert den kostenlosen Deno Deploy-Dienst",
+      "tencent_edgeone": "Tencent EdgeOne sponsert den kostenlosen CDN-Dienst",
+      "afdian": "Sponsor auf AFDIAN"
+    },
+    "credits": {
+      "title": "Credits",
+      "baner": "Website-Entwickler",
+      "godleaveme": "Russischer Übersetzer",
+      "0xc0000142": "Ukrainischer Übersetzer",
+      "marmur2020": "Deutscher Übersetzer",
+      "vanja-san": "Japanischer Übersetzer",
+      "lukechu10": "Traditioneller chinesischer Übersetzer",
+      "laolarou726": "Vereinfachter chinesischer Übersetzer",
+      "special_thanks": "Besonderer Dank an die Mitwirkenden"
+    },
+    "contributors": {
+      "title": "Mitwirkende"
+    }
   }
 }

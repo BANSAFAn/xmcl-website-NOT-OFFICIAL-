@@ -35,5 +35,43 @@
   },
   "guide": {
     "readMore": "閱讀更多"
+  },
+  "information": {
+    "title": "資訊",
+    "launcher_created_by": "啟動器建立者",
+    "features": {
+      "title": "功能",
+      "download": "下載與自動補全。支援從官方或第三方鏡像下載 Minecraft、Forge、Fabric、Quilt、OptiFine、JVM。",
+      "fast_download": "高速下載。透過 HTTP/HTTPS 代理複用通訊端，並分塊並行下載檔案。",
+      "cross_platform": "跨平台。啟動器基於 Electron，支援 Windows 10/11、MacOS 和 Linux。",
+      "multi_instancing": "多實例。使用者可以建立多個實例來隔離不同的版本、模組和啟動設定。",
+      "manage_resources": "管理所有資源。使用（硬/符號）連結將資源安裝到實例中，以最佳化磁碟使用。不再到處複製模組！",
+      "curseforge_modrinth": "內建 CurseForge、Modrinth 支援。您可以直接在啟動器中下載資源。",
+      "import_export": "支援匯入/匯出 CurseForge 和 Modrinth 模組包，並符合要求！",
+      "multi_account": "支援多種帳戶系統。內建微軟登入和 Mojang Yggdrasil API。還內建支援 ely.by 和 littleskin.cn。您還可以新增第三方驗證伺服器！",
+      "p2p": "使用者之間的點對點連線。即使你們不在同一個實體區域網路中，也可以進行區域網路連線遊戲！",
+      "code_sign": "程式碼簽署和現代打包。在 Windows 上，您可以使用 appx 和 appinstaller 來安裝應用程式。您將不再收到來自瀏覽器的封鎖訊息或看到 SmartScreen 錯誤！"
+    },
+    "sponsors": {
+      "title": "贊助商",
+      "signpath": "Windows 上的免費程式碼簽署由 SignPath.io 提供，憑證來自 SignPath 基金會",
+      "deno": "XMCL 使用其無縫平台進行無伺服器 JavaScript 應用程式。由 Deno 提供",
+      "tencent": "亞洲最佳 CDN、邊緣和安全解決方案 - 騰訊雲 EdgeOne，該專案的 CDN 加速和安全防護由騰訊雲 EdgeOne 贊助。",
+      "afdian": "您可以透過 AFDIAN 贊助我"
+    },
+    "credit": {
+      "title": "致謝",
+      "baner": "在 RU/UK 社群中給了我很大幫助。",
+      "godleaveme": "維護 AUR 套件倉庫。",
+      "0xc0000142": "維護 winget。",
+      "marmur2020": "完全翻譯了烏克蘭語！",
+      "vanja-san": "提供了俄語！",
+      "lukechu10": "在啟動器核心方面給了我很大幫助。",
+      "laolarou726": "在啟動器設計方面給了我很大幫助。",
+      "special_thanks": "另外，特別感謝"
+    },
+    "contributors": {
+      "title": "貢獻者"
+    }
   }
 }

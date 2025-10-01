@@ -299,5 +299,43 @@
   "docs": {
     "title": "التوثيق",
     "search": "البحث في المستندات"
+  },
+  "information": {
+    "title": "المعلومات",
+    "launcher_creator": "مُنشئ المشغل",
+    "features": {
+      "title": "الميزات",
+      "download_mods": "تنزيل التعديلات، حزم التعديلات، حزم الموارد، وحزم التظليل من CurseForge و Modrinth",
+      "fast_download": "تنزيل سريع مع تعدد الخيوط وتسريع الوكيل",
+      "cross_platform": "عبر المنصات، يدعم Windows و macOS و Linux",
+      "multi_instance": "إدارة متعددة الحالات",
+      "resource_management": "استخدام أمثل للمساحة مع موارد ضخمة",
+      "support_mod_loaders": "يدعم Forge، Fabric، Quilt، NeoForged، OptiFine، Iris، LabyMod والمزيد",
+      "import_export": "يدعم استيراد وتصدير حزم تعديلات CurseForge و Modrinth",
+      "multi_account": "إدارة حسابات متعددة",
+      "p2p": "توزيع حزم التعديلات من نظير إلى نظير",
+      "code_sign": "موقع الكود لنظامي التشغيل Windows و macOS"
+    },
+    "sponsors": {
+      "title": "الرعاة",
+      "signpath": "SignPath.io يرعى شهادة توقيع التعليمات البرمجية المجانية لنظام Windows",
+      "deno": "Deno يرعى خدمة Deno Deploy المجانية",
+      "tencent_edgeone": "Tencent EdgeOne يرعى خدمة CDN المجانية",
+      "afdian": "ارعى على AFDIAN"
+    },
+    "credits": {
+      "title": "الاعتمادات",
+      "baner": "مطور الموقع",
+      "godleaveme": "مترجم روسي",
+      "0xc0000142": "مترجم أوكراني",
+      "marmur2020": "مترجم ألماني",
+      "vanja-san": "مترجم ياباني",
+      "lukechu10": "مترجم صيني تقليدي",
+      "laolarou726": "مترجم صيني مبسط",
+      "special_thanks": "شكر خاص للمساهمين"
+    },
+    "contributors": {
+      "title": "المساهمون"
+    }
   }
 }
