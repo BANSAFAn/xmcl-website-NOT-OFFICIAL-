@@ -9,4 +9,6 @@ export const languageConfigs: { code: SupportedLocale; name: string }[] = [
   { code: 'de', name: 'Deutsch' },
   { code: 'ar', name: 'العربية' },
   { code: 'zh-Hant', name: '繁體中文' },
-];
+  { code: 'ko', name: '한국어' },
+  { code: 'it', name: 'Italiano' },
+]
