@@ -7,40 +7,6 @@ import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Оптимизированный ShuffleText — используем memo
-const ShuffleText = ({ children }: { children: React.ReactNode }) => {
-  const text = String(children);
-  const [isShuffled, setIsShuffled] = useState(false);
-
-  return (
-    <span className="inline-block">
-      {text.split('').map((char, index) => (
-        <motion.span
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: 1,
-            transition: {
-              delay: index * 0.015,
-              duration: 0.4,
-              ease: 'easeOut' as const
-            }
-          }}
-          style={{
-            display: 'inline-block',
-            transformOrigin: 'center',
-            transform: isShuffled ? 'rotateY(180deg)' : 'rotateY(0deg)'
-          }}
-          onAnimationStart={() => setIsShuffled(true)}
-          onAnimationComplete={() => setIsShuffled(false)}
-        >
-          {char}
-        </motion.span>
-      ))}
-    </span>
-  );
-};
-
 const navItems = [
   { label: 'nav.home', href: '/' },
   { label: 'nav.blog', href: '/blog' },
@@ -56,7 +22,6 @@ const navItems = [
 export const StaggeredMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
-
 
   const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
 
@@ -128,14 +93,14 @@ export const StaggeredMenu = () => {
             animate="open"
             exit="closed"
             variants={sidebarVariants}
-            className="fixed top-0 left-0 bg-background/95 dark:bg-background/95 z-50 flex flex-col items-start justify-start px-4 py-8 shadow-xl border-r border-accent/20 rounded-r-xl h-screen overflow-y-auto"
+            className="fixed top-0 left-0 bg-background/95 dark:bg-background/95 z-50 flex flex-col items-start justify-start px-4 py-8 shadow-xl border-r border-accent/20 rounded-[2rem] h-screen overflow-y-auto"
             style={{ width: '24rem' }}
           >
             <div className="absolute top-4 right-4 z-10">
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={toggleMenu} // Закрытие по нажатию
+                onClick={toggleMenu}
                 className="hover:bg-accent/30"
               >
                 <X className="w-6 h-6" />
