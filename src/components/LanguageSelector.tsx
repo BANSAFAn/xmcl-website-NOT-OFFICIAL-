@@ -5,11 +5,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Globe, ChevronDown, Search } from "lucide-react";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { languageConfigs } from "@/i18n/languageConfigs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const LanguageSelector = () => {
   const { locale, changeLanguage } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Автоматическое определение языка браузера при загрузке компонента
+  useEffect(() => {
+    const browserLang = navigator.language.slice(0, 2);
+    const supportedLang = languageConfigs.find(lang => lang.code === browserLang);
+    
+    if (supportedLang && locale !== supportedLang.code) {
+      changeLanguage(supportedLang.code);
+    }
+  }, [locale, changeLanguage]);
 
   const currentLanguage = languageConfigs.find(lang => lang.code === locale);
 
