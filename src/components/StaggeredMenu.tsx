@@ -163,7 +163,7 @@ export const StaggeredMenu = () => {
                       <span className="text-xl opacity-50 whitespace-nowrap">
                         {String(index + 1).padStart(2, '0')}
                       </span>
-                      <ShuffleText>{t(item.label)}</ShuffleText>
+                      <span>{t(item.label)}</span>
                     </Link>
                   </motion.li>
                 ))}
