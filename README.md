@@ -25,13 +25,6 @@ The launcher supports various operating systems, including:
 
 For each package, click the info icon to see system compatibility and features.
 
-## Screenshots
-
-![Download Section](public/screenshots/download-section.png)  
-![Launcher Tab](public/screenshots/launcher-tab.png)
-
-*(Note: Replace with actual screenshot paths if available.)*
-
 ## Tech Stack
 
 - **Frontend**: React v18.3.1, TypeScript v5.5.3
