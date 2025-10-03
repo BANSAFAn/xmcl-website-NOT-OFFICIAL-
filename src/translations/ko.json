@@ -126,14 +126,164 @@
     "rpmArmDesc": "리눅스용 RPM 패키지 다운로드 (ARM64)",
     "appImageDesc": "리눅스용 AppImage 다운로드",
     "appImageArmDesc": "리눅스용 AppImage 다운로드 (ARM64)",
-    "tarArmDesc": "리눅스용 TAR 아카이브 다운로드 (ARM64)"
+    "tarArmDesc": "리눅스용 TAR 아카이브 다운로드 (ARM64)",
+    "infoButtonLabel": "패키지 정보",
+    "info": {
+      "systems": "시스템",
+      "advantages": "장점",
+      "disadvantages": "단점",
+      "default": {
+        "title": "패키지 정보",
+        "desc": "이 패키지 유형에 대한 자세한 정보입니다.",
+        "systems": "해당 없음",
+        "advantages": "해당 없음",
+        "disadvantages": "해당 없음"
+      },
+      "windowsInstaller": {
+        "title": "윈도우 설치 프로그램",
+        "desc": "표준 윈도우 설치 프로그램 실행 파일(.exe)입니다.",
+        "systems": "Windows 10/11",
+        "advantages": "쉬운 설치, 모든 종속성 포함, 윈도우 설치 시스템과 통합됩니다.",
+        "disadvantages": "관리자 권한 필요, 다운로드 크기 큼."
+      },
+      "windowsArchive": {
+        "title": "윈도우 아카이브",
+        "desc": "애플리케이션을 포함한 포터블 ZIP 아카이브입니다.",
+        "systems": "Windows 10/11",
+        "advantages": "설치 필요 없음, 포터블, 어디서든 실행 가능.",
+        "disadvantages": "윈도우와 통합되지 않음, 수동 업데이트 필요, 수동 Java 설정 필요.",
+        "notes": "실행 파일을 압축 해제하고 직접 실행하세요."
+      },
+      "windowsStore": {
+        "title": "Microsoft Store 앱",
+        "desc": "Microsoft Store를 통해 설치할 수 있는 appx 패키지입니다.",
+        "systems": "Windows 10/11",
+        "advantages": "자동 업데이트, Microsoft Store와 통합, 보안을 위한 샌드박싱.",
+        "disadvantages": "설치에 대한 제한된 제어, Microsoft 계정 필요."
+      },
+      "winget": {
+        "title": "Winget 패키지",
+        "desc": "Windows 패키지 관리자를 통해 설치합니다.",
+        "systems": "Windows 10/11",
+        "advantages": "명령줄 설치, 버전 관리, 자동 업데이트(설정된 경우).",
+        "disadvantages": "Winget 설치 및 구성 필요.",
+        "notes": "명령 프롬프트 또는 PowerShell에서 'winget install CI010.XMinecraftLauncher'를 실행하세요."
+      },
+      "macosPackage": {
+        "title": "macOS 패키지(Intel)",
+        "desc": "Intel 기반 Mac에 설치할 DMG 디스크 이미지입니다.",
+        "systems": "macOS(Intel)",
+        "advantages": "표준 macOS 설치 방법, 설치 및 제거가 쉬움.",
+        "disadvantages": "Intel Mac 전용, 수동 업데이트 필요.",
+        "notes": "애플리케이션 폴더로 앱을 끌어다 놓으세요."
+      },
+      "macosPackageArm": {
+        "title": "macOS 패키지(Apple Silicon)",
+        "desc": "Apple Silicon Mac에 최적화된 DMG 디스크 이미지입니다.",
+        "systems": "macOS(Apple Silicon)",
+        "advantages": "Apple Silicon에서 네이티브 성능, 설치 및 제거가 쉬움.",
+        "disadvantages": "Apple Silicon Mac 전용, 수동 업데이트 필요.",
+        "notes": "애플리케이션 폴더로 앱을 끌어다 놓으세요."
+      },
+      "homebrew": {
+        "title": "Homebrew Formula",
+        "desc": "Homebrew 패키지 관리자를 통해 설치합니다.",
+        "systems": "macOS",
+        "advantages": "명령줄 설치, 버전 관리, 쉬운 업데이트.",
+        "disadvantages": "Homebrew 설치 필요, Xcode Command Line Tools 필요할 수 있음.",
+        "notes": "터미널에서 'brew install --cask voxelum/xmcl'을 실행하세요."
+      },
+      "debian": {
+        "title": "Debian 패키지(x64)",
+        "desc": "Debian 기반 리눅스 배포판(Ubuntu 등)용 DEB 패키지입니다.",
+        "systems": "Linux(x64) - Debian/Ubuntu",
+        "advantages": "표준 패키지 형식, 시스템 패키지 관리자와 통합.",
+        "disadvantages": "수동 다운로드 필요, 종속성 문제 발생 가능.",
+        "notes": "'sudo dpkg -i package.deb' 또는 'sudo apt install ./package.deb'를 사용하여 설치하세요."
+      },
+      "debianArm": {
+        "title": "Debian 패키지(ARM64)",
+        "desc": "ARM64 기반 리눅스 배포판용 DEB 패키지입니다.",
+        "systems": "Linux(ARM64) - Debian/Ubuntu",
+        "advantages": "ARM64용 표준 패키지 형식, 시스템 패키지 관리자와 통합.",
+        "disadvantages": "수동 다운로드 필요, 종속성 문제 발생 가능.",
+        "notes": "'sudo dpkg -i package.deb' 또는 'sudo apt install ./package.deb'를 사용하여 설치하세요."
+      },
+      "rpm": {
+        "title": "RPM 패키지(x64)",
+        "desc": "Red Hat 기반 리눅스 배포판(Fedora 등)용 RPM 패키지입니다.",
+        "systems": "Linux(x64) - Fedora/RHEL/openSUSE",
+        "advantages": "표준 패키지 형식, 시스템 패키지 관리자와 통합.",
+        "disadvantages": "수동 다운로드 필요, 종속성 문제 발생 가능.",
+        "notes": "'sudo rpm -i package.rpm' 또는 'sudo dnf install ./package.rpm'를 사용하여 설치하세요."
+      },
+      "rpmArm": {
+        "title": "RPM 패키지(ARM64)",
+        "desc": "ARM64 기반 Red Hat 기반 배포판용 RPM 패키지입니다.",
+        "systems": "Linux(ARM64) - Fedora/RHEL/openSUSE",
+        "advantages": "ARM64용 표준 패키지 형식, 시스템 패키지 관리자와 통합.",
+        "disadvantages": "수동 다운로드 필요, 종속성 문제 발생 가능.",
+        "notes": "'sudo rpm -i package.rpm' 또는 'sudo dnf install ./package.rpm'를 사용하여 설치하세요."
+      },
+      "appImage": {
+        "title": "AppImage(x64)",
+        "desc": "리눅스용 포터블, 자체 포함 애플리케이션 번들입니다.",
+        "systems": "Linux(x64)",
+        "advantages": "설치 필요 없음, 대부분의 x64 리눅스 배포판에서 실행, 포터블.",
+        "disadvantages": "파일 크기 큼, 자동 업데이트 없음, 시스템 통합 부족.",
+        "notes": "실행 가능하게 만들고 직접 실행하세요."
+      },
+      "appImageArm": {
+        "title": "AppImage(ARM64)",
+        "desc": "ARM64 리눅스용 포터블, 자체 포함 애플리케이션 번들입니다.",
+        "systems": "Linux(ARM64)",
+        "advantages": "설치 필요 없음, 대부분의 ARM64 리눅스 배포판에서 실행, 포터블.",
+        "disadvantages": "파일 크기 큼, 자동 업데이트 없음, 시스템 통합 부족.",
+        "notes": "실행 가능하게 만들고 직접 실행하세요."
+      },
+      "tar": {
+        "title": "Tar 아카이브(x64)",
+        "desc": "리눅스용 애플리케이션을 포함한 압축된 TAR 아카이브입니다.",
+        "systems": "Linux(x64)",
+        "advantages": "설치 필요 없음, 포터블, 최소한의 종속성.",
+        "disadvantages": "시스템 통합 없음, 수동 업데이트, 수동 Java 설정 필요.",
+        "notes": "내부의 실행 파일을 압축 해제하고 실행하세요."
+      },
+      "tarArm": {
+        "title": "Tar 아카이브(ARM64)",
+        "desc": "ARM64 리눅스용 애플리케이션을 포함한 압축된 TAR 아카이브입니다.",
+        "systems": "Linux(ARM64)",
+        "advantages": "설치 필요 없음, 포터블, 최소한의 종속성.",
+        "disadvantages": "시스템 통합 없음, 수동 업데이트, 수동 Java 설정 필요.",
+        "notes": "내부의 실행 파일을 압축 해제하고 실행하세요."
+      },
+      "aur": {
+        "title": "AUR 패키지",
+        "desc": "X 마인크래프트 런처 - 모드팩, 리소스, 인스턴스 관리 기능을 갖춘 현대적이고 오픈소스 마인크래프트 런처",
+        "systems": "Linux - Arch/Manjaro",
+        "advantages": "AUR 헬퍼를 통한 쉬운 설치, 시스템 패키지 관리자와 통합.",
+        "disadvantages": "AUR 헬퍼(paru, yay 등) 필요, 소스 코드에서 컴파일(설치 시간 오래 걸림).",
+        "notes": "'paru -S xmcl-launcher' 또는 'yay -S xmcl-launcher'를 사용하세요."
+      },
+      "flathub": {
+        "title": "Flathub 패키지",
+        "desc": "모드팩 지원 기능이 있는 현대적인 마인크래프트 런처",
+        "systems": "Linux",
+        "advantages": "샌드박싱, 일관된 환경, 자동 업데이트, 대부분의 리눅스 배포판에서 작동.",
+        "disadvantages": "Flatpak 필요, 런타임 오버헤드 큼, 네이티브 느낌 부족.",
+        "notes": "'flatpak install flathub app.xmcl.voxelum'을 사용하여 설치하세요."
+      }
+    }
   },
   "downloadMessages": {
     "noVersionsAvailable": "사용 가능한 버전이 없습니다",
     "loadingReleases": "릴리스 로딩 중...",
     "viewAllReleases": "모든 릴리스 보기",
     "brewCommands": "명령어가 클립보드에 복사되었습니다! 터미널에서 실행하세요:",
-    "releasedOn": "릴리스 날짜"
+    "releasedOn": "릴리스 날짜",
+    "copiedToClipboard": "클립보드에 복사되었습니다!",
+    "copied": "복사됨!",
+    "copyCommand": "명령어 복사"
   },
   "issues": {
     "title": "문제사항 및 버그 리포트",
@@ -240,7 +390,7 @@
       "download_title": "다운로드 및 자동 완료",
       "download": "공식 또는 제3자 미러에서 마인크래프트, 포지, 패브릭, 퀼트, 옵티파인, JVM 다운로드 지원",
       "manage_resources_title": "모든 리소스 관리",
-      "manage_resources": "인스턴스에 리소스를 설치하기 위해 (하드/심볼릭) 링크를 사용하여 디스크 사용량을 최적화합니다. 모드가 여기저기 복사되지 않습니다!",
+      "manage_resources": "(하드/심볼릭) 링크를 사용하여 인스턴스에 리소스를 설치하여 디스크 사용량을 최적화합니다. 모드가 여기저기 복사되지 않습니다!",
       "cross_platform_title": "크로스 플랫폼",
       "cross_platform": "런처는 Electron 기반으로 윈도우 10/11, 맥OS, 리눅스를 지원합니다.",
       "multi_account_title": "멀티 계정 시스템",
@@ -362,7 +512,7 @@
   "modernCrossplatformDescription": "현대적인 크로스 플랫폼 마인크래프트 런처",
   "githubStars": "GitHub 스타",
   "forks": "포크",
-  "lastVersion": "최신 버전",
+  "lastVersion": "최신 버с",
   "stats": {
     "downloads": "다운로드",
     "users": "사용자",

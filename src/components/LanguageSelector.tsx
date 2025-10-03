@@ -10,16 +10,32 @@ import { useState, useEffect } from "react";
 export const LanguageSelector = () => {
   const { locale, changeLanguage } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
+  const [hasCheckedBrowserLang, setHasCheckedBrowserLang] = useState(false); // Новое состояние
 
-  // Автоматическое определение языка браузера при загрузке компонента
   useEffect(() => {
-    const browserLang = navigator.language.slice(0, 2);
-    const supportedLang = languageConfigs.find(lang => lang.code === browserLang);
-    
-    if (supportedLang && locale !== supportedLang.code) {
-      changeLanguage(supportedLang.code);
+    // Проверяем, установлено ли уже предпочтение пользователя (например, в localStorage)
+    // Это предотвращает повторное определение языка при каждом рендере
+    const userPreferredLang = localStorage.getItem('i18nextLng'); // Имя ключа может отличаться, проверьте ваш контекст
+    // Если язык уже был выбран пользователем ранее, не проверяем браузерный язык снова
+    if (userPreferredLang) {
+      setHasCheckedBrowserLang(true); // Уже был выбор, больше не проверять
+      return;
     }
-  }, [locale, changeLanguage]);
+
+    // Только если язык не был выбран ранее, проверяем браузерный
+    if (!hasCheckedBrowserLang) {
+      const browserLang = navigator.language.slice(0, 2);
+      const supportedLang = languageConfigs.find(lang => lang.code === browserLang);
+      
+      if (supportedLang && locale !== supportedLang.code) {
+        // Проверяем, не является ли язык браузера уже текущим (например, через i18next)
+        // и не был ли он уже установлен в localStorage
+        // Если все условия выполнены, устанавливаем язык
+        changeLanguage(supportedLang.code);
+      }
+      setHasCheckedBrowserLang(true); // Отмечаем, что проверка выполнена
+    }
+  }, [locale, changeLanguage, hasCheckedBrowserLang]); // Добавляем hasCheckedBrowserLang в зависимости
 
   const currentLanguage = languageConfigs.find(lang => lang.code === locale);
 
@@ -64,7 +80,7 @@ export const LanguageSelector = () => {
               <DropdownMenuItem
                 key={lang.code}
                 onClick={() => {
-                  changeLanguage(lang.code);
+                  changeLanguage(lang.code); // Это должно обновить localStorage
                   setSearchTerm("");
                 }}
                 className={`text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-all duration-200 gap-3 py-2 px-4 relative overflow-hidden group ${

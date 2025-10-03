@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Github, ExternalLink, Copy, Check, Monitor, Smartphone, Laptop, Package, Terminal } from 'lucide-react';
+import { Download, Github, ExternalLink, Copy, Check, Monitor, Smartphone, Laptop, Package, Terminal, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
+// Определение типов для данных GitHub API
 interface GitHubAsset {
   id: number;
   name: string;
@@ -38,7 +39,15 @@ interface PlatformAssets {
   };
 }
 
+interface PackageInfo {
+  title: string;
+  description: string;
+  systems: string;
+  advantages: string;
+  disadvantages: string;
+}
 
+// Используем memo для предотвращения лишних перерисовок
 const DownloadCard = memo(({ title, description, icon, downloadUrl, size, downloads, index, isCommand = false, commandText = '' }: {
   title: string;
   description: string;
@@ -52,6 +61,7 @@ const DownloadCard = memo(({ title, description, icon, downloadUrl, size, downlo
 }) => {
   const { t } = useTranslation();
   const [copiedItem, setCopiedItem] = useState<string | null>(null);
+  const [showInfo, setShowInfo] = useState(false);
 
   const handleCopy = (text: string, item: string) => {
     navigator.clipboard.writeText(text);
@@ -59,6 +69,140 @@ const DownloadCard = memo(({ title, description, icon, downloadUrl, size, downlo
     toast.success(t('downloadMessages.copiedToClipboard') || 'Copied to clipboard!');
     setTimeout(() => setCopiedItem(null), 2000);
   };
+
+  const getPackageInfo = (title: string): PackageInfo => {
+    const infoMap: Record<string, PackageInfo> = {
+      'Windows Installer': {
+        title: t('downloadSection.info.windowsInstaller.title'),
+        description: t('downloadSection.info.windowsInstaller.desc'),
+        systems: t('downloadSection.info.windowsInstaller.systems'),
+        advantages: t('downloadSection.info.windowsInstaller.advantages'),
+        disadvantages: t('downloadSection.info.windowsInstaller.disadvantages'),
+      },
+      'Windows Archive': {
+        title: t('downloadSection.info.windowsArchive.title'),
+        description: t('downloadSection.info.windowsArchive.desc'),
+        systems: t('downloadSection.info.windowsArchive.systems'),
+        advantages: t('downloadSection.info.windowsArchive.advantages'),
+        disadvantages: t('downloadSection.info.windowsArchive.disadvantages'),
+      },
+      'Windows Store App': {
+        title: t('downloadSection.info.windowsStore.title'),
+        description: t('downloadSection.info.windowsStore.desc'),
+        systems: t('downloadSection.info.windowsStore.systems'),
+        advantages: t('downloadSection.info.windowsStore.advantages'),
+        disadvantages: t('downloadSection.info.windowsStore.disadvantages'),
+      },
+      'Winget': {
+        title: t('downloadSection.info.winget.title'),
+        description: t('downloadSection.info.winget.desc'),
+        systems: t('downloadSection.info.winget.systems'),
+        advantages: t('downloadSection.info.winget.advantages'),
+        disadvantages: t('downloadSection.info.winget.disadvantages'),
+      },
+      'macOS Package': {
+        title: t('downloadSection.info.macosPackage.title'),
+        description: t('downloadSection.info.macosPackage.desc'),
+        systems: t('downloadSection.info.macosPackage.systems'),
+        advantages: t('downloadSection.info.macosPackage.advantages'),
+        disadvantages: t('downloadSection.info.macosPackage.disadvantages'),
+      },
+      'macOS Package (Apple Silicon)': {
+        title: t('downloadSection.info.macosPackageArm.title'),
+        description: t('downloadSection.info.macosPackageArm.desc'),
+        systems: t('downloadSection.info.macosPackageArm.systems'),
+        advantages: t('downloadSection.info.macosPackageArm.advantages'),
+        disadvantages: t('downloadSection.info.macosPackageArm.disadvantages'),
+      },
+      'Homebrew': {
+        title: t('downloadSection.info.homebrew.title'),
+        description: t('downloadSection.info.homebrew.desc'),
+        systems: t('downloadSection.info.homebrew.systems'),
+        advantages: t('downloadSection.info.homebrew.advantages'),
+        disadvantages: t('downloadSection.info.homebrew.disadvantages'),
+      },
+      'Debian Package': {
+        title: t('downloadSection.info.debian.title'),
+        description: t('downloadSection.info.debian.desc'),
+        systems: t('downloadSection.info.debian.systems'),
+        advantages: t('downloadSection.info.debian.advantages'),
+        disadvantages: t('downloadSection.info.debian.disadvantages'),
+      },
+      'Debian Package (ARM64)': {
+        title: t('downloadSection.info.debianArm.title'),
+        description: t('downloadSection.info.debianArm.desc'),
+        systems: t('downloadSection.info.debianArm.systems'),
+        advantages: t('downloadSection.info.debianArm.advantages'),
+        disadvantages: t('downloadSection.info.debianArm.disadvantages'),
+      },
+      'RPM Package': {
+        title: t('downloadSection.info.rpm.title'),
+        description: t('downloadSection.info.rpm.desc'),
+        systems: t('downloadSection.info.rpm.systems'),
+        advantages: t('downloadSection.info.rpm.advantages'),
+        disadvantages: t('downloadSection.info.rpm.disadvantages'),
+      },
+      'RPM Package (ARM64)': {
+        title: t('downloadSection.info.rpmArm.title'),
+        description: t('downloadSection.info.rpmArm.desc'),
+        systems: t('downloadSection.info.rpmArm.systems'),
+        advantages: t('downloadSection.info.rpmArm.advantages'),
+        disadvantages: t('downloadSection.info.rpmArm.disadvantages'),
+      },
+      'AppImage': {
+        title: t('downloadSection.info.appImage.title'),
+        description: t('downloadSection.info.appImage.desc'),
+        systems: t('downloadSection.info.appImage.systems'),
+        advantages: t('downloadSection.info.appImage.advantages'),
+        disadvantages: t('downloadSection.info.appImage.disadvantages'),
+      },
+      'AppImage (ARM64)': {
+        title: t('downloadSection.info.appImageArm.title'),
+        description: t('downloadSection.info.appImageArm.desc'),
+        systems: t('downloadSection.info.appImageArm.systems'),
+        advantages: t('downloadSection.info.appImageArm.advantages'),
+        disadvantages: t('downloadSection.info.appImageArm.disadvantages'),
+      },
+      'Tar Archive': {
+        title: t('downloadSection.info.tar.title'),
+        description: t('downloadSection.info.tar.desc'),
+        systems: t('downloadSection.info.tar.systems'),
+        advantages: t('downloadSection.info.tar.advantages'),
+        disadvantages: t('downloadSection.info.tar.disadvantages'),
+      },
+      'Tar Archive (ARM64)': {
+        title: t('downloadSection.info.tarArm.title'),
+        description: t('downloadSection.info.tarArm.desc'),
+        systems: t('downloadSection.info.tarArm.systems'),
+        advantages: t('downloadSection.info.tarArm.advantages'),
+        disadvantages: t('downloadSection.info.tarArm.disadvantages'),
+      },
+      'AUR': {
+        title: t('downloadSection.info.aur.title'),
+        description: t('downloadSection.info.aur.desc'),
+        systems: t('downloadSection.info.aur.systems'),
+        advantages: t('downloadSection.info.aur.advantages'),
+        disadvantages: t('downloadSection.info.aur.disadvantages'),
+      },
+      'Flathub': {
+        title: t('downloadSection.info.flathub.title'),
+        description: t('downloadSection.info.flathub.desc'),
+        systems: t('downloadSection.info.flathub.systems'),
+        advantages: t('downloadSection.info.flathub.advantages'),
+        disadvantages: t('downloadSection.info.flathub.disadvantages'),
+      },
+    };
+
+    return infoMap[title] || {
+      title: t('downloadSection.info.default.title'),
+      description: t('downloadSection.info.default.desc'),
+      systems: t('downloadSection.info.default.systems'),
+      advantages: t('downloadSection.info.default.advantages'),
+      disadvantages: t('downloadSection.info.default.disadvantages'),
+    };
+  };
+
+  const packageInfo = getPackageInfo(title);
 
   return (
     <motion.div
@@ -73,7 +217,17 @@ const DownloadCard = memo(({ title, description, icon, downloadUrl, size, downlo
           boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 16px, rgba(0, 0, 0, 0.1) 0px 8px 24px, rgba(0, 0, 0, 0.1) 0px 16px 56px'
         }}
       >
-        <div className="text-center relative z-10">
+        {/* Кнопка информации в левом верхнем углу */}
+        <button
+          onClick={() => setShowInfo(true)}
+          className="absolute top-4 left-4 p-2 rounded-full bg-slate-200/70 dark:bg-slate-700/70 backdrop-blur-sm text-slate-700 dark:text-slate-300 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:text-blue-300 transition-colors z-20"
+          aria-label={t('downloadSection.infoButtonLabel') || 'Package information'}
+        >
+          <Info className="w-4 h-4" />
+        </button>
+
+        {/* Контент карточки с отступом сверху для компенсации кнопки */}
+        <div className="text-center relative z-10 pt-8">
           <motion.div 
             className="text-5xl mb-6 relative"
             whileHover={{ scale: 1.1, rotate: 5 }}
@@ -153,6 +307,59 @@ const DownloadCard = memo(({ title, description, icon, downloadUrl, size, downlo
           </motion.div>
         </div>
       </Card>
+
+      {/* Модальное окно с информацией - теперь внутри карточки (absolute) */}
+      {showInfo && (
+        <motion.div
+          className="absolute inset-0 bg-black/80 backdrop-blur-md z-40 flex items-center justify-center p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={() => setShowInfo(false)}
+        >
+          <motion.div
+            className="max-w-md w-full max-h-[90vh] overflow-y-auto"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()} // Предотвращаем закрытие при клике на контент
+          >
+            <Card className="p-6 relative">
+              <button
+                onClick={() => setShowInfo(false)}
+                className="absolute top-4 right-4 p-1 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+                aria-label={t('common.close') || 'Close'}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+              <h3 className="text-xl font-bold mb-4">{packageInfo.title}</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-4 text-sm">{packageInfo.description}</p>
+              
+              <div className="space-y-3">
+                <div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">{t('downloadSection.info.systems')}</h4>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{packageInfo.systems}</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">{t('downloadSection.info.advantages')}</h4>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{packageInfo.advantages}</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">{t('downloadSection.info.disadvantages')}</h4>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{packageInfo.disadvantages}</p>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        </motion.div>
+      )}
     </motion.div>
   );
 });
@@ -163,6 +370,8 @@ const NewDownloadSection = () => {
   const { t } = useTranslation();
   const [selectedOS, setSelectedOS] = useState<'windows' | 'macos' | 'linux'>('windows');
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Fetch latest release from GitHub
   const { data: releases, isLoading, error } = useQuery<GitHubRelease[]>({
     queryKey: ['github-releases'],
     queryFn: async () => {
