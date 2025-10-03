@@ -57,7 +57,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const isTechQuery = techKeywords.some(kw => lowerCaseQuery.includes(kw));
 
   if (!isTechQuery && !logContent) {
-    // Если запрос не технический и нет лога — ответ по умолчанию
     return res.status(200).json({ response: "Я могу помочь только с техническими вопросами." });
   }
 
@@ -77,14 +76,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://notofficialxmclapp.vercel.app',
+        'HTTP-Referer': 'https://yourdomain.com',
         'X-Title': 'XMAI Help',
       },
       body: JSON.stringify({
         model: 'qwen/qwen3-coder-480b-a35b',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 500,
-// + claude & OpenAI models
       }),
     });
 
