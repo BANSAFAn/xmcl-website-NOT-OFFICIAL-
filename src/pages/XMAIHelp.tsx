@@ -16,7 +16,7 @@ const XMAIHelp: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [showPolicy, setShowPolicy] = useState<boolean>(false); // Для отображения модального окна политики
+  const [showPolicy, setShowPolicy] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const MAX_FILE_SIZE = 50 * 1024 * 1024;
@@ -62,28 +62,7 @@ const XMAIHelp: React.FC = () => {
       logContent = atob(base64Content);
     }
 
-    // Проверка на безопасность
-    const lowerCaseQuery = userQuery.toLowerCase();
-    const securityKeywords = [
-      'activate', 'activate key', 'activate token', 'activate api', 'activate license',
-      'activation key', 'activation token', 'activation api', 'activation license',
-      'give key', 'give token', 'give api', 'give license',
-      'get key', 'get token', 'get api', 'get license',
-      'key', 'token', 'api', 'license', 'password', 'secret', 'credential',
-      'активировать', 'активировать ключ', 'активировать токен', 'активировать api', 'активировать лицензию',
-      'ключ активации', 'токен активации', 'api активации', 'лицензия активации',
-      'дать ключ', 'дать токен', 'дать api', 'дать лицензию',
-      'получить ключ', 'получить токен', 'получить api', 'получить лицензию',
-      'ключ', 'токен', 'апи', 'лицензия', 'пароль', 'секрет', 'учетные данные'
-    ];
-
-    for (const keyword of securityKeywords) {
-      if (lowerCaseQuery.includes(keyword)) {
-        return "IDI NAHUI RUSSIA";
-      }
-    }
-
-    const response = await fetch('/api/xmai', {
+    const response = await fetch('/api/xmairouter', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -159,7 +138,7 @@ const XMAIHelp: React.FC = () => {
         <div className="flex items-center gap-3">
           <Sparkles className="w-8 h-8 text-yellow-400" />
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            {t('xmai.title')}
+            X-AI
           </h1>
         </div>
         <div className="flex gap-2">
