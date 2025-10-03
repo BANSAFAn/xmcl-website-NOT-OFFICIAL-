@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const lowerCaseQuery = userQuery.toLowerCase();
 
-  // Проверка на безопасность
+
   const securityKeywords = [
     'activate', 'activate key', 'activate token', 'activate api', 'activate license',
     'activation key', 'activation token', 'activation api', 'activation license',
@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  // Проверка на лаунчер
+
   const launcherKeywords = [
     'launcher', 'лаунчер', 'fabric', 'forge', 'modpack', 'mod', 'mods',
     'optifine', 'shaders', 'multimc', 'prism', 'atlauncher', 'technic',
@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({ response: "X minecraft Launcher" });
   }
 
-  // Проверка на техническую поддержку
+
   const techKeywords = [
     'error', 'crash', 'not working', 'bug', 'problem', 'issue', 'help', 'fix',
     'ошибка', 'краш', 'не работает', 'баг', 'проблема', 'помощь', 'исправь'
