@@ -1,11 +1,15 @@
 {
   "nav": {
     "home": "Головна",
+    "about": "Про нас",
     "blog": "Блог",
-    "guide": "Керівництво",
+    "discordnav": "Discord",
     "changelog": "Журнал змін",
+    "guide": "Керівництво",
     "issues": "Проблеми",
-    "testing": "Тестування"
+    "testing": "Тестування",
+    "information": "Інформація",
+    "aihelp": "Допомога ШІ"
   },
   "footer": {
     "quickLinks": "Швидкі посилання",
@@ -22,7 +26,7 @@
     "twitter": "Twitter",
     "documentation": "Документація",
     "faq": "Часті запитання",
-    "helpCenter": "Центр допомоги",
+    "helpCenter": "Центр підтримки",
     "contact": "Контакти",
     "builtWith": "Створено за допомогою",
     "allRightsReserved": "Усі права захищені",
@@ -31,9 +35,9 @@
     "openSource": "Відкритий код",
     "madeWith": "Зроблено з",
     "downloadXMCL": "Завантажити XMCL",
-    "viewReleases": "Подивитися релізи",
-    "launcherBy": "Лаунчер створено",
-    "websiteBy": "Сайт створено"
+    "viewReleases": "Переглянути релізи",
+    "launcherBy": "Лаунчер від",
+    "websiteBy": "Сайт від"
   },
   "theme": {
     "light": "Світла",
@@ -45,12 +49,13 @@
     "tryAgain": "Спробувати знову",
     "loading": "Завантаження",
     "error": "Помилка",
-    "success": "Успіх",
+    "success": "Успішно",
     "close": "Закрити",
     "cancel": "Скасувати",
     "save": "Зберегти",
     "delete": "Видалити",
     "edit": "Редагувати",
+    "links": "Посилання",
     "view": "Переглянути",
     "back": "Назад",
     "next": "Далі",
@@ -69,24 +74,30 @@
     "learnMore": "Дізнатися більше",
     "featuresTitle": "Потужні функції",
     "openSourceStatus": "Відкритий код",
-    "viewOnGitHub": "Подивитися на GitHub",
+    "viewOnGitHub": "Переглянути на GitHub",
     "powerfulFeatures": "Потужні функції",
-    "everythingYouNeed": "Все що потрібно",
+    "everythingYouNeed": "Усе, що вам потрібно",
     "comprehensiveSolution": "Комплексне рішення для моддингу Minecraft",
+    "downloadManageWhatever": "Завантажуйте та керуйте чим завгодно",
+    "downloadManageWhateverDesc": "Отримайте доступ до тисяч модів з кількох платформ з автоматичними оновленнями та керуванням залежностями",
+    "crossPlatformSupportTitle": "Справжня кросплатформенність",
+    "crossPlatformSupportDesc": "Нативна продуктивність на Windows, macOS та Linux з єдиним користувацьким досвідом на всіх платформах",
+    "installingAnyFramework": "Встановлення будь-якої системи",
+    "installingAnyFrameworkDesc": "Підтримка Forge, Fabric, Quilt та інших завантажувачів модів з плавним перемиканням між різними налаштуваннями",
     "feature1Title": "Управління модами",
-    "feature1Description": "Легко встановлюйте, оновлюйте та керуйте модами з підтримкою вбудованих завантажувачів модів",
+    "feature1Description": "Легко встановлюйте, оновлюйте та керуйте модами з вбудованою підтримкою завантажувачів модів",
     "feature2Title": "Оптимізація продуктивності",
-    "feature2Description": "Просунуте управління пам'яттю та налаштування продуктивності для плавного геймплею",
-    "feature3Title": "Управління екземплярами",
-    "feature3Description": "Створюйте та керуйте кількома екземплярами гри з різними конфігураціями модів",
-    "feature4Title": "Кросплатформенність",
-    "feature4Description": "Доступно для Windows, macOS та Linux з нативною продуктивністю",
+    "feature2Description": "Просунуте керування пам'яттю та налаштування продуктивності для плавного геймплею",
+    "feature3Title": "Управління інстансами",
+    "feature3Description": "Створюйте та керуйте кількома інстансами гри з різними конфігураціями модів",
+    "feature4Title": "Оптимальне місце на диску з великими ресурсами",
+    "feature4Description": "XMCL зберігатиме всі моди, набори ресурсів, шейдери та модпаки в одному місці зберігання. Під час спроби використання будь-якого відомого ресурсу він використовуватиме жорстке посилання для встановлення ресурсу в інстанс без копіювання. Це означає, що ви більше ніколи не побачите дубльовані копії в папці /mods.",
     "hardLink": "Жорстке посилання",
     "symbolicLink": "Символічне посилання",
-    "feature5Title": "Управління ресурс-паками",
-    "feature5Description": "Організуйте та застосовуйте ресурс-паки з попереднім переглядом та автоматичними оновленнями",
+    "feature5Title": "Управління наборами ресурсів",
+    "feature5Description": "Організовуйте та застосовуйте набори ресурсів з попереднім переглядом та автоматичними оновленнями",
     "feature6Title": "Управління збереженнями",
-    "feature6Description": "Створюйте резервні копії, відновлюйте та діліться світами з хмарною синхронізацією"
+    "feature6Description": "Резервне копіювання, відновлення та обмін вашими світами з хмарною синхронізацією"
   },
   "downloadSection": {
     "title": "Завантажити",
@@ -95,52 +106,193 @@
     "releaseNotes": "Примітки до релізу",
     "download": "Завантажити",
     "installCommands": "Команди встановлення",
-    "moreInfo": "Докладніше",
+    "moreInfo": "Більше інформації",
     "sizeMB": "МБ",
     "downloadCount": "завантажень",
-    "linuxUniversal": "Linux Універсальний",
     "windowsArchiveDesc": "Завантажити портативну версію для Windows",
     "windowsStoreDesc": "Встановити з Microsoft Store",
-    "wingetDesc": "Встановити за допомогою менеджера пакетів Winget",
+    "wingetDesc": "Встановити за допомогою пакетного менеджера Winget",
+    "rpmDesc": "Завантажити RPM-пакет для Linux",
+    "debianDesc": "Завантажити DEB-пакет для Linux",
+    "tarDesc": "Завантажити TAR-архів для Linux",
+    "linuxUniversal": "Універсальний Linux",
+    "windowsInstallerDesc": "Завантажити інсталятор для Windows",
     "macosPackageDesc": "Завантажити DMG-пакет для macOS",
+    "macosPackageArmDesc": "Завантажити DMG-пакет для macOS (Apple Silicon)",
     "homebrewDesc": "Встановити за допомогою Homebrew",
-    "macosPackageArmDesc": "Завантажити DMG для Apple Silicon",
-    "rpmDesc": "RPM-пакет для Fedora/Red Hat",
-    "debianDesc": "DEB-пакет для Debian/Ubuntu",
-    "tarDesc": "TAR-архів для Linux",
-    "aurDesc": "Встановити з Arch User Repository",
+    "aurDesc": "Встановити з AUR",
     "flathubDesc": "Встановити з Flathub",
-    "debianArmDesc": "Завантажити пакет DEB для Linux (ARM64)",
-    "rpmArmDesc": "Завантажити пакет RPM для Linux (ARM64)",
+    "debianArmDesc": "Завантажити DEB-пакет для Linux (ARM64)",
+    "rpmArmDesc": "Завантажити RPM-пакет для Linux (ARM64)",
     "appImageDesc": "Завантажити AppImage для Linux",
     "appImageArmDesc": "Завантажити AppImage для Linux (ARM64)",
-    "tarArmDesc": "Завантажити архів TAR для Linux (ARM64)",
-    "windowsInstallerDesc": "Завантажити інсталятор для Windows"
+    "tarArmDesc": "Завантажити TAR-архів для Linux (ARM64)",
+    "infoButtonLabel": "Інформація про пакет",
+    "info": {
+      "systems": "Системи",
+      "advantages": "Переваги",
+      "disadvantages": "Недоліки",
+      "default": {
+        "title": "Інформація про пакет",
+        "desc": "Детальна інформація про тип пакета.",
+        "systems": "Н/Д",
+        "advantages": "Н/Д",
+        "disadvantages": "Н/Д"
+      },
+      "windowsInstaller": {
+        "title": "Інсталятор Windows",
+        "desc": "Стандартний виконуваний файл інсталятора Windows (.exe).",
+        "systems": "Windows 10/11",
+        "advantages": "Просте встановлення, включає всі залежності, інтеграція з системою встановлення Windows.",
+        "disadvantages": "Вимагає прав адміністратора, більший розмір завантаження."
+      },
+      "windowsArchive": {
+        "title": "Архів Windows",
+        "desc": "Портативний ZIP-архів, що містить додаток.",
+        "systems": "Windows 10/11",
+        "advantages": "Не вимагає встановлення, портативний, може працювати з будь-якого місця.",
+        "disadvantages": "Немає інтеграції з Windows, ручні оновлення, вимагає ручного налаштування Java."
+      },
+      "windowsStore": {
+        "title": "Додаток Microsoft Store",
+        "desc": "Пакет appx для встановлення через Microsoft Store.",
+        "systems": "Windows 10/11",
+        "advantages": "Автоматичні оновлення, інтеграція з Microsoft Store, ізольовано для безпеки.",
+        "disadvantages": "Обмежений контроль над встановленням, вимагає облікового запису Microsoft."
+      },
+      "winget": {
+        "title": "Пакет Winget",
+        "desc": "Встановлення через Windows Package Manager.",
+        "systems": "Windows 10/11",
+        "advantages": "Встановлення з командного рядка, керування версіями, автоматичні оновлення (якщо налаштовано).",
+        "disadvantages": "Вимагає встановлення та налаштування Winget."
+      },
+      "macosPackage": {
+        "title": "Пакет macOS (Intel)",
+        "desc": "Диск DMG для встановлення на Mac на базі Intel.",
+        "systems": "macOS (Intel)",
+        "advantages": "Стандартний метод встановлення macOS, легко встановити та видалити.",
+        "disadvantages": "Лише для Mac на базі Intel, вимагає ручних оновлень."
+      },
+      "macosPackageArm": {
+        "title": "Пакет macOS (Apple Silicon)",
+        "desc": "Диск DMG, оптимізований для Mac на базі Apple Silicon.",
+        "systems": "macOS (Apple Silicon)",
+        "advantages": "Нативна продуктивність на Apple Silicon, легко встановити та видалити.",
+        "disadvantages": "Лише для Mac на базі Apple Silicon, вимагає ручних оновлень."
+      },
+      "homebrew": {
+        "title": "Формула Homebrew",
+        "desc": "Встановлення через пакетний менеджер Homebrew.",
+        "systems": "macOS",
+        "advantages": "Встановлення з командного рядка, керування версіями, прості оновлення.",
+        "disadvantages": "Вимагає встановлення Homebrew, може вимагати Xcode Command Line Tools."
+      },
+      "debian": {
+        "title": "Пакет Debian (x64)",
+        "desc": "Пакет DEB для дистрибутивів Linux на базі Debian (наприклад, Ubuntu).",
+        "systems": "Linux (x64) - Debian/Ubuntu",
+        "advantages": "Стандартний формат пакета, інтеграція з системним менеджером пакетів.",
+        "disadvantages": "Вимагає ручного завантаження, можуть виникнути проблеми з залежностями."
+      },
+      "debianArm": {
+        "title": "Пакет Debian (ARM64)",
+        "desc": "Пакет DEB для дистрибутивів Linux на базі ARM64.",
+        "systems": "Linux (ARM64) - Debian/Ubuntu",
+        "advantages": "Стандартний формат пакета для ARM64, інтеграція з системним менеджером пакетів.",
+        "disadvantages": "Вимагає ручного завантаження, можуть виникнути проблеми з залежностями."
+      },
+      "rpm": {
+        "title": "Пакет RPM (x64)",
+        "desc": "Пакет RPM для дистрибутивів Linux на базі Red Hat (наприклад, Fedora).",
+        "systems": "Linux (x64) - Fedora/RHEL/openSUSE",
+        "advantages": "Стандартний формат пакета, інтеграція з системним менеджером пакетів.",
+        "disadvantages": "Вимагає ручного завантаження, можуть виникнути проблеми з залежностями."
+      },
+      "rpmArm": {
+        "title": "Пакет RPM (ARM64)",
+        "desc": "Пакет RPM для дистрибутивів Linux на базі Red Hat, заснованих на ARM64.",
+        "systems": "Linux (ARM64) - Fedora/RHEL/openSUSE",
+        "advantages": "Стандартний формат пакета для ARM64, інтеграція з системним менеджером пакетів.",
+        "disadvantages": "Вимагає ручного завантаження, можуть виникнути проблеми з залежностями."
+      },
+      "appImage": {
+        "title": "AppImage (x64)",
+        "desc": "Портативний, автономний пакет додатка для Linux.",
+        "systems": "Linux (x64)",
+        "advantages": "Не вимагає встановлення, працює на більшості дистрибутивів Linux x64, портативний.",
+        "disadvantages": "Більший розмір файлу, немає автоматичних оновлень, може відсутній інтеграція з системою.",
+        "notes": "Зробіть виконуваним і запустіть безпосередньо."
+      },
+      "appImageArm": {
+        "title": "AppImage (ARM64)",
+        "desc": "Портативний, автономний пакет додатка для Linux ARM64.",
+        "systems": "Linux (ARM64)",
+        "advantages": "Не вимагає встановлення, працює на більшості дистрибутивів Linux ARM64, портативний.",
+        "disadvantages": "Більший розмір файлу, немає автоматичних оновлень, може відсутній інтеграція з системою.",
+        "notes": "Зробіть виконуваним і запустіть безпосередньо."
+      },
+      "tar": {
+        "title": "Архів Tar (x64)",
+        "desc": "Стиснутий архів TAR, що містить додаток для Linux.",
+        "systems": "Linux (x64)",
+        "advantages": "Не вимагає встановлення, портативний, мінімальні залежності.",
+        "disadvantages": "Немає інтеграції з системою, ручні оновлення, вимагає ручного налаштування Java.",
+        "notes": "Розпакуйте та запустіть виконуваний файл всередині."
+      },
+      "tarArm": {
+        "title": "Архів Tar (ARM64)",
+        "desc": "Стиснутий архів TAR, що містить додаток для Linux ARM64.",
+        "systems": "Linux (ARM64)",
+        "advantages": "Не вимагає встановлення, портативний, мінімальні залежності.",
+        "disadvantages": "Немає інтеграції з системою, ручні оновлення, вимагає ручного налаштування Java.",
+        "notes": "Розпакуйте та запустіть виконуваний файл всередині."
+      },
+      "aur": {
+        "title": "Пакет AUR",
+        "desc": "X Minecraft Launcher - Сучасний, відкритий лаунчер Minecraft з підтримкою модпаків, ресурсів та управління інстансами",
+        "systems": "Linux - Arch/Manjaro",
+        "advantages": "Просте встановлення за допомогою AUR-хелперів, інтеграція з системним менеджером пакетів.",
+        "disadvantages": "Вимагає AUR-хелпер (наприклад, paru, yay), компіляція з вихідного коду (довше часу встановлення).",
+        "notes": "Використовуйте 'paru -S xmcl-launcher' або 'yay -S xmcl-launcher'."
+      },
+      "flathub": {
+        "title": "Пакет Flathub",
+        "desc": "Сучасний лаунчер Minecraft з підтримкою модпаків",
+        "systems": "Linux",
+        "advantages": "Ізольований, узгоджене середовище, автоматичні оновлення, працює на більшості дистрибутивів Linux.",
+        "disadvantages": "Вимагає Flatpak, більший накладний час виконання, менш нативне відчуття.",
+        "notes": "Встановіть за допомогою 'flatpak install flathub app.xmcl.voxelum'."
+      }
+    }
   },
   "downloadMessages": {
     "noVersionsAvailable": "Немає доступних версій",
     "loadingReleases": "Завантаження релізів...",
     "viewAllReleases": "Переглянути всі релізи",
-    "brewCommands": "Команди скопійовано до буфера обміну! Виконайте в терміналі:",
-    "releasedOn": "Випущено"
+    "brewCommands": "Команди скопійовано в буфер обміну! Виконайте в терміналі:",
+    "releasedOn": "Випущено",
+    "copiedToClipboard": "Скопійовано в буфер обміну!",
+    "copied": "Скопійовано!",
+    "copyCommand": "Скопіювати команди"
   },
   "issues": {
-    "title": "Звіти про помилки та проблеми",
-    "subtitle": "Відстежуйте, повідомляйте та допомагайте вирішувати проблеми для покращення XMCL для всіх",
+    "title": "Проблеми та звіти про помилки",
+    "subtitle": "Відстежуйте, повідомляйте та допомагайте вирішувати проблеми, щоб покращити XMCL для всіх",
     "openIssues": "Відкриті проблеми",
     "closedIssues": "Закриті проблеми",
     "allIssues": "Усі проблеми",
     "reportNewIssue": "Повідомити про нову проблему",
-    "viewOnGitHub": "Подивитися на GitHub",
+    "viewOnGitHub": "Переглянути на GitHub",
     "searchPlaceholder": "Пошук проблем...",
-    "openFilter": "Відкриті",
-    "closedFilter": "Закриті",
+    "openFilter": "Відкрито",
+    "closedFilter": "Закрито",
     "newest": "Найновіші",
     "recentlyUpdated": "Нещодавно оновлені",
     "mostCommented": "Найбільш обговорювані",
     "filterByLabels": "Фільтр за мітками",
     "loadingIssues": "Завантаження проблем...",
-    "noIssuesFound": "Проблем не знайдено",
+    "noIssuesFound": "Проблеми не знайдено",
     "createdBy": "Створено",
     "errorLoading": "Помилка завантаження проблем",
     "description": "Опис",
@@ -152,47 +304,49 @@
     "state": "Стан",
     "labels": "Мітки",
     "assignees": "Виконавці",
-    "milestone": "Віха",
+    "milestone": "Етап",
     "lastUpdated": "Останнє оновлення",
     "noDescription": "Опис не надано",
     "noLabels": "Немає міток",
     "noAssignees": "Немає виконавців",
-    "noMilestone": "Немає віхи"
+    "noMilestone": "Немає етапу"
   },
   "blog": {
     "title": "Блог XMCL",
     "subtitle": "Останні новини, керівництво та аналітика від спільноти XMCL",
-    "searchPosts": "Пошук постів",
+    "searchPosts": "Пошук публікацій",
     "showing": "Показано",
     "readMore": "Читати далі",
     "backToGuides": "Повернутися до посібників",
     "backToBlog": "Повернутися до блогу",
     "publishedOn": "Опубліковано",
     "tags": "Теги",
-    "relatedPosts": "Схожі пости",
-    "noPostsFound": "Пости не знайдено",
-    "loadingPosts": "Завантаження постів...",
-    "errorLoading": "Помилка завантаження постів",
-    "totalPosts": "постів загалом",
+    "relatedPosts": "Схожі публікації",
+    "noPostsFound": "Публікації не знайдено",
+    "loadingPosts": "Завантаження публікацій...",
+    "errorLoading": "Помилка завантаження публікацій",
+    "totalPosts": "публікацій загалом",
     "featured": "Рекомендовані",
     "categories": "Категорії",
-    "searchPlaceholder": "Пошук постів...",
+    "searchPlaceholder": "Пошук публікацій...",
     "filterByCategory": "Фільтр за категорією",
     "allCategories": "Усі категорії",
     "popular": "Популярні",
     "recent": "Останні",
     "trending": "У тренді",
-    "loading": "Завантаження постів...",
+    "loading": "Завантаження публікацій...",
     "blogStats": "Статистика блогу"
   },
   "guide": {
     "title": "Керівництво користувача",
-    "subtitle": "Повні керівництва та туторіали щоб допомогти вам освоїти XMCL",
+    "subtitle": "Повні керівництва та уроки, щоб допомогти вам освоїти XMCL",
     "searchGuides": "Пошук керівництв",
     "filterByTags": "Фільтр за тегами",
     "categories": "Категорії",
+    "noGuides": "Керівництва недоступні",
+    "noGuidesDescription": "Немає доступних керівництв для цієї категорії",
     "showing": "Показано",
-    "readMore": "Читати далі",
+    "backToGuides": "Повернутися до посібників",
     "tableOfContents": "Зміст",
     "backToGuide": "Повернутися до керівництва",
     "nextSection": "Наступний розділ",
@@ -212,11 +366,80 @@
     "loading": "Завантаження керівництв...",
     "guideStats": "Статистика керівництва",
     "featured": "Рекомендовані",
-    "readMore": "Читати далі"
+    "readMore": "Читати далі",
+    "clearFilters": "Очистити фільтри"
+  },
+  "information": {
+    "title": "Інформація",
+    "launcher_created_by": "Лаунчер створено",
+    "install": {
+      "winget_desc": "Встановлення за допомогою Windows Package Manager",
+      "brew_desc": "Встановлення за допомогою Homebrew Cask"
+    },
+    "features": {
+      "title": "Особливості",
+      "download_title": "Завантаження та автодоповнення",
+      "download": "Підтримка завантаження Minecraft, Forge, Fabric, Quilt, OptiFine, JVM з офіційних або сторонніх дзеркал.",
+      "manage_resources_title": "Управління всіма ресурсами",
+      "manage_resources": "Використовуйте (жорсткі/символічні) посилання для встановлення ресурсів в інстанси, щоб оптимально використовувати диск. Більше ніяких копій модів всюди!",
+      "cross_platform_title": "Кросплатформенність",
+      "cross_platform": "Лаунчер заснований на Electron та підтримує Windows 10/11, MacOS та Linux.",
+      "multi_account_title": "Мульти-облікові записи",
+      "multi_account": "Вбудований вхід через Microsoft та API Mojang Yggdrasil. Також є вбудована підтримка ely.by та littleskin.cn. Ви також можете додавати сторонні сервери автентифікації!",
+      "p2p_title": "З'єднання Peer to Peer",
+      "p2p": "Ви можете грати в мультиплеєр по локальній мережі, навіть якщо ви не перебуваєте в одній фізичній локальній мережі!",
+      "code_sign_title": "Підпис коду та сучасна упаковка",
+      "code_sign": "У Windows ви можете використовувати appx та appinstaller для встановлення програми. Ви більше не будете отримувати блокуючі повідомлення від вашого браузера або бачити помилки SmartScreen!"
+    },
+    "sponsors": {
+      "title": "Спонсори",
+      "signpath": "Безкоштовне підписання коду в Windows надано SignPath.io, сертифікат від SignPath Foundation",
+      "deno": "XMCL використовує свою безпроблемну платформу для безсерверних JavaScript-додатків. Надано Deno",
+      "tencent": "Кращі азіатські CDN, Edge та рішення безпеки - Tencent EdgeOne, прискорення CDN та захист безпеки для цього проекту спонсоруються Tencent EdgeOne."
+    },
+    "credit": {
+      "title": "Подяки",
+      "baner": "який дуже допомагає мені в RU/UK спільноті.",
+      "godleaveme": "підтримує реєстр пакетів AUR.",
+      "0xc0000142": "підтримує winget.",
+      "marmur2020": "повністю переклав українською мовою!",
+      "vanja-san": "надав російську мову!",
+      "lukechu10": "допомагає мені з ядром лаунчера.",
+      "laolarou726": "який дуже допомагає з дизайном лаунчера.",
+      "special_thanks": "Також, особлива подяка"
+    },
+    "contributors": {
+      "title": "Учасники"
+    }
+  },
+  "xmai": {
+    "title": "Помічник X Minecraft AI",
+    "greeting": "Привіт! Я X Minecraft AI. Завантажте .txt файл логу або задайте питання про проблеми з Minecraft.",
+    "user_label": "Ви",
+    "ai_label": "XM AI",
+    "attach_log": "Прикріпити лог (.txt)",
+    "file_attached": "Файл прикріплено",
+    "input_placeholder": "Задайте питання або прикріпіть лог...",
+    "input_error": "Будь ласка, введіть повідомлення або завантажте файл.",
+    "processing_error": "Сталася помилка під час обробки запиту.",
+    "api_error": "Сталася помилка під час взаємодії з ШІ.",
+    "file_size_error": "Розмір файлу не повинен перевищувати {size} МБ.",
+    "file_type_error": "Підтримуються лише файли .txt.",
+    "attached_file": "Прикріплений файл",
+    "clear_button_title": "Очистити чат",
+    "policy_button_title": "Політика конфіденційності",
+    "responses": {
+      "best_launcher": "Найкращий лаунчер - X Minecraft Launcher (Voxelum). Він стабільний, функціональний і дозволяє ефективно керувати ресурсами. Я не люблю інші лаунчери.",
+      "other_launcher_general": "Ня."
+    },
+    "policy": {
+      "title": "Політика конфіденційності",
+      "content": "Цей вебсайт не збирає ваші дані. Ваші дані надсилаються в OpenRouter, і вони з ними розбираються. Проте ми видаляємо все, що ви надасте. Цей бот лише для технічної підтримки і не підходить для неформального спілкування."
+    }
   },
   "changelog": {
     "title": "Журнал змін",
-    "subtitle": "Подивіться що нового в кожній версії XMCL",
+    "subtitle": "Будьте в курсі останніх змін, нових функцій і виправлень помилок у XMCL",
     "version": "Версія",
     "released": "Випущено",
     "features": "Функції",
@@ -229,14 +452,16 @@
     "totalReleases": "релізів загалом",
     "stableReleases": "Стабільні релізи",
     "prereleases": "Пре-релізи",
-    "totalDownloads": "Загалом завантажень",
+    "totalDownloads": "Всього завантажень",
     "searchPlaceholder": "Пошук релізів...",
     "filterByType": "Фільтр за типом",
     "allVersions": "Усі версії",
-    "stableOnly": "Тільки стабільні",
-    "prereleasesOnly": "Тільки пре-релізи",
+    "stableOnly": "Лише стабільні",
+    "prereleasesOnly": "Лише пре-релізи",
     "latestVersion": "Остання версія",
-    "downloadCount": "завантажень"
+    "downloadCount": "завантажень",
+    "links": "Посилання",
+    "downloads": "Завантаження"
   },
   "testing": {
     "title": "Тестові збірки",
@@ -244,8 +469,9 @@
     "warningTitle": "Збірки розробки",
     "warningDescription": "Ці збірки призначені тільки для тестування та можуть містити помилки",
     "useAtOwnRisk": "Використовуйте на власний ризик",
-    "notRecommendedProduction": "Не рекомендовано для продакшн використання",
-    "reportIssuesGitHub": "Повідомляйте про проблеми на GitHub","lastUpdated": "Останнє оновлення",
+    "notRecommendedProduction": "Не рекомендовано для виробничого використання",
+    "reportIssuesGitHub": "Повідомляйте про будь-які проблеми на GitHub",
+    "lastUpdated": "Останнє оновлення",
     "allPlatforms": "Усі платформи",
     "downloadWindows": "Завантажити для Windows",
     "downloadLinux": "Завантажити для Linux",
@@ -257,7 +483,7 @@
       "step2": "Завантажте відповідний файл",
       "step3": "Встановіть бажаним способом",
       "step4": "Повідомляйте про будь-які виявлені проблеми",
-      "step5": "Залишайте відгуки щоб допомогти нам покращити продукт"
+      "step5": "Залишайте відгуки, щоб допомогти нам покращити"
     },
     "downloadStarted": "Завантаження розпочато",
     "buildStatus": "Статус збірки",
@@ -290,6 +516,6 @@
   },
   "docs": {
     "title": "Документація",
-    "search": "Пошук в документах"
+    "search": "Пошук документів"
   }
 }

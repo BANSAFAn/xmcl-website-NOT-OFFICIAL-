@@ -1,11 +1,15 @@
 {
   "nav": {
     "home": "Home",
+    "about": "About",
     "blog": "Blog",
-    "guide": "Guide",
+    "discordnav": "Discord",
     "changelog": "Changelog",
+    "guide": "Guide",
     "issues": "Issues",
-    "testing": "Testing"
+    "testing": "Testing",
+    "information": "Information",
+    "aihelp": "AI Help"
   },
   "footer": {
     "quickLinks": "Quick Links",
@@ -51,6 +55,7 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
+    "links": "Links",
     "view": "View",
     "back": "Back",
     "next": "Next",
@@ -121,14 +126,164 @@
     "rpmArmDesc": "Download RPM package for Linux (ARM64)",
     "appImageDesc": "Download AppImage for Linux",
     "appImageArmDesc": "Download AppImage for Linux (ARM64)",
-    "tarArmDesc": "Download TAR archive for Linux (ARM64)"
+    "tarArmDesc": "Download TAR archive for Linux (ARM64)",
+    "infoButtonLabel": "Package information",
+    "info": {
+      "systems": "Systems",
+      "advantages": "Advantages",
+      "disadvantages": "Disadvantages",
+      "default": {
+        "title": "Package Information",
+        "desc": "Detailed information about this package type.",
+        "systems": "N/A",
+        "advantages": "N/A",
+        "disadvantages": "N/A"
+      },
+      "windowsInstaller": {
+        "title": "Windows Installer",
+        "desc": "A standard Windows installer executable (.exe) file.",
+        "systems": "Windows 10/11",
+        "advantages": "Easy installation, includes all dependencies, integrates with Windows installer system.",
+        "disadvantages": "Requires administrative privileges, larger download size."
+      },
+      "windowsArchive": {
+        "title": "Windows Archive",
+        "desc": "A portable ZIP archive containing the application.",
+        "systems": "Windows 10/11",
+        "advantages": "No installation required, portable, can run from any location.",
+        "disadvantages": "No integration with Windows, manual updates, requires manual Java setup."
+      },
+      "windowsStore": {
+        "title": "Windows Store App",
+        "desc": "An appx package for installation via Microsoft Store.",
+        "systems": "Windows 10/11",
+        "advantages": "Automatic updates, integration with Windows Store, sandboxed for security.",
+        "disadvantages": "Limited control over installation, requires Microsoft account.",
+        "notes": "Requires Windows 10 or later."
+      },
+      "winget": {
+        "title": "Winget Package",
+        "desc": "Install via the Windows Package Manager.",
+        "systems": "Windows 10/11",
+        "advantages": "Command-line installation, version management, automatic updates (if configured).",
+        "disadvantages": "Requires Winget to be installed and configured.",
+        "notes": "Run 'winget install CI010.XMinecraftLauncher' in Command Prompt or PowerShell."
+      },
+      "macosPackage": {
+        "title": "macOS Package (Intel)",
+        "desc": "A DMG disk image for installation on Intel-based Macs.",
+        "systems": "macOS (Intel)",
+        "advantages": "Standard macOS installation method, easy to install and remove.",
+        "disadvantages": "Only for Intel Macs, requires manual updates.",
+        "notes": "Drag the application to the Applications folder."
+      },
+      "macosPackageArm": {
+        "title": "macOS Package (Apple Silicon)",
+        "desc": "A DMG disk image optimized for Apple Silicon Macs.",
+        "systems": "macOS (Apple Silicon)",
+        "advantages": "Native performance on Apple Silicon, easy to install and remove.",
+        "disadvantages": "Only for Apple Silicon Macs, requires manual updates.",
+        "notes": "Drag the application to the Applications folder."
+      },
+      "homebrew": {
+        "title": "Homebrew Formula",
+        "desc": "Install via the Homebrew package manager.",
+        "systems": "macOS",
+        "advantages": "Command-line installation, version management, easy updates.",
+        "disadvantages": "Requires Homebrew to be installed, might need Xcode Command Line Tools.",
+        "notes": "Run 'brew install --cask voxelum/xmcl' in Terminal."
+      },
+      "debian": {
+        "title": "Debian Package (x64)",
+        "desc": "A DEB package for Debian-based Linux distributions (e.g., Ubuntu).",
+        "systems": "Linux (x64) - Debian/Ubuntu",
+        "advantages": "Standard package format, integrates with system package manager.",
+        "disadvantages": "Requires manual download, may have dependency issues.",
+        "notes": "Install with 'sudo dpkg -i package.deb' or 'sudo apt install ./package.deb'."
+      },
+      "debianArm": {
+        "title": "Debian Package (ARM64)",
+        "desc": "A DEB package for ARM64-based Linux distributions.",
+        "systems": "Linux (ARM64) - Debian/Ubuntu",
+        "advantages": "Standard package format for ARM64, integrates with system package manager.",
+        "disadvantages": "Requires manual download, may have dependency issues.",
+        "notes": "Install with 'sudo dpkg -i package.deb' or 'sudo apt install ./package.deb'."
+      },
+      "rpm": {
+        "title": "RPM Package (x64)",
+        "desc": "An RPM package for Red Hat-based Linux distributions (e.g., Fedora).",
+        "systems": "Linux (x64) - Fedora/RHEL/openSUSE",
+        "advantages": "Standard package format, integrates with system package manager.",
+        "disadvantages": "Requires manual download, may have dependency issues.",
+        "notes": "Install with 'sudo rpm -i package.rpm' or 'sudo dnf install ./package.rpm'."
+      },
+      "rpmArm": {
+        "title": "RPM Package (ARM64)",
+        "desc": "An RPM package for ARM64-based Red Hat-based distributions.",
+        "systems": "Linux (ARM64) - Fedora/RHEL/openSUSE",
+        "advantages": "Standard package format for ARM64, integrates with system package manager.",
+        "disadvantages": "Requires manual download, may have dependency issues.",
+        "notes": "Install with 'sudo rpm -i package.rpm' or 'sudo dnf install ./package.rpm'."
+      },
+      "appImage": {
+        "title": "AppImage (x64)",
+        "desc": "A portable, self-contained application bundle for Linux.",
+        "systems": "Linux (x64)",
+        "advantages": "No installation required, runs on most x64 Linux distributions, portable.",
+        "disadvantages": "Larger file size, no automatic updates, might lack system integration.",
+        "notes": "Make executable and run directly."
+      },
+      "appImageArm": {
+        "title": "AppImage (ARM64)",
+        "desc": "A portable, self-contained application bundle for ARM64 Linux.",
+        "systems": "Linux (ARM64)",
+        "advantages": "No installation required, runs on most ARM64 Linux distributions, portable.",
+        "disadvantages": "Larger file size, no automatic updates, might lack system integration.",
+        "notes": "Make executable and run directly."
+      },
+      "tar": {
+        "title": "Tar Archive (x64)",
+        "desc": "A compressed TAR archive containing the application for Linux.",
+        "systems": "Linux (x64)",
+        "advantages": "No installation required, portable, minimal dependencies.",
+        "disadvantages": "No system integration, manual updates, requires manual Java setup.",
+        "notes": "Extract and run the executable file inside."
+      },
+      "tarArm": {
+        "title": "Tar Archive (ARM64)",
+        "desc": "A compressed TAR archive containing the application for ARM64 Linux.",
+        "systems": "Linux (ARM64)",
+        "advantages": "No installation required, portable, minimal dependencies.",
+        "disadvantages": "No system integration, manual updates, requires manual Java setup.",
+        "notes": "Extract and run the executable file inside."
+      },
+      "aur": {
+        "title": "AUR Package",
+        "desc": "Install from the Arch User Repository.",
+        "systems": "Linux - Arch/Manjaro",
+        "advantages": "Easy installation via AUR helpers, integrates with system package manager.",
+        "disadvantages": "Requires AUR helper (e.g., paru, yay), compiles from source (longer install time).",
+        "notes": "Use 'paru -S xmcl-launcher' or 'yay -S xmcl-launcher'."
+      },
+      "flathub": {
+        "title": "Flathub Package",
+        "desc": "Install via the Flathub universal package repository.",
+        "systems": "Linux",
+        "advantages": "Sandboxed, consistent environment, automatic updates, works on most Linux distributions.",
+        "disadvantages": "Requires Flatpak, larger runtime overhead, less native feel.",
+        "notes": "Install with 'flatpak install flathub app.xmcl.voxelum'."
+      }
+    }
   },
   "downloadMessages": {
     "noVersionsAvailable": "No versions available",
     "loadingReleases": "Loading releases...",
     "viewAllReleases": "View All Releases",
     "brewCommands": "Commands copied to clipboard! Run in terminal:",
-    "releasedOn": "Released on"
+    "releasedOn": "Released on",
+    "copiedToClipboard": "Copied to clipboard!",
+    "copied": "Copied!",
+    "copyCommand": "Copy Commands"
   },
   "issues": {
     "title": "Issues & Bug Reports",
@@ -197,7 +352,10 @@
     "searchGuides": "Search Guides",
     "filterByTags": "Filter by Tags",
     "categories": "Categories",
+    "noGuides": "No guides available",
+    "noGuidesDescription": "No guides available for this category",
     "showing": "Showing",
+    "backToGuides": "Back to Guides",
     "tableOfContents": "Table of Contents",
     "backToGuide": "Back to Guide",
     "nextSection": "Next Section",
@@ -217,11 +375,80 @@
     "loading": "Loading guides...",
     "guideStats": "Guide Stats",
     "featured": "Featured",
-    "readMore": "Read More"
+    "readMore": "Read More",
+    "clearFilters": "Clear Filters"
+  },
+  "information": {
+    "title": "Information",
+    "launcher_created_by": "Launcher created by",
+    "install": {
+      "winget_desc": "Install using the Windows Package Manager",
+      "brew_desc": "Install using Homebrew Cask"
+    },
+    "features": {
+      "title": "Features",
+      "download_title": "Download & Auto Complete",
+      "download": "Support download Minecraft, Forge, Fabric, Quilt, OptiFine, JVM from official or third party mirrors.",
+      "manage_resources_title": "Manage All Resources",
+      "manage_resources": "Use (hard/symbolic) links to install resources in instances, keep your disk usage optimal. No copies of mods everywhere!",
+      "cross_platform_title": "Cross Platform",
+      "cross_platform": "The launcher is based on Electron, and supports Windows 10/11, MacOS, and Linux.",
+      "multi_account_title": "Multi-Account System",
+      "multi_account": "Built-in Microsoft login and Mojang Yggdrasil API. It also has builtin support of ely.by and littleskin.cn. You can also add third-party authentication servers!",
+      "p2p_title": "Peer to Peer Connection",
+      "p2p": "You can play multiplayer over LAN even you are not in same physical LAN!",
+      "code_sign_title": "Code Sign & Modern Packaging",
+      "code_sign": "Under Windows, you can use appx and appinstaller to install the app. You won't receive blocking messages from your browser or see SmartScreen errors anymore!"
+    },
+    "sponsors": {
+      "title": "Sponsors",
+      "signpath": "Free code signing on Windows provided by SignPath.io, certificate by SignPath Foundation",
+      "deno": "XMCL leverage its hassle-free platform for serverless JavaScript applications. Provided by Deno",
+      "tencent": "Best Asian CDN, Edge, and Secure Solutions - Tencent EdgeOne,CDN acceleration and security protection for this project are sponsored by Tencent EdgeOne."
+    },
+    "credit": {
+      "title": "Credit",
+      "baner": "who helps me a lot on the RU/UK community.",
+      "godleaveme": "maintaining the AUR package registry.",
+      "0xc0000142": "maintaining the winget.",
+      "marmur2020": "completely translated a Ukrainian language!",
+      "vanja-san": "provided Russian language!",
+      "lukechu10": "helps me on Launcher core.",
+      "laolarou726": "who helps a lot on launcher design.",
+      "special_thanks": "Also, special thanks to"
+    },
+    "contributors": {
+      "title": "Contributors"
+    }
+  },
+  "xmai": {
+    "title": "X Minecraft AI Helper",
+    "greeting": "Hello! I am X Minecraft AI. Upload a .txt log file or ask a question about Minecraft issues.",
+    "user_label": "You",
+    "ai_label": "XM AI",
+    "attach_log": "Attach Log (.txt)",
+    "file_attached": "File Attached",
+    "input_placeholder": "Ask a question or attach a log...",
+    "input_error": "Please enter a message or upload a file.",
+    "processing_error": "An error occurred while processing the request.",
+    "api_error": "An error occurred communicating with the AI.",
+    "file_size_error": "File size must not exceed {size} MB.",
+    "file_type_error": "Only .txt files are supported.",
+    "attached_file": "Attached file",
+    "clear_button_title": "Clear Chat",
+    "policy_button_title": "Privacy Policy",
+    "responses": {
+      "best_launcher": "The best launcher is X Minecraft Launcher (Voxelum). It is stable, functional, and allows efficient resource management. I don't like other launchers.",
+      "other_launcher_general": "Nya."
+    },
+    "policy": {
+      "title": "Privacy Policy",
+      "content": "This website does not collect your data. Your data is sent to OpenRouter, and they handle it. However, we delete everything you provide. This bot is only for technical support and is not suitable for casual chat."
+    }
   },
   "changelog": {
     "title": "Changelog",
-    "subtitle": "See what's new in each version of XMCL",
+    "subtitle": "Stay up-to-date with the latest changes, new features, and bug fixes in XMCL",
     "version": "Version",
     "released": "Released",
     "features": "Features",
@@ -241,7 +468,9 @@
     "stableOnly": "Stable Only",
     "prereleasesOnly": "Pre-releases Only",
     "latestVersion": "Latest Version",
-    "downloadCount": "downloads"
+    "downloadCount": "downloads",
+    "links": "Links",
+    "downloads": "Downloads"
   },
   "testing": {
     "title": "Testing Builds",

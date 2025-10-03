@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { cn } from '@/lib/utils';
+// import { cn } from '@/lib/utils';
 import { AlertCircle, AlertTriangle, CheckCircle, Info, AlertOctagon } from 'lucide-react';
 
 interface MarkdownRenderProps {
@@ -9,22 +9,122 @@ interface MarkdownRenderProps {
   className?: string;
 }
 
+// Helper to extract text content recursively
+const extractTextContent = (node: any): string => {
+  if (typeof node === 'string') return node;
+  if (Array.isArray(node)) return node.map(extractTextContent).join('');
+  if (node.children) return extractTextContent(node.children);
+  return '';
+};
+
+// Custom blockquote component to handle alerts and code groups
+const BlockquoteComponent: Components['blockquote'] = ({ node, ...props }) => {
+  const children = props.children;
+
+  // Check if it's a custom alert
+  const textContent = extractTextContent(children);
+
+  if (textContent.startsWith('TIP:')) {
+    return (
+      <div className="my-4 p-4 bg-green-900/20 border-l-4 border-green-500 rounded-r-md">
+        <div className="flex items-start gap-3">
+          <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-green-500">Tip</p>
+            <div>{children}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (textContent.startsWith('WARNING:')) {
+    return (
+      <div className="my-4 p-4 bg-yellow-900/20 border-l-4 border-yellow-500 rounded-r-md">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-yellow-500">Warning</p>
+            <div>{children}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (textContent.startsWith('CAUTION:')) {
+    return (
+      <div className="my-4 p-4 bg-orange-900/20 border-l-4 border-orange-500 rounded-r-md">
+        <div className="flex items-start gap-3">
+          <AlertOctagon className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-orange-500">Caution</p>
+            <div>{children}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (textContent.startsWith('IMPORTANT:')) {
+    return (
+      <div className="my-4 p-4 bg-red-900/20 border-l-4 border-red-500 rounded-r-md">
+        <div className="flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-red-500">Important</p>
+            <div>{children}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (textContent.startsWith('NOTE:')) {
+    return (
+      <div className="my-4 p-4 bg-blue-900/20 border-l-4 border-blue-500 rounded-r-md">
+        <div className="flex items-start gap-3">
+          <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-blue-500">Note</p>
+            <div>{children}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default blockquote
+  return (
+    <blockquote className="border-l-4 border-accent pl-4 py-1 my-4 bg-black/20">
+      {children}
+    </blockquote>
+  );
+};
+
 export const MarkdownRender = ({ content, className }: MarkdownRenderProps) => {
-  // Process custom alerts in the content before rendering
+  // Process custom alerts and code groups
   const processedContent = content
-    .replace(/:::(tip|hint)\s+([\s\S]*?):::/g, '> TIP: $2')
-    .replace(/:::(important|warning)\s+([\s\S]*?):::/g, '> WARNING: $2')
-    .replace(/:::(caution)\s+([\s\S]*?):::/g, '> CAUTION: $2')
-    .replace(/:::(note|info)\s+([\s\S]*?):::/g, '> NOTE: $2')
+    // Alerts
+    .replace(/:::(tip|hint)\s*\n([\s\S]*?)\n:::/g, (_, type, content) => `> TIP: ${content.trim()}`)
+    .replace(/:::(important|warning)\s*\n([\s\S]*?)\n:::/g, (_, type, content) => `> WARNING: ${content.trim()}`)
+    .replace(/:::(caution)\s*\n([\s\S]*?)\n:::/g, (_, type, content) => `> CAUTION: ${content.trim()}`)
+    .replace(/:::(note|info)\s*\n([\s\S]*?)\n:::/g, (_, type, content) => `> NOTE: ${content.trim()}`)
+    // Code Groups (simple version - you can enhance this further)
+    .replace(/::: code-group\s*\n([\s\S]*?)\n:::/g, (_, content) => {
+      // You can customize how to render code-group here
+      // For now, just return the content as-is, wrapped in a div
+      return `<div className="code-group">${content.trim()}</div>`;
+    })
     // Also support double-colon format
     .replace(/::tip\s+([\s\S]*?)::/g, '> TIP: $1')
     .replace(/::important\s+([\s\S]*?)::/g, '> IMPORTANT: $1')
     .replace(/::warning\s+([\s\S]*?)::/g, '> WARNING: $1')
     .replace(/::caution\s+([\s\S]*?)::/g, '> CAUTION: $1')
     .replace(/::note\s+([\s\S]*?)::/g, '> NOTE: $1');
-    
+
   return (
-    <div className={cn("prose prose-invert max-w-none prose-headings:mb-3 prose-headings:mt-6 prose-p:my-3 prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-code:bg-white/10 prose-code:p-1 prose-code:rounded-md prose-pre:bg-black/40 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-hr:my-6 prose-hr:border-white/10", className)}>
+    <div className={`prose prose-invert max-w-none prose-headings:mb-3 prose-headings:mt-6 prose-p:my-3 prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-code:bg-white/10 prose-code:p-1 prose-code:rounded-md prose-pre:bg-black/40 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-hr:my-6 prose-hr:border-white/10 ${className || ''}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -48,125 +148,20 @@ export const MarkdownRender = ({ content, className }: MarkdownRenderProps) => {
           td: ({ ...props }) => (
             <td className="py-3 px-4" {...props} />
           ),
-          // Custom blockquote handling for alert types
-          blockquote: ({ node }) => {
-            // Extract text content safely from the blockquote's children
-            let textContent = '';
-            
-            // Safely traverse through the paragraph nodes in the blockquote
-            if (node.children) {
-              for (const child of node.children) {
-                if (child.type === 'element' && child.tagName === 'p') {
-                  // Get text from paragraph's text nodes
-                  if (child.children) {
-                    for (const textNode of child.children) {
-                      if (textNode.type === 'text') {
-                        textContent += textNode.value;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            
-            // Tip alert
-            if (textContent.startsWith('TIP:') || textContent.startsWith('Tip:')) {
+          blockquote: BlockquoteComponent,
+          // Example: Handle code-group as a div with a class
+          div: ({ node, className, ...props }) => {
+            if (className?.includes('code-group')) {
               return (
-                <div className="my-4 p-4 bg-green-900/20 border-l-4 border-green-500 rounded-r-md">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-green-500">Tip</p>
-                      <div>
-                        {textContent.replace(/^TIP:\s|^Tip:\s/, '')}
-                      </div>
-                    </div>
+                <div className="my-4 border border-white/10 rounded-lg p-4 bg-black/30">
+                  <div className="font-medium text-white/80 mb-2">Code Group:</div>
+                  <div className="space-y-2">
+                    {props.children}
                   </div>
                 </div>
               );
             }
-            
-            // Warning alert
-            if (textContent.startsWith('WARNING:') || textContent.startsWith('Warning:')) {
-              return (
-                <div className="my-4 p-4 bg-yellow-900/20 border-l-4 border-yellow-500 rounded-r-md">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-yellow-500">Warning</p>
-                      <div>
-                        {textContent.replace(/^WARNING:\ |^Warning:\ /, '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            
-            // Caution alert
-            if (textContent.startsWith('CAUTION:') || textContent.startsWith('Caution:')) {
-              return (
-                <div className="my-4 p-4 bg-orange-900/20 border-l-4 border-orange-500 rounded-r-md">
-                  <div className="flex items-start gap-3">
-                    <AlertOctagon className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-orange-500">Caution</p>
-                      <div>
-                        {textContent.replace(/^CAUTION:\ |^Caution:\ /, '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            
-            // Important alert
-            if (textContent.startsWith('IMPORTANT:') || textContent.startsWith('Important:')) {
-              return (
-                <div className="my-4 p-4 bg-red-900/20 border-l-4 border-red-500 rounded-r-md">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-red-500">Important</p>
-                      <div>
-                        {textContent.replace(/^IMPORTANT:\ |^Important:\ /, '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            
-            // Note alert
-            if (textContent.startsWith('NOTE:') || textContent.startsWith('Note:')) {
-              return (
-                <div className="my-4 p-4 bg-blue-900/20 border-l-4 border-blue-500 rounded-r-md">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-blue-500">Note</p>
-                      <div>
-                        {textContent.replace(/^NOTE:\ |^Note:\ /, '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            
-            // Default blockquote
-            return (
-              <blockquote className="border-l-4 border-accent pl-4 py-1 my-4 bg-black/20">
-                {node.children?.map((child, i) => {
-                  if (child.type === 'element') {
-                    // Use the appropriate tag name from the node
-                    const Component = child.tagName as keyof JSX.IntrinsicElements;
-                    return <Component key={i}>{textContent}</Component>;
-                  }
-                  return null;
-                })}
-              </blockquote>
-            );
+            return <div className={className} {...props} />;
           }
         }}
       >

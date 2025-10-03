@@ -9,11 +9,24 @@ import { OSSelector } from '@/components/download/OSSelector';
 import { PlatformCard } from '@/components/download/PlatformCard';
 import { HomebrewCard } from '@/components/download/HomebrewCard';
 
+interface GitHubAsset {
+  id: number;
+  name: string;
+  browser_download_url: string;
+  size: number;
+  download_count: number;
+}
+
+interface GitHubRelease {
+  tag_name: string;
+  published_at: string;
+  html_url: string;
+  assets: GitHubAsset[];
+}
+
 const DownloadSection = () => {
   const { t } = useTranslation();
   const [selectedOS, setSelectedOS] = useState('windows');
-
-  // Fetch latest release from GitHub
   const { data: releases, isLoading, error } = useQuery({
     queryKey: ['github-releases'],
     queryFn: async () => {
@@ -25,8 +38,7 @@ const DownloadSection = () => {
 
   const latestRelease = releases?.[0];
 
-
-  const getAssetsByPlatform = (assets: any[]) => {
+  const getAssetsByPlatform = (assets: GitHubAsset[]) => {
     if (!assets) return { windows: [], macos: [], linux: [] };
     
     return {
@@ -54,11 +66,6 @@ const DownloadSection = () => {
     return (
       <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950">
         <div className="container mx-auto text-center">
-          <motion.div 
-            className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          />
           <p className="text-slate-600 dark:text-slate-400">{t('downloadMessages.loadingReleases')}</p>
         </div>
       </section>
@@ -69,7 +76,7 @@ const DownloadSection = () => {
     return (
       <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950">
         <div className="container mx-auto text-center">
-          <p className="text-red-600 dark:text-red-400">{t('common.error')}</p>
+          <p className="text-red-600 dark:text-red-400">{t('ui.error')}</p>
         </div>
       </section>
     );
@@ -97,10 +104,8 @@ const DownloadSection = () => {
           </div>
         </div>
 
-        {/* OS Selector */}
         <OSSelector selectedOS={selectedOS} onSelectOS={setSelectedOS} />
 
-        {/* Download Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {selectedOS === 'windows' && platformAssets.windows.map((asset, index) => (
             <PlatformCard
@@ -130,7 +135,6 @@ const DownloadSection = () => {
                 />
               ))}
               
-              {/* Homebrew option for macOS */}
               <HomebrewCard />
             </>
           )}
@@ -149,7 +153,6 @@ const DownloadSection = () => {
           ))}
         </div>
 
-        {/* Release Notes */}
         <div className="text-center">
           <Button
             variant="outline"

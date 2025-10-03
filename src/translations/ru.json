@@ -1,11 +1,15 @@
 {
   "nav": {
     "home": "Главная",
+    "about": "О нас",
     "blog": "Блог",
+    "discordnav": "Discord",
+    "changelog": "История изменений",
     "guide": "Руководство",
-    "changelog": "Журнал изменений",
     "issues": "Проблемы",
-    "testing": "Тестирование"
+    "testing": "Тестирование",
+    "information": "Информация",
+    "aihelp": "Помощь ИИ"
   },
   "footer": {
     "quickLinks": "Быстрые ссылки",
@@ -14,7 +18,7 @@
     "resources": "Ресурсы",
     "blog": "Блог",
     "guide": "Руководство",
-    "changelog": "Журнал изменений",
+    "changelog": "История изменений",
     "issues": "Проблемы",
     "testing": "Тестирование",
     "discord": "Discord",
@@ -22,7 +26,7 @@
     "twitter": "Twitter",
     "documentation": "Документация",
     "faq": "Часто задаваемые вопросы",
-    "helpCenter": "Центр помощи",
+    "helpCenter": "Центр поддержки",
     "contact": "Контакты",
     "builtWith": "Создано с помощью",
     "allRightsReserved": "Все права защищены",
@@ -31,9 +35,9 @@
     "openSource": "Открытый исходный код",
     "madeWith": "Сделано с",
     "downloadXMCL": "Скачать XMCL",
-    "viewReleases": "Посмотреть релизы",
-    "launcherBy": "Лаунчер создан",
-    "websiteBy": "Сайт создан"
+    "viewReleases": "Просмотреть релизы",
+    "launcherBy": "Лаунчер от",
+    "websiteBy": "Сайт от"
   },
   "theme": {
     "light": "Светлая",
@@ -45,12 +49,13 @@
     "tryAgain": "Попробовать снова",
     "loading": "Загрузка",
     "error": "Ошибка",
-    "success": "Успех",
+    "success": "Успешно",
     "close": "Закрыть",
     "cancel": "Отмена",
     "save": "Сохранить",
     "delete": "Удалить",
     "edit": "Редактировать",
+    "links": "Ссылки",
     "view": "Просмотр",
     "back": "Назад",
     "next": "Далее",
@@ -64,35 +69,35 @@
   },
   "home": {
     "heroTitle": "Современный лаунчер Minecraft",
-    "heroSubtitle": "Испытайте Minecraft как никогда раньше с продвинутым управлением модами, оптимизацией производительности и кроссплатформенной поддержкой",
+    "heroSubtitle": "Испытайте Minecraft по-новому с расширенным управлением модами, оптимизацией производительности и кроссплатформенной поддержкой",
     "getStarted": "Начать",
     "learnMore": "Узнать больше",
     "featuresTitle": "Мощные функции",
     "openSourceStatus": "Открытый исходный код",
     "viewOnGitHub": "Посмотреть на GitHub",
     "powerfulFeatures": "Мощные функции",
-    "everythingYouNeed": "Всё что нужно",
+    "everythingYouNeed": "Все, что вам нужно",
     "comprehensiveSolution": "Комплексное решение для моддинга Minecraft",
     "downloadManageWhatever": "Скачивайте и управляйте чем угодно",
-    "downloadManageWhateverDesc": "Получите доступ к тысячам модов с различных платформ с автоматическими обновлениями и управлением зависимостями",
-    "crossPlatformSupportTitle": "Настоящая кроссплатформенная поддержка",
-    "crossPlatformSupportDesc": "Нативная производительность на Windows, macOS и Linux с единообразным пользовательским интерфейсом на всех платформах",
-    "installingAnyFramework": "Установка любого фреймворка",
+    "downloadManageWhateverDesc": "Получите доступ к тысячам модов с нескольких платформ с автоматическими обновлениями и управлением зависимостями",
+    "crossPlatformSupportTitle": "Настоящая кроссплатформенность",
+    "crossPlatformSupportDesc": "Нативная производительность на Windows, macOS и Linux с единообразным пользовательским опытом на всех платформах",
+    "installingAnyFramework": "Установка любой системы",
     "installingAnyFrameworkDesc": "Поддержка Forge, Fabric, Quilt и других загрузчиков модов с плавным переключением между различными настройками",
     "feature1Title": "Управление модами",
-    "feature1Description": "Легко устанавливайте, обновляйте и управляйте модами с поддержкой встроенных загрузчиков модов",
+    "feature1Description": "Легко устанавливайте, обновляйте и управляйте модами с встроенной поддержкой загрузчиков модов",
     "feature2Title": "Оптимизация производительности",
-    "feature2Description": "Продвинутое управление памятью и настройка производительности для плавного геймплея",
-    "feature3Title": "Управление экземплярами",
-    "feature3Description": "Создавайте и управляйте несколькими экземплярами игры с разными конфигурациями модов",
-    "feature4Title": "Оптимальное использование дискового пространства с огромными ресурсами",
-    "feature4Description": "XMCL будет хранить все моды, пакеты ресурсов, пакеты шейдеров и модпаки в одном месте хранения. Когда вы пытаетесь использовать любой известный ресурс, он использует жесткую ссылку для установки ресурса в экземпляр без копирования. Это значит, что вы больше не увидите дубликатов в папке /mods.",
+    "feature2Description": "Расширенное управление памятью и настройка производительности для плавного геймплея",
+    "feature3Title": "Управление инстансами",
+    "feature3Description": "Создавайте и управляйте несколькими инстансами игры с разными конфигурациями модов",
+    "feature4Title": "Оптимальное место на диске с большими ресурсами",
+    "feature4Description": "XMCL будет хранить все моды, наборы ресурсов, шейдеры и модпаки в одном месте хранения. При попытке использовать любой известный ресурс он будет использовать жёсткую ссылку для установки ресурса в инстанс без копирования. Это означает, что вы больше никогда не увидите дублирующиеся копии в папке /mods.",
     "hardLink": "Жёсткая ссылка",
     "symbolicLink": "Символическая ссылка",
-    "feature5Title": "Управление ресурс-паками",
-    "feature5Description": "Организуйте и применяйте ресурс-паки с предварительным просмотром и автоматическими обновлениями",
+    "feature5Title": "Управление наборами ресурсов",
+    "feature5Description": "Организуйте и применяйте наборы ресурсов с предварительным просмотром и автоматическими обновлениями",
     "feature6Title": "Управление сохранениями",
-    "feature6Description": "Делайте резервные копии, восстанавливайте и делитесь мирами с облачной синхронизацией"
+    "feature6Description": "Резервное копирование, восстановление и обмен вашими мирами с облачной синхронизацией"
   },
   "downloadSection": {
     "title": "Скачать",
@@ -101,47 +106,189 @@
     "releaseNotes": "Примечания к релизу",
     "download": "Скачать",
     "installCommands": "Команды установки",
-    "moreInfo": "Подробнее",
+    "moreInfo": "Больше информации",
     "sizeMB": "МБ",
-    "downloadCount": "скачиваний",
-    "linuxUniversal": "Linux Универсальный",
+    "downloadCount": "загрузок",
     "windowsArchiveDesc": "Скачать портативную версию для Windows",
     "windowsStoreDesc": "Установить из Microsoft Store",
-    "wingetDesc": "Установить с помощью менеджера пакетов Winget",
+    "wingetDesc": "Установить с помощью пакетного менеджера Winget",
+    "rpmDesc": "Скачать RPM-пакет для Linux",
+    "debianDesc": "Скачать DEB-пакет для Linux",
+    "tarDesc": "Скачать TAR-архив для Linux",
+    "linuxUniversal": "Универсальный Linux",
+    "windowsInstallerDesc": "Скачать установщик для Windows",
     "macosPackageDesc": "Скачать DMG-пакет для macOS",
+    "macosPackageArmDesc": "Скачать DMG-пакет для macOS (Apple Silicon)",
     "homebrewDesc": "Установить с помощью Homebrew",
-    "macosPackageArmDesc": "Скачать DMG для Apple Silicon",
-    "rpmDesc": "RPM-пакет для Fedora/Red Hat",
-    "debianDesc": "DEB-пакет для Debian/Ubuntu",
-    "tarDesc": "TAR-архив для Linux",
-    "aurDesc": "Установить из Arch User Repository",
+    "aurDesc": "Установить из AUR",
     "flathubDesc": "Установить из Flathub",
-    "debianArmDesc": "Скачать пакет DEB для Linux (ARM64)",
-    "rpmArmDesc": "Скачать пакет RPM для Linux (ARM64)",
+    "debianArmDesc": "Скачать DEB-пакет для Linux (ARM64)",
+    "rpmArmDesc": "Скачать RPM-пакет для Linux (ARM64)",
     "appImageDesc": "Скачать AppImage для Linux",
     "appImageArmDesc": "Скачать AppImage для Linux (ARM64)",
-    "tarArmDesc": "Скачать архив TAR для Linux (ARM64)"
+    "tarArmDesc": "Скачать TAR-архив для Linux (ARM64)",
+    "infoButtonLabel": "Информация о пакете",
+    "info": {
+      "systems": "Системы",
+      "advantages": "Преимущества",
+      "disadvantages": "Недостатки",
+      "default": {
+        "title": "Информация о пакете",
+        "desc": "Подробная информация о типе пакета.",
+        "systems": "Н/Д",
+        "advantages": "Н/Д",
+        "disadvantages": "Н/Д"
+      },
+      "windowsInstaller": {
+        "title": "Установщик Windows",
+        "desc": "Стандартный исполняемый файл установщика Windows (.exe).",
+        "systems": "Windows 10/11",
+        "advantages": "Простая установка, включает все зависимости, интеграция с системой установки Windows.",
+        "disadvantages": "Требует прав администратора, больший размер загрузки."
+      },
+      "windowsArchive": {
+        "title": "Архив Windows",
+        "desc": "Портативный ZIP-архив, содержащий приложение.",
+        "systems": "Windows 10/11",
+        "advantages": "Не требует установки, портативный, может работать из любого места.",
+        "disadvantages": "Нет интеграции с Windows, ручные обновления, требует ручной настройки Java."
+      },
+      "windowsStore": {
+        "title": "Приложение Microsoft Store",
+        "desc": "Пакет appx для установки через Microsoft Store.",
+        "systems": "Windows 10/11",
+        "advantages": "Автоматические обновления, интеграция с Microsoft Store, изолирован для безопасности.",
+        "disadvantages": "Ограниченный контроль над установкой, требует аккаунт Microsoft."
+      },
+      "winget": {
+        "title": "Пакет Winget",
+        "desc": "Установка через Windows Package Manager.",
+        "systems": "Windows 10/11",
+        "advantages": "Установка из командной строки, управление версиями, автоматические обновления (если настроено).",
+        "disadvantages": "Требует установки и настройки Winget."
+      },
+      "macosPackage": {
+        "title": "Пакет macOS (Intel)",
+        "desc": "Диск DMG для установки на Mac на базе Intel.",
+        "systems": "macOS (Intel)",
+        "advantages": "Стандартный метод установки macOS, легко установить и удалить.",
+        "disadvantages": "Только для Mac на базе Intel, требует ручных обновлений."
+      },
+      "macosPackageArm": {
+        "title": "Пакет macOS (Apple Silicon)",
+        "desc": "Диск DMG, оптимизированный для Mac на базе Apple Silicon.",
+        "systems": "macOS (Apple Silicon)",
+        "advantages": "Нативная производительность на Apple Silicon, легко установить и удалить.",
+        "disadvantages": "Только для Mac на базе Apple Silicon, требует ручных обновлений."
+      },
+      "homebrew": {
+        "title": "Формула Homebrew",
+        "desc": "Установка через пакетный менеджер Homebrew.",
+        "systems": "macOS",
+        "advantages": "Установка из командной строки, управление версиями, простые обновления.",
+        "disadvantages": "Требует установки Homebrew, может потребоваться Xcode Command Line Tools."
+      },
+      "debian": {
+        "title": "Пакет Debian (x64)",
+        "desc": "Пакет DEB для дистрибутивов Linux на базе Debian (например, Ubuntu).",
+        "systems": "Linux (x64) - Debian/Ubuntu",
+        "advantages": "Стандартный формат пакета, интеграция с системным менеджером пакетов.",
+        "disadvantages": "Требует ручной загрузки, могут возникнуть проблемы с зависимостями."
+      },
+      "debianArm": {
+        "title": "Пакет Debian (ARM64)",
+        "desc": "Пакет DEB для дистрибутивов Linux на базе ARM64.",
+        "systems": "Linux (ARM64) - Debian/Ubuntu",
+        "advantages": "Стандартный формат пакета для ARM64, интеграция с системным менеджером пакетов.",
+        "disadvantages": "Требует ручной загрузки, могут возникнуть проблемы с зависимостями."
+      },
+      "rpm": {
+        "title": "Пакет RPM (x64)",
+        "desc": "Пакет RPM для дистрибутивов Linux на базе Red Hat (например, Fedora).",
+        "systems": "Linux (x64) - Fedora/RHEL/openSUSE",
+        "advantages": "Стандартный формат пакета, интеграция с системным менеджером пакетов.",
+        "disadvantages": "Требует ручной загрузки, могут возникнуть проблемы с зависимостями."
+      },
+      "rpmArm": {
+        "title": "Пакет RPM (ARM64)",
+        "desc": "Пакет RPM для дистрибутивов Linux на базе Red Hat, основанных на ARM64.",
+        "systems": "Linux (ARM64) - Fedora/RHEL/openSUSE",
+        "advantages": "Стандартный формат пакета для ARM64, интеграция с системным менеджером пакетов.",
+        "disadvantages": "Требует ручной загрузки, могут возникнуть проблемы с зависимостями."
+      },
+      "appImage": {
+        "title": "AppImage (x64)",
+        "desc": "Портативный, автономный пакет приложения для Linux.",
+        "systems": "Linux (x64)",
+        "advantages": "Не требует установки, работает на большинстве дистрибутивов Linux x64, портативный.",
+        "disadvantages": "Больший размер файла, нет автоматических обновлений, может отсутствовать интеграция с системой.",
+        "notes": "Сделайте исполняемым и запустите напрямую."
+      },
+      "appImageArm": {
+        "title": "AppImage (ARM64)",
+        "desc": "Портативный, автономный пакет приложения для Linux ARM64.",
+        "systems": "Linux (ARM64)",
+        "advantages": "Не требует установки, работает на большинстве дистрибутивов Linux ARM64, портативный.",
+        "disadvantages": "Больший размер файла, нет автоматических обновлений, может отсутствовать интеграция с системой.",
+        "notes": "Сделайте исполняемым и запустите напрямую."
+      },
+      "tar": {
+        "title": "Архив Tar (x64)",
+        "desc": "Сжатый архив TAR, содержащий приложение для Linux.",
+        "systems": "Linux (x64)",
+        "advantages": "Не требует установки, портативный, минимальные зависимости.",
+        "disadvantages": "Нет интеграции с системой, ручные обновления, требует ручной настройки Java.",
+        "notes": "Распакуйте и запустите исполняемый файл внутри."
+      },
+      "tarArm": {
+        "title": "Архив Tar (ARM64)",
+        "desc": "Сжатый архив TAR, содержащий приложение для Linux ARM64.",
+        "systems": "Linux (ARM64)",
+        "advantages": "Не требует установки, портативный, минимальные зависимости.",
+        "disadvantages": "Нет интеграции с системой, ручные обновления, требует ручной настройки Java.",
+        "notes": "Распакуйте и запустите исполняемый файл внутри."
+      },
+      "aur": {
+        "title": "Пакет AUR",
+        "desc": "Установка из Arch User Repository.",
+        "systems": "Linux - Arch/Manjaro",
+        "advantages": "Простая установка с помощью AUR-хелперов, интеграция с системным менеджером пакетов.",
+        "disadvantages": "Требует AUR-хелпер (например, paru, yay), компиляция из исходного кода (дольше времени установки).",
+        "notes": "Используйте 'paru -S xmcl-launcher' или 'yay -S xmcl-launcher'."
+      },
+      "flathub": {
+        "title": "Пакет Flathub",
+        "desc": "Установка через универсальный репозиторий пакетов Flathub.",
+        "systems": "Linux",
+        "advantages": "Изолирован, согласованная среда, автоматические обновления, работает на большинстве дистрибутивов Linux.",
+        "disadvantages": "Требует Flatpak, больший накладной расход времени выполнения, менее нативное ощущение.",
+        "notes": "Установите с помощью 'flatpak install flathub app.xmcl.voxelum'."
+      }
+    }
   },
   "downloadMessages": {
     "noVersionsAvailable": "Нет доступных версий",
     "loadingReleases": "Загрузка релизов...",
-    "viewAllReleases": "Посмотреть все релизы",
+    "viewAllReleases": "Просмотреть все релизы",
     "brewCommands": "Команды скопированы в буфер обмена! Выполните в терминале:",
-    "releasedOn": "Выпущено"
+    "releasedOn": "Выпущен",
+    "copiedToClipboard": "Скопировано в буфер обмена!",
+    "copied": "Скопировано!",
+    "copyCommand": "Скопировать команды"
   },
   "issues": {
-    "title": "Отчёты об ошибках и проблемах",
-    "subtitle": "Отслеживайте, сообщайте и помогайте решать проблемы для улучшения XMCL для всех",
+    "title": "Проблемы и отчеты об ошибках",
+    "subtitle": "Отслеживайте, сообщайте и помогайте решать проблемы, чтобы улучшить XMCL для всех",
     "openIssues": "Открытые проблемы",
     "closedIssues": "Закрытые проблемы",
     "allIssues": "Все проблемы",
     "reportNewIssue": "Сообщить о новой проблеме",
     "viewOnGitHub": "Посмотреть на GitHub",
     "searchPlaceholder": "Поиск проблем...",
-    "openFilter": "Открытые",
-    "closedFilter": "Закрытые",
-    "newest": "Новые",
-    "recentlyUpdated": "Недавно обновлённые",
+    "openFilter": "Открыто",
+    "closedFilter": "Закрыто",
+    "newest": "Новейшие",
+    "recentlyUpdated": "Недавно обновленные",
     "mostCommented": "Самые обсуждаемые",
     "filterByLabels": "Фильтр по меткам",
     "loadingIssues": "Загрузка проблем...",
@@ -156,13 +303,13 @@
     "author": "Автор",
     "state": "Состояние",
     "labels": "Метки",
-    "assignees": "Исполнители",
-    "milestone": "Веха",
+    "assignees": "Назначенные",
+    "milestone": "Этап",
     "lastUpdated": "Последнее обновление",
     "noDescription": "Описание не предоставлено",
     "noLabels": "Нет меток",
-    "noAssignees": "Нет исполнителей",
-    "noMilestone": "Нет вехи"
+    "noAssignees": "Нет назначенных",
+    "noMilestone": "Нет этапа"
   },
   "blog": {
     "title": "Блог XMCL",
@@ -185,24 +332,27 @@
     "filterByCategory": "Фильтр по категории",
     "allCategories": "Все категории",
     "popular": "Популярные",
-    "recent": "Последние",
+    "recent": "Недавние",
     "trending": "В тренде",
     "loading": "Загрузка постов...",
     "blogStats": "Статистика блога"
   },
   "guide": {
     "title": "Руководство пользователя",
-    "subtitle": "Полные руководства и туториалы чтобы помочь вам освоить XMCL",
+    "subtitle": "Полные руководства и уроки, которые помогут вам освоить XMCL",
     "searchGuides": "Поиск руководств",
     "filterByTags": "Фильтр по тегам",
     "categories": "Категории",
+    "noGuides": "Руководства недоступны",
+    "noGuidesDescription": "Нет доступных руководств для этой категории",
     "showing": "Показано",
+    "backToGuides": "Вернуться к руководствам",
     "tableOfContents": "Содержание",
     "backToGuide": "Вернуться к руководству",
     "nextSection": "Следующий раздел",
     "previousSection": "Предыдущий раздел",
     "searchGuide": "Поиск в руководстве",
-    "noResultsFound": "Результаты не найдены",
+    "noResultsFound": "Результатов не найдено",
     "loadingGuide": "Загрузка руководства...",
     "errorLoading": "Ошибка загрузки руководства",
     "totalGuides": "руководств доступно",
@@ -210,37 +360,108 @@
     "filterByCategory": "Фильтр по категории",
     "allCategories": "Все категории",
     "newThisMonth": "Новое в этом месяце",
-    "gettingStarted": "Начало работы",
-    "advanced": "Продвинутое",
+    "gettingStarted": "Приступая к работе",
+    "advanced": "Расширенное",
     "troubleshooting": "Устранение неполадок",
     "loading": "Загрузка руководств...",
     "guideStats": "Статистика руководства",
     "featured": "Рекомендуемые",
-    "readMore": "Читать далее"
+    "readMore": "Читать далее",
+    "clearFilters": "Очистить фильтры"
+  },
+  "information": {
+    "title": "Информация",
+    "launcher_created_by": "Лаунчер создан",
+    "install": {
+      "winget_desc": "Установка с помощью Windows Package Manager",
+      "brew_desc": "Установка с помощью Homebrew Cask"
+    },
+    "features": {
+      "title": "Функции",
+      "download_title": "Загрузка и автодополнение",
+      "download": "Поддержка загрузки Minecraft, Forge, Fabric, Quilt, OptiFine, JVM с официальных или сторонних зеркал.",
+      "manage_resources_title": "Управление всеми ресурсами",
+      "manage_resources": "Используйте (жёсткие/символические) ссылки для установки ресурсов в инстансы, сохраняйте оптимальное использование диска. Никаких копий модов повсюду!",
+      "cross_platform_title": "Кроссплатформенность",
+      "cross_platform": "Лаунчер основан на Electron и поддерживает Windows 10/11, MacOS и Linux.",
+      "multi_account_title": "Многоаккаунтная система",
+      "multi_account": "Встроенный вход в Microsoft и API Mojang Yggdrasil. Также имеет встроенную поддержку ely.by и littleskin.cn. Вы также можете добавлять сторонние серверы аутентификации!",
+      "p2p_title": "Соединение Peer to Peer",
+      "p2p": "Вы можете играть в многопользовательскую игру по локальной сети, даже если вы не в одной физической локальной сети!",
+      "code_sign_title": "Подпись кода и современная упаковка",
+      "code_sign": "В Windows вы можете использовать appx и appinstaller для установки приложения. Вы больше не будете получать блокирующие сообщения от вашего браузера или видеть ошибки SmartScreen!"
+    },
+    "sponsors": {
+      "title": "Спонсоры",
+      "signpath": "Бесплатная подпись кода в Windows предоставлена SignPath.io, сертификат от SignPath Foundation",
+      "deno": "XMCL использует его безпроблемную платформу для серверных JavaScript-приложений. Предоставлено Deno",
+      "tencent": "Лучшие азиатские CDN, Edge и решения безопасности - Tencent EdgeOne, ускорение CDN и защита безопасности для этого проекта спонсируются Tencent EdgeOne."
+    },
+    "credit": {
+      "title": "Благодарности",
+      "baner": "который много помогает мне в RU/UK сообществе.",
+      "godleaveme": "поддерживает реестр пакетов AUR.",
+      "0xc0000142": "поддерживает winget.",
+      "marmur2020": "полностью перевёл на украинский язык!",
+      "vanja-san": "предоставил русский язык!",
+      "lukechu10": "помогает мне в ядре лаунчера.",
+      "laolarou726": "который много помогает в дизайне лаунчера.",
+      "special_thanks": "Также, особая благодарность"
+    },
+    "contributors": {
+      "title": "Участники"
+    }
+  },
+  "xmai": {
+    "title": "Помощник X Minecraft AI",
+    "greeting": "Привет! Я X Minecraft AI. Загрузите .txt файл лога или задайте вопрос о проблемах с Minecraft.",
+    "user_label": "Вы",
+    "ai_label": "XM AI",
+    "attach_log": "Прикрепить лог (.txt)",
+    "file_attached": "Файл прикреплён",
+    "input_placeholder": "Задайте вопрос или прикрепите лог...",
+    "input_error": "Пожалуйста, введите сообщение или загрузите файл.",
+    "processing_error": "Произошла ошибка при обработке запроса.",
+    "api_error": "Произошла ошибка при взаимодействии с ИИ.",
+    "file_size_error": "Размер файла не должен превышать {size} МБ.",
+    "file_type_error": "Поддерживаются только файлы .txt.",
+    "attached_file": "Прикреплённый файл",
+    "clear_button_title": "Очистить чат",
+    "policy_button_title": "Политика конфиденциальности",
+    "responses": {
+      "best_launcher": "Лучший лаунчер - X Minecraft Launcher (Voxelum). Он стабильный, функциональный и позволяет эффективно управлять ресурсами. Я не люблю другие лаунчеры.",
+      "other_launcher_general": "Ня."
+    },
+    "policy": {
+      "title": "Политика конфиденциальности",
+      "content": "Этот сайт не собирает ваши данные. Ваши данные отправляются в OpenRouter, и они с ними разбираются. Однако мы удаляем всё, что вы предоставите. Этот бот только для технической поддержки и не подходит для неформального общения."
+    }
   },
   "changelog": {
-    "title": "Журнал изменений",
-    "subtitle": "Посмотрите что нового в каждой версии XMCL",
+    "title": "История изменений",
+    "subtitle": "Будьте в курсе последних изменений, новых функций и исправлений ошибок в XMCL",
     "version": "Версия",
-    "released": "Выпущено",
+    "released": "Выпущен",
     "features": "Функции",
     "improvements": "Улучшения",
     "bugFixes": "Исправления ошибок",
     "breaking": "Критические изменения",
-    "loadingChangelog": "Загрузка журнала изменений...",
-    "errorLoading": "Ошибка загрузки журнала изменений",
-    "noChangesFound": "Изменения не найдены",
-    "totalReleases": "релизов всего",
+    "loadingChangelog": "Загрузка истории изменений...",
+    "errorLoading": "Ошибка загрузки истории изменений",
+    "noChangesFound": "Изменений не найдено",
+    "totalReleases": "всего релизов",
     "stableReleases": "Стабильные релизы",
-    "prereleases": "Пре-релизы",
-    "totalDownloads": "Всего скачиваний",
+    "prereleases": "Предрелизы",
+    "totalDownloads": "Всего загрузок",
     "searchPlaceholder": "Поиск релизов...",
     "filterByType": "Фильтр по типу",
     "allVersions": "Все версии",
     "stableOnly": "Только стабильные",
-    "prereleasesOnly": "Только пре-релизы",
+    "prereleasesOnly": "Только предрелизы",
     "latestVersion": "Последняя версия",
-    "downloadCount": "скачиваний"
+    "downloadCount": "загрузок",
+    "links": "Ссылки",
+    "downloads": "Загрузки"
   },
   "testing": {
     "title": "Тестовые сборки",
@@ -248,8 +469,8 @@
     "warningTitle": "Сборки разработки",
     "warningDescription": "Эти сборки предназначены только для тестирования и могут содержать ошибки",
     "useAtOwnRisk": "Используйте на свой страх и риск",
-    "notRecommendedProduction": "Не рекомендуется для продакшена",
-    "reportIssuesGitHub": "Сообщайте о проблемах на GitHub",
+    "notRecommendedProduction": "Не рекомендуется для использования в продакшене",
+    "reportIssuesGitHub": "Сообщайте о любых проблемах на GitHub",
     "lastUpdated": "Последнее обновление",
     "allPlatforms": "Все платформы",
     "downloadWindows": "Скачать для Windows",
@@ -259,12 +480,12 @@
     "howToDownload": "Как скачать",
     "howToDownloadSteps": {
       "step1": "Выберите свою платформу ниже",
-      "step2": "Скачайте подходящий файл",
-      "step3": "Установите предпочитаемым способом",
+      "step2": "Скачайте соответствующий файл",
+      "step3": "Установите с помощью предпочитаемого метода",
       "step4": "Сообщайте о любых обнаруженных проблемах",
-      "step5": "Оставляйте отзывы чтобы помочь нам улучшить продукт"
+      "step5": "Предоставляйте обратную связь, чтобы помочь нам улучшить"
     },
-    "downloadStarted": "Скачивание началось",
+    "downloadStarted": "Загрузка началась",
     "buildStatus": "Статус сборки",
     "lastBuild": "Последняя сборка",
     "buildNumber": "Номер сборки",
@@ -295,6 +516,6 @@
   },
   "docs": {
     "title": "Документация",
-    "search": "Поиск в документах"
+    "search": "Поиск по документации"
   }
 }

@@ -1,22 +1,30 @@
 import React from 'react';
-import { JsonI18nProvider, useJsonI18n } from '@/i18n/jsonContext';
-import { LanguageCode } from '@/i18n/types';
+import { JsonI18nProvider, useJsonI18n } from '@/contexts/TranslationContext';
+import { LanguageCode } from '@/types/i18n';
 
-// Компонент, который использует переводы из JSON
+type TranslationKeys = {
+  nav?: Record<string, string>;
+  ui?: Record<string, string>;
+  common?: {
+    fileSize?: Record<string, string>;
+  };
+};
+
 function TranslatedContent() {
   const { t, currentLanguage, setLanguage, isLoading } = useJsonI18n();
+  const typedT = t as TranslationKeys;
 
-  // Список доступных языков
   const languages = [
     { code: 'en' as LanguageCode, name: 'English' },
     { code: 'ru' as LanguageCode, name: 'Русский' },
     { code: 'uk' as LanguageCode, name: 'Українська' },
     { code: 'zh' as LanguageCode, name: '中文' },
     { code: 'de' as LanguageCode, name: 'Deutsch' },
-    { code: 'ja' as LanguageCode, name: '日本語' }
+    { code: 'ja' as LanguageCode, name: '日本語' },
+    { code: 'ar' as LanguageCode, name: 'العربية' },
+    { code: 'ko' as LanguageCode, name: '한국어' }
   ];
 
-  // Обработчик изменения языка
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value as LanguageCode);
   };
@@ -29,7 +37,6 @@ function TranslatedContent() {
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">JSON Translation Example</h2>
-        
         <select 
           value={currentLanguage} 
           onChange={handleLanguageChange}
@@ -46,7 +53,7 @@ function TranslatedContent() {
       <div className="space-y-4 p-4 border rounded-md">
         <h3 className="text-xl font-semibold">Navigation</h3>
         <ul className="space-y-2">
-          {t.nav && Object.entries(t.nav).map(([key, value]) => (
+          {typedT.nav && Object.entries(typedT.nav).map(([key, value]) => (
             <li key={key} className="flex">
               <span className="font-mono text-sm mr-2">{key}:</span> 
               <span>{value}</span>
@@ -58,7 +65,7 @@ function TranslatedContent() {
       <div className="space-y-4 p-4 border rounded-md">
         <h3 className="text-xl font-semibold">UI Elements</h3>
         <ul className="space-y-2">
-          {t.ui && Object.entries(t.ui).map(([key, value]) => (
+          {typedT.ui && Object.entries(typedT.ui).map(([key, value]) => (
             <li key={key} className="flex">
               <span className="font-mono text-sm mr-2">{key}:</span> 
               <span>{value}</span>
@@ -70,7 +77,7 @@ function TranslatedContent() {
       <div className="space-y-4 p-4 border rounded-md">
         <h3 className="text-xl font-semibold">File Sizes</h3>
         <ul className="space-y-2">
-          {t.common && t.common.fileSize && Object.entries(t.common.fileSize).map(([key, value]) => (
+          {typedT.common?.fileSize && Object.entries(typedT.common.fileSize).map(([key, value]) => (
             <li key={key} className="flex">
               <span className="font-mono text-sm mr-2">{key}:</span> 
               <span>{value}</span>
@@ -82,7 +89,6 @@ function TranslatedContent() {
   );
 }
 
-// Основной компонент с провайдером
 export function JsonTranslationExample() {
   return (
     <JsonI18nProvider>

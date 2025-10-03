@@ -1,1 +1,32 @@
-import { getAllGuidePosts } from '@/utils/guideUtils';\nimport { generateGuideRSSFeed } from '@/utils/rssGenerator';\n\nexport async function getGuideRSSFeed(req: Request): Promise<Response> {\n  try {\n    const posts = await getAllGuidePosts();\n    \n    if (!posts || posts.length === 0) {\n      return new Response('No guide posts found. RSS feed cannot be generated.', {\n        status: 404,\n        headers: { 'Content-Type': 'text/plain' }\n      });\n    }\n    \n    let siteUrl = '';\n    \n    try {\n      const url = new URL(req.url);\n      siteUrl = url.origin;\n    } catch (e) {\n      siteUrl = 'https://xmcl-website-not-official.vercel.app';\n      console.warn('Could not determine site URL from request, using fallback:', siteUrl);\n    }\n    \n    const rssXml = generateGuideRSSFeed(posts, siteUrl);\n    \n    if (!rssXml) {\n      return new Response('Failed to generate RSS XML', {\n        status: 500,\n        headers: { 'Content-Type': 'text/plain' }\n      });\n    }\n    \n    return new Response(rssXml, {\n      status: 200,\n      headers: {\n        'Content-Type': 'application/rss+xml',\n        'Cache-Control': 'max-age=3600'\n      }\n    });\n  } catch (error) {\n    console.error('Error generating RSS feed:', error);\n    return new Response(`Failed to generate RSS feed: ${error instanceof Error ? error.message : 'Unknown error'}`, {\n      status: 500,\n      headers: { 'Content-Type': 'text/plain' }\n    });\n  }\n}
+import { getAllGuidePosts } from '@/utils/guideUtils';
+
+export async function getGuideRSSFeed(req: Request): Promise<Response> {
+  try {
+    const posts = await getAllGuidePosts();
+    
+    if (!posts || posts.length === 0) {
+      return new Response('No guide posts found. RSS feed cannot be generated.', {
+        status: 404,
+        headers: { 'Content-Type': 'text/plain' }
+      });
+    }
+    
+    let siteUrl = '';
+    
+    try {
+      const url = new URL(req.url);
+      siteUrl = url.origin;
+    } catch (e) {
+      siteUrl = 'https://xmcl-website-not-official.vercel.app';
+      console.warn('Could not determine site URL from request, using fallback:', siteUrl);
+    }
+    
+    
+  } catch (error) {
+    console.error('Error generating RSS feed:', error);
+    return new Response(`Failed to generate RSS feed: ${error instanceof Error ? error.message : 'Unknown error'}`, {
+      status: 500,
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  }
+}

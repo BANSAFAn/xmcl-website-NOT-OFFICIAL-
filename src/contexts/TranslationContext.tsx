@@ -4,6 +4,7 @@ import type { SupportedLocale, Translations } from '@/types/i18n';
 import { loadTranslations, DEFAULT_LOCALE, isSupportedLocale, clearTranslationsCache } from '@/i18n';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
+import { languageConfigs } from '@/i18n/languageConfigs';
 
 interface TranslationContextType {
   locale: SupportedLocale;
@@ -38,48 +39,62 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
     return DEFAULT_LOCALE;
   });
 
+  const [allTranslations, setAllTranslations] = useState<Map<SupportedLocale, Translations>>(new Map());
   const [currentTranslations, setCurrentTranslations] = useState<Translations | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [englishTranslations, setEnglishTranslations] = useState<Translations | null>(null);
 
-  // Load translations when locale changes
   useEffect(() => {
-    const loadLocaleTranslations = async () => {
+    let isCancelled = false;
+
+    const loadAllTranslations = async () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        clearTranslationsCache();
-        const [en, selected] = await Promise.all([
-          loadTranslations(DEFAULT_LOCALE),
-          locale === DEFAULT_LOCALE ? Promise.resolve(null) : loadTranslations(locale)
-        ]);
-        setEnglishTranslations(en);
-        setCurrentTranslations(locale === DEFAULT_LOCALE ? en : (selected ?? en));
+        const promises = languageConfigs.map(lang => 
+          loadTranslations(lang.code).then(trans => ({ code: lang.code, trans }))
+        );
+        const results = await Promise.all(promises);
+        
+        if (!isCancelled) {
+          const map = new Map(results.map(r => [r.code, r.trans]));
+          setAllTranslations(map);
+          setCurrentTranslations(map.get(locale) || map.get(DEFAULT_LOCALE)!);
+        }
       } catch (error) {
-        console.error('Failed to load translations:', error);
-        try {
-          const enFallback = await loadTranslations(DEFAULT_LOCALE);
-          setEnglishTranslations(enFallback);
-          setCurrentTranslations(enFallback);
-        } catch (fallbackError) {
-          console.error('Failed to load fallback translations:', fallbackError);
+        if (!isCancelled) {
+          console.error('Failed to load translations:', error);
+          // fallback to default
+          loadTranslations(DEFAULT_LOCALE).then(fallback => {
+            if (!isCancelled) {
+              setAllTranslations(new Map([[DEFAULT_LOCALE, fallback]]));
+              setCurrentTranslations(fallback);
+            }
+          });
         }
       } finally {
-        setIsLoading(false);
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
       }
     };
     
-    loadLocaleTranslations();
-  }, [locale]);
+    loadAllTranslations();
+
+    return () => {
+      isCancelled = true;
+      clearTranslationsCache();
+    };
+  }, []);
 
   const changeLanguage = (newLocale: SupportedLocale) => {
-    setLocale(newLocale);
-    localStorage.setItem('language', newLocale);
-    
-    // Update document language
-    document.documentElement.lang = newLocale;
+    if (allTranslations.has(newLocale)) {
+      setLocale(newLocale);
+      setCurrentTranslations(allTranslations.get(newLocale)!);
+      localStorage.setItem('language', newLocale);
+      document.documentElement.lang = newLocale;
+    }
   };
 
-  // Translation helper function with English fallback
+  // Translation helper function
   const t = (key: string, fallback?: string): string => {
     if (!currentTranslations) {
       return fallback || key;
@@ -103,6 +118,8 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
       return currentValue;
     }
 
+    const englishTranslations = allTranslations.get(DEFAULT_LOCALE);
+
     if (englishTranslations) {
       const enValue = getValue(englishTranslations, key);
       if (enValue !== null) {
@@ -116,12 +133,10 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
     return fallback || key;
   };
 
-  // Set document language on mount and locale change
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
 
-  // Show loading state while translations are loading
   if (isLoading || !currentTranslations) {
     return (
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center" aria-busy="true" aria-live="polite">

@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Github, ExternalLink, Copy, Check, Monitor, Smartphone, Laptop, Package, Terminal } from 'lucide-react';
+import { Download, Github, ExternalLink, Copy, Check, Monitor, Smartphone, Laptop, Package, Terminal, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,35 +8,371 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-interface MousePosition {
-  x: number;
-  y: number;
+// Определение типов для данных GitHub API
+interface GitHubAsset {
+  id: number;
+  name: string;
+  browser_download_url: string;
+  size: number;
+  download_count?: number;
+}
+
+interface GitHubRelease {
+  tag_name: string;
+  published_at: string;
+  assets: GitHubAsset[];
+  html_url: string;
 }
 
 interface PlatformAssets {
   windows: {
-    x64: any[];
-    app: any[];
+    x64: GitHubAsset[];
+    app: GitHubAsset[];
   };
   macos: {
-    x64: any[];
-    arm64: any[];
+    x64: GitHubAsset[];
+    arm64: GitHubAsset[];
   };
   linux: {
-    x64: any[];
-    arm64: any[];
+    x64: GitHubAsset[];
+    arm64: GitHubAsset[];
   };
 }
 
+interface PackageInfo {
+  title: string;
+  description: string;
+  systems: string;
+  advantages: string;
+  disadvantages: string;
+}
+
+// Используем memo для предотвращения лишних перерисовок
+const DownloadCard = memo(({ title, description, icon, downloadUrl, size, downloads, index, isCommand = false, commandText = '' }: {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  downloadUrl?: string;
+  size?: number;
+  downloads?: number;
+  index: number;
+  isCommand?: boolean;
+  commandText?: string;
+}) => {
+  const { t } = useTranslation();
+  const [copiedItem, setCopiedItem] = useState<string | null>(null);
+  const [showInfo, setShowInfo] = useState(false);
+
+  const handleCopy = (text: string, item: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedItem(item);
+    toast.success(t('downloadMessages.copiedToClipboard') || 'Copied to clipboard!');
+    setTimeout(() => setCopiedItem(null), 2000);
+  };
+
+  const getPackageInfo = (title: string): PackageInfo => {
+    const infoMap: Record<string, PackageInfo> = {
+      'Windows Installer': {
+        title: t('downloadSection.info.windowsInstaller.title'),
+        description: t('downloadSection.info.windowsInstaller.desc'),
+        systems: t('downloadSection.info.windowsInstaller.systems'),
+        advantages: t('downloadSection.info.windowsInstaller.advantages'),
+        disadvantages: t('downloadSection.info.windowsInstaller.disadvantages'),
+      },
+      'Windows Archive': {
+        title: t('downloadSection.info.windowsArchive.title'),
+        description: t('downloadSection.info.windowsArchive.desc'),
+        systems: t('downloadSection.info.windowsArchive.systems'),
+        advantages: t('downloadSection.info.windowsArchive.advantages'),
+        disadvantages: t('downloadSection.info.windowsArchive.disadvantages'),
+      },
+      'Windows Store App': {
+        title: t('downloadSection.info.windowsStore.title'),
+        description: t('downloadSection.info.windowsStore.desc'),
+        systems: t('downloadSection.info.windowsStore.systems'),
+        advantages: t('downloadSection.info.windowsStore.advantages'),
+        disadvantages: t('downloadSection.info.windowsStore.disadvantages'),
+      },
+      'Winget': {
+        title: t('downloadSection.info.winget.title'),
+        description: t('downloadSection.info.winget.desc'),
+        systems: t('downloadSection.info.winget.systems'),
+        advantages: t('downloadSection.info.winget.advantages'),
+        disadvantages: t('downloadSection.info.winget.disadvantages'),
+      },
+      'macOS Package': {
+        title: t('downloadSection.info.macosPackage.title'),
+        description: t('downloadSection.info.macosPackage.desc'),
+        systems: t('downloadSection.info.macosPackage.systems'),
+        advantages: t('downloadSection.info.macosPackage.advantages'),
+        disadvantages: t('downloadSection.info.macosPackage.disadvantages'),
+      },
+      'macOS Package (Apple Silicon)': {
+        title: t('downloadSection.info.macosPackageArm.title'),
+        description: t('downloadSection.info.macosPackageArm.desc'),
+        systems: t('downloadSection.info.macosPackageArm.systems'),
+        advantages: t('downloadSection.info.macosPackageArm.advantages'),
+        disadvantages: t('downloadSection.info.macosPackageArm.disadvantages'),
+      },
+      'Homebrew': {
+        title: t('downloadSection.info.homebrew.title'),
+        description: t('downloadSection.info.homebrew.desc'),
+        systems: t('downloadSection.info.homebrew.systems'),
+        advantages: t('downloadSection.info.homebrew.advantages'),
+        disadvantages: t('downloadSection.info.homebrew.disadvantages'),
+      },
+      'Debian Package': {
+        title: t('downloadSection.info.debian.title'),
+        description: t('downloadSection.info.debian.desc'),
+        systems: t('downloadSection.info.debian.systems'),
+        advantages: t('downloadSection.info.debian.advantages'),
+        disadvantages: t('downloadSection.info.debian.disadvantages'),
+      },
+      'Debian Package (ARM64)': {
+        title: t('downloadSection.info.debianArm.title'),
+        description: t('downloadSection.info.debianArm.desc'),
+        systems: t('downloadSection.info.debianArm.systems'),
+        advantages: t('downloadSection.info.debianArm.advantages'),
+        disadvantages: t('downloadSection.info.debianArm.disadvantages'),
+      },
+      'RPM Package': {
+        title: t('downloadSection.info.rpm.title'),
+        description: t('downloadSection.info.rpm.desc'),
+        systems: t('downloadSection.info.rpm.systems'),
+        advantages: t('downloadSection.info.rpm.advantages'),
+        disadvantages: t('downloadSection.info.rpm.disadvantages'),
+      },
+      'RPM Package (ARM64)': {
+        title: t('downloadSection.info.rpmArm.title'),
+        description: t('downloadSection.info.rpmArm.desc'),
+        systems: t('downloadSection.info.rpmArm.systems'),
+        advantages: t('downloadSection.info.rpmArm.advantages'),
+        disadvantages: t('downloadSection.info.rpmArm.disadvantages'),
+      },
+      'AppImage': {
+        title: t('downloadSection.info.appImage.title'),
+        description: t('downloadSection.info.appImage.desc'),
+        systems: t('downloadSection.info.appImage.systems'),
+        advantages: t('downloadSection.info.appImage.advantages'),
+        disadvantages: t('downloadSection.info.appImage.disadvantages'),
+      },
+      'AppImage (ARM64)': {
+        title: t('downloadSection.info.appImageArm.title'),
+        description: t('downloadSection.info.appImageArm.desc'),
+        systems: t('downloadSection.info.appImageArm.systems'),
+        advantages: t('downloadSection.info.appImageArm.advantages'),
+        disadvantages: t('downloadSection.info.appImageArm.disadvantages'),
+      },
+      'Tar Archive': {
+        title: t('downloadSection.info.tar.title'),
+        description: t('downloadSection.info.tar.desc'),
+        systems: t('downloadSection.info.tar.systems'),
+        advantages: t('downloadSection.info.tar.advantages'),
+        disadvantages: t('downloadSection.info.tar.disadvantages'),
+      },
+      'Tar Archive (ARM64)': {
+        title: t('downloadSection.info.tarArm.title'),
+        description: t('downloadSection.info.tarArm.desc'),
+        systems: t('downloadSection.info.tarArm.systems'),
+        advantages: t('downloadSection.info.tarArm.advantages'),
+        disadvantages: t('downloadSection.info.tarArm.disadvantages'),
+      },
+      'AUR': {
+        title: t('downloadSection.info.aur.title'),
+        description: t('downloadSection.info.aur.desc'),
+        systems: t('downloadSection.info.aur.systems'),
+        advantages: t('downloadSection.info.aur.advantages'),
+        disadvantages: t('downloadSection.info.aur.disadvantages'),
+      },
+      'Flathub': {
+        title: t('downloadSection.info.flathub.title'),
+        description: t('downloadSection.info.flathub.desc'),
+        systems: t('downloadSection.info.flathub.systems'),
+        advantages: t('downloadSection.info.flathub.advantages'),
+        disadvantages: t('downloadSection.info.flathub.disadvantages'),
+      },
+    };
+
+    return infoMap[title] || {
+      title: t('downloadSection.info.default.title'),
+      description: t('downloadSection.info.default.desc'),
+      systems: t('downloadSection.info.default.systems'),
+      advantages: t('downloadSection.info.default.advantages'),
+      disadvantages: t('downloadSection.info.default.disadvantages'),
+    };
+  };
+
+  const packageInfo = getPackageInfo(title);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="relative group"
+    >
+      <Card 
+        className="p-8 hover:shadow-2xl transition-all duration-500 relative overflow-hidden backdrop-blur-md bg-white/95 dark:bg-slate-800/95 border-2 border-transparent group-hover:border-blue-200/50 dark:group-hover:border-blue-700/50"
+        style={{
+          boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 16px, rgba(0, 0, 0, 0.1) 0px 8px 24px, rgba(0, 0, 0, 0.1) 0px 16px 56px'
+        }}
+      >
+        {/* Кнопка информации в левом верхнем углу */}
+        <button
+          onClick={() => setShowInfo(true)}
+          className="absolute top-4 left-4 p-2 rounded-full bg-slate-200/70 dark:bg-slate-700/70 backdrop-blur-sm text-slate-700 dark:text-slate-300 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:text-blue-300 transition-colors z-20"
+          aria-label={t('downloadSection.infoButtonLabel') || 'Package information'}
+        >
+          <Info className="w-4 h-4" />
+        </button>
+
+        {/* Контент карточки с отступом сверху для компенсации кнопки */}
+        <div className="text-center relative z-10 pt-8">
+          <motion.div 
+            className="text-5xl mb-6 relative"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div className="relative inline-block">
+              {icon}
+              <motion.div
+                className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              />
+            </div>
+          </motion.div>
+          
+          <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+            {title}
+          </h3>
+          
+          <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
+            {description}
+          </p>
+          
+          {!isCommand && size && (
+            <div className="flex justify-between text-sm text-slate-500 mb-6 bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl p-4 border border-slate-200/50 dark:border-slate-600/50">
+              <span className="font-medium">{size} {t('downloadSection.sizeMB')}</span>
+              {downloads !== undefined && (
+                <span className="font-medium">{downloads} {t('downloadSection.downloadCount')}</span>
+              )}
+            </div>
+          )}
+
+          {isCommand && commandText && (
+            <div className="mb-6">
+              <div className="bg-slate-900 dark:bg-slate-800 rounded-xl p-4 border border-slate-700">
+                <code className="text-green-400 dark:text-green-300 text-sm font-mono whitespace-pre-wrap">
+                  {commandText}
+                </code>
+              </div>
+            </div>
+          )}
+          
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Button
+              onClick={() => {
+                if (isCommand && commandText) {
+                  handleCopy(commandText, title);
+                } else if (downloadUrl) {
+                  window.open(downloadUrl, '_blank');
+                }
+              }}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 border-0"
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                boxShadow: 'rgba(102, 126, 234, 0.4) 0px 8px 32px'
+              }}
+            >
+              {isCommand ? (
+                copiedItem === title ? (
+                  <>
+                    <Check className="w-5 h-5 mr-3" />
+                    {t('downloadMessages.copied') || 'Copied!'}
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-5 h-5 mr-3" />
+                    {t('downloadMessages.copyCommand') || 'Copy Commands'}
+                  </>
+                )
+              ) : (
+                <>
+                  <Download className="w-5 h-5 mr-3" />
+                  {t('downloadSection.download')}
+                </>
+              )}
+            </Button>
+          </motion.div>
+        </div>
+      </Card>
+
+      {/* Модальное окно с информацией - теперь внутри карточки (absolute) */}
+      {showInfo && (
+        <motion.div
+          className="absolute inset-0 bg-black/80 backdrop-blur-md z-40 flex items-center justify-center p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={() => setShowInfo(false)}
+        >
+          <motion.div
+            className="max-w-md w-full max-h-[90vh] overflow-y-auto"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()} // Предотвращаем закрытие при клике на контент
+          >
+            <Card className="p-6 relative">
+              <button
+                onClick={() => setShowInfo(false)}
+                className="absolute top-4 right-4 p-1 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+                aria-label={t('common.close') || 'Close'}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+              <h3 className="text-xl font-bold mb-4">{packageInfo.title}</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-4 text-sm">{packageInfo.description}</p>
+              
+              <div className="space-y-3">
+                <div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">{t('downloadSection.info.systems')}</h4>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{packageInfo.systems}</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">{t('downloadSection.info.advantages')}</h4>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{packageInfo.advantages}</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">{t('downloadSection.info.disadvantages')}</h4>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{packageInfo.disadvantages}</p>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        </motion.div>
+      )}
+    </motion.div>
+  );
+});
+
+DownloadCard.displayName = 'DownloadCard';
+
 const NewDownloadSection = () => {
   const { t } = useTranslation();
-  const [selectedOS, setSelectedOS] = useState('windows');
-  const [copiedItem, setCopiedItem] = useState<string | null>(null);
-  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
+  const [selectedOS, setSelectedOS] = useState<'windows' | 'macos' | 'linux'>('windows');
   const sectionRef = useRef<HTMLElement>(null);
 
   // Fetch latest release from GitHub
-  const { data: releases, isLoading, error } = useQuery({
+  const { data: releases, isLoading, error } = useQuery<GitHubRelease[]>({
     queryKey: ['github-releases'],
     queryFn: async () => {
       const response = await fetch('https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases');
@@ -44,13 +380,17 @@ const NewDownloadSection = () => {
         if (response.status === 403) {
           throw new Error('GitHub API rate limit exceeded');
         }
-        throw new Error('Failed to fetch releases');
+        throw new Error(`Failed to fetch releases: ${response.status} ${response.statusText}`);
       }
-      return response.json();
+      const data = await response.json();
+      return Array.isArray(data) ? data : [];
     },
-    retry: false,
+    retry: 1,
     refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000 // 5 minutes
+    staleTime: 5 * 60 * 1000,
+    onError: (err) => {
+      console.error("Error fetching releases:", err);
+    }
   });
 
   const getPlatformDescription = (platform: string, packageType: string) => {
@@ -73,51 +413,20 @@ const NewDownloadSection = () => {
       'AUR': t('downloadSection.aurDesc'),
       'Flathub': t('downloadSection.flathubDesc')
     };
-    return descriptions[packageType] || packageType;
+    return descriptions[packageType as keyof typeof descriptions] || packageType;
   };
 
   const latestRelease = releases?.[0];
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        setMousePosition({ x, y });
-      }
-    };
-
-    const section = sectionRef.current;
-    if (section) {
-      section.addEventListener('mousemove', handleMouseMove);
-      return () => section.removeEventListener('mousemove', handleMouseMove);
-    }
-  }, []);
-
-  const handleCopy = (text: string, item: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedItem(item);
-    toast.success('Copied to clipboard!');
-    setTimeout(() => setCopiedItem(null), 2000);
-  };
-
-  const getFilteredAssets = (assets: any[]): PlatformAssets => {
-    if (!assets) return { 
-      windows: { x64: [], app: [] }, 
-      macos: { x64: [], arm64: [] }, 
-      linux: { x64: [], arm64: [] } 
-    };
-
-    // First filter out SHA256, blockmap, and other service files
-    const filteredAssets = assets.filter((asset: any) => {
+  const getFilteredAssets = (assets: GitHubAsset[] = []): PlatformAssets => {
+    const filteredAssets = assets.filter((asset) => {
       const name = asset.name.toLowerCase();
       return !name.includes('sha256') && 
              !name.includes('blockmap') && 
              !name.includes('.sig') &&
              !name.includes('.txt') &&
              !name.includes('.yml') &&
-             asset.size > 1024 * 1024; // Only files larger than 1MB
+             asset.size > 1024 * 1024;
     });
     
     return {
@@ -186,12 +495,6 @@ const NewDownloadSection = () => {
           : 'none'
       }}
     >
-      <motion.div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(300px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.1), transparent)`
-        }}
-      />
       <span className="text-2xl relative z-10">{icon}</span>
       <span className="text-lg relative z-10">{name}</span>
       {isSelected && (
@@ -206,117 +509,6 @@ const NewDownloadSection = () => {
     </motion.button>
   );
 
-  const DownloadCard = ({ title, description, icon, downloadUrl, size, downloads, index, isCommand = false, commandText = '' }: {
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    downloadUrl?: string;
-    size?: number;
-    downloads?: number;
-    index: number;
-    isCommand?: boolean;
-    commandText?: string;
-  }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative group"
-    >
-      <Card 
-        className="p-8 hover:shadow-2xl transition-all duration-500 relative overflow-hidden backdrop-blur-md bg-white/95 dark:bg-slate-800/95 border-2 border-transparent group-hover:border-blue-200/50 dark:group-hover:border-blue-700/50"
-        style={{
-          boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 16px, rgba(0, 0, 0, 0.1) 0px 8px 24px, rgba(0, 0, 0, 0.1) 0px 16px 56px'
-        }}
-      >
-        <motion.div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-          style={{
-            background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.05), transparent)`
-          }}
-        />
-        
-        <div className="text-center relative z-10">
-          <motion.div 
-            className="text-5xl mb-6 relative"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <div className="relative inline-block">
-              {icon}
-              <motion.div
-                className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-              />
-            </div>
-          </motion.div>
-          
-          <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
-            {title}
-          </h3>
-          
-          <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
-            {description}
-          </p>
-          
-          {!isCommand && size && downloads && (
-            <div className="flex justify-between text-sm text-slate-500 mb-6 bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl p-4 border border-slate-200/50 dark:border-slate-600/50">
-              <span className="font-medium">{size} {t('downloadSection.sizeMB')}</span>
-              <span className="font-medium">{downloads} {t('downloadSection.downloadCount')}</span>
-            </div>
-          )}
-
-          {isCommand && commandText && (
-            <div className="mb-6">
-              <div className="bg-slate-900 dark:bg-slate-800 rounded-xl p-4 border border-slate-700">
-                <code className="text-green-400 dark:text-green-300 text-sm font-mono whitespace-pre-wrap">
-                  {commandText}
-                </code>
-              </div>
-            </div>
-          )}
-          
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              onClick={() => {
-                if (isCommand && commandText) {
-                  handleCopy(commandText, title);
-                } else if (downloadUrl) {
-                  window.open(downloadUrl, '_blank');
-                }
-              }}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 border-0"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                boxShadow: 'rgba(102, 126, 234, 0.4) 0px 8px 32px'
-              }}
-            >
-              {isCommand ? (
-                copiedItem === title ? (
-                  <>
-                    <Check className="w-5 h-5 mr-3" />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-5 h-5 mr-3" />
-                    Copy Commands
-                  </>
-                )
-              ) : (
-                <>
-                  <Download className="w-5 h-5 mr-3" />
-                  {t('downloadSection.download')}
-                </>
-              )}
-            </Button>
-          </motion.div>
-        </div>
-      </Card>
-    </motion.div>
-  );
-
   if (isLoading) {
     return (
       <section className="py-20 px-4 relative overflow-hidden">
@@ -327,7 +519,7 @@ const NewDownloadSection = () => {
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
-          <p className="text-slate-600 dark:text-slate-400 text-lg">{t('downloadMessages.loadingReleases')}</p>
+          <p className="text-slate-600 dark:text-slate-400 text-lg">{t('downloadMessages.loadingReleases') || 'Loading releases...'}</p>
         </div>
       </section>
     );
@@ -335,26 +527,33 @@ const NewDownloadSection = () => {
 
   if (error || !latestRelease) {
     const isRateLimit = error?.message?.includes('rate limit');
+    const isNetworkError = error instanceof TypeError;
     return (
       <section className="py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-md mx-auto p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
             <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-2">
-              {isRateLimit ? 'GitHub API rate limit exceeded' : 'Unable to load releases'}
+              {isRateLimit 
+                ? 'GitHub API rate limit exceeded' 
+                : isNetworkError 
+                  ? 'Network Error' 
+                  : 'Unable to load releases'}
             </h3>
             <p className="text-red-600 dark:text-red-400 mb-4">
-              {isRateLimit ? 'Please try again in a few minutes.' : 'Failed to fetch release information.'}
+              {isRateLimit 
+                ? 'Please try again in a few minutes.' 
+                : isNetworkError
+                  ? 'Please check your internet connection.'
+                  : 'Failed to fetch release information.'}
             </p>
-            {isRateLimit && (
-              <Button
-                onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/releases', '_blank')}
-                className="bg-red-600 hover:bg-red-700 text-white"
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                View on GitHub
-              </Button>
-            )}
+            <Button
+              onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/releases', '_blank')}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              View on GitHub
+            </Button>
           </div>
         </div>
       </section>
@@ -369,18 +568,6 @@ const NewDownloadSection = () => {
       className="py-20 px-4 relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
-      
-      <motion.div
-        className="absolute w-96 h-96 rounded-full opacity-50"
-        style={{
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 50%, transparent 100%)',
-        }}
-        animate={{
-          x: mousePosition.x - 200,
-          y: mousePosition.y - 200,
-        }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-      />
       
       <div className="container mx-auto relative z-10">
         <div className="text-center mb-16">
@@ -599,21 +786,21 @@ const NewDownloadSection = () => {
                     );
                   })}
                   
-                   <DownloadCard
-                     title="AUR"
-                     description={getPlatformDescription('linux', 'AUR')}
-                     icon={<Package />}
-                     downloadUrl="https://aur.archlinux.org/packages/xmcl-launcher"
-                     index={platformAssets.linux.x64.length + 1}
-                   />
-                   
-                   <DownloadCard
-                     title="Flathub"
-                     description={getPlatformDescription('linux', 'Flathub')}
-                     icon={<Package />}
-                     downloadUrl="https://flathub.org/apps/app.xmcl.voxelum"
-                     index={platformAssets.linux.x64.length + 2}
-                   />
+                  <DownloadCard
+                    title="AUR"
+                    description={getPlatformDescription('linux', 'AUR')}
+                    icon={<Package />}
+                    downloadUrl="https://aur.archlinux.org/packages/xmcl-launcher"
+                    index={platformAssets.linux.x64.length}
+                  />
+                  
+                  <DownloadCard
+                    title="Flathub"
+                    description={getPlatformDescription('linux', 'Flathub')}
+                    icon={<Package />}
+                    downloadUrl="https://flathub.org/apps/app.xmcl.voxelum"
+                    index={platformAssets.linux.x64.length + 1}
+                  />
                 </div>
               </div>
 

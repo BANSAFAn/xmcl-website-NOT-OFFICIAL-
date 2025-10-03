@@ -7,7 +7,7 @@
       "author": "Baneronetwo",
       "date": "2025-09-20",
       "tags": ["web", "i18n"],
-      "slug": "en",
+      "slug": "i18n-en",
       "readTime": "20 min",
       "difficulty": "Website"
     },
@@ -18,7 +18,7 @@
       "author": "Baneronetwo",
       "date": "2025-09-20",
       "tags": ["web", "i18n"],
-      "slug": "uk",
+      "slug": "i18n-uk",
       "readTime": "20 min",
       "difficulty": "Веб-сайт"
     },
@@ -29,11 +29,77 @@
       "author": "Baneronetwo",
       "date": "2025-09-20",
       "tags": ["web", "i18n"],
-      "slug": "zh",
+      "slug": "i18n-zh",
       "readTime": "20 min",
       "difficulty": "网站"
+    },
+    {
+      "id": "4",
+      "title": "Demo minecraft",
+      "excerpt": "Minecraft demo version - how to solve this?",
+      "author": "Voxelum",
+      "date": "2025-01-10",
+      "tags": ["account", "launcher","demo-minecraft"],
+      "slug": "demo-minecraft",
+      "readTime": "10 min",
+      "difficulty": "Account"
+    },
+    {
+      "id": "5",
+      "title": "Data Storage ",
+      "excerpt": "How to store data in Minecraft?",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["Data-Storage"],
+      "slug": "Data-Storage",
+      "readTime": "14 min",
+      "difficulty": "Storage"
+    },
+    {
+      "id": "6",
+      "title": "User",
+      "excerpt": "User data is stored under",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","user"],
+      "slug": "user",
+      "readTime": "14 min",
+      "difficulty": "User"
+    },
+    {
+      "id": "7",
+      "title": "Setting",
+      "excerpt": "Global Setting",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","setting"],
+      "slug": "setting",
+      "readTime": "14 min",
+      "difficulty": "Setting"
+    },
+    {
+      "id": "8",
+      "title": "Java",
+      "excerpt": "Java Data Cache",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","java"],
+      "slug": "java",
+      "readTime": "14 min",
+      "difficulty": "Java"
+    },
+    {
+      "id": "9",
+      "title": "Instance Copy",
+      "excerpt": "How to copy an instance?",
+      "author": "CIO10",
+      "date": "2025-01-10",
+      "tags": ["launcher","instance"],
+      "slug": "instance-copy",
+      "readTime": "14 min",
+      "difficulty": "Instance"
     }
   ],
-  "categories": ["advanced", "mods", "test", "markdown"],
-  "featured": []
+  "categories": ["advanced", "account", "launcher", "mods", "test", "markdown", "java", "instance"],
+  "featured": ["demo-minecraft","Data-Storage"]
 }
