@@ -68,7 +68,7 @@
     "open": "打开"
   },
   "home": {
-    "heroTitle": "现代化 Minecraft 启动器",
+    "heroTitle": "X Minecraft Launcher",
     "heroSubtitle": "通过高级模组管理、性能优化和跨平台支持，以前所未有的方式体验 Minecraft",
     "getStarted": "开始使用",
     "learnMore": "了解更多",
@@ -301,6 +301,8 @@
     "mostCommented": "最多评论",
     "filterByLabels": "按标签筛选",
     "loadingIssues": "正在加载问题...",
+    "stats": "统计",
+    "allLabels": "所有标签",
     "noIssuesFound": "未找到问题",
     "createdBy": "创建者",
     "errorLoading": "加载问题时出错",
@@ -520,5 +522,10 @@
   "docs": {
     "title": "文档",
     "search": "搜索文档"
+  },
+  "action": {
+    "preview": "预览",
+    "hide": "隐藏",
+    "goToIssue": "跳转问题"
   }
 }

@@ -68,7 +68,7 @@
     "open": "Open"
   },
   "home": {
-    "heroTitle": "Modern Minecraft Launcher",
+    "heroTitle": "X Minecraft Launcher",
     "heroSubtitle": "Experience Minecraft like never before with advanced mod management, performance optimization, and cross-platform support",
     "getStarted": "Get Started",
     "learnMore": "Learn More",
@@ -79,6 +79,8 @@
     "everythingYouNeed": "Everything You Need",
     "comprehensiveSolution": "A comprehensive solution for Minecraft modding",
     "downloadManageWhatever": "Download & Manage Whatever You Want",
+    "optimalDiskSpace":"Optimal disk space with Massive Resources",
+    "optimalDiskSpaceDesc":"XMCL will store all the mods, resource packs, shader packs and modpacks to a single store location. While you try to use any known resource, it will use hard link to install the resource to the instance without copying. It means you will never see any duplicated copy in /mods folder anymore.",
     "downloadManageWhateverDesc": "Access thousands of mods from multiple platforms with automatic updates and dependency management",
     "crossPlatformSupportTitle": "True Cross-Platform Support",
     "crossPlatformSupportDesc": "Native performance on Windows, macOS, and Linux with consistent user experience across all platforms",
@@ -95,6 +97,9 @@
     "hardLink": "Hard Link",
     "symbolicLink": "Symbolic Link",
     "feature5Title": "Resource Pack Management",
+    "multipleInstances": "Multiple Instances",
+    "multipleInstancesDesc": "Play online with friends, share files via p2p",
+    "p2p": "Peer-to-Peer",
     "feature5Description": "Organize and apply resource packs with preview and automatic updates",
     "feature6Title": "Save Management",
     "feature6Description": "Backup, restore, and share your worlds with cloud synchronization"
@@ -297,6 +302,8 @@
     "openFilter": "Open",
     "closedFilter": "Closed",
     "newest": "Newest",
+    "allLabels": "All Labels",
+    "stats": "Stats",
     "recentlyUpdated": "Recently Updated",
     "mostCommented": "Most Commented",
     "filterByLabels": "Filter by Labels",
@@ -526,5 +533,10 @@
   "docs": {
     "title": "Documentation",
     "search": "Search docs"
+  },
+  "actions": {
+    "preview": "Preview",
+    "hide": "Hide",
+    "goToIssue": "Go to Issue"
   }
 }

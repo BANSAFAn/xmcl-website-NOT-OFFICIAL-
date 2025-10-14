@@ -10,8 +10,6 @@ import { Footer } from '@/components/Footer';
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import Guide from "./pages/Guide";
-import Changelog from "./pages/Changelog";
-import Issues from "./pages/Issues";
 import ModernChangelog from "./pages/ModernChangelog";
 import ModernIssues from "./pages/ModernIssues";
 import Testing from "./pages/Testing";
