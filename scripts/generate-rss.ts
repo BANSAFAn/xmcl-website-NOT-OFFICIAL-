@@ -1,30 +1,24 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import { getAllBlogPosts } from '../src/utils/blogUtils.ts';
-import { getAllGuidePosts } from '../src/utils/guideUtils.ts';
+import { getAllBlogPosts } from "../src/utils/blogUtils.ts";
+import { getAllGuidePosts } from "../src/utils/guideUtils.ts";
 
-
-const siteUrl = 'https://xmcl-website-not-official.vercel.app';
+const siteUrl = "https://xmcl-website-not-official.vercel.app";
 
 async function generate() {
   const blogPosts = await getAllBlogPosts();
   const blogRss = generateRSSFeed(blogPosts, siteUrl);
-  fs.writeFileSync(path.join(__dirname, '../public/rss.xml'), blogRss);
+  fs.writeFileSync(path.join(__dirname, "../public/rss.xml"), blogRss);
 
   const guidePosts = await getAllGuidePosts();
   const guideRss = generateGuideRSSFeed(guidePosts, siteUrl);
-  fs.writeFileSync(path.join(__dirname, '../public/guide-rss.xml'), guideRss);
+  fs.writeFileSync(path.join(__dirname, "../public/guide-rss.xml"), guideRss);
 }
 
 generate();
-
-
-// Add RSS generation functions
-
-// Replace incorrect entities with proper JS syntax
 
 function generateRSSFeed(posts, siteUrl) {
   posts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -47,7 +41,7 @@ function generateRSSFeed(posts, siteUrl) {
       <title><![CDATA[${post.title}]]></title>
       <link>${siteUrl}/blogs/${post.slug}</link>
       <guid>${siteUrl}/blogs/${post.slug}</guid>
-      <description><![CDATA[${post.excerpt || ''}]]></description>
+      <description><![CDATA[${post.excerpt || ""}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <author><![CDATA[${post.author}]]></author>
 `;
@@ -91,7 +85,7 @@ function generateGuideRSSFeed(posts, siteUrl) {
       <title><![CDATA[${post.title}]]></title>
       <link>${siteUrl}/guide/${post.slug}</link>
       <guid>${siteUrl}/guide/${post.slug}</guid>
-      <description><![CDATA[${post.excerpt || ''}]]></description>
+      <description><![CDATA[${post.excerpt || ""}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <author><![CDATA[${post.author}]]></author>
 `;
