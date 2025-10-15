@@ -20,8 +20,19 @@ async function generate() {
 
 generate();
 
-function generateRSSFeed(posts, siteUrl) {
-  posts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+type BlogPost = {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  author: string;
+  tags?: string[];
+  date: string | number | Date;
+};
+
+function generateRSSFeed(posts: BlogPost[], siteUrl: string): string {
+  const sorted = posts
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -35,7 +46,7 @@ function generateRSSFeed(posts, siteUrl) {
     <generator>XMCL Website</generator>
 `;
 
-  for (let post of posts) {
+  for (let post of sorted) {
     xml += `
     <item>
       <title><![CDATA[${post.title}]]></title>
@@ -64,8 +75,10 @@ function generateRSSFeed(posts, siteUrl) {
   return xml;
 }
 
-function generateGuideRSSFeed(posts, siteUrl) {
-  posts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+function generateGuideRSSFeed(posts: BlogPost[], siteUrl: string): string {
+  const sorted = posts
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -79,7 +92,7 @@ function generateGuideRSSFeed(posts, siteUrl) {
     <generator>XMCL Website</generator>
 `;
 
-  for (let post of posts) {
+  for (let post of sorted) {
     xml += `
     <item>
       <title><![CDATA[${post.title}]]></title>
