@@ -29,7 +29,29 @@ Click to jump to the downloads section in the site (or to the relevant UI compon
 
 (These badges are decorative and point to the downloads UI in the app/site.)
 
----
+Available packages & architectures (added)
+------------------------------------------
+This project exposes information about available installer/package types and CPU architectures. Additions below clarify which package formats and architectures are provided by builds referenced on the site.
+
+- Windows
+  - Package types: `EXE` (traditional installer) and `Appx`/`MSIX` (store-style package).
+  - Architectures: x64 builds are provided for both `EXE` and `Appx`/`MSIX`.
+  - Notes: if you distribute an `Appx`/`MSIX` package, treat it as a store-style installer (signed) and document installation steps for end users.
+
+- Linux
+  - Package types: `AppImage`, `DEB`, `RPM`, `AUR` helper packages, and Flatpak/Flathub where applicable.
+  - Architectures: x64 (amd64 / x86_64) builds are the primary target; 32‑bit (i386 / x86) builds are also available where maintained.
+  - Notes: availability of 32‑bit builds depends on the upstream build pipeline and distro packaging — users of older 32‑bit distributions should check the downloads page for the specific artifact.
+
+- macOS
+  - Package types: `DMG` and `.app` bundles; Homebrew formula support may be provided for macOS builds distributed via Homebrew.
+  - Architectures: x64 builds are provided; 32‑bit builds are available for platforms where they are still supported (older macOS releases).
+  - Notes: modern macOS releases dropped 32‑bit support — include a compatibility note on the downloads page indicating which macOS versions support 32‑bit packages.
+
+Security & verification
+-----------------------
+- Always verify checksums and signatures if provided on the downloads page.
+- This repository is unofficial — critical installers should be validated against the official upstream channels before trusting.
 
 Where repository content lives (clarified)
 ------------------------------------------
