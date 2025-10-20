@@ -4,6 +4,7 @@ import React, {
   useState,
   ReactNode,
   useCallback,
+  useEffect,
 } from "react";
 import type { SupportedLocale, Translations } from "@/types/i18n";
 import { loadTranslations, DEFAULT_LOCALE, isSupportedLocale } from "@/i18n";
@@ -34,6 +35,7 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
     enTranslations as Translations,
   );
   const [isLoading, setIsLoading] = useState(false);
+
   const changeLanguage = useCallback(
     async (newLocale: SupportedLocale) => {
       if (!isSupportedLocale(newLocale)) {
@@ -94,6 +96,52 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
     [locale, translationsMap],
   );
 
+  // On mount, check for a saved language preference and apply it.
+  useEffect(() => {
+    const initializeLanguage = async () => {
+      let savedLocale: string | null = null;
+      try {
+        savedLocale = localStorage.getItem("language");
+      } catch {
+        /* ignore localStorage errors */
+      }
+
+      if (
+        savedLocale &&
+        isSupportedLocale(savedLocale) &&
+        savedLocale !== DEFAULT_LOCALE
+      ) {
+        // We have a saved, non-default language. Load it.
+        setIsLoading(true);
+        try {
+          const loaded = await loadTranslations(savedLocale);
+          setTranslationsMap((prev) => {
+            const next = new Map(prev);
+            next.set(savedLocale, loaded);
+            return next;
+          });
+          setCurrentTranslations(loaded);
+          setLocale(savedLocale);
+          try {
+            document.documentElement.lang = savedLocale;
+          } catch {
+            /* ignore DOM errors in non-browser environments */
+          }
+        } catch (error) {
+          console.error(
+            "Failed to load saved translations for",
+            savedLocale,
+            error,
+          );
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    initializeLanguage();
+  }, []); // Run only on mount
+
   // t: safe translation getter with fallbacks (current -> English -> fallback -> key)
   const t = useCallback(
     (key: string, fallback?: string): string => {
@@ -131,9 +179,6 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
     t,
     isLoading,
   };
-
-  // IMPORTANT: do not auto-detect navigator language or read saved language on mount.
-  // This keeps the initial render always in DEFAULT_LOCALE and avoids changing language "for the user".
 
   return (
     <TranslationContext.Provider value={value}>
