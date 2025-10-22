@@ -14,7 +14,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-// Типы
+// Types
 interface GitHubAsset {
   id: number;
   name: string;
@@ -47,7 +47,7 @@ interface DownloadItemProps {
   gradient: string;
 }
 
-// SVG иконки для пакетов
+// SVG Icons for packages
 const PackageIcon = React.memo(
   ({ type, gradient }: { type: string; gradient: string }) => {
     const renderIcon = () => {
@@ -247,7 +247,8 @@ const DownloadItem = React.memo<DownloadItemProps>(
       if (isCommand && commandText) {
         navigator.clipboard.writeText(commandText.replace(/&#10;/g, "\n"));
         setCopied(true);
-        toast.success("Скопировано!");
+        // Use the translation key here
+        toast.success(t("downloadMessages.copiedToClipboard"));
         setTimeout(() => setCopied(false), 2000);
       } else if (downloadUrl) {
         window.open(downloadUrl, "_blank");
@@ -284,7 +285,8 @@ const DownloadItem = React.memo<DownloadItemProps>(
                       />
                     </svg>
                     <span className="text-slate-400 font-medium">
-                      {size} МБ
+                      {/* Use translation key for MB */}
+                      {size} {t("downloadMessages.sizeMB")}
                     </span>
                   </div>
                 )}
@@ -303,7 +305,9 @@ const DownloadItem = React.memo<DownloadItemProps>(
                       />
                     </svg>
                     <span className="text-slate-400 font-medium">
-                      {formatNumber(downloads)} загрузок
+                      {/* Use translation key for downloads */}
+                      {formatNumber(downloads)}{" "}
+                      {t("downloadMessages.downloads")}
                     </span>
                   </div>
                 )}
@@ -329,18 +333,21 @@ const DownloadItem = React.memo<DownloadItemProps>(
               copied ? (
                 <>
                   <Check className="w-5 h-5 mr-2" />
-                  Скопировано
+                  {/* Use translation key */}
+                  {t("downloadMessages.copied")}
                 </>
               ) : (
                 <>
                   <Copy className="w-5 h-5 mr-2" />
-                  Копировать
+                  {/* Use translation key */}
+                  {t("downloadMessages.copyCommand")}
                 </>
               )
             ) : (
               <>
                 <Download className="w-5 h-5 mr-2" />
-                Скачать
+                {/* Use translation key */}
+                {t("downloadMessages.download")}
               </>
             )}
           </Button>
@@ -357,30 +364,33 @@ const DownloadItem = React.memo<DownloadItemProps>(
 
 DownloadItem.displayName = "DownloadItem";
 
-// Кнопка выбора ОС
+// OS Selection Button
 const OSButton = React.memo<{
   name: string;
   icon: React.ReactNode;
   isSelected: boolean;
   onClick: () => void;
-}>(({ name, icon, isSelected, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`group relative px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-300 ${
-      isSelected
-        ? "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-2xl shadow-blue-500/50 scale-105 sm:scale-110"
-        : "bg-slate-800/50 text-slate-400 hover:bg-slate-700/50 hover:text-white hover:scale-105"
-    }`}
-  >
-    <span className="flex items-center gap-2 sm:gap-3">
-      <span className="text-2xl sm:text-3xl">{icon}</span>
-      <span>{name}</span>
-    </span>
-    {isSelected && (
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl -z-10 animate-pulse" />
-    )}
-  </button>
-));
+}>(({ name, icon, isSelected, onClick }) => {
+  const { t } = useTranslation();
+  return (
+    <button
+      onClick={onClick}
+      className={`group relative px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-300 ${
+        isSelected
+          ? "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-2xl shadow-blue-500/50 scale-105 sm:scale-110"
+          : "bg-slate-800/50 text-slate-400 hover:bg-slate-700/50 hover:text-white hover:scale-105"
+      }`}
+    >
+      <span className="flex items-center gap-2 sm:gap-3">
+        <span className="text-2xl sm:text-3xl">{icon}</span>
+        <span>{name}</span>
+      </span>
+      {isSelected && (
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl -z-10 animate-pulse" />
+      )}
+    </button>
+  );
+});
 
 OSButton.displayName = "OSButton";
 
@@ -403,14 +413,14 @@ const LinuxIcon = () => (
   </svg>
 );
 
-// Главный компонент
+// Main Component
 const NewDownloadSection = () => {
   const { t } = useTranslation();
   const [selectedOS, setSelectedOS] = useState<"windows" | "macos" | "linux">(
     "windows",
   );
 
-  // Fetch releases с оптимизацией
+  // Fetch releases with optimization
   const {
     data: releases,
     isLoading,
@@ -419,21 +429,21 @@ const NewDownloadSection = () => {
     queryKey: ["github-releases"],
     queryFn: async () => {
       const response = await fetch(
-        "https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases",
+        "https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases  ",
         { headers: { Accept: "application/vnd.github.v3+json" } },
       );
       if (!response.ok) throw new Error("Failed to fetch");
       return response.json();
     },
-    staleTime: 10 * 60 * 1000, // 10 минут
-    cacheTime: 30 * 60 * 1000, // 30 минут
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    cacheTime: 30 * 60 * 1000, // 30 minutes
     retry: 2,
     refetchOnWindowFocus: false,
   });
 
   const latestRelease = releases?.[0];
 
-  // Memoized asset filtering с оптимизацией
+  // Memoized asset filtering with optimization
   const platformAssets = useMemo((): PlatformAssets => {
     if (!latestRelease?.assets) {
       return {
@@ -528,7 +538,10 @@ const NewDownloadSection = () => {
         <div className="container mx-auto text-center">
           <div className="flex flex-col items-center gap-4">
             <Loader2 className="w-16 h-16 animate-spin text-blue-400" />
-            <p className="text-xl text-slate-300">Загрузка релизов...</p>
+            {/* Use translation key */}
+            <p className="text-xl text-slate-300">
+              {t("downloadMessages.loadingReleases")}
+            </p>
           </div>
         </div>
       </section>
@@ -542,23 +555,26 @@ const NewDownloadSection = () => {
         <div className="container mx-auto text-center">
           <div className="max-w-md mx-auto p-8 bg-red-500/10 backdrop-blur-xl border border-red-500/50 rounded-2xl">
             <AlertCircle className="w-16 h-16 mx-auto mb-4 text-red-400" />
+            {/* Use translation key */}
             <h3 className="text-2xl font-bold text-white mb-2">
-              Ошибка загрузки
+              {t("downloadMessages.errorTitle")}
             </h3>
+            {/* Use translation key */}
             <p className="text-slate-300 mb-6">
-              Не удалось получить информацию о релизах
+              {t("downloadMessages.errorDescription")}
             </p>
             <Button
               onClick={() =>
                 window.open(
-                  "https://github.com/Voxelum/x-minecraft-launcher/releases",
+                  "https://github.com/Voxelum/x-minecraft-launcher/releases  ",
                   "_blank",
                 )
               }
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
             >
               <ExternalLink className="w-5 h-5 mr-2" />
-              Открыть GitHub
+              {/* Use translation key */}
+              {t("downloadMessages.openGitHub")}
             </Button>
           </div>
         </div>
@@ -580,17 +596,22 @@ const NewDownloadSection = () => {
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
+          {/* Use translation key */}
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Скачать
+            {t("downloadMessages.downloadTitle")}
           </h2>
+          {/* Use translation key */}
           <p className="text-xl sm:text-2xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-            Получите последнюю версию XMCL для вашей платформы
+            {t("downloadMessages.downloadDescription")}
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Badge className="text-lg py-3 px-6 bg-slate-800/80 backdrop-blur-xl border border-slate-700 text-white">
-              Версия {latestRelease.tag_name}
+              {/* Use translation key for Version */}
+              {t("downloadMessages.version")} {latestRelease.tag_name}
             </Badge>
             <Badge className="text-lg py-3 px-6 bg-slate-800/80 backdrop-blur-xl border border-slate-700 text-white">
+              {/* Use translation key for Released on */}
+              {t("downloadMessages.releasedOn")}{" "}
               {new Date(latestRelease.published_at).toLocaleDateString("ru-RU")}
             </Badge>
           </div>
@@ -629,8 +650,8 @@ const NewDownloadSection = () => {
                   key={asset.id}
                   title={
                     asset.name.includes(".exe")
-                      ? "Windows Installer"
-                      : "Windows Archive"
+                      ? t("downloadMessages.windowsInstaller")
+                      : t("downloadMessages.windowsArchive")
                   }
                   packageType={
                     asset.name.includes(".exe") ? "installer" : "archive"
@@ -644,7 +665,7 @@ const NewDownloadSection = () => {
               {platformAssets.windows.app.map((asset) => (
                 <DownloadItem
                   key={asset.id}
-                  title="Windows Store App"
+                  title={t("downloadMessages.windowsStoreApp")}
                   packageType="store"
                   downloadUrl={asset.browser_download_url}
                   size={Math.round(asset.size / 1024 / 1024)}
@@ -665,14 +686,15 @@ const NewDownloadSection = () => {
           {selectedOS === "macos" && (
             <>
               <div className="mb-12">
+                {/* Use translation key */}
                 <h3 className="text-3xl font-bold text-center mb-6 text-white">
-                  Intel (x64)
+                  {t("downloadMessages.intelX64")}
                 </h3>
                 <div className="space-y-6">
                   {platformAssets.macos.x64.map((asset) => (
                     <DownloadItem
                       key={asset.id}
-                      title="macOS Package"
+                      title={t("downloadMessages.macosPackage")}
                       packageType="package"
                       downloadUrl={asset.browser_download_url}
                       size={Math.round(asset.size / 1024 / 1024)}
@@ -691,14 +713,15 @@ const NewDownloadSection = () => {
               </div>
               {platformAssets.macos.arm64.length > 0 && (
                 <div>
+                  {/* Use translation key */}
                   <h3 className="text-3xl font-bold text-center mb-6 text-white">
-                    Apple Silicon (ARM64)
+                    {t("downloadMessages.appleSiliconARM64")}
                   </h3>
                   <div className="space-y-6">
                     {platformAssets.macos.arm64.map((asset) => (
                       <DownloadItem
                         key={asset.id}
-                        title="macOS Package (Apple Silicon)"
+                        title={t("downloadMessages.macosPackageAppleSilicon")}
                         packageType="package"
                         downloadUrl={asset.browser_download_url}
                         size={Math.round(asset.size / 1024 / 1024)}
@@ -715,6 +738,7 @@ const NewDownloadSection = () => {
           {selectedOS === "linux" && (
             <>
               <div className="mb-12">
+                {/* Use translation key */}
                 <h3 className="text-3xl font-bold text-center mb-6 text-white">
                   x64
                 </h3>
@@ -723,16 +747,16 @@ const NewDownloadSection = () => {
                     let type = "package";
                     let gradient =
                       "bg-gradient-to-r from-orange-600 to-orange-700";
-                    let title = "Linux Package";
+                    let title = t("downloadMessages.linuxPackage"); // Default translation
 
                     if (asset.name.includes(".deb")) {
                       type = "deb";
                       gradient = "bg-gradient-to-r from-red-600 to-red-700";
-                      title = "DEB Package";
+                      title = t("downloadMessages.debPackage");
                     } else if (asset.name.includes(".rpm")) {
                       type = "rpm";
                       gradient = "bg-gradient-to-r from-blue-600 to-blue-700";
-                      title = "RPM Package";
+                      title = t("downloadMessages.rpmPackage");
                     } else if (asset.name.includes(".appimage")) {
                       type = "appimage";
                       gradient = "bg-gradient-to-r from-green-600 to-green-700";
@@ -741,7 +765,7 @@ const NewDownloadSection = () => {
                       type = "tar";
                       gradient =
                         "bg-gradient-to-r from-purple-600 to-purple-700";
-                      title = "TAR Archive";
+                      title = t("downloadMessages.tarArchive");
                     }
 
                     return (
@@ -757,21 +781,22 @@ const NewDownloadSection = () => {
                     );
                   })}
                   <DownloadItem
-                    title="AUR (Arch User Repository)"
+                    title={t("downloadMessages.aur")}
                     packageType="aur"
-                    downloadUrl="https://aur.archlinux.org/packages/xmcl-launcher"
+                    downloadUrl="https://aur.archlinux.org/packages/xmcl-launcher  "
                     gradient="bg-gradient-to-r from-cyan-600 to-cyan-700"
                   />
                   <DownloadItem
                     title="Flathub"
                     packageType="flathub"
-                    downloadUrl="https://flathub.org/apps/app.xmcl.voxelum"
+                    downloadUrl="https://flathub.org/apps/app.xmcl.voxelum  "
                     gradient="bg-gradient-to-r from-indigo-600 to-indigo-700"
                   />
                 </div>
               </div>
               {platformAssets.linux.arm64.length > 0 && (
                 <div>
+                  {/* Use translation key */}
                   <h3 className="text-3xl font-bold text-center mb-6 text-white">
                     ARM64
                   </h3>
@@ -780,26 +805,26 @@ const NewDownloadSection = () => {
                       let type = "package";
                       let gradient =
                         "bg-gradient-to-r from-orange-600 to-orange-700";
-                      let title = "Linux Package (ARM64)";
+                      let title = t("downloadMessages.linuxPackageARM64"); // Default translation
 
                       if (asset.name.includes(".deb")) {
                         type = "deb";
                         gradient = "bg-gradient-to-r from-red-600 to-red-700";
-                        title = "DEB Package (ARM64)";
+                        title = t("downloadMessages.debPackageARM64");
                       } else if (asset.name.includes(".rpm")) {
                         type = "rpm";
                         gradient = "bg-gradient-to-r from-blue-600 to-blue-700";
-                        title = "RPM Package (ARM64)";
+                        title = t("downloadMessages.rpmPackageARM64");
                       } else if (asset.name.includes(".appimage")) {
                         type = "appimage";
                         gradient =
                           "bg-gradient-to-r from-green-600 to-green-700";
-                        title = "AppImage (ARM64)";
+                        title = t("downloadMessages.appImageARM64");
                       } else if (asset.name.includes(".tar.xz")) {
                         type = "tar";
                         gradient =
                           "bg-gradient-to-r from-purple-600 to-purple-700";
-                        title = "TAR Archive (ARM64)";
+                        title = t("downloadMessages.tarArchiveARM64");
                       }
 
                       return (
@@ -830,21 +855,23 @@ const NewDownloadSection = () => {
             className="bg-slate-800/50 backdrop-blur-xl border-slate-700 hover:bg-slate-700/50 text-white text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
           >
             <ExternalLink className="w-5 h-5 mr-2 sm:mr-3" />
-            Заметки к релизу
+            {/* Use translation key */}
+            {t("downloadMessages.releaseNotes")}
           </Button>
           <Button
             variant="outline"
             size="lg"
             onClick={() =>
               window.open(
-                "https://github.com/Voxelum/x-minecraft-launcher/releases",
+                "https://github.com/Voxelum/x-minecraft-launcher/releases  ",
                 "_blank",
               )
             }
             className="bg-slate-800/50 backdrop-blur-xl border-slate-700 hover:bg-slate-700/50 text-white text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
           >
             <Github className="w-5 h-5 mr-2 sm:mr-3" />
-            Все релизы
+            {/* Use translation key */}
+            {t("downloadMessages.allReleases")}
           </Button>
         </div>
       </div>

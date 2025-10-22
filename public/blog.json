@@ -21,10 +21,10 @@
       "featured": true
     },
     {
-      "id": "3",
+      "id": "2",
       "title": "Beta 1.5 V",
-      "excerpt": "NEW FOOTER & MORE FEATURES",
-      "date": "2025-10-10",
+      "excerpt": "A new version of the website with many new features",
+      "date": "2025-10-03",
       "author": "Baneronetwo",
       "tags": ["update", "news"],
       "slug": "Beta1.5V",

@@ -1,16 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-
+import React, { useState, useMemo, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
   Search,
-  Filter,
-  PenTool,
   Tag,
   Calendar,
   User,
@@ -19,156 +15,398 @@ import {
   FileText,
   X,
   Menu,
-  Rss
+  Rss,
+  Clock,
+  TrendingUp,
+  ArrowLeft,
+  Share2,
 } from "lucide-react";
-import { useQuery } from '@tanstack/react-query';
-import { useTranslation } from '@/hooks/useTranslation';
-import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import { useBlogPosts } from '@/hooks/useBlogPosts';
+import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "@/hooks/useTranslation";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { useBlogPosts } from "@/hooks/useBlogPosts";
+
+const LoadingSpinner = () => (
+  <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+    <div className="relative">
+      <div className="h-24 w-24 rounded-full border-4 border-slate-200 dark:border-slate-700"></div>
+      <div className="absolute left-0 top-0 h-24 w-24 animate-spin rounded-full border-4 border-transparent border-t-blue-500 border-r-purple-500"></div>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-4 w-4 animate-pulse rounded-full bg-blue-500"></div>
+      </div>
+    </div>
+  </div>
+);
+
+const PostCard = React.memo(
+  ({
+    post,
+    index,
+    featured,
+    onClick,
+  }: {
+    post: any;
+    index: number;
+    featured: boolean;
+    onClick: () => void;
+  }) => {
+    const { t } = useTranslation();
+    const readTime = Math.ceil((post.content?.length || 0) / 1000);
+
+    return (
+      <Card
+        className="group relative h-full overflow-hidden rounded-2xl border-2 border-slate-200/50 bg-white/80 p-6 shadow-lg backdrop-blur-xl transition-all duration-500 hover:scale-[1.02] hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 dark:border-slate-700/50 dark:bg-slate-800/80 dark:hover:border-blue-400/50"
+        style={{
+          animationDelay: `${index * 100}ms`,
+        }}
+      >
+        {featured && (
+          <div className="absolute right-4 top-4 z-10">
+            <Badge className="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg">
+              <Sparkles className="h-3 w-3" />
+              {t("blog.featured")}
+            </Badge>
+          </div>
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:via-purple-500/5 group-hover:to-pink-500/5 group-hover:opacity-100" />
+
+        <div className="relative z-10 flex h-full flex-col">
+          <h3 className="mb-3 text-2xl font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+            {post.title}
+          </h3>
+
+          <p className="mb-4 flex-1 text-slate-600 dark:text-slate-400 line-clamp-3">
+            {post.excerpt}
+          </p>
+
+          <div className="mb-4 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center gap-1">
+              <User className="h-4 w-4" />
+              <span className="font-medium">{post.author}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Calendar className="h-4 w-4" />
+              <span>{new Date(post.date).toLocaleDateString()}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Clock className="h-4 w-4" />
+              <span>
+                {readTime} {t("blog.minutes")}
+              </span>
+            </div>
+          </div>
+
+          <div className="mb-4 flex flex-wrap gap-2">
+            {post.tags.slice(0, 3).map((tag: string) => (
+              <Badge
+                key={tag}
+                variant="outline"
+                className="border-blue-200 text-blue-600 dark:border-blue-700 dark:text-blue-400"
+              >
+                {tag}
+              </Badge>
+            ))}
+            {post.tags.length > 3 && (
+              <Badge variant="outline" className="text-slate-600">
+                +{post.tags.length - 3}
+              </Badge>
+            )}
+          </div>
+
+          <Button
+            onClick={onClick}
+            className="group/btn w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transition-all hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            {t("blog.readMore")}
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+          </Button>
+        </div>
+      </Card>
+    );
+  },
+);
+
+PostCard.displayName = "PostCard";
+
+const FilterSidebar = React.memo(
+  ({
+    searchQuery,
+    setSearchQuery,
+    categories,
+    selectedTags,
+    toggleTag,
+    clearFilters,
+    stats,
+    isOpen,
+    onClose,
+  }: any) => {
+    const { t } = useTranslation();
+
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed left-0 top-0 z-50 h-screen w-80 overflow-y-auto bg-white/95 p-6 shadow-2xl backdrop-blur-xl dark:bg-slate-900/95">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            {t("blog.filterByCategory")}
+          </h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <div className="mb-3 flex items-center gap-2">
+              <Search className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                {t("common.search")}
+              </h3>
+            </div>
+            <Input
+              placeholder={t("blog.searchPlaceholder")}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
+            />
+          </div>
+
+          <div>
+            <div className="mb-3 flex items-center gap-2">
+              <Tag className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                {t("blog.tags")}
+              </h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {categories.map((tag: string) => (
+                <Button
+                  key={tag}
+                  variant={selectedTags.includes(tag) ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => toggleTag(tag)}
+                  className={
+                    selectedTags.includes(tag)
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                      : "text-slate-600 dark:text-slate-400"
+                  }
+                >
+                  {tag}
+                </Button>
+              ))}
+            </div>
+            {selectedTags.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="mt-3 w-full"
+              >
+                {t("common.clearFilters")}
+              </Button>
+            )}
+          </div>
+
+          <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50 p-4 dark:border-blue-700 dark:from-blue-900/30 dark:to-purple-900/30">
+            <div className="mb-3 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                {t("blog.blogStats")}
+              </h3>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className=" ">{t("blog.totalPosts")}</span>
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
+                  {stats.total}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600 dark:text-slate-400">
+                  {t("blog.categories")}
+                </span>
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
+                  {stats.categories}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600 dark:text-slate-400">
+                  {t("blog.showing")}
+                </span>
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
+                  {stats.showing}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+);
+
+FilterSidebar.displayName = "FilterSidebar";
 
 const Blog = () => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [showFilterWidget, setShowFilterWidget] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
-  const { posts, categories, featured, isLoading, error, fetchPostContent } = useBlogPosts();
+  const { posts, categories, featured, isLoading, error, fetchPostContent } =
+    useBlogPosts();
 
   const { data: selectedPostContent } = useQuery({
-    queryKey: ['blog-post-content', id],
+    queryKey: ["blog-post-content", id],
     queryFn: () => fetchPostContent(id!),
-    enabled: !!id
+    enabled: !!id,
+    staleTime: 10 * 60 * 1000,
   });
 
   const filteredPosts = useMemo(() => {
-    return posts.filter(post => {
-      const matchesSearch = searchQuery === '' || 
+    return posts.filter((post) => {
+      const matchesSearch =
+        !searchQuery ||
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (post.content && post.content.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesTags = selectedTags.length === 0 || 
-        selectedTags.some(tag => post.tags.includes(tag));
-      
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.some((tag) => post.tags.includes(tag));
+
       return matchesSearch && matchesTags;
     });
   }, [posts, searchQuery, selectedTags]);
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+  const toggleTag = useCallback((tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
-  };
+  }, []);
 
-  if (isLoading) {
-    return (
-      <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20 flex items-center justify-center px-4">
-          <div className="text-center">
-            <div className="relative mb-8">
-              <motion.div 
-                className="w-20 h-20 border-4 border-muted rounded-full mx-auto"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              />
-              <motion.div 
-                className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-rose-500 border-r-rose-400 rounded-full mx-auto"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              />
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                <motion.div
-                  className="w-3 h-3 bg-rose-500 rounded-full"
-                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </motion.div>
-            </div>
-            <motion.p 
-              className="text-slate-600 dark:text-slate-400 text-lg font-medium"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              {t('blog.loading')}
-            </motion.p>
-          </div>
-        </div>
-      </PageTransition>
-    );
-  }
+  const clearFilters = useCallback(() => {
+    setSelectedTags([]);
+    setSearchQuery("");
+  }, []);
+
+  const handleShare = useCallback(async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: document.title,
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.log("Error sharing:", error);
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert(t("downloadMessages.copiedToClipboard"));
+    }
+  }, [t]);
+
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     return (
       <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20">
-          <div className="container mx-auto px-4 pt-8 pb-16">
-            <div className="text-center">
-              <p className="text-red-600 dark:text-red-400 text-lg">{t('common.error')}</p>
-            </div>
-          </div>
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+          <Card className="max-w-md p-8 text-center">
+            <div className="mb-4 text-6xl">😕</div>
+            <h2 className="mb-2 text-2xl font-bold text-slate-900 dark:text-slate-100">
+              {t("ui.error")}
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400">
+              {t("blog.errorLoading")}
+            </p>
+          </Card>
         </div>
       </PageTransition>
     );
   }
 
-  // If viewing a specific blog post
   if (id && selectedPostContent) {
-    const post = posts.find(p => p.slug === id);
-    
+    const post = posts.find((p) => p.slug === id);
+
+    if (!post) {
+      return (
+        <PageTransition>
+          <div className="flex min-h-screen items-center justify-center">
+            <Card className="p-8 text-center">
+              <h2 className="text-2xl font-bold">{t("blog.noPostsFound")}</h2>
+              <Button onClick={() => navigate("/blog")} className="mt-4">
+                {t("blog.backToBlog")}
+              </Button>
+            </Card>
+          </div>
+        </PageTransition>
+      );
+    }
+
     return (
       <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20">
-          <div className="container mx-auto px-4 pt-8 pb-16">
-            <div className="max-w-4xl mx-auto">
-              {post && (
-                <motion.div 
-                  className="mb-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+          <div className="container mx-auto px-4 py-8">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-8 flex items-center justify-between">
+                <Button
+                  onClick={() => navigate("/blog")}
+                  variant="ghost"
+                  className="text-blue-600 hover:text-blue-700 dark:text-blue-400"
                 >
-                  <div className="flex items-center gap-2 mb-6">
-                    <Button
-                      onClick={() => window.history.back()}
-                      variant="ghost"
-                      className="text-rose-600 dark:text-rose-400"
-                    >
-                      ← {t('blog.backToBlog')}
-                    </Button>
-                  </div>
-                  
-                  <Card className="p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-2xl">
-                    <div className="mb-6">
-                      <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-200 mb-4">
-                        {post.title}
-                      </h1>
-                      <div className="flex items-center gap-4 text-slate-600 dark:text-slate-400 mb-4">
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4" />
-                          <span>{post.author}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          <span>{new Date(post.date).toLocaleDateString()}</span>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {post.tags.map(tag => (
-                          <Badge key={tag} variant="outline" className="text-rose-600 dark:text-rose-400">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t("blog.backToBlog")}
+                </Button>
+                <Button onClick={handleShare} variant="outline" size="sm">
+                  <Share2 className="mr-2 h-4 w-4" />
+                  {t("common.share")}
+                </Button>
+              </div>
+
+              <Card className="overflow-hidden rounded-3xl border-2 border-slate-200/50 bg-white/90 shadow-2xl backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-800/90">
+                <div className="border-b border-slate-200 bg-gradient-to-r from-blue-50 to-purple-50 p-8 dark:border-slate-700 dark:from-blue-900/30 dark:to-purple-900/30">
+                  <h1 className="mb-4 text-5xl font-black text-slate-900 dark:text-slate-100">
+                    {post.title}
+                  </h1>
+                  <div className="mb-4 flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center gap-2">
+                      <User className="h-5 w-5" />
+                      <span className="font-semibold">{post.author}</span>
                     </div>
-                    <MarkdownRenderer content={selectedPostContent} />
-                  </Card>
-                </motion.div>
-              )}
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5" />
+                      <span>{new Date(post.date).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-5 w-5" />
+                      <span>
+                        {Math.ceil((selectedPostContent?.length || 0) / 1000)}{" "}
+                        {t("blog.minutes")}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag: string) => (
+                      <Badge key={tag} className="bg-blue-600 text-white">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-8">
+                  <MarkdownRenderer content={selectedPostContent} />
+                </div>
+              </Card>
             </div>
           </div>
         </div>
@@ -176,263 +414,93 @@ const Blog = () => {
     );
   }
 
-  // Main blog listing page
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-slate-950 dark:via-rose-950/20 dark:to-purple-950/20">
-        {/* Animated Background */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-rose-400/20 to-pink-400/20 rounded-full blur-3xl"
-            animate={{ 
-              scale: [1, 1.3, 1],
-              rotate: 360,
-            }}
-            transition={{ duration: 20, repeat: Infinity }}
-          />
-          <motion.div 
-            className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-tr from-pink-400/20 to-purple-400/20 rounded-full blur-3xl"
-            animate={{ 
-              scale: [1.2, 1, 1.2],
-              rotate: -360,
-            }}
-            transition={{ duration: 25, repeat: Infinity }}
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+        <div className="pointer-events-none fixed inset-0 overflow-hidden">
+          <div className="absolute left-1/4 top-20 h-96 w-96 animate-pulse rounded-full bg-blue-500/10 blur-3xl" />
+          <div
+            className="absolute bottom-20 right-1/4 h-96 w-96 animate-pulse rounded-full bg-purple-500/10 blur-3xl"
+            style={{ animationDelay: "1s" }}
           />
         </div>
 
-        
-        
-        {/* Filter Widget Button */}
-        <motion.div 
-          className="fixed top-24 left-4 z-50"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1 }}
-        >
+        <div className="fixed left-4 top-24 z-40">
           <Button
-            onClick={() => setShowFilterWidget(!showFilterWidget)}
-            className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            onClick={() => setShowFilters(!showFilters)}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl hover:from-blue-700 hover:to-purple-700"
             size="lg"
           >
-            {showFilterWidget ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </Button>
-        </motion.div>
-
-        {/* Filter Widget */}
-        <AnimatePresence>
-          {showFilterWidget && (
-            <motion.div
-              initial={{ opacity: 0, x: -300 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -300 }}
-              className="fixed top-24 left-20 z-40 w-80"
-            >
-              <Card className="p-6 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-2xl">
-                <div className="space-y-6">
-                  {/* Search */}
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <Search className="w-5 h-5 text-rose-500" />
-                       <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">{t('blog.searchPosts')}</h3>
-                     </div>
-                     <Input
-                       placeholder={t('blog.searchPlaceholder')}
-                       value={searchQuery}
-                       onChange={(e) => setSearchQuery(e.target.value)}
-                       className="bg-white/80 dark:bg-slate-700/80"
-                     />
-                  </div>
-
-                  {/* Tags */}
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <Tag className="w-5 h-5 text-rose-500" />
-                      <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Filter by Tags</h3>
-                    </div>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {categories.map(tag => (
-                        <Button
-                          key={tag}
-                          variant={selectedTags.includes(tag) ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => toggleTag(tag)}
-                          className={`${
-                            selectedTags.includes(tag) 
-                              ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white' 
-                              : 'text-slate-600 dark:text-slate-400'
-                          }`}
-                        >
-                          {tag}
-                        </Button>
-                      ))}
-                    </div>
-                    {selectedTags.length > 0 && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSelectedTags([])}
-                        className="w-full text-slate-600 dark:text-slate-400"
-                      >
-                        Clear Filters
-                      </Button>
-                    )}
-                  </div>
-
-                  {/* Stats */}
-                  <div className="bg-gradient-to-br from-rose-100 to-pink-100 dark:from-rose-900/30 dark:to-pink-900/30 rounded-xl p-4 border border-rose-200 dark:border-rose-700">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Sparkles className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                       <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">{t('blog.blogStats')}</h3>
-                     </div>
-                     <div className="space-y-2">
-                       <div className="flex justify-between">
-                         <span className="text-slate-600 dark:text-slate-400">{t('blog.totalPosts')}</span>
-                         <span className="font-semibold text-slate-800 dark:text-slate-200">{posts.length}</span>
-                       </div>
-                       <div className="flex justify-between">
-                         <span className="text-slate-600 dark:text-slate-400">{t('blog.categories')}</span>
-                         <span className="font-semibold text-slate-800 dark:text-slate-200">{categories.length}</span>
-                       </div>
-                       <div className="flex justify-between">
-                         <span className="text-slate-600 dark:text-slate-400">{t('blog.showing')}</span>
-                         <span className="font-semibold text-slate-800 dark:text-slate-200">{filteredPosts.length}</span>
-                       </div>
-                     </div>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div className="relative z-10">
-          {/* Header */}
-          <motion.div 
-            className="text-center py-12 sm:py-16 lg:py-20"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="container mx-auto px-4">
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-                <div className="relative">
-                  <PenTool className="w-12 h-12 sm:w-14 sm:h-14 text-rose-600 dark:text-rose-400" />
-                  <motion.div 
-                    className="absolute -inset-2 bg-rose-500/20 rounded-full blur-lg"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  {t('blog.title')}
-                </h1>
-                <a href="/rss.xml" target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-gradient-to-r from-orange-500 to-amber-500 text-white">
-                    <Rss className="w-4 h-4 mr-2" />
-                    RSS Feed
-                  </Button>
-                </a>
-              </div>
-              <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed px-4">
-                {t('blog.subtitle')}
-              </p>
-            </div>
-          </motion.div>
-
-          <div className="container mx-auto px-4 pb-16">
-            <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              {filteredPosts.map((post, index) => (
-                <motion.div
-                  key={post.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-xl hover:shadow-2xl transition-all duration-500 group h-full flex flex-col">
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          {featured.includes(post.id) && (
-                            <div className="flex items-center gap-2 mb-2">
-                              <Sparkles className="w-4 h-4 text-yellow-500" />
-                               <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs">
-                                 {t('blog.featured')}
-                               </Badge>
-                            </div>
-                          )}
-                          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-2 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                            {post.title}
-                          </h3>
-                        </div>
-                      </div>
-
-                      <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-
-                      <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-4">
-                        <div className="flex items-center gap-1">
-                          <User className="w-3 h-3" />
-                          <span>{post.author}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          <span>{new Date(post.date).toLocaleDateString()}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {post.tags.slice(0, 3).map(tag => (
-                          <Badge 
-                            key={tag} 
-                            variant="outline" 
-                            className="text-xs text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-700"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
-                        {post.tags.length > 3 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{post.tags.length - 3}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={() => window.location.href = `/blog/${post.slug}`}
-                      className="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white group"
-                    >
-                      <FileText className="w-4 h-4 mr-2" />
-                      Read Post
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {filteredPosts.length === 0 && (
-              <motion.div 
-                className="text-center py-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <FileText className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                 <h3 className="text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                   {t('blog.noPostsFound')}
-                 </h3>
-                 <p className="text-slate-500 dark:text-slate-500">
-                   {t('blog.noPostsDescription')}
-                 </p>
-              </motion.div>
+            {showFilters ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
             )}
+          </Button>
+        </div>
+
+        <FilterSidebar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          categories={categories}
+          selectedTags={selectedTags}
+          toggleTag={toggleTag}
+          clearFilters={clearFilters}
+          stats={{
+            total: posts.length,
+            categories: categories.length,
+            showing: filteredPosts.length,
+          }}
+          isOpen={showFilters}
+          onClose={() => setShowFilters(false)}
+        />
+
+        <div className="relative z-10 py-20 text-center">
+          <div className="container mx-auto px-4">
+            <h1 className="mb-6 text-7xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              {t("blog.title")}
+            </h1>
+            <p className="mx-auto mb-8 max-w-3xl text-xl text-slate-600 dark:text-slate-400">
+              {t("blog.subtitle")}
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button
+                onClick={() => window.open("/rss.xml", "_blank")}
+                variant="outline"
+                className="border-orange-500 text-orange-600 hover:bg-orange-50 dark:border-orange-400 dark:text-orange-400"
+              >
+                <Rss className="mr-2 h-4 w-4" />
+                RSS Feed
+              </Button>
+            </div>
           </div>
+        </div>
+
+        <div className="container mx-auto px-4 pb-20">
+          {filteredPosts.length > 0 ? (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {filteredPosts.map((post, index) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  index={index}
+                  featured={featured.includes(post.id)}
+                  onClick={() => navigate(`/blog/${post.slug}`)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="py-20 text-center">
+              <FileText className="mx-auto mb-4 h-16 w-16 text-slate-400" />
+              <h3 className="mb-2 text-2xl font-bold text-slate-600 dark:text-slate-400">
+                {t("blog.noPostsFound")}
+              </h3>
+              <p className="text-slate-500">{t("blog.tryAdjustingSearch")}</p>
+              <Button onClick={clearFilters} className="mt-4">
+                {t("common.clearFilters")}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </PageTransition>

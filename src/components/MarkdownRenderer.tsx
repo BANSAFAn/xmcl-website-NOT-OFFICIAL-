@@ -1,280 +1,282 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import { motion } from "framer-motion";
-import { ExternalLink, AlertTriangle } from "lucide-react";
-import remarkDirective from "remark-directive";
 import rehypeHighlight from "rehype-highlight";
-import { visit } from "unist-util-visit";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import MermaidDiagram from "./MermaidDiagram";
+import "katex/dist/katex.min.css";
+import "highlight.js/styles/github-dark.css";
 
 interface MarkdownRendererProps {
   content: string;
   className?: string;
 }
 
-function myRemarkDirective() {
-  return (tree: any) => {
-    visit(
-      tree,
-      ["textDirective", "leafDirective", "containerDirective"],
-      (node: any) => {
-        const data = node.data || (node.data = {});
-        const attributes = node.attributes || {};
+const components = {
+  h1: ({ children, ...props }: any) => (
+    <h1
+      className="mb-6 mt-8 text-5xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+      {...props}
+    >
+      {children}
+    </h1>
+  ),
+  h2: ({ children, ...props }: any) => (
+    <h2
+      className="mb-5 mt-8 text-4xl font-bold text-slate-900 dark:text-slate-100 border-b-2 border-blue-500/30 pb-2"
+      {...props}
+    >
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...props }: any) => (
+    <h3
+      className="mb-4 mt-6 text-3xl font-bold text-slate-800 dark:text-slate-200"
+      {...props}
+    >
+      {children}
+    </h3>
+  ),
+  h4: ({ children, ...props }: any) => (
+    <h4
+      className="mb-3 mt-5 text-2xl font-semibold text-slate-800 dark:text-slate-200"
+      {...props}
+    >
+      {children}
+    </h4>
+  ),
+  h5: ({ children, ...props }: any) => (
+    <h5
+      className="mb-3 mt-4 text-xl font-semibold text-slate-700 dark:text-slate-300"
+      {...props}
+    >
+      {children}
+    </h5>
+  ),
+  h6: ({ children, ...props }: any) => (
+    <h6
+      className="mb-2 mt-3 text-lg font-semibold text-slate-700 dark:text-slate-300"
+      {...props}
+    >
+      {children}
+    </h6>
+  ),
+  p: ({ children, ...props }: any) => {
+    // Проверяем, содержит ли children блочные элементы (img, div, table и т.д.)
+    // Если да, не оборачиваем в <p>, а возвращаем их как есть
+    const hasBlockElement = React.Children.toArray(children).some((child) => {
+      if (React.isValidElement(child)) {
+        const tag = child.type;
+        return [
+          "img",
+          "div",
+          "table",
+          "video",
+          "blockquote",
+          "pre",
+          "hr",
+          "ul",
+          "ol",
+        ].includes(tag as string);
+      }
+      return false;
+    });
 
-        if (node.name === "warning") {
-          data.hName = "warning";
-          data.hProperties = { ...attributes };
-        }
+    if (hasBlockElement) {
+      return <>{children}</>;
+    }
 
-        if (node.name === "code-group") {
-          data.hName = "code-group";
-          data.hProperties = { ...attributes };
-          visit(node, "code", (codeNode: any) => {
-            if (codeNode.meta) {
-              const match = codeNode.meta.match(/\\[(.+)\\]/);
-              if (match) {
-                const codeData = codeNode.data || (codeNode.data = {});
-                codeData.hProperties = {
-                  ...codeData.hProperties,
-                  "data-title": match[1],
-                };
-              }
-            }
-          });
-        }
-      },
+    return (
+      <p
+        className="mb-4 text-lg leading-relaxed text-slate-700 dark:text-slate-300"
+        {...props}
+      >
+        {children}
+      </p>
     );
-  };
-}
+  },
+  a: ({ children, href, ...props }: any) => (
+    <a
+      href={href}
+      className="font-semibold text-blue-600 underline decoration-blue-500/30 underline-offset-2 transition-all hover:text-blue-700 hover:decoration-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+      target="_blank"
+      rel="noopener noreferrer"
+      {...props}
+    >
+      {children}
+    </a>
+  ),
+  ul: ({ children, ...props }: any) => (
+    <ul
+      className="mb-4 ml-6 list-disc space-y-2 text-slate-700 dark:text-slate-300"
+      {...props}
+    >
+      {children}
+    </ul>
+  ),
+  ol: ({ children, ...props }: any) => (
+    <ol
+      className="mb-4 ml-6 list-decimal space-y-2 text-slate-700 dark:text-slate-300"
+      {...props}
+    >
+      {children}
+    </ol>
+  ),
+  li: ({ children, ...props }: any) => (
+    <li className="text-lg leading-relaxed" {...props}>
+      {children}
+    </li>
+  ),
+  blockquote: ({ children, ...props }: any) => (
+    <blockquote
+      className="my-6 border-l-4 border-blue-500 bg-blue-50 p-4 italic text-slate-700 dark:bg-blue-900/20 dark:text-slate-300"
+      {...props}
+    >
+      {children}
+    </blockquote>
+  ),
+  code: ({ inline, className, children, ...props }: any) => {
+    const match = /language-(\w+)/.exec(className || "");
+    const language = match ? match[1] : "text";
+    const childrenStr = String(children).replace(/\n$/, "");
 
-export const MarkdownRenderer = ({
-  content,
+    if (language === "mermaid") {
+      return <MermaidDiagram code={childrenStr} />;
+    }
+
+    return !inline ? (
+      <div className="my-6 overflow-hidden rounded-xl">
+        <SyntaxHighlighter
+          style={vscDarkPlus}
+          language={language}
+          PreTag="div"
+          className="text-sm"
+          showLineNumbers
+          {...props}
+        >
+          {childrenStr}
+        </SyntaxHighlighter>
+      </div>
+    ) : (
+      <code
+        className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-sm text-slate-800 dark:bg-slate-700 dark:text-slate-200"
+        {...props}
+      >
+        {children}
+      </code>
+    );
+  },
+  table: ({ children, ...props }: any) => (
+    <div className="my-6 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+      <table className="w-full border-collapse text-left text-sm" {...props}>
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ children, ...props }: any) => (
+    <thead className="bg-slate-100 dark:bg-slate-800" {...props}>
+      {children}
+    </thead>
+  ),
+  tbody: ({ children, ...props }: any) => (
+    <tbody
+      className="divide-y divide-slate-200 dark:divide-slate-700"
+      {...props}
+    >
+      {children}
+    </tbody>
+  ),
+  tr: ({ children, ...props }: any) => (
+    <tr
+      className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+      {...props}
+    >
+      {children}
+    </tr>
+  ),
+  th: ({ children, ...props }: any) => (
+    <th
+      className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100"
+      {...props}
+    >
+      {children}
+    </th>
+  ),
+  td: ({ children, ...props }: any) => (
+    <td className="px-4 py-3 text-slate-700 dark:text-slate-300" {...props}>
+      {children}
+    </td>
+  ),
+  img: ({ src, alt, ...props }: any) => (
+    <figure className="my-8">
+      <img
+        src={src}
+        alt={alt}
+        className="mx-auto rounded-2xl shadow-2xl transition-transform hover:scale-105"
+        loading="lazy"
+        {...props}
+      />
+      {alt && (
+        <figcaption className="mt-3 text-center text-sm italic text-slate-500 dark:text-slate-400">
+          {alt}
+        </figcaption>
+      )}
+    </figure>
+  ),
+  hr: ({ ...props }: any) => (
+    <hr
+      className="my-8 border-t-2 border-slate-200 dark:border-slate-700"
+      {...props}
+    />
+  ),
+  video: ({ src, ...props }: any) => (
+    <figure className="my-8">
+      <video
+        src={src}
+        controls
+        className="mx-auto w-full max-w-4xl rounded-2xl shadow-2xl"
+        {...props}
+      />
+    </figure>
+  ),
+  strong: ({ children, ...props }: any) => (
+    <strong className="font-bold text-slate-900 dark:text-slate-100" {...props}>
+      {children}
+    </strong>
+  ),
+  em: ({ children, ...props }: any) => (
+    <em className="italic text-slate-700 dark:text-slate-300" {...props}>
+      {children}
+    </em>
+  ),
+  del: ({ children, ...props }: any) => (
+    <del className="line-through text-slate-500 dark:text-slate-400" {...props}>
+      {children}
+    </del>
+  ),
+};
+
+export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
+  content = "",
   className = "",
-}: MarkdownRendererProps) => {
+}) => {
   return (
     <div
-      className={`prose prose-lg max-w-none dark:prose-invert prose-headings:text-slate-900 dark:prose-headings:text-slate-100 prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-pre:bg-slate-100 dark:prose-pre:bg-slate-800 prose-blockquote:border-blue-500 prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 ${className}`}
+      className={`prose prose-lg prose-slate max-w-none dark:prose-invert ${className}`}
     >
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkDirective, myRemarkDirective]}
-        rehypePlugins={[rehypeHighlight, rehypeRaw]}
-        components={{
-          div: ({ node, ...props }) => {
-            const isWarning = props.children.some(
-              (child) => child.props.node?.data?.hName === "warning",
-            );
-
-            const isCodeGroup = props.children.some(
-              (child) => child.props.node?.data?.hName === "code-group",
-            );
-
-            if (isWarning) {
-              return <div {...props} />;
-            }
-
-            if (isCodeGroup) {
-              return <div {...props} />;
-            }
-
-            return <div {...props} />;
-          },
-          pre: ({ node, ...props }) => {
-            return <pre {...props} />;
-          },
-          warning: ({ node, ...props }) => (
-            <div
-              className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded"
-              role="alert"
-            >
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5" />
-                <strong>Warning:</strong>
-              </div>
-              {props.children}
-            </div>
-          ),
-          "code-group": ({ node, ...props }) => {
-            const childArray = React.Children.toArray(props.children);
-            return (
-              <Tabs defaultValue="0" className="my-4">
-                <TabsList className="flex border-b">
-                  {childArray.map((child: any, index: number) => {
-                    if (child.type === "pre") {
-                      const title =
-                        child.props.children?.props?.children?.props?.[
-                          "data-title"
-                        ] || "Code";
-                      return (
-                        <TabsTrigger
-                          key={index}
-                          value={index.toString()}
-                          className="px-4 py-2 -mb-px border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-500"
-                        >
-                          {title}
-                        </TabsTrigger>
-                      );
-                    }
-                    return null;
-                  })}
-                </TabsList>
-                {childArray.map((child: any, index: number) => {
-                  if (child.type === "pre") {
-                    return (
-                      <TabsContent
-                        key={index}
-                        value={index.toString()}
-                        className="p-4 bg-slate-800 rounded-b-lg"
-                      >
-                        {child}
-                      </TabsContent>
-                    );
-                  }
-                  return null;
-                })}
-              </Tabs>
-            );
-          },
-          a: ({ href, children }) => (
-            <motion.a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-sm font-medium no-underline hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform"
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {children}
-              <ExternalLink className="w-4 h-4" />
-            </motion.a>
-          ),
-          img: ({ src, alt }) => (
-            <motion.img
-              src={src}
-              alt={alt}
-              className="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer border border-slate-200 dark:border-slate-700"
-              onClick={() => window.open(src, "_blank")}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            />
-          ),
-          video: ({ src, ...videoProps }) => (
-            <motion.video
-              src={src}
-              className="rounded-lg shadow-lg w-full border border-slate-200 dark:border-slate-700"
-              controls
-              whileHover={{ scale: 1.01 }}
-              {...(videoProps as any)}
-            />
-          ),
-          code: ({ node, className, children, ...props }: any) => {
-            const isInline = !className?.includes("language-");
-            if (isInline) {
-              return (
-                <motion.code
-                  className="bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 px-3 py-1 rounded-md text-sm font-mono border border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-200"
-                  whileHover={{ scale: 1.05 }}
-                  {...props}
-                >
-                  {children}
-                </motion.code>
-              );
-            }
-            return (
-              <div className="relative group">
-                <motion.pre
-                  className="bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 p-6 rounded-xl overflow-x-auto border border-slate-700 shadow-2xl"
-                  whileHover={{ scale: 1.01 }}
-                >
-                  <code className="text-sm font-mono text-green-400" {...props}>
-                    {children}
-                  </code>
-                </motion.pre>
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="bg-slate-700 text-slate-300 px-2 py-1 rounded text-xs">
-                    {className?.replace("language-", "") || "code"}
-                  </div>
-                </div>
-              </div>
-            );
-          },
-          h1: ({ children }) => (
-            <motion.h1
-              className="text-5xl font-bold mb-8 text-slate-900 dark:text-slate-100 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              {children}
-            </motion.h1>
-          ),
-          h2: ({ children }) => (
-            <motion.h2
-              className="text-4xl font-bold mb-6 text-slate-900 dark:text-slate-100 border-b-2 border-gradient-to-r from-blue-500 to-purple-500 pb-2"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              {children}
-            </motion.h2>
-          ),
-          h3: ({ children }) => (
-            <motion.h3
-              className="text-3xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-3"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded"></span>
-              {children}
-            </motion.h3>
-          ),
-          p: ({ children }) => (
-            <motion.p
-              className="text-lg leading-relaxed mb-6 text-slate-700 dark:text-slate-300"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {children}
-            </motion.p>
-          ),
-          blockquote: ({ children }) => (
-            <motion.blockquote
-              className="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 pl-6 py-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-r-lg my-6"
-              whileHover={{ x: 5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              {children}
-            </motion.blockquote>
-          ),
-          ul: ({ children }) => (
-            <motion.ul
-              className="space-y-3 mb-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              {children}
-            </motion.ul>
-          ),
-          li: ({ children }) => (
-            <motion.li
-              className="flex items-start gap-3 text-slate-700 dark:text-slate-300"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              whileHover={{ x: 5 }}
-            >
-              <span className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2 flex-shrink-0"></span>
-              <span>{children}</span>
-            </motion.li>
-          ),
-        }}
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeKatex, rehypeRaw, rehypeHighlight]}
+        components={components}
       >
         {content}
       </ReactMarkdown>
     </div>
   );
 };
+
+export default MarkdownRenderer;
