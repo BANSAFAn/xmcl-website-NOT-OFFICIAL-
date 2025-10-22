@@ -65,7 +65,7 @@
     "open": "فتح"
   },
   "home": {
-    "heroTitle": "مشغل ماينكرافت الحديث",
+    "heroTitle": "X Minecraft Launcher",
     "heroSubtitle": "استمتع بتجربة ماينكرافت كأول مرة مع إدارة متقدمة للتعديلات، وتحسين الأداء، ودعم عبر المنصات",
     "getStarted": "ابدأ الآن",
     "learnMore": "اعرف المزيد",
@@ -144,6 +144,8 @@
     "openFilter": "مفتوحة",
     "closedFilter": "مغلقة",
     "newest": "الأحدث",
+    "stats": "الإحصائيات",
+    "allLabels": "جميع التصنيفات",
     "recentlyUpdated": "تم التحديث مؤخرًا",
     "mostCommented": "الأكثر تعليقًا",
     "filterByLabels": "تصفية حسب التصنيفات",
@@ -336,6 +338,15 @@
     },
     "contributors": {
       "title": "المساهمون"
+    },
+    "actions": {
+      "preview": "معاينة",
+      "hide": "إخفاء",
+      "goToIssue": "انتقال إلى المشكلة"
+    },
+    "docs": {
+      "title": "التوثيق",
+      "search": "البحث في المستندات"
     }
   }
 }

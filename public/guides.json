@@ -39,7 +39,7 @@
       "excerpt": "Minecraft demo version - how to solve this?",
       "author": "Voxelum",
       "date": "2025-01-10",
-      "tags": ["account", "launcher","demo-minecraft"],
+      "tags": ["account", "launcher", "demo-minecraft"],
       "slug": "demo-minecraft",
       "readTime": "10 min",
       "difficulty": "Account"
@@ -61,7 +61,7 @@
       "excerpt": "User data is stored under",
       "author": "CIO10",
       "date": "2025-01-10",
-      "tags": ["launcher","user"],
+      "tags": ["launcher", "user"],
       "slug": "user",
       "readTime": "14 min",
       "difficulty": "User"
@@ -72,7 +72,7 @@
       "excerpt": "Global Setting",
       "author": "CIO10",
       "date": "2025-01-10",
-      "tags": ["launcher","setting"],
+      "tags": ["launcher", "setting"],
       "slug": "setting",
       "readTime": "14 min",
       "difficulty": "Setting"
@@ -83,7 +83,7 @@
       "excerpt": "Java Data Cache",
       "author": "CIO10",
       "date": "2025-01-10",
-      "tags": ["launcher","java"],
+      "tags": ["launcher", "java"],
       "slug": "java",
       "readTime": "14 min",
       "difficulty": "Java"
@@ -94,12 +94,32 @@
       "excerpt": "How to copy an instance?",
       "author": "CIO10",
       "date": "2025-01-10",
-      "tags": ["launcher","instance"],
+      "tags": ["launcher", "instance"],
       "slug": "instance-copy",
       "readTime": "14 min",
       "difficulty": "Instance"
+    },
+    {
+      "id": "10",
+      "title": "It's Cracked ?",
+      "excerpt": "Is this launcher legal?",
+      "author": "Baneronetwo",
+      "date": "2025-18-10",
+      "tags": ["launcher", "cracked"],
+      "slug": "its-cracked",
+      "readTime": "9 min",
+      "difficulty": "launcher-cracked"
     }
   ],
-  "categories": ["advanced", "account", "launcher", "mods", "test", "markdown", "java", "instance"],
-  "featured": ["demo-minecraft","Data-Storage"]
+  "categories": [
+    "advanced",
+    "account",
+    "launcher",
+    "mods",
+    "test",
+    "markdown",
+    "java",
+    "instance"
+  ],
+  "featured": ["demo-minecraft", "Data-Storage"]
 }

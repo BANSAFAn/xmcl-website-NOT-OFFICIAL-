@@ -1,102 +1,202 @@
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Globe, ChevronDown, Search } from "lucide-react";
+import { Globe, ChevronDown, Search, Check } from "lucide-react";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { languageConfigs } from "@/i18n/languageConfigs";
-import { useState, useEffect } from "react";
 
-export const LanguageSelector = () => {
-  const { locale, changeLanguage } = useTranslation();
+const USER_PREFERENCE_KEY = "userPreferredLanguage";
+const IP_PREFERENCE_KEY = "userIpLanguageMap";
+
+const getUserIP = async (): Promise<string | null> => {
+  try {
+    const response = await fetch("https://api.ipify.org?format=json");
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    console.warn("Could not fetch user IP:", error);
+    return null;
+  }
+};
+
+const LanguageSelectorComponent = () => {
+  const { t, locale, changeLanguage } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
-  const [hasCheckedBrowserLang, setHasCheckedBrowserLang] = useState(false); // Новое состояние
+  const [userIP, setUserIP] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Проверяем, установлено ли уже предпочтение пользователя (например, в localStorage)
-    // Это предотвращает повторное определение языка при каждом рендере
-    const userPreferredLang = localStorage.getItem('i18nextLng'); // Имя ключа может отличаться, проверьте ваш контекст
-    // Если язык уже был выбран пользователем ранее, не проверяем браузерный язык снова
-    if (userPreferredLang) {
-      setHasCheckedBrowserLang(true); // Уже был выбор, больше не проверять
-      return;
-    }
+    getUserIP().then(setUserIP);
+  }, []);
 
-    // Только если язык не был выбран ранее, проверяем браузерный
-    if (!hasCheckedBrowserLang) {
-      const browserLang = navigator.language.slice(0, 2);
-      const supportedLang = languageConfigs.find(lang => lang.code === browserLang);
-      
-      if (supportedLang && locale !== supportedLang.code) {
-        // Проверяем, не является ли язык браузера уже текущим (например, через i18next)
-        // и не был ли он уже установлен в localStorage
-        // Если все условия выполнены, устанавливаем язык
-        changeLanguage(supportedLang.code);
+  const saveUserLanguagePreference = useCallback(
+    (langCode: string) => {
+      try {
+        if (userIP) {
+          const ipMap = JSON.parse(
+            localStorage.getItem(IP_PREFERENCE_KEY) || "{}",
+          );
+          ipMap[userIP] = langCode;
+          localStorage.setItem(IP_PREFERENCE_KEY, JSON.stringify(ipMap));
+        }
+        localStorage.setItem(USER_PREFERENCE_KEY, langCode);
+      } catch (e) {
+        console.warn("Could not save language preference:", e);
       }
-      setHasCheckedBrowserLang(true); // Отмечаем, что проверка выполнена
+    },
+    [userIP],
+  );
+
+  const getUserLanguagePreference = useCallback((): string | null => {
+    try {
+      if (userIP) {
+        const ipMap = JSON.parse(
+          localStorage.getItem(IP_PREFERENCE_KEY) || "{}",
+        );
+        if (ipMap[userIP]) {
+          return ipMap[userIP];
+        }
+      }
+      return localStorage.getItem(USER_PREFERENCE_KEY);
+    } catch (e) {
+      console.warn("Could not get language preference:", e);
+      return null;
     }
-  }, [locale, changeLanguage, hasCheckedBrowserLang]); // Добавляем hasCheckedBrowserLang в зависимости
+  }, [userIP]);
 
-  const currentLanguage = languageConfigs.find(lang => lang.code === locale);
+  const filteredLanguages = useMemo(() => {
+    if (!searchTerm) return languageConfigs;
+    const term = searchTerm.toLowerCase();
+    return languageConfigs.filter(
+      (lang) =>
+        lang.name.toLowerCase().includes(term) ||
+        lang.code.toLowerCase().includes(term),
+    );
+  }, [searchTerm]);
 
-  const filteredLanguages = languageConfigs.filter(lang =>
-    lang.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleLanguageChange = useCallback(
+    (langCode: string) => {
+      changeLanguage(langCode);
+      saveUserLanguagePreference(langCode);
+      setSearchTerm("");
+      setIsOpen(false);
+    },
+    [changeLanguage, saveUserLanguagePreference],
+  );
+
+  useEffect(() => {
+    if (!userIP) return;
+
+    const savedLang = getUserLanguagePreference();
+
+    if (savedLang && languageConfigs.some((lang) => lang.code === savedLang)) {
+      if (savedLang !== locale) {
+        changeLanguage(savedLang);
+      }
+    } else if (locale !== "en") {
+      changeLanguage("en");
+    }
+  }, [userIP, getUserLanguagePreference, changeLanguage, locale]);
+
+  const currentLanguage = useMemo(
+    () => languageConfigs.find((lang) => lang.code === locale),
+    [locale],
   );
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="h-9 w-9 sm:w-auto px-0 sm:px-3 text-foreground hover:text-foreground hover:bg-accent/50 transition-all duration-300 gap-2 relative overflow-hidden group"
+        <Button
+          variant="ghost"
+          size="sm"
+          className="group relative h-10 gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-slate-100 to-slate-50 px-4 text-slate-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 dark:from-slate-800 dark:to-slate-700 dark:text-slate-200"
+          aria-label={t("ui.changeLanguage")}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <Globe className="w-4 h-4 relative z-10" />
-          <span className="hidden sm:inline relative z-10 font-medium">
-            {currentLanguage?.name}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 group-hover:opacity-100" />
+          <Globe className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
+          <span className="relative z-10 hidden font-semibold sm:inline">
+            {currentLanguage?.name ||
+              t("language.defaultName", { name: "English" })}
           </span>
-          <ChevronDown className="hidden sm:inline w-3 h-3 opacity-50 relative z-10 transition-transform group-hover:rotate-180" />
+          <ChevronDown className="relative z-10 hidden h-4 w-4 opacity-60 transition-all duration-300 group-hover:translate-y-0.5 group-hover:opacity-100 sm:inline" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-700 shadow-xl z-[10000] w-[260px]"
+      <DropdownMenuContent
+        className="z-[10000] w-[280px] overflow-hidden rounded-2xl border-2 border-slate-200/50 bg-white/95 p-0 shadow-2xl backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-800/95"
         align="end"
+        sideOffset={8}
       >
-        <div className="p-2 border-b border-slate-200 dark:border-slate-700">
+        <div className="border-b border-slate-200/50 bg-gradient-to-r from-slate-50 to-white p-3 dark:from-slate-800 dark:to-slate-700 dark:border-slate-700/50">
           <div className="relative">
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <Input
-              placeholder="Search languages..."
+              placeholder={t("language.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8 pr-4 py-2 text-sm bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+              className="h-10 border-slate-200 bg-white pl-10 pr-4 text-sm transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-700"
+              aria-label={t("language.searchLabel")}
             />
           </div>
         </div>
-        <ScrollArea className="h-[240px]">
-          <div className="py-1">
-            {filteredLanguages.map((lang) => (
-              <DropdownMenuItem
-                key={lang.code}
-                onClick={() => {
-                  changeLanguage(lang.code); // Это должно обновить localStorage
-                  setSearchTerm("");
-                }}
-                className={`text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-all duration-200 gap-3 py-2 px-4 relative overflow-hidden group ${
-                  locale === lang.code ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : ''
-                }`}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="font-medium relative z-10">{lang.name}</span>
-                {locale === lang.code && (
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                )}
-              </DropdownMenuItem>
-            ))}
+
+        <ScrollArea className="h-[320px]">
+          <div className="p-2">
+            {filteredLanguages.length > 0 ? (
+              filteredLanguages.map((lang) => {
+                const isSelected = locale === lang.code;
+                return (
+                  <DropdownMenuItem
+                    key={lang.code}
+                    onClick={() => handleLanguageChange(lang.code)}
+                    className={`
+                      group relative cursor-pointer gap-3 overflow-hidden rounded-xl px-4 py-3 transition-all duration-200
+                      ${
+                        isSelected
+                          ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30"
+                          : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700/50"
+                      }
+                    `}
+                    aria-checked={isSelected}
+                  >
+                    <div className="flex flex-1 items-center justify-between">
+                      <span className="relative z-10 font-semibold">
+                        {lang.name}
+                      </span>
+                      {isSelected && (
+                        <Check className="relative z-10 h-5 w-5 animate-in zoom-in-50" />
+                      )}
+                    </div>
+                    {!isSelected && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    )}
+                  </DropdownMenuItem>
+                );
+              })
+            ) : (
+              <div className="py-8 text-center text-sm text-slate-500">
+                {t("language.noLanguageFound")}
+              </div>
+            )}
           </div>
         </ScrollArea>
+
+        <div className="border-t border-slate-200/50 bg-gradient-to-r from-slate-50 to-white p-2 dark:from-slate-800 dark:to-slate-700 dark:border-slate-700/50">
+          <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+            {languageConfigs.length} {t("language.availableLanguages")}
+          </p>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
+
+const LanguageSelector = React.memo(LanguageSelectorComponent);
+
+export { LanguageSelector };

@@ -7,7 +7,6 @@ import { PageTransition } from '@/components/PageTransition';
 
 const Index = () => {
   const handleDownloadClick = () => {
-    // Scroll to download section
     const downloadSection = document.querySelector('#download-section');
     if (downloadSection) {
       downloadSection.scrollIntoView({ behavior: 'smooth' });

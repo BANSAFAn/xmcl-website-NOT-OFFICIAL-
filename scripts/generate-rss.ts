@@ -1,33 +1,38 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import { getAllBlogPosts } from '../src/utils/blogUtils.ts';
-import { getAllGuidePosts } from '../src/utils/guideUtils.ts';
+import { getAllBlogPosts } from "../src/utils/blogUtils.ts";
+import { getAllGuidePosts } from "../src/utils/guideUtils.ts";
 
-
-const siteUrl = 'https://xmcl-website-not-official.vercel.app';
+const siteUrl = "https://xmcl-website-not-official.vercel.app";
 
 async function generate() {
   const blogPosts = await getAllBlogPosts();
   const blogRss = generateRSSFeed(blogPosts, siteUrl);
-  fs.writeFileSync(path.join(__dirname, '../public/rss.xml'), blogRss);
+  fs.writeFileSync(path.join(__dirname, "../public/rss.xml"), blogRss);
 
   const guidePosts = await getAllGuidePosts();
   const guideRss = generateGuideRSSFeed(guidePosts, siteUrl);
-  fs.writeFileSync(path.join(__dirname, '../public/guide-rss.xml'), guideRss);
+  fs.writeFileSync(path.join(__dirname, "../public/guide-rss.xml"), guideRss);
 }
 
 generate();
 
+type BlogPost = {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  author: string;
+  tags?: string[];
+  date: string | number | Date;
+};
 
-// Add RSS generation functions
-
-// Replace incorrect entities with proper JS syntax
-
-function generateRSSFeed(posts, siteUrl) {
-  posts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+function generateRSSFeed(posts: BlogPost[], siteUrl: string): string {
+  const sorted = posts
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -41,13 +46,13 @@ function generateRSSFeed(posts, siteUrl) {
     <generator>XMCL Website</generator>
 `;
 
-  for (let post of posts) {
+  for (let post of sorted) {
     xml += `
     <item>
       <title><![CDATA[${post.title}]]></title>
       <link>${siteUrl}/blogs/${post.slug}</link>
       <guid>${siteUrl}/blogs/${post.slug}</guid>
-      <description><![CDATA[${post.excerpt || ''}]]></description>
+      <description><![CDATA[${post.excerpt || ""}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <author><![CDATA[${post.author}]]></author>
 `;
@@ -70,8 +75,10 @@ function generateRSSFeed(posts, siteUrl) {
   return xml;
 }
 
-function generateGuideRSSFeed(posts, siteUrl) {
-  posts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+function generateGuideRSSFeed(posts: BlogPost[], siteUrl: string): string {
+  const sorted = posts
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -85,13 +92,13 @@ function generateGuideRSSFeed(posts, siteUrl) {
     <generator>XMCL Website</generator>
 `;
 
-  for (let post of posts) {
+  for (let post of sorted) {
     xml += `
     <item>
       <title><![CDATA[${post.title}]]></title>
       <link>${siteUrl}/guide/${post.slug}</link>
       <guid>${siteUrl}/guide/${post.slug}</guid>
-      <description><![CDATA[${post.excerpt || ''}]]></description>
+      <description><![CDATA[${post.excerpt || ""}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <author><![CDATA[${post.author}]]></author>
 `;
