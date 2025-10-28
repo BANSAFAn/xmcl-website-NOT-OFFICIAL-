@@ -16,12 +16,11 @@ If you're experiencing download errors, the first step is to determine if you ha
 
 ### How to Check Your Network Connections:
 
-1. Open **Task Manager** (Ctrl + Shift + Esc)
-2. Navigate to the **"Network"** tab (or "Connections" in some versions)
-3. Look for active connections related to your Minecraft launcher
-4. Check the **transfer status**:
-   - **Waiting** or **Current State** = Download restriction detected
-   - **Low speeds** or **rejection errors** = Connection issues
+1. Open **Task Manager**
+   ![Task Manager in network](guidephoto/task1.png)
+3. Go to the second tab
+   ![Active Connections](guidephoto/task2.png)
+4. Now check and see which ones were transmitted and which ones connected (if your connection is stuck, it means you don't have access to this resource)
 
 ---
 
