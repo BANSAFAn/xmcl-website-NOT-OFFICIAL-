@@ -68,7 +68,7 @@
     "open": "Открыть"
   },
   "home": {
-    "heroTitle": "Современный лаунчер Minecraft",
+    "heroTitle": "X Minecraft Launcher",
     "heroSubtitle": "Испытайте Minecraft по-новому с расширенным управлением модами, оптимизацией производительности и кроссплатформенной поддержкой",
     "getStarted": "Начать",
     "learnMore": "Узнать больше",
@@ -85,18 +85,22 @@
     "installingAnyFramework": "Установка любой системы",
     "installingAnyFrameworkDesc": "Поддержка Forge, Fabric, Quilt и других загрузчиков модов с плавным переключением между различными настройками",
     "feature1Title": "Управление модами",
+    "optimalDiskSpace": "Оптимальное место на диске с большими ресурсами",
+    "optimalDiskSpaceDesc": "XMCL будет хранить все моды, наборы ресурсов, шейдеры и модпаки в одном централизованном хранилище. При использовании любого известного ресурса он будет использовать жесткие ссылки для установки ресурса в инстанс без копирования. Это означает, что вы больше не увидите дублирующихся копий в папке /mods.",
     "feature1Description": "Легко устанавливайте, обновляйте и управляйте модами с встроенной поддержкой загрузчиков модов",
     "feature2Title": "Оптимизация производительности",
     "feature2Description": "Расширенное управление памятью и настройка производительности для плавного геймплея",
     "feature3Title": "Управление инстансами",
     "feature3Description": "Создавайте и управляйте несколькими инстансами игры с разными конфигурациями модов",
-    "feature4Title": "Оптимальное место на диске с большими ресурсами",
-    "feature4Description": "XMCL будет хранить все моды, наборы ресурсов, шейдеры и модпаки в одном месте хранения. При попытке использовать любой известный ресурс он будет использовать жёсткую ссылку для установки ресурса в инстанс без копирования. Это означает, что вы больше никогда не увидите дублирующиеся копии в папке /mods.",
+
     "hardLink": "Жёсткая ссылка",
     "symbolicLink": "Символическая ссылка",
     "feature5Title": "Управление наборами ресурсов",
     "feature5Description": "Организуйте и применяйте наборы ресурсов с предварительным просмотром и автоматическими обновлениями",
     "feature6Title": "Управление сохранениями",
+    "multipleInstances": "Игра по сети",
+    "multipleInstancesDesc": "Играйте в многопользовательскую игру по локальной сети, даже если вы не в одной физической локальной сети!",
+    "p2p": "Peer-to-Peer",
     "feature6Description": "Резервное копирование, восстановление и обмен вашими мирами с облачной синхронизацией"
   },
   "downloadSection": {
@@ -269,12 +273,40 @@
   "downloadMessages": {
     "noVersionsAvailable": "Нет доступных версий",
     "loadingReleases": "Загрузка релизов...",
-    "viewAllReleases": "Просмотреть все релизы",
+    "viewAllReleases": "Посмотреть все релизы",
     "brewCommands": "Команды скопированы в буфер обмена! Выполните в терминале:",
-    "releasedOn": "Выпущен",
+    "releasedOn": "Выпущено",
     "copiedToClipboard": "Скопировано в буфер обмена!",
     "copied": "Скопировано!",
-    "copyCommand": "Скопировать команды"
+    "copyCommand": "Копировать команду",
+    "download": "Скачать",
+    "sizeMB": "МБ",
+    "downloads": "загрузок",
+    "errorTitle": "Ошибка загрузки",
+    "errorDescription": "Не удалось получить информацию о релизах.",
+    "openGitHub": "Открыть GitHub",
+    "downloadTitle": "Скачать",
+    "downloadDescription": "Получите последнюю версию XMCL для вашей платформы.",
+    "version": "Версия",
+    "windowsInstaller": "Установщик Windows",
+    "windowsArchive": "Архив Windows",
+    "windowsStoreApp": "Приложение Windows Store",
+    "intelX64": "Intel (x64)",
+    "appleSiliconARM64": "Apple Silicon (ARM64)",
+    "macosPackage": "Пакет macOS",
+    "macosPackageAppleSilicon": "Пакет macOS (Apple Silicon)",
+    "linuxPackage": "Пакет Linux",
+    "debPackage": "Пакет DEB",
+    "rpmPackage": "Пакет RPM",
+    "appImageARM64": "AppImage (ARM64)",
+    "tarArchive": "Архив TAR",
+    "aur": "AUR (Arch User Repository)",
+    "linuxPackageARM64": "Пакет Linux (ARM64)",
+    "debPackageARM64": "Пакет DEB (ARM64)",
+    "rpmPackageARM64": "Пакет RPM (ARM64)",
+    "tarArchiveARM64": "Архив TAR (ARM64)",
+    "releaseNotes": "Заметки к релизу",
+    "allReleases": "Все релизы"
   },
   "issues": {
     "title": "Проблемы и отчеты об ошибках",
@@ -288,6 +320,8 @@
     "openFilter": "Открыто",
     "closedFilter": "Закрыто",
     "newest": "Новейшие",
+    "stats": "Статистика",
+    "allLabels": "Все метки",
     "recentlyUpdated": "Недавно обновленные",
     "mostCommented": "Самые обсуждаемые",
     "filterByLabels": "Фильтр по меткам",
@@ -386,8 +420,6 @@
       "cross_platform": "Лаунчер основан на Electron и поддерживает Windows 10/11, MacOS и Linux.",
       "multi_account_title": "Многоаккаунтная система",
       "multi_account": "Встроенный вход в Microsoft и API Mojang Yggdrasil. Также имеет встроенную поддержку ely.by и littleskin.cn. Вы также можете добавлять сторонние серверы аутентификации!",
-      "p2p_title": "Соединение Peer to Peer",
-      "p2p": "Вы можете играть в многопользовательскую игру по локальной сети, даже если вы не в одной физической локальной сети!",
       "code_sign_title": "Подпись кода и современная упаковка",
       "code_sign": "В Windows вы можете использовать appx и appinstaller для установки приложения. Вы больше не будете получать блокирующие сообщения от вашего браузера или видеть ошибки SmartScreen!"
     },
@@ -517,5 +549,10 @@
   "docs": {
     "title": "Документация",
     "search": "Поиск по документации"
+  },
+  "actions": {
+    "preview": "Предпросмотр",
+    "hide": "Скрыть",
+    "goToIssue": "Перейти к проблеме"
   }
 }

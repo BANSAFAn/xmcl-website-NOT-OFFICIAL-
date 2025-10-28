@@ -19,6 +19,16 @@
       "tags": ["update", "news"],
       "slug": "Beta1.4V",
       "featured": true
+    },
+    {
+      "id": "2",
+      "title": "Beta 1.5 V",
+      "excerpt": "New tabs and design along with optimization?",
+      "date": "2025-10-03",
+      "author": "Baneronetwo",
+      "tags": ["update", "news"],
+      "slug": "Beta1.5V",
+      "featured": true
     }
   ],
   "categories": ["update", "news"],

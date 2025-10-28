@@ -65,10 +65,12 @@
     "sort": "Sort",
     "refresh": "Refresh",
     "download": "Download",
-    "open": "Open"
+    "open": "Open",
+    "clearFilters": "Clear Filters",
+    "share": "Share"
   },
   "home": {
-    "heroTitle": "Modern Minecraft Launcher",
+    "heroTitle": "X Minecraft Launcher",
     "heroSubtitle": "Experience Minecraft like never before with advanced mod management, performance optimization, and cross-platform support",
     "getStarted": "Get Started",
     "learnMore": "Learn More",
@@ -79,6 +81,8 @@
     "everythingYouNeed": "Everything You Need",
     "comprehensiveSolution": "A comprehensive solution for Minecraft modding",
     "downloadManageWhatever": "Download & Manage Whatever You Want",
+    "optimalDiskSpace": "Optimal disk space with Massive Resources",
+    "optimalDiskSpaceDesc": "XMCL will store all the mods, resource packs, shader packs and modpacks to a single store location. While you try to use any known resource, it will use hard link to install the resource to the instance without copying. It means you will never see any duplicated copy in /mods folder anymore.",
     "downloadManageWhateverDesc": "Access thousands of mods from multiple platforms with automatic updates and dependency management",
     "crossPlatformSupportTitle": "True Cross-Platform Support",
     "crossPlatformSupportDesc": "Native performance on Windows, macOS, and Linux with consistent user experience across all platforms",
@@ -95,6 +99,9 @@
     "hardLink": "Hard Link",
     "symbolicLink": "Symbolic Link",
     "feature5Title": "Resource Pack Management",
+    "multipleInstances": "Multiple Instances",
+    "multipleInstancesDesc": "Play online with friends, share files via p2p",
+    "p2p": "Peer-to-Peer",
     "feature5Description": "Organize and apply resource packs with preview and automatic updates",
     "feature6Title": "Save Management",
     "feature6Description": "Backup, restore, and share your worlds with cloud synchronization"
@@ -283,7 +290,35 @@
     "releasedOn": "Released on",
     "copiedToClipboard": "Copied to clipboard!",
     "copied": "Copied!",
-    "copyCommand": "Copy Commands"
+    "copyCommand": "Copy Command",
+    "download": "Download",
+    "sizeMB": "MB",
+    "downloads": "downloads",
+    "errorTitle": "Download Error",
+    "errorDescription": "Failed to fetch release information.",
+    "openGitHub": "Open GitHub",
+    "downloadTitle": "Download",
+    "downloadDescription": "Get the latest version of XMCL for your platform.",
+    "version": "Version",
+    "windowsInstaller": "Windows Installer",
+    "windowsArchive": "Windows Archive",
+    "windowsStoreApp": "Windows Store App",
+    "intelX64": "Intel (x64)",
+    "appleSiliconARM64": "Apple Silicon (ARM64)",
+    "macosPackage": "macOS Package",
+    "macosPackageAppleSilicon": "macOS Package (Apple Silicon)",
+    "linuxPackage": "Linux Package",
+    "debPackage": "DEB Package",
+    "rpmPackage": "RPM Package",
+    "appImageARM64": "AppImage (ARM64)",
+    "tarArchive": "TAR Archive",
+    "aur": "AUR (Arch User Repository)",
+    "linuxPackageARM64": "Linux Package (ARM64)",
+    "debPackageARM64": "DEB Package (ARM64)",
+    "rpmPackageARM64": "RPM Package (ARM64)",
+    "tarArchiveARM64": "TAR Archive (ARM64)",
+    "releaseNotes": "Release Notes",
+    "allReleases": "All Releases"
   },
   "issues": {
     "title": "Issues & Bug Reports",
@@ -297,6 +332,8 @@
     "openFilter": "Open",
     "closedFilter": "Closed",
     "newest": "Newest",
+    "allLabels": "All Labels",
+    "stats": "Stats",
     "recentlyUpdated": "Recently Updated",
     "mostCommented": "Most Commented",
     "filterByLabels": "Filter by Labels",
@@ -320,12 +357,20 @@
     "noAssignees": "No assignees",
     "noMilestone": "No milestone"
   },
+  "language": {
+    "searchPlaceholder": "Search language...",
+    "searchLabel": "Search for a language",
+    "noLanguageFound": "Language not found",
+    "availableLanguages": "languages available",
+    "defaultName": "{{name}}"
+  },
   "blog": {
     "title": "XMCL Blog",
     "subtitle": "Latest news, tutorials, and insights from the XMCL community",
     "searchPosts": "Search Posts",
     "showing": "Showing",
     "readMore": "Read More",
+    "readTime": "{{minutes}} min read",
     "backToGuides": "Back to Guides",
     "backToBlog": "Back to Blog",
     "publishedOn": "Published on",
@@ -344,7 +389,9 @@
     "recent": "Recent",
     "trending": "Trending",
     "loading": "Loading posts...",
-    "blogStats": "Blog Stats"
+    "blogStats": "Blog Stats",
+    "tryAdjustingSearch": "Try adjusting your search parameters",
+    "minutes": "min"
   },
   "guide": {
     "title": "User Guide",
@@ -353,6 +400,20 @@
     "filterByTags": "Filter by Tags",
     "categories": "Categories",
     "noGuides": "No guides available",
+    "noGuidesFound": "No guides found",
+    "seen": "Seen",
+    "category": "Category",
+    "total": "Total",
+    "stats": "Stats",
+    "clear": "Clear",
+    "tag": "Tags",
+    "search": "Search",
+    "rss": "RSS Feed",
+    "share": "Share",
+    "back": "Back",
+    "notfound": "Not Found",
+    "error": "Error",
+    "copy": "Copy",
     "noGuidesDescription": "No guides available for this category",
     "showing": "Showing",
     "backToGuides": "Back to Guides",
@@ -388,6 +449,10 @@
     "features": {
       "title": "Features",
       "download_title": "Download & Auto Complete",
+      "not_in_releases_not_found": "Not found release !",
+      "all_releases": "All releases",
+      "error_loading": "Error loading releases",
+      "downloads": "Downloads",
       "download": "Support download Minecraft, Forge, Fabric, Quilt, OptiFine, JVM from official or third party mirrors.",
       "manage_resources_title": "Manage All Resources",
       "manage_resources": "Use (hard/symbolic) links to install resources in instances, keep your disk usage optimal. No copies of mods everywhere!",
@@ -521,10 +586,16 @@
   "ui": {
     "loading": "Loading",
     "error": "Error",
-    "retry": "Retry"
+    "retry": "Retry",
+    "changeLanguage": "Change language"
   },
   "docs": {
     "title": "Documentation",
     "search": "Search docs"
+  },
+  "actions": {
+    "preview": "Preview",
+    "hide": "Hide",
+    "goToIssue": "Go to Issue"
   }
 }
