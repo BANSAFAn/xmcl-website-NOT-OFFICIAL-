@@ -598,9 +598,7 @@
     "hide": "Hide",
     "goToIssue": "Go to Issue"
   },
-  {
-    "meta_description": "Experience Minecraft like never before with XMCL - a modern, feature-rich launcher designed for performance and customization.",
-    "og_description": "Experience Minecraft like never before with XMCL - a modern, feature-rich launcher designed for performance and customization.",
-    "og_title": "X Minecraft Launcher"
-  }
+  "meta_description": "Experience Minecraft like never before with XMCL - a modern, feature-rich launcher designed for performance and customization.",
+  "og_description": "Experience Minecraft like never before with XMCL - a modern, feature-rich launcher designed for performance and customization.",
+  "og_title": "X Minecraft Launcher"
 }
