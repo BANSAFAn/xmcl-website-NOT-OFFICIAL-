@@ -370,14 +370,15 @@ const OSButton = React.memo<{
   icon: React.ReactNode;
   isSelected: boolean;
   onClick: () => void;
-}>(({ name, icon, isSelected, onClick }) => {
+  color: string;
+}>(({ name, icon, isSelected, onClick, color }) => {
   const { t } = useTranslation();
   return (
     <button
       onClick={onClick}
       className={`group relative px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-300 ${
         isSelected
-          ? "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-2xl shadow-blue-500/50 scale-105 sm:scale-110"
+          ? `bg-gradient-to-r ${color} text-white shadow-2xl scale-105 sm:scale-110`
           : "bg-slate-800/50 text-slate-400 hover:bg-slate-700/50 hover:text-white hover:scale-105"
       }`}
     >
@@ -419,6 +420,18 @@ const NewDownloadSection = () => {
   const [selectedOS, setSelectedOS] = useState<"windows" | "macos" | "linux">(
     "windows",
   );
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Handle OS change with animation
+  const handleOSChange = (os: "windows" | "macos" | "linux") => {
+    if (os === selectedOS) return;
+
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedOS(os);
+      setIsTransitioning(false);
+    }, 300);
+  };
 
   // Fetch releases with optimization
   const {
@@ -429,7 +442,7 @@ const NewDownloadSection = () => {
     queryKey: ["github-releases"],
     queryFn: async () => {
       const response = await fetch(
-        "https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases  ",
+        "https://api.github.com/repos/Voxelum/x-minecraft-launcher/releases",
         { headers: { Accept: "application/vnd.github.v3+json" } },
       );
       if (!response.ok) throw new Error("Failed to fetch");
@@ -471,8 +484,8 @@ const NewDownloadSection = () => {
           .filter((a) => {
             const n = a.name.toLowerCase();
             return (
-              (n.includes("setup") && n.includes(".exe")) ||
-              (n.includes("win") && n.includes(".zip") && !n.includes("arm64"))
+              (n.includes("setup") && n.includes(".exe") && !n.includes("ia32") && !n.includes("x86")) ||
+              (n.includes("win") && n.includes(".zip") && !n.includes("arm64") && !n.includes("ia32") && !n.includes("x86"))
             );
           })
           .slice(0, 2),
@@ -480,7 +493,9 @@ const NewDownloadSection = () => {
           .filter(
             (a) =>
               a.name.toLowerCase().includes(".appx") &&
-              !a.name.toLowerCase().includes("arm64"),
+              !a.name.toLowerCase().includes("arm64") &&
+              !a.name.toLowerCase().includes("ia32") &&
+              !a.name.toLowerCase().includes("x86"),
           )
           .slice(0, 1),
       },
@@ -534,12 +549,12 @@ const NewDownloadSection = () => {
   // Loading state
   if (isLoading) {
     return (
-      <section className="py-20 px-4 min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+      <section className="py-20 px-4 min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 dark:from-slate-900 dark:via-blue-900 dark:to-purple-900 light:from-slate-100 light:via-blue-100 light:to-purple-100">
         <div className="container mx-auto text-center">
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="w-16 h-16 animate-spin text-blue-400" />
+            <Loader2 className="w-16 h-16 animate-spin text-blue-400 dark:text-blue-400 light:text-blue-600" />
             {/* Use translation key */}
-            <p className="text-xl text-slate-300">
+            <p className="text-xl text-slate-300 dark:text-slate-300 light:text-slate-700">
               {t("downloadMessages.loadingReleases")}
             </p>
           </div>
@@ -551,22 +566,22 @@ const NewDownloadSection = () => {
   // Error state
   if (error || !latestRelease) {
     return (
-      <section className="py-20 px-4 min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+      <section className="py-20 px-4 min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 dark:from-slate-900 dark:via-blue-900 dark:to-purple-900 light:from-slate-100 light:via-blue-100 light:to-purple-100">
         <div className="container mx-auto text-center">
-          <div className="max-w-md mx-auto p-8 bg-red-500/10 backdrop-blur-xl border border-red-500/50 rounded-2xl">
-            <AlertCircle className="w-16 h-16 mx-auto mb-4 text-red-400" />
+          <div className="max-w-md mx-auto p-8 bg-red-500/10 dark:bg-red-500/10 light:bg-red-100/70 backdrop-blur-xl border border-red-500/50 dark:border-red-500/50 light:border-red-300/50 rounded-2xl">
+            <AlertCircle className="w-16 h-16 mx-auto mb-4 text-red-400 dark:text-red-400 light:text-red-600" />
             {/* Use translation key */}
-            <h3 className="text-2xl font-bold text-white mb-2">
+            <h3 className="text-2xl font-bold text-white dark:text-white light:text-slate-800 mb-2">
               {t("downloadMessages.errorTitle")}
             </h3>
             {/* Use translation key */}
-            <p className="text-slate-300 mb-6">
+            <p className="text-slate-300 dark:text-slate-300 light:text-slate-600 mb-6">
               {t("downloadMessages.errorDescription")}
             </p>
             <Button
               onClick={() =>
                 window.open(
-                  "https://github.com/Voxelum/x-minecraft-launcher/releases  ",
+                  "https://github.com/Voxelum/x-minecraft-launcher/releases",
                   "_blank",
                 )
               }
@@ -582,34 +597,66 @@ const NewDownloadSection = () => {
     );
   }
 
+  // Determine OS-specific gradient
+  const getOSGradient = () => {
+    switch (selectedOS) {
+      case "windows":
+        return "from-blue-600 via-blue-700 to-blue-800";
+      case "macos":
+        return "from-gray-600 via-gray-700 to-gray-800";
+      case "linux":
+        return "from-orange-600 via-orange-700 to-orange-800";
+      default:
+        return "from-blue-600 via-purple-600 to-pink-600";
+    }
+  };
+
   return (
-    <section className="py-20 px-4 min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
-      {/* Animated background */}
+    <section className={`py-20 px-4 min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 dark:from-slate-900 dark:via-blue-900 dark:to-purple-900 light:from-slate-100 light:via-blue-100 light:to-purple-100 relative overflow-hidden transition-all duration-500`}>
+      {/* Animated background with OS-specific color */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className={`absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 dark:bg-blue-500/20 light:bg-blue-300/20 rounded-full blur-3xl animate-pulse`} />
         <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"
+          className={`absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 dark:bg-purple-500/20 light:bg-purple-300/20 rounded-full blur-3xl animate-pulse`}
           style={{ animationDelay: "1s" }}
         />
+        {selectedOS === "windows" && (
+          <div
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-400/10 dark:bg-blue-400/10 light:bg-blue-200/10 rounded-full blur-3xl animate-pulse`}
+            style={{ animationDelay: "0.5s" }}
+          />
+        )}
+        {selectedOS === "macos" && (
+          <div
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gray-400/10 dark:bg-gray-400/10 light:bg-gray-200/10 rounded-full blur-3xl animate-pulse`}
+            style={{ animationDelay: "0.5s" }}
+          />
+        )}
+        {selectedOS === "linux" && (
+          <div
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-400/10 dark:bg-orange-400/10 light:bg-orange-200/10 rounded-full blur-3xl animate-pulse`}
+            style={{ animationDelay: "0.5s" }}
+          />
+        )}
       </div>
 
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           {/* Use translation key */}
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 light:from-blue-600 light:via-purple-600 light:to-pink-600 bg-clip-text text-transparent">
             {t("downloadMessages.downloadTitle")}
           </h2>
           {/* Use translation key */}
-          <p className="text-xl sm:text-2xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+          <p className="text-xl sm:text-2xl text-slate-300 dark:text-slate-300 light:text-slate-700 max-w-3xl mx-auto mb-8 leading-relaxed">
             {t("downloadMessages.downloadDescription")}
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Badge className="text-lg py-3 px-6 bg-slate-800/80 backdrop-blur-xl border border-slate-700 text-white">
+            <Badge className="text-lg py-3 px-6 bg-slate-800/80 dark:bg-slate-800/80 light:bg-white/70 backdrop-blur-xl border border-slate-700 dark:border-slate-700 light:border-slate-300 text-white dark:text-white light:text-slate-800">
               {/* Use translation key for Version */}
               {t("downloadMessages.version")} {latestRelease.tag_name}
             </Badge>
-            <Badge className="text-lg py-3 px-6 bg-slate-800/80 backdrop-blur-xl border border-slate-700 text-white">
+            <Badge className="text-lg py-3 px-6 bg-slate-800/80 dark:bg-slate-800/80 light:bg-white/70 backdrop-blur-xl border border-slate-700 dark:border-slate-700 light:border-slate-300 text-white dark:text-white light:text-slate-800">
               {/* Use translation key for Released on */}
               {t("downloadMessages.releasedOn")}{" "}
               {new Date(latestRelease.published_at).toLocaleDateString("ru-RU")}
@@ -619,30 +666,33 @@ const NewDownloadSection = () => {
 
         {/* OS Selector */}
         <div className="flex justify-center mb-16">
-          <div className="inline-flex gap-3 sm:gap-4 p-2 sm:p-3 bg-slate-800/50 backdrop-blur-2xl rounded-3xl border border-slate-700/50 shadow-2xl flex-wrap justify-center">
+          <div className="inline-flex gap-3 sm:gap-4 p-2 sm:p-3 bg-slate-800/50 dark:bg-slate-800/50 light:bg-white/50 backdrop-blur-2xl rounded-3xl border border-slate-700/50 dark:border-slate-700/50 light:border-slate-300/50 shadow-2xl flex-wrap justify-center">
             <OSButton
               name="Windows"
               icon={<WindowsIcon />}
               isSelected={selectedOS === "windows"}
-              onClick={() => setSelectedOS("windows")}
+              onClick={() => handleOSChange("windows")}
+              color="from-blue-600 via-blue-700 to-blue-800"
             />
             <OSButton
               name="macOS"
               icon={<MacOSIcon />}
               isSelected={selectedOS === "macos"}
-              onClick={() => setSelectedOS("macos")}
+              onClick={() => handleOSChange("macos")}
+              color="from-gray-600 via-gray-700 to-gray-800"
             />
             <OSButton
               name="Linux"
               icon={<LinuxIcon />}
               isSelected={selectedOS === "linux"}
-              onClick={() => setSelectedOS("linux")}
+              onClick={() => handleOSChange("linux")}
+              color="from-orange-600 via-orange-700 to-orange-800"
             />
           </div>
         </div>
 
-        {/* Download Items */}
-        <div className="space-y-6 max-w-5xl mx-auto">
+        {/* Download Items with transition */}
+        <div className={`space-y-6 max-w-5xl mx-auto transition-opacity duration-300 ${isTransitioning ? "opacity-0" : "opacity-100"}`}>
           {selectedOS === "windows" && (
             <>
               {platformAssets.windows.x64.map((asset) => (
@@ -687,7 +737,7 @@ const NewDownloadSection = () => {
             <>
               <div className="mb-12">
                 {/* Use translation key */}
-                <h3 className="text-3xl font-bold text-center mb-6 text-white">
+                <h3 className="text-3xl font-bold text-center mb-6 text-white dark:text-white light:text-slate-800">
                   {t("downloadMessages.intelX64")}
                 </h3>
                 <div className="space-y-6">
@@ -714,7 +764,7 @@ const NewDownloadSection = () => {
               {platformAssets.macos.arm64.length > 0 && (
                 <div>
                   {/* Use translation key */}
-                  <h3 className="text-3xl font-bold text-center mb-6 text-white">
+                  <h3 className="text-3xl font-bold text-center mb-6 text-white dark:text-white light:text-slate-800">
                     {t("downloadMessages.appleSiliconARM64")}
                   </h3>
                   <div className="space-y-6">
@@ -739,7 +789,7 @@ const NewDownloadSection = () => {
             <>
               <div className="mb-12">
                 {/* Use translation key */}
-                <h3 className="text-3xl font-bold text-center mb-6 text-white">
+                <h3 className="text-3xl font-bold text-center mb-6 text-white dark:text-white light:text-slate-800">
                   x64
                 </h3>
                 <div className="space-y-6">
@@ -783,13 +833,13 @@ const NewDownloadSection = () => {
                   <DownloadItem
                     title={t("downloadMessages.aur")}
                     packageType="aur"
-                    downloadUrl="https://aur.archlinux.org/packages/xmcl-launcher  "
+                    downloadUrl="https://aur.archlinux.org/packages/xmcl-launcher"
                     gradient="bg-gradient-to-r from-cyan-600 to-cyan-700"
                   />
                   <DownloadItem
                     title="Flathub"
                     packageType="flathub"
-                    downloadUrl="https://flathub.org/apps/app.xmcl.voxelum  "
+                    downloadUrl="https://flathub.org/apps/app.xmcl.voxelum"
                     gradient="bg-gradient-to-r from-indigo-600 to-indigo-700"
                   />
                 </div>
@@ -797,7 +847,7 @@ const NewDownloadSection = () => {
               {platformAssets.linux.arm64.length > 0 && (
                 <div>
                   {/* Use translation key */}
-                  <h3 className="text-3xl font-bold text-center mb-6 text-white">
+                  <h3 className="text-3xl font-bold text-center mb-6 text-white dark:text-white light:text-slate-800">
                     ARM64
                   </h3>
                   <div className="space-y-6">
@@ -852,7 +902,7 @@ const NewDownloadSection = () => {
             variant="outline"
             size="lg"
             onClick={() => window.open(latestRelease.html_url, "_blank")}
-            className="bg-slate-800/50 backdrop-blur-xl border-slate-700 hover:bg-slate-700/50 text-white text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
+            className="bg-slate-800/50 dark:bg-slate-800/50 light:bg-white/50 backdrop-blur-xl border-slate-700 dark:border-slate-700 light:border-slate-300 hover:bg-slate-700/50 dark:hover:bg-slate-700/50 light:hover:bg-slate-100/50 text-white dark:text-white light:text-slate-800 text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
           >
             <ExternalLink className="w-5 h-5 mr-2 sm:mr-3" />
             {/* Use translation key */}
@@ -863,11 +913,11 @@ const NewDownloadSection = () => {
             size="lg"
             onClick={() =>
               window.open(
-                "https://github.com/Voxelum/x-minecraft-launcher/releases  ",
+                "https://github.com/Voxelum/x-minecraft-launcher/releases",
                 "_blank",
               )
             }
-            className="bg-slate-800/50 backdrop-blur-xl border-slate-700 hover:bg-slate-700/50 text-white text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
+            className="bg-slate-800/50 dark:bg-slate-800/50 light:bg-white/50 backdrop-blur-xl border-slate-700 dark:border-slate-700 light:border-slate-300 hover:bg-slate-700/50 dark:hover:bg-slate-700/50 light:hover:bg-slate-100/50 text-white dark:text-white light:text-slate-800 text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
           >
             <Github className="w-5 h-5 mr-2 sm:mr-3" />
             {/* Use translation key */}
