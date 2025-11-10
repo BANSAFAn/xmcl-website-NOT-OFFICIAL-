@@ -6,8 +6,30 @@
     <atom:link href="https://xmcl-website-not-official.vercel.app/rss.xml" rel="self" type="application/rss+xml" />
     <description>Latest updates and insights from the XMCL team</description>
     <language>en</language>
-    <lastBuildDate>Wed, 01 Oct 2025 07:37:51 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 10 Nov 2025 20:04:49 GMT</lastBuildDate>
     <generator>XMCL Website</generator>
+
+    <item>
+      <title><![CDATA[Beta 1.4 V]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/blogs/Beta1.4V</link>
+      <guid>https://xmcl-website-not-official.vercel.app/blogs/Beta1.4V</guid>
+      <description><![CDATA[A new version of the website with many new features]]></description>
+      <pubDate>Fri, 03 Oct 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[update]]></category>
+      <category><![CDATA[news]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Beta 1.5 V]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/blogs/Beta1.5V</link>
+      <guid>https://xmcl-website-not-official.vercel.app/blogs/Beta1.5V</guid>
+      <description><![CDATA[New tabs and design along with optimization?]]></description>
+      <pubDate>Fri, 03 Oct 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[update]]></category>
+      <category><![CDATA[news]]></category>
+    </item>
 
     <item>
       <title><![CDATA[New website and new technologies!]]></title>
