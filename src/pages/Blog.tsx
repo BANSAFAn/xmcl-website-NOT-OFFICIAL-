@@ -25,6 +25,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/hooks/useTranslation";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
+import { motion, AnimatePresence } from "framer-motion";
 
 const LoadingSpinner = () => (
   <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
@@ -54,76 +55,80 @@ const PostCard = React.memo(
     const readTime = Math.ceil((post.content?.length || 0) / 1000);
 
     return (
-      <Card
-        className="group relative h-full overflow-hidden rounded-2xl border-2 border-slate-200/50 bg-white/80 p-6 shadow-lg backdrop-blur-xl transition-all duration-500 hover:scale-[1.02] hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 dark:border-slate-700/50 dark:bg-slate-800/80 dark:hover:border-blue-400/50"
-        style={{
-          animationDelay: `${index * 100}ms`,
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        whileHover={{ y: -5 }}
       >
-        {featured && (
-          <div className="absolute right-4 top-4 z-10">
-            <Badge className="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg">
-              <Sparkles className="h-3 w-3" />
-              {t("blog.featured")}
-            </Badge>
-          </div>
-        )}
-
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:via-purple-500/5 group-hover:to-pink-500/5 group-hover:opacity-100" />
-
-        <div className="relative z-10 flex h-full flex-col">
-          <h3 className="mb-3 text-2xl font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
-            {post.title}
-          </h3>
-
-          <p className="mb-4 flex-1 text-slate-600 dark:text-slate-400 line-clamp-3">
-            {post.excerpt}
-          </p>
-
-          <div className="mb-4 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
-            <div className="flex items-center gap-1">
-              <User className="h-4 w-4" />
-              <span className="font-medium">{post.author}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span>{new Date(post.date).toLocaleDateString()}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>
-                {readTime} {t("blog.minutes")}
-              </span>
-            </div>
-          </div>
-
-          <div className="mb-4 flex flex-wrap gap-2">
-            {post.tags.slice(0, 3).map((tag: string) => (
-              <Badge
-                key={tag}
-                variant="outline"
-                className="border-blue-200 text-blue-600 dark:border-blue-700 dark:text-blue-400"
-              >
-                {tag}
+        <Card
+          className="group relative h-full overflow-hidden rounded-2xl border-0 bg-white/90 p-6 shadow-lg backdrop-blur-xl transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl dark:bg-slate-800/90"
+        >
+          {featured && (
+            <div className="absolute right-4 top-4 z-10">
+              <Badge className="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg">
+                <Sparkles className="h-3 w-3" />
+                {t("blog.featured")}
               </Badge>
-            ))}
-            {post.tags.length > 3 && (
-              <Badge variant="outline" className="text-slate-600">
-                +{post.tags.length - 3}
-              </Badge>
-            )}
-          </div>
+            </div>
+          )}
 
-          <Button
-            onClick={onClick}
-            className="group/btn w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transition-all hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
-          >
-            <FileText className="mr-2 h-4 w-4" />
-            {t("blog.readMore")}
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-          </Button>
-        </div>
-      </Card>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:via-purple-500/5 group-hover:to-pink-500/5 group-hover:opacity-100" />
+
+          <div className="relative z-10 flex h-full flex-col">
+            <h3 className="mb-3 text-2xl font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+              {post.title}
+            </h3>
+
+            <p className="mb-4 flex-1 text-slate-600 dark:text-slate-400 line-clamp-3">
+              {post.excerpt}
+            </p>
+
+            <div className="mb-4 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+              <div className="flex items-center gap-1">
+                <User className="h-4 w-4" />
+                <span className="font-medium">{post.author}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Calendar className="h-4 w-4" />
+                <span>{new Date(post.date).toLocaleDateString()}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="h-4 w-4" />
+                <span>
+                  {readTime} {t("blog.minutes")}
+                </span>
+              </div>
+            </div>
+
+            <div className="mb-4 flex flex-wrap gap-2">
+              {post.tags.slice(0, 3).map((tag: string) => (
+                <Badge
+                  key={tag}
+                  variant="outline"
+                  className="border-blue-200 text-blue-600 dark:border-blue-700 dark:text-blue-400"
+                >
+                  {tag}
+                </Badge>
+              ))}
+              {post.tags.length > 3 && (
+                <Badge variant="outline" className="text-slate-600">
+                  +{post.tags.length - 3}
+                </Badge>
+              )}
+            </div>
+
+            <Button
+              onClick={onClick}
+              className="group/btn w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transition-all hover:from-blue-700 hover:to-purple-700 hover:shadow-xl"
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              {t("blog.readMore")}
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+            </Button>
+          </div>
+        </Card>
+      </motion.div>
     );
   },
 );
@@ -147,7 +152,12 @@ const FilterSidebar = React.memo(
     if (!isOpen) return null;
 
     return (
-      <div className="fixed left-0 top-0 z-50 h-screen w-80 overflow-y-auto bg-white/95 p-6 shadow-2xl backdrop-blur-xl dark:bg-slate-900/95">
+      <motion.div
+        initial={{ x: -300 }}
+        animate={{ x: 0 }}
+        exit={{ x: -300 }}
+        className="fixed left-0 top-0 z-50 h-screen w-80 overflow-y-auto bg-white/95 p-6 shadow-2xl backdrop-blur-xl dark:bg-slate-900/95"
+      >
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
             {t("blog.filterByCategory")}
@@ -223,7 +233,7 @@ const FilterSidebar = React.memo(
             </div>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className=" ">{t("blog.totalPosts")}</span>
+                <span className="">{t("blog.totalPosts")}</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-100">
                   {stats.total}
                 </span>
@@ -247,7 +257,7 @@ const FilterSidebar = React.memo(
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   },
 );
@@ -310,9 +320,9 @@ const Blog = () => {
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert(t("downloadMessages.copiedToClipboard"));
+      // Use toast instead of alert for better UX
     }
-  }, [t]);
+  }, []);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -372,41 +382,47 @@ const Blog = () => {
                 </Button>
               </div>
 
-              <Card className="overflow-hidden rounded-3xl border-2 border-slate-200/50 bg-white/90 shadow-2xl backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-800/90">
-                <div className="border-b border-slate-200 bg-gradient-to-r from-blue-50 to-purple-50 p-8 dark:border-slate-700 dark:from-blue-900/30 dark:to-purple-900/30">
-                  <h1 className="mb-4 text-5xl font-black text-slate-900 dark:text-slate-100">
-                    {post.title}
-                  </h1>
-                  <div className="mb-4 flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-400">
-                    <div className="flex items-center gap-2">
-                      <User className="h-5 w-5" />
-                      <span className="font-semibold">{post.author}</span>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card className="overflow-hidden rounded-3xl border-0 bg-white/90 shadow-2xl backdrop-blur-xl dark:bg-slate-800/90">
+                  <div className="border-b border-slate-200 bg-gradient-to-r from-blue-50 to-purple-50 p-8 dark:border-slate-700 dark:from-blue-900/30 dark:to-purple-900/30">
+                    <h1 className="mb-4 text-5xl font-black text-slate-900 dark:text-slate-100">
+                      {post.title}
+                    </h1>
+                    <div className="mb-4 flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-400">
+                      <div className="flex items-center gap-2">
+                        <User className="h-5 w-5" />
+                        <span className="font-semibold">{post.author}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-5 w-5" />
+                        <span>{new Date(post.date).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-5 w-5" />
+                        <span>
+                          {Math.ceil((selectedPostContent?.length || 0) / 1000)}{" "}
+                          {t("blog.minutes")}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5" />
-                      <span>{new Date(post.date).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-5 w-5" />
-                      <span>
-                        {Math.ceil((selectedPostContent?.length || 0) / 1000)}{" "}
-                        {t("blog.minutes")}
-                      </span>
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags.map((tag: string) => (
+                        <Badge key={tag} className="bg-blue-600 text-white">
+                          {tag}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag: string) => (
-                      <Badge key={tag} className="bg-blue-600 text-white">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
 
-                <div className="p-8">
-                  <MarkdownRenderer content={selectedPostContent} />
-                </div>
-              </Card>
+                  <div className="p-8">
+                    <MarkdownRenderer content={selectedPostContent} />
+                  </div>
+                </Card>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -426,53 +442,76 @@ const Blog = () => {
         </div>
 
         <div className="fixed left-4 top-24 z-40">
-          <Button
-            onClick={() => setShowFilters(!showFilters)}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl hover:from-blue-700 hover:to-purple-700"
-            size="lg"
-          >
-            {showFilters ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              onClick={() => setShowFilters(!showFilters)}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl hover:from-blue-700 hover:to-purple-700"
+              size="lg"
+            >
+              {showFilters ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+          </motion.div>
         </div>
 
-        <FilterSidebar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          categories={categories}
-          selectedTags={selectedTags}
-          toggleTag={toggleTag}
-          clearFilters={clearFilters}
-          stats={{
-            total: posts.length,
-            categories: categories.length,
-            showing: filteredPosts.length,
-          }}
-          isOpen={showFilters}
-          onClose={() => setShowFilters(false)}
-        />
+        <AnimatePresence>
+          {showFilters && (
+            <FilterSidebar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              categories={categories}
+              selectedTags={selectedTags}
+              toggleTag={toggleTag}
+              clearFilters={clearFilters}
+              stats={{
+                total: posts.length,
+                categories: categories.length,
+                showing: filteredPosts.length,
+              }}
+              isOpen={showFilters}
+              onClose={() => setShowFilters(false)}
+            />
+          )}
+        </AnimatePresence>
 
         <div className="relative z-10 py-20 text-center">
           <div className="container mx-auto px-4">
-            <h1 className="mb-6 text-7xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6 text-7xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+            >
               {t("blog.title")}
-            </h1>
-            <p className="mx-auto mb-8 max-w-3xl text-xl text-slate-600 dark:text-slate-400">
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mx-auto mb-8 max-w-3xl text-xl text-slate-600 dark:text-slate-400"
+            >
               {t("blog.subtitle")}
-            </p>
-            <div className="flex justify-center gap-4">
-              <Button
-                onClick={() => window.open("/rss.xml", "_blank")}
-                variant="outline"
-                className="border-orange-500 text-orange-600 hover:bg-orange-50 dark:border-orange-400 dark:text-orange-400"
-              >
-                <Rss className="mr-2 h-4 w-4" />
-                RSS Feed
-              </Button>
-            </div>
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex justify-center gap-4"
+            >
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => window.open("/rss.xml", "_blank")}
+                  variant="outline"
+                  className="border-orange-500 text-orange-600 hover:bg-orange-50 dark:border-orange-400 dark:text-orange-400"
+                >
+                  <Rss className="mr-2 h-4 w-4" />
+                  RSS Feed
+                </Button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
 
@@ -490,7 +529,12 @@ const Blog = () => {
               ))}
             </div>
           ) : (
-            <div className="py-20 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="py-20 text-center"
+            >
               <FileText className="mx-auto mb-4 h-16 w-16 text-slate-400" />
               <h3 className="mb-2 text-2xl font-bold text-slate-600 dark:text-slate-400">
                 {t("blog.noPostsFound")}
@@ -499,7 +543,7 @@ const Blog = () => {
               <Button onClick={clearFilters} className="mt-4">
                 {t("common.clearFilters")}
               </Button>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

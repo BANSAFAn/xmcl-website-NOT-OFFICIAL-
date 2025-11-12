@@ -16,6 +16,7 @@ import { TranslationProvider } from "@/contexts/TranslationContext";
 
 // Lazy-loaded page components (assumed default exports)
 const Index = lazy(() => import("./pages/Index"));
+const Download = lazy(() => import("./pages/Download"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Guide = lazy(() => import("./pages/Guide"));
 const ModernChangelog = lazy(() => import("./pages/ModernChangelog"));
@@ -51,6 +52,12 @@ const AppContent: React.FC = () => {
   // Keep theme hook synchronous and inexpensive
   useTheme();
 
+  // Function to handle download click from footer
+  const handleDownloadClick = () => {
+    // Navigate to download page
+    window.location.href = "/download";
+  };
+
   return (
     <BrowserRouter>
       <TranslationProvider>
@@ -67,6 +74,7 @@ const AppContent: React.FC = () => {
             <Suspense fallback={<Fallback message="Loading page…" />}>
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/download" element={<Download />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:id" element={<Blog />} />
                 <Route path="/guide" element={<Guide />} />
@@ -81,7 +89,7 @@ const AppContent: React.FC = () => {
           </main>
 
           <Suspense fallback={<Fallback message="Loading footer…" />}>
-            <Footer onDownloadClick={() => {}} />
+            <Footer onDownloadClick={handleDownloadClick} />
           </Suspense>
         </div>
       </TranslationProvider>
