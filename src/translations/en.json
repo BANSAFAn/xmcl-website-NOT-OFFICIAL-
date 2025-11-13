@@ -413,6 +413,7 @@
   },
   "guide": {
     "title": "User Guide",
+    "filterBy": "Filter by",
     "subtitle": "Comprehensive guides and tutorials to help you master XMCL",
     "searchGuides": "Search Guides",
     "filterByTags": "Filter by Tags",

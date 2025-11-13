@@ -1,8 +1,7 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,28 +15,13 @@ import {
   Star,
   Rss,
   ArrowLeft,
-  Share2,
-  CheckCircle,
-  Circle,
-  Play,
-  Zap,
-  Target,
-  Layers,
-  Sparkles,
   TrendingUp,
   Filter,
   X,
-  ChevronDown,
-  ChevronUp,
-  Code,
-  Terminal,
-  Shield,
-  Rocket,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/hooks/useTranslation";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface GuidePost {
   id: string;
@@ -50,8 +34,8 @@ interface GuidePost {
   slug: string;
   readTime?: string;
   difficulty?: "beginner" | "intermediate" | "advanced";
-  steps?: number;
-  estimatedTime?: string;
+  views?: number;
+  lastUpdated?: string;
 }
 
 interface GuideConfig {
@@ -60,336 +44,151 @@ interface GuideConfig {
   featured: string[];
 }
 
-const GuideLoadingSpinner = () => (
-  <div className="flex h-screen items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-900 dark:to-pink-900">
+// Оптимизированный Loading Component
+const LoadingSpinner = () => (
+  <div className="flex h-screen items-center justify-center bg-gradient-to-br from-emerald-50 to-cyan-50 dark:from-slate-950 dark:to-slate-900">
     <div className="relative">
-      <div className="flex space-x-4">
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            className="w-4 h-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-          />
-        ))}
-      </div>
-      <div className="mt-4 text-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-        >
-          <BookOpen className="w-12 h-12 text-indigo-500" />
-        </motion.div>
-      </div>
-      <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">Loading amazing guides...</p>
+      <div className="h-16 w-16 rounded-full border-4 border-emerald-200 dark:border-emerald-800"></div>
+      <div className="absolute top-0 h-16 w-16 animate-spin rounded-full border-4 border-transparent border-t-emerald-500"></div>
+      <BookOpen className="absolute top-4 left-4 h-8 w-8 text-emerald-500 animate-pulse" />
     </div>
   </div>
 );
 
+// Оптимизированная Guide Card
 const GuideCard = React.memo(
   ({
     post,
     featured,
     onClick,
-    index,
+    searchQuery,
   }: {
     post: GuidePost;
     featured: boolean;
     onClick: () => void;
-    index: number;
+    searchQuery: string;
   }) => {
     const { t } = useTranslation();
-    const [isHovered, setIsHovered] = useState(false);
 
-    const difficultyConfig = {
-      beginner: {
-        color: "from-green-500 to-emerald-500",
-        bg: "bg-green-500/10",
-        text: "Beginner Friendly",
-        icon: <CheckCircle className="w-4 h-4" />,
-      },
-      intermediate: {
-        color: "from-yellow-500 to-orange-500",
-        bg: "bg-yellow-500/10",
-        text: "Intermediate",
-        icon: <Zap className="w-4 h-4" />,
-      },
-      advanced: {
-        color: "from-red-500 to-pink-500",
-        bg: "bg-red-500/10",
-        text: "Advanced",
-        icon: <Rocket className="w-4 h-4" />,
-      },
+    const difficultyColors = {
+      beginner: "bg-green-500",
+      intermediate: "bg-yellow-500",
+      advanced: "bg-red-500",
     };
 
-    const config = difficultyConfig[post.difficulty || "beginner"];
+    // Функция для подсветки текста поиска
+    const highlightText = (text: string) => {
+      if (!searchQuery) return text;
+
+      const parts = text.split(new RegExp(`(${searchQuery})`, "gi"));
+      return (
+        <>
+          {parts.map((part, i) =>
+            part.toLowerCase() === searchQuery.toLowerCase() ?
+              <span key={i} className="bg-emerald-100 dark:bg-emerald-900 font-semibold">{part}</span> :
+              part
+          )}
+        </>
+      );
+    };
 
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
-        whileHover={{ y: -8 }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
+      <Card
+        onClick={onClick}
+        className="group relative overflow-hidden rounded-xl border-0 bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-emerald-500/20 dark:bg-slate-800/90 cursor-pointer"
       >
-        <Card
-          onClick={onClick}
-          className="group relative overflow-hidden rounded-3xl border-0 bg-gradient-to-br from-white/90 to-purple-50/50 p-0 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:shadow-purple-500/25 dark:from-slate-800/90 dark:to-purple-900/50 dark:shadow-purple-500/25 cursor-pointer"
-        >
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-pink-500/5" />
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(99, 102, 241, 0.03) 10px, rgba(139, 92, 246, 0.03) 20px)`,
-              }}
-            />
-          </div>
-
-          {featured && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="absolute right-4 top-4 z-20"
-            >
-              <Badge className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg">
-                <Sparkles className="h-3 w-3" />
-                Featured
-              </Badge>
-            </motion.div>
-          )}
-
-          <div className="relative z-10 p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex space-x-1">
-                  {[1, 2, 3, 4, 5].map((step) => (
-                    <div
-                      key={step}
-                      className={`w-2 h-2 rounded-full ${
-                        step <= (post.steps || 3)
-                          ? 'bg-gradient-to-r from-indigo-500 to-purple-500'
-                          : 'bg-slate-300 dark:bg-slate-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                {post.steps || 3} steps
-              </span>
+        {/* Featured Badge */}
+        {featured && (
+          <div className="absolute top-0 right-0 z-10">
+            <div className="h-12 w-12 overflow-hidden">
+              <div className="absolute -right-4 -top-4 h-16 w-16 rotate-45 bg-gradient-to-r from-yellow-400 to-orange-400"></div>
+              <Star className="absolute right-1 top-1 h-4 w-4 text-white fill-current z-10" />
             </div>
+          </div>
+        )}
+
+        <div className="p-6">
+          {/* Badges Row */}
+          <div className="mb-3 flex items-center justify-between">
             {post.difficulty && (
-              <Badge className={`${config.bg} ${config.color} text-white text-xs px-2 py-1`}>
-                {config.icon}
-                <span className="ml-1">{config.text}</span>
+              <Badge
+                className={`${difficultyColors[post.difficulty]} text-white text-xs px-2 py-0.5 capitalize`}
+              >
+                {post.difficulty}
               </Badge>
             )}
-            </div>
-
-            <div className="mb-3 flex items-start gap-3">
-              <motion.div
-                animate={{ rotate: isHovered ? 360 : 0 }}
-                transition={{ duration: 0.5 }}
-                className="mt-1"
-              >
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-r ${config.color} flex items-center justify-center text-white shadow-lg`}>
-                  {post.difficulty === 'beginner' && <CheckCircle className="w-5 h-5" />}
-                  {post.difficulty === 'intermediate' && <Zap className="w-5 h-5" />}
-                  {post.difficulty === 'advanced' && <Rocket className="w-5 h-5" />}
-                </div>
-              </motion.div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                {post.title}
-              </h3>
-            </div>
-
-            <p className="mb-4 text-slate-600 dark:text-slate-400 line-clamp-2">
-              {post.excerpt}
-            </p>
-
-            <div className="mb-4 flex items-center justify-between text-sm">
-              <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
-                <div className="flex items-center gap-1">
-                  <User className="h-4 w-4" />
-                  <span className="font-medium">{post.author}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span>{post.estimatedTime || post.readTime || "10 min"}</span>
-                </div>
-              </div>
-              <motion.div
-                animate={{ x: isHovered ? 5 : 0 }}
-                className="flex items-center gap-1 text-indigo-600 dark:text-indigo-400"
-              >
-                <span className="text-sm font-medium">Start Guide</span>
-                <ArrowRight className="h-4 w-4" />
-              </motion.div>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {post.tags.slice(0, 2).map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="outline"
-                  className="border-indigo-200 text-indigo-600 dark:border-indigo-700 dark:text-indigo-400 text-xs"
-                >
-                  {tag}
-                </Badge>
-              ))}
-              {post.tags.length > 2 && (
-                <Badge variant="outline" className="text-xs text-slate-600">
-                  +{post.tags.length - 2}
-                </Badge>
-              )}
-            </div>
+            {post.views && (
+              <span className="text-xs text-slate-500 dark:text-slate-400">
+                {post.views} {t("guide.views")}
+              </span>
+            )}
           </div>
-        </Card>
-      </motion.div>
+
+          {/* Content */}
+          <h3 className="mb-2 text-xl font-bold text-slate-900 line-clamp-2 transition-colors group-hover:text-emerald-600 dark:text-slate-100 dark:group-hover:text-emerald-400">
+            {highlightText(post.title)}
+          </h3>
+
+          <p className="mb-4 text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+            {highlightText(post.excerpt)}
+          </p>
+
+          {/* Meta */}
+          <div className="mb-4 flex items-center justify-between text-xs text-slate-500 dark:text-slate-500">
+            <span className="flex items-center gap-1">
+              <User className="h-3 w-3" />
+              {post.author}
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {post.readTime || "5 min"}
+            </span>
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {post.tags.slice(0, 3).map((tag) => (
+              <Badge
+                key={tag}
+                variant="outline"
+                className="border-emerald-300 text-emerald-700 dark:border-emerald-700 dark:text-emerald-400 text-xs px-1.5 py-0"
+              >
+                {tag}
+              </Badge>
+            ))}
+            {post.tags.length > 3 && (
+              <Badge variant="outline" className="text-xs px-1.5 py-0">
+                +{post.tags.length - 3}
+              </Badge>
+            )}
+          </div>
+
+          {/* Read Indicator */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+              <FileText className="h-4 w-4" />
+              {t("guide.readMore")}
+            </div>
+            <ArrowRight className="h-4 w-4 text-emerald-600 dark:text-emerald-400 transition-transform group-hover:translate-x-1" />
+          </div>
+        </div>
+      </Card>
     );
   },
 );
 
 GuideCard.displayName = "GuideCard";
 
-const GuideFilterSidebar = React.memo(
-  ({
-    searchQuery,
-    setSearchQuery,
-    categories,
-    selectedTags,
-    toggleTag,
-    clearFilters,
-    stats,
-    isOpen,
-    onClose,
-  }: any) => {
-    const { t } = useTranslation();
-
-    return (
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ x: -320 }}
-            animate={{ x: 0 }}
-            exit={{ x: -320 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed left-0 top-0 z-50 h-screen w-80 overflow-y-auto bg-gradient-to-b from-white/95 to-purple-50/95 p-6 shadow-2xl backdrop-blur-xl dark:from-slate-900/95 dark:to-purple-900/95"
-          >
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-                Filter Guides
-              </h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="hover:bg-slate-100 dark:hover:bg-slate-800"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-
-            <div className="space-y-6">
-              <div>
-                <div className="mb-3 flex items-center gap-2">
-                  <Search className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                    Search
-                  </h3>
-                </div>
-                <Input
-                  placeholder="Search guides..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="border-indigo-200 bg-white dark:border-indigo-700 dark:bg-slate-800"
-                />
-              </div>
-
-              <div>
-                <div className="mb-3 flex items-center gap-2">
-                  <Tag className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                    Categories
-                  </h3>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((tag) => (
-                    <Button
-                      key={tag}
-                      variant={selectedTags.includes(tag) ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => toggleTag(tag)}
-                      className={
-                        selectedTags.includes(tag)
-                          ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
-                          : "text-slate-600 dark:text-slate-400"
-                      }
-                    >
-                      {tag}
-                    </Button>
-                  ))}
-                </div>
-                {(selectedTags.length > 0 || searchQuery) && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    className="mt-3 w-full"
-                  >
-                    Clear Filters
-                  </Button>
-                )}
-              </div>
-
-              <div className="rounded-2xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 p-4 dark:border-indigo-700 dark:from-indigo-900/30 dark:to-purple-900/30">
-                <div className="mb-3 flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                    Guide Stats
-                  </h3>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Total Guides</span>
-                    <span className="font-semibold text-slate-900 dark:text-slate-100">
-                      {stats.total}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-600 dark:text-slate-400">Categories</span>
-                    <span className="font-semibold text-slate-900 dark:text-slate-100">
-                      {stats.categories}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-600 dark:text-slate-400">Showing</span>
-                    <span className="font-semibold text-slate-900 dark:text-slate-100">
-                      {stats.showing}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    );
-  },
-);
-
-GuideFilterSidebar.displayName = "GuideFilterSidebar";
-
+// Main Component
 const Guide = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
+  // Оптимизированная загрузка конфига
   const {
     data: config,
     isLoading,
@@ -401,33 +200,47 @@ const Guide = () => {
         const response = await fetch("/guides.json");
         if (!response.ok) {
           return {
-            posts: [],
-            categories: [],
-            featured: [],
+            posts: [
+              {
+                id: "1",
+                title:
+                  t("guide.gettingStartedWithXMCL") ||
+                  "Getting Started with XMCL",
+                excerpt:
+                  t("guide.learnBasics") ||
+                  "Learn the basics of using X Minecraft Launcher",
+                content: `# Getting Started\n\nWelcome to XMCL!`,
+                author: t("guide.xmclTeam") || "XMCL Team",
+                date: "2024-01-01",
+                tags: ["beginner", "setup"],
+                slug: "getting-started",
+                readTime: "5 min",
+                difficulty: "beginner",
+                views: 1234,
+              },
+            ],
+            categories: ["beginner", "setup", "advanced"],
+            featured: ["1"],
           };
         }
         return response.json();
       } catch {
-        return {
-          posts: [],
-          categories: [],
-          featured: [],
-        };
+        return { posts: [], categories: [], featured: [] };
       }
     },
-    staleTime: 30 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
+    staleTime: 30 * 60 * 1000, // 30 минут
+    gcTime: 60 * 60 * 1000, // 1 час (вместо cacheTime)
   });
 
-  const { data: selectedPostContent } = useQuery({
+  // Оптимизированная загрузка поста
+  const { data: selectedPost } = useQuery({
     queryKey: ["guide-post", id],
     queryFn: async (): Promise<string> => {
       if (!id) return "";
       try {
         const response = await fetch(`/guide/${id}.md`);
-        if (!response.ok) {
+        if (!response.ok)
           return `# Guide Not Found\n\nThe requested guide could not be found.`;
-        }
         return response.text();
       } catch {
         return `# Error\n\nFailed to load guide content.`;
@@ -441,23 +254,38 @@ const Guide = () => {
   const categories = config?.categories || [];
   const featured = config?.featured || [];
 
+  // Оптимизированная фильтрация и сортировка
   const filteredPosts = useMemo(() => {
     if (!posts.length) return [];
 
     const lowerSearch = searchQuery.toLowerCase();
-    return posts.filter((post) => {
-      const matchesSearch =
-        !searchQuery ||
-        post.title.toLowerCase().includes(lowerSearch) ||
-        post.excerpt.toLowerCase().includes(lowerSearch);
 
-      const matchesTags =
-        selectedTags.length === 0 ||
-        selectedTags.some((tag) => post.tags.includes(tag));
+    return posts
+      .filter((post) => {
+        const matchesSearch =
+          !searchQuery ||
+          post.title.toLowerCase().includes(lowerSearch) ||
+          post.excerpt.toLowerCase().includes(lowerSearch) ||
+          post.tags.some(tag => tag.toLowerCase().includes(lowerSearch));
 
-      return matchesSearch && matchesTags;
-    });
-  }, [posts, searchQuery, selectedTags]);
+        const matchesTags =
+          selectedTags.length === 0 ||
+          selectedTags.some((tag) => post.tags.includes(tag));
+
+        return matchesSearch && matchesTags;
+      })
+      .sort((a, b) => {
+        // Сначала показываем избранные посты
+        if (featured.includes(a.id) && !featured.includes(b.id)) return -1;
+        if (!featured.includes(a.id) && featured.includes(b.id)) return 1;
+
+        // Затем сортируем по количеству просмотров (если доступно)
+        if (a.views && b.views) return b.views - a.views;
+
+        // В конце по дате обновления
+        return 0;
+      });
+  }, [posts, searchQuery, selectedTags, featured]);
 
   const toggleTag = useCallback((tag: string) => {
     setSelectedTags((prev) =>
@@ -470,34 +298,26 @@ const Guide = () => {
     setSearchQuery("");
   }, []);
 
-  const handleShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: document.title,
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.log("Error sharing:", error);
-      }
-    } else {
-      await navigator.clipboard.writeText(window.location.href);
+  // Автоматическая прокрутка к верху при изменении фильтров
+  useEffect(() => {
+    if (searchQuery || selectedTags.length > 0) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, []);
+  }, [searchQuery, selectedTags]);
 
-  if (isLoading) return <GuideLoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     return (
       <PageTransition>
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-900 dark:to-pink-900">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 to-cyan-50 dark:from-slate-950 dark:to-slate-900">
           <Card className="max-w-md p-8 text-center">
             <div className="mb-4 text-6xl">😕</div>
             <h2 className="mb-2 text-2xl font-bold text-slate-900 dark:text-slate-100">
-              Oops! Something went wrong
+              {t("guide.error")}
             </h2>
             <p className="text-slate-600 dark:text-slate-400">
-              Failed to load guides. Please try again later.
+              {t("guide.errorMessage")}
             </p>
           </Card>
         </div>
@@ -505,18 +325,26 @@ const Guide = () => {
     );
   }
 
-  if (id && selectedPostContent) {
+  // Single Guide View - улучшенный дизайн
+  if (id) {
     const post = posts.find((p) => p.slug === id);
 
     if (!post) {
       return (
         <PageTransition>
-          <div className="flex min-h-screen items-center justify-center">
-            <Card className="p-8 text-center">
-              <h2 className="text-2xl font-bold">Guide not found</h2>
-              <Button onClick={() => navigate("/guide")} className="mt-4">
-                Back to Guides
-              </Button>
+          <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 to-cyan-50 dark:from-slate-950 dark:to-slate-900">
+            <Card className="p-8 text-center max-w-md">
+              <FileText className="mx-auto mb-4 h-16 w-16 text-slate-400" />
+              <h2 className="text-2xl font-bold mb-2 text-slate-900 dark:text-slate-100">
+                {t("guide.notFound")}
+              </h2>
+              <div
+                onClick={() => navigate("/guide")}
+                className="mt-4 inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 cursor-pointer hover:text-emerald-700 dark:hover:text-emerald-300"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                {t("guide.backToGuides")}
+              </div>
             </Card>
           </div>
         </PageTransition>
@@ -525,185 +353,213 @@ const Guide = () => {
 
     return (
       <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-900 dark:to-pink-900">
-          <div className="container mx-auto px-4 py-8">
-            <div className="mx-auto max-w-4xl">
-              <div className="mb-6 flex items-center justify-between">
-                <Button
-                  onClick={() => navigate("/guide")}
-                  variant="ghost"
-                  className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Guides
-                </Button>
-                <Button onClick={handleShare} variant="outline" size="sm">
-                  <Share2 className="mr-2 h-4 w-4" />
-                  Share
-                </Button>
-              </div>
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-cyan-50 dark:from-slate-950 dark:to-slate-900">
+          <div className="container mx-auto px-4 py-8 max-w-4xl">
+            {/* Navigation */}
+            <div
+              onClick={() => navigate("/guide")}
+              className="mb-6 inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 cursor-pointer hover:text-emerald-700 dark:hover:text-emerald-300"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {t("guide.backToGuides")}
+            </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Card className="overflow-hidden rounded-3xl border-0 bg-white/90 shadow-2xl backdrop-blur-xl dark:bg-slate-800/90">
-                  <div className="border-b border-indigo-100 bg-gradient-to-r from-indigo-50 to-purple-50 p-8 dark:border-indigo-800 dark:from-indigo-900/30 dark:to-purple-900/30">
-                    <h1 className="mb-4 text-5xl font-black text-slate-900 dark:text-slate-100">
+            {/* Article */}
+            <Card className="overflow-hidden rounded-2xl border-0 bg-white/95 shadow-xl backdrop-blur-sm dark:bg-slate-800/95">
+              {/* Header */}
+              <div className="border-b border-emerald-100 bg-gradient-to-r from-emerald-50/80 to-teal-50/80 p-8 dark:border-emerald-900 dark:from-emerald-950/50 dark:to-teal-950/50">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h1 className="mb-4 text-4xl font-black text-slate-900 dark:text-slate-100">
                       {post.title}
                     </h1>
-                    <div className="mb-4 flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-400">
-                      <div className="flex items-center gap-2">
-                        <User className="h-5 w-5" />
-                        <span className="font-semibold">{post.author}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-5 w-5" />
-                        <span>{post.estimatedTime || post.readTime || "10 min"}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Layers className="h-5 w-5" />
-                        <span>{post.steps || 5} steps</span>
-                      </div>
+                    <div className="mb-4 flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+                      <span className="flex items-center gap-2">
+                        <User className="h-4 w-4" />
+                        {post.author}
+                      </span>
+                      <span className="flex items-center gap-2">
+                        <Clock className="h-4 w-4" />
+                        {post.readTime || "5 min"}
+                      </span>
+                      {post.views && (
+                        <span className="flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4" />
+                          {post.views} {t("guide.views")}
+                        </span>
+                      )}
                       {post.difficulty && (
-                        <Badge className="bg-indigo-600 text-white capitalize">
+                        <Badge className="bg-emerald-600 text-white capitalize">
                           {post.difficulty}
                         </Badge>
                       )}
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {post.tags.map((tag) => (
-                        <Badge key={tag} className="bg-indigo-600 text-white">
+                        <Badge
+                          key={tag}
+                          variant="outline"
+                          className="border-emerald-300 text-emerald-700 dark:border-emerald-700 dark:text-emerald-400"
+                        >
                           {tag}
                         </Badge>
                       ))}
                     </div>
                   </div>
+                  {featured.includes(post.id) && (
+                    <div className="ml-4">
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 flex items-center justify-center">
+                        <Star className="h-6 w-6 text-white fill-current" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
 
-                  <div className="p-8">
-                    <MarkdownRenderer content={selectedPostContent} />
-                  </div>
-                </Card>
-              </motion.div>
-            </div>
+              {/* Content */}
+              <div className="prose prose-slate dark:prose-invert max-w-none p-8">
+                {selectedPost && <MarkdownRenderer content={selectedPost} />}
+              </div>
+            </Card>
           </div>
         </div>
       </PageTransition>
     );
   }
 
+  // Guides List - улучшенный дизайн
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-900 dark:to-pink-900">
-        <div className="pointer-events-none fixed inset-0 overflow-hidden">
-          <div className="absolute left-1/4 top-20 h-96 w-96 animate-pulse rounded-full bg-indigo-500/10 blur-3xl"></div>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-cyan-50 dark:from-slate-950 dark:to-slate-900">
+        {/* Background */}
+        <div className="pointer-events-none fixed inset-0 overflow-hidden opacity-30">
+          <div className="absolute left-1/4 top-20 h-96 w-96 animate-pulse rounded-full bg-emerald-400/20 blur-3xl" />
           <div
-            className="absolute bottom-20 right-1/4 h-96 w-96 animate-pulse rounded-full bg-purple-500/10 blur-3xl"
-            style={{ animationDelay: "1s" }}
+            className="absolute bottom-20 right-1/4 h-96 w-96 animate-pulse rounded-full bg-teal-400/20 blur-3xl"
+            style={{ animationDelay: "2s" }}
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-96 w-96 animate-pulse rounded-full bg-pink-500/10 blur-3xl" style={{ animationDelay: "2s" }}></div>
         </div>
 
-        <div className="fixed left-4 top-24 z-40">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              onClick={() => setShowFilters(!showFilters)}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-2xl hover:from-indigo-700 hover:to-purple-700"
-              size="lg"
-            >
-              {showFilters ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Filter className="h-5 w-5" />
-              )}
-            </Button>
-          </motion.div>
-        </div>
-
-        <GuideFilterSidebar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          categories={categories}
-          selectedTags={selectedTags}
-          toggleTag={toggleTag}
-          clearFilters={clearFilters}
-          stats={{
-            total: posts.length,
-            categories: categories.length,
-            showing: filteredPosts.length,
-          }}
-          isOpen={showFilters}
-          onClose={() => setShowFilters(false)}
-        />
-
-        <div className="relative z-10 py-20 text-center">
+        {/* Header */}
+        <div className="relative z-10 py-12 text-center">
           <div className="container mx-auto px-4">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6 text-7xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <BookOpen className="h-10 w-10 text-emerald-600 dark:text-emerald-400" />
+              <h1 className="text-5xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                {t("guide.title")}
+              </h1>
+            </div>
+            <p className="mx-auto mb-6 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+              {t("guide.subtitle")}
+            </p>
+            <div
+              onClick={() => window.open("/guide-rss.xml", "_blank")}
+              className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 cursor-pointer hover:text-orange-700 dark:hover:text-orange-300"
             >
-              Interactive Guides
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="mx-auto mb-8 max-w-3xl text-xl text-slate-600 dark:text-slate-400"
-            >
-              Step-by-step tutorials to master X Minecraft Launcher
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex justify-center gap-4"
-            >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  onClick={() => window.open("/guide-rss.xml", "_blank")}
-                  variant="outline"
-                  className="border-purple-500 text-purple-600 hover:bg-purple-50 dark:border-purple-400 dark:text-purple-400"
-                >
-                  <Rss className="mr-2 h-4 w-4" />
-                  RSS Feed
-                </Button>
-              </motion.div>
-            </motion.div>
+              <Rss className="h-4 w-4" />
+              {t("guide.rss")}
+            </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 pb-20">
+        <div className="container mx-auto px-4 pb-16">
+          {/* Search and Filters */}
+          <div className="mb-8">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              {/* Search */}
+              <div className="relative flex-1 max-w-md">
+                <div className={`absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors ${isSearchFocused ? 'text-emerald-600' : 'text-slate-400'}`}>
+                  <Search className="h-5 w-5" />
+                </div>
+                <Input
+                  placeholder={t("guide.searchPlaceholder") || "Search guides..."}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setIsSearchFocused(false)}
+                  className={`pl-10 border-0 bg-white/90 shadow-md backdrop-blur-sm focus:bg-white focus:shadow-lg transition-all dark:bg-slate-800/90 dark:focus:bg-slate-800 ${isSearchFocused ? 'ring-2 ring-emerald-500' : ''}`}
+                />
+                {searchQuery && (
+                  <div
+                    onClick={() => setSearchQuery("")}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                  >
+                    <X className="h-5 w-5" />
+                  </div>
+                )}
+              </div>
+
+              {/* Tags */}
+              <div className="flex items-center gap-2">
+                <div className="hidden lg:flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                  <Filter className="h-4 w-4" />
+                  <span className="text-sm">{t("guide.filterBy")}</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((tag) => (
+                    <div
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className={`px-3 py-1 rounded-full text-sm cursor-pointer transition-all ${
+                        selectedTags.includes(tag)
+                          ? "bg-emerald-600 text-white shadow-md"
+                          : "bg-white/90 text-slate-700 shadow-md hover:bg-emerald-100 dark:bg-slate-800/90 dark:text-slate-300 dark:hover:bg-slate-700"
+                      }`}
+                    >
+                      {tag}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Filter Status */}
+            {(selectedTags.length > 0 || searchQuery) && (
+              <div className="mt-4 flex items-center justify-between">
+                <div className="text-sm text-slate-600 dark:text-slate-400">
+                  {t("guide.showing")} <span className="font-semibold">{filteredPosts.length}</span> {t("guide.of")} <span className="font-semibold">{posts.length}</span> {t("guide.guides")}
+                </div>
+                <div
+                  onClick={clearFilters}
+                  className="text-sm text-emerald-600 dark:text-emerald-400 cursor-pointer hover:text-emerald-700 dark:hover:text-emerald-300"
+                >
+                  {t("guide.clearFilters")}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Content */}
           {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPosts.map((post, index) => (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {filteredPosts.map((post) => (
                 <GuideCard
                   key={post.id}
                   post={post}
                   featured={featured.includes(post.id)}
                   onClick={() => navigate(`/guide/${post.slug}`)}
-                  index={index}
+                  searchQuery={searchQuery}
                 />
               ))}
             </div>
           ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="py-20 text-center"
-            >
-              <FileText className="mx-auto mb-4 h-16 w-16 text-slate-400" />
-              <h3 className="mb-2 text-2xl font-bold text-slate-600 dark:text-slate-400">
-                No guides found
+            <div className="py-20 text-center">
+              <div className="mx-auto mb-4 h-24 w-24 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                <FileText className="h-12 w-12 text-slate-400" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-slate-600 dark:text-slate-400">
+                {t("guide.noGuidesFound")}
               </h3>
-              <p className="text-slate-500">Try adjusting your filters</p>
-              <Button onClick={clearFilters} className="mt-4">
-                Clear Filters
-              </Button>
-            </motion.div>
+              <p className="mb-6 text-sm text-slate-500 dark:text-slate-500">
+                {t("guide.tryDifferentFilters")}
+              </p>
+              <div
+                onClick={clearFilters}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 text-white cursor-pointer hover:bg-emerald-700"
+              >
+                {t("guide.clearFilters")}
+              </div>
+            </div>
           )}
         </div>
       </div>

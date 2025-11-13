@@ -384,6 +384,7 @@
   },
   "guide": {
     "title": "Guida utente",
+    "filterBy": "Filtrare per",
     "subtitle": "Guide e tutorial completi per aiutarti a padroneggiare XMCL",
     "searchGuides": "Cerca guide",
     "filterByTags": "Filtra per tag",

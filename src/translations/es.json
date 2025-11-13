@@ -401,6 +401,7 @@
   },
   "guide": {
     "title": "Guía de usuario",
+    "filterBy": "Filtrar por",
     "subtitle": "Guías y tutoriales completos para ayudarte a dominar XMCL",
     "searchGuides": "Buscar guías",
     "filterByTags": "Filtrar por etiquetas",
