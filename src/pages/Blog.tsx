@@ -32,9 +32,6 @@ const LoadingSpinner = () => (
     <div className="relative">
       <div className="h-24 w-24 rounded-full border-4 border-slate-200 dark:border-slate-700"></div>
       <div className="absolute left-0 top-0 h-24 w-24 animate-spin rounded-full border-4 border-transparent border-t-blue-500 border-r-purple-500"></div>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-4 w-4 animate-pulse rounded-full bg-blue-500"></div>
-      </div>
     </div>
   </div>
 );
@@ -58,7 +55,7 @@ const PostCard = React.memo(
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
+        transition={{ duration: 0.3, delay: index * 0.05 }}
         whileHover={{ y: -5 }}
       >
         <Card
@@ -149,115 +146,118 @@ const FilterSidebar = React.memo(
   }: any) => {
     const { t } = useTranslation();
 
-    if (!isOpen) return null;
-
     return (
-      <motion.div
-        initial={{ x: -300 }}
-        animate={{ x: 0 }}
-        exit={{ x: -300 }}
-        className="fixed left-0 top-0 z-50 h-screen w-80 overflow-y-auto bg-white/95 p-6 shadow-2xl backdrop-blur-xl dark:bg-slate-900/95"
-      >
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-            {t("blog.filterByCategory")}
-          </h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="hover:bg-slate-100 dark:hover:bg-slate-800"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ x: -300 }}
+            animate={{ x: 0 }}
+            exit={{ x: -300 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed left-0 top-0 z-50 h-screen w-80 overflow-y-auto bg-white/95 p-6 shadow-2xl backdrop-blur-xl dark:bg-slate-900/95"
           >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
-        <div className="space-y-6">
-          <div>
-            <div className="mb-3 flex items-center gap-2">
-              <Search className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                {t("common.search")}
-              </h3>
-            </div>
-            <Input
-              placeholder={t("blog.searchPlaceholder")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
-            />
-          </div>
-
-          <div>
-            <div className="mb-3 flex items-center gap-2">
-              <Tag className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                {t("blog.tags")}
-              </h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((tag: string) => (
-                <Button
-                  key={tag}
-                  variant={selectedTags.includes(tag) ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleTag(tag)}
-                  className={
-                    selectedTags.includes(tag)
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                      : "text-slate-600 dark:text-slate-400"
-                  }
-                >
-                  {tag}
-                </Button>
-              ))}
-            </div>
-            {selectedTags.length > 0 && (
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                {t("blog.filterByCategory")}
+              </h2>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={clearFilters}
-                className="mt-3 w-full"
+                onClick={onClose}
+                className="hover:bg-slate-100 dark:hover:bg-slate-800"
               >
-                {t("common.clearFilters")}
+                <X className="h-5 w-5" />
               </Button>
-            )}
-          </div>
+            </div>
 
-          <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50 p-4 dark:border-blue-700 dark:from-blue-900/30 dark:to-purple-900/30">
-            <div className="mb-3 flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                {t("blog.blogStats")}
-              </h3>
+            <div className="space-y-6">
+              <div>
+                <div className="mb-3 flex items-center gap-2">
+                  <Search className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                    {t("common.search")}
+                  </h3>
+                </div>
+                <Input
+                  placeholder={t("blog.searchPlaceholder")}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
+                />
+              </div>
+
+              <div>
+                <div className="mb-3 flex items-center gap-2">
+                  <Tag className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                    {t("blog.tags")}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((tag: string) => (
+                    <Button
+                      key={tag}
+                      variant={selectedTags.includes(tag) ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => toggleTag(tag)}
+                      className={
+                        selectedTags.includes(tag)
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                          : "text-slate-600 dark:text-slate-400"
+                      }
+                    >
+                      {tag}
+                    </Button>
+                  ))}
+                </div>
+                {selectedTags.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="mt-3 w-full"
+                  >
+                    {t("common.clearFilters")}
+                  </Button>
+                )}
+              </div>
+
+              <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50 p-4 dark:border-blue-700 dark:from-blue-900/30 dark:to-purple-900/30">
+                <div className="mb-3 flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                    {t("blog.blogStats")}
+                  </h3>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="">{t("blog.totalPosts")}</span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
+                      {stats.total}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600 dark:text-slate-400">
+                      {t("blog.categories")}
+                    </span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
+                      {stats.categories}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600 dark:text-slate-400">
+                      {t("blog.showing")}
+                    </span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
+                      {stats.showing}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="">{t("blog.totalPosts")}</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-100">
-                  {stats.total}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-600 dark:text-slate-400">
-                  {t("blog.categories")}
-                </span>
-                <span className="font-semibold text-slate-900 dark:text-slate-100">
-                  {stats.categories}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-600 dark:text-slate-400">
-                  {t("blog.showing")}
-                </span>
-                <span className="font-semibold text-slate-900 dark:text-slate-100">
-                  {stats.showing}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     );
   },
 );
@@ -320,7 +320,6 @@ const Blog = () => {
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      // Use toast instead of alert for better UX
     }
   }, []);
 
@@ -434,9 +433,9 @@ const Blog = () => {
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
         <div className="pointer-events-none fixed inset-0 overflow-hidden">
-          <div className="absolute left-1/4 top-20 h-96 w-96 animate-pulse rounded-full bg-blue-500/10 blur-3xl" />
+          <div className="absolute left-1/4 top-20 h-96 w-96 animate-pulse rounded-full bg-blue-500/10 blur-2xl" />
           <div
-            className="absolute bottom-20 right-1/4 h-96 w-96 animate-pulse rounded-full bg-purple-500/10 blur-3xl"
+            className="absolute bottom-20 right-1/4 h-96 w-96 animate-pulse rounded-full bg-purple-500/10 blur-2xl"
             style={{ animationDelay: "1s" }}
           />
         </div>
@@ -457,25 +456,21 @@ const Blog = () => {
           </motion.div>
         </div>
 
-        <AnimatePresence>
-          {showFilters && (
-            <FilterSidebar
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              categories={categories}
-              selectedTags={selectedTags}
-              toggleTag={toggleTag}
-              clearFilters={clearFilters}
-              stats={{
-                total: posts.length,
-                categories: categories.length,
-                showing: filteredPosts.length,
-              }}
-              isOpen={showFilters}
-              onClose={() => setShowFilters(false)}
-            />
-          )}
-        </AnimatePresence>
+        <FilterSidebar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          categories={categories}
+          selectedTags={selectedTags}
+          toggleTag={toggleTag}
+          clearFilters={clearFilters}
+          stats={{
+            total: posts.length,
+            categories: categories.length,
+            showing: filteredPosts.length,
+          }}
+          isOpen={showFilters}
+          onClose={() => setShowFilters(false)}
+        />
 
         <div className="relative z-10 py-20 text-center">
           <div className="container mx-auto px-4">
@@ -518,11 +513,11 @@ const Blog = () => {
         <div className="container mx-auto px-4 pb-20">
           {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPosts.map((post, index) => (
+              {filteredPosts.map((post) => (
                 <PostCard
-                  key={post.id}
+                  key={post.slug}
                   post={post}
-                  index={index}
+                  index={filteredPosts.indexOf(post)}
                   featured={featured.includes(post.id)}
                   onClick={() => navigate(`/blog/${post.slug}`)}
                 />
