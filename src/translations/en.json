@@ -558,6 +558,12 @@
   },
   "testing": {
     "title": "Testing Builds",
+    "buildSuccessful": "Build Successful",
+    "buildFailed": "Build Failed",
+    "ready": "Ready for Testing",
+    "selectPlatform": "Select Platform",
+    "showDetails": "Show Details",
+    "viewOnGitHub": "View on GitHub",
     "subtitle": "Get early access to the latest features and improvements",
     "warningTitle": "Development Builds",
     "warningDescription": "These builds are for testing purposes only and may contain bugs",
