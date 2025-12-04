@@ -4,18 +4,19 @@ import { useTranslation } from '@/contexts/TranslationContext';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { X, Menu, Home, FileText, BookOpen, GitBranch, AlertCircle, TestTube, Info, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// Выносим массив за пределы компонента, чтобы он не пересоздавался при каждом рендере
 const navItems = [
-  { label: 'nav.home', href: '/' },
-  { label: 'nav.blog', href: '/blog' },
-  { label: 'nav.guide', href: '/guide' },
-  { label: 'nav.changelog', href: '/changelog' },
-  { label: 'nav.issues', href: '/issues' },
-  { label: 'nav.testing', href: '/testing' },
-  { label: 'nav.information', href: '/information' },
-  { label: 'nav.discordnav', href: 'https://discord.gg/W5XVwYY7GQ' },
+  { label: 'nav.home', href: '/', icon: Home },
+  { label: 'nav.blog', href: '/blog', icon: FileText },
+  { label: 'nav.guide', href: '/guide', icon: BookOpen },
+  { label: 'nav.changelog', href: '/changelog', icon: GitBranch },
+  { label: 'nav.issues', href: '/issues', icon: AlertCircle },
+  { label: 'nav.testing', href: '/testing', icon: TestTube },
+  { label: 'nav.information', href: '/information', icon: Info },
+  { label: 'nav.discordnav', href: 'https://discord.gg/W5XVwYY7GQ', icon: ExternalLink, isExternal: true },
 ];
 
 export const StaggeredMenu = () => {
@@ -24,23 +25,10 @@ export const StaggeredMenu = () => {
 
   const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
 
+  // Упрощенные варианты анимации для элементов списка
   const itemVariants = {
-    hidden: {
-      opacity: 0,
-      x: -50,
-      filter: 'blur(4px)',
-      textShadow: '0 0 8px rgba(255, 0, 255, 0.6)'
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      filter: 'blur(0px)',
-      textShadow: 'none',
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut' as const
-      }
-    }
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0 },
   };
 
   const containerVariants = {
@@ -48,97 +36,96 @@ export const StaggeredMenu = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.15
-      }
-    }
+        staggerChildren: 0.06, // Уменьшил задержку для большей скорости
+        delayChildren: 0.1,
+      },
+    },
   };
 
+  // Анимация для боковой панели
   const sidebarVariants = {
     closed: {
       x: '-100%',
-      opacity: 0,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 120,
-        damping: 20
-      }
+      transition: { duration: 0.3, ease: 'easeInOut' },
     },
     open: {
       x: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 120,
-        damping: 20
-      }
-    }
+      transition: { duration: 0.3, ease: 'easeInOut' },
+    },
+  };
+
+  // Анимация для оверлея
+  const overlayVariants = {
+    closed: { opacity: 0 },
+    open: { opacity: 1 },
   };
 
   return (
     <>
-      <Button 
-        variant="ghost" 
-        className="text-foreground hover:bg-accent/50" 
-        onClick={toggleMenu}
-      >
-        Menu
+      <Button variant="ghost" className="text-foreground hover:bg-accent/50" onClick={toggleMenu}>
+        <Menu className="w-5 h-5" />
       </Button>
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={sidebarVariants}
-            className="fixed top-0 left-0 bg-background/95 dark:bg-background/95 z-50 flex flex-col items-start justify-start px-4 py-8 shadow-xl border-r border-accent/20 rounded-[2rem] h-screen overflow-y-auto"
-            style={{ width: '24rem' }}
-          >
-            <div className="absolute top-4 right-4 z-10">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={toggleMenu}
-                className="hover:bg-accent/30"
-              >
-                <X className="w-6 h-6" />
-              </Button>
-            </div>
-
-            <div className="flex flex-col w-full h-full justify-center pt-12">
-              <motion.ul 
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="w-full space-y-0"
-              >
-                {navItems.map((item, index) => (
-                  <motion.li 
-                    key={index} 
-                    variants={itemVariants}
-                    className="text-2xl font-bold uppercase tracking-wider hover:text-primary transition-colors relative group"
-                  >
-                    <Link 
-                      to={item.href} 
-                      onClick={toggleMenu}
-                      className="inline-flex items-center gap-3 group-hover:text-primary"
-                    >
-                      <span className="text-xl opacity-50 whitespace-nowrap">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span>{t(item.label)}</span>
-                    </Link>
-                  </motion.li>
-                ))}
-              </motion.ul>
-
-              <div className="mt-auto flex gap-6 p-4 border-t border-accent/20 w-full pb-6">
-                <LanguageSelector />
-                <ThemeSelector />
+          <>
+            {/* Упрощенный оверлей без `backdrop-blur` для производительности */}
+            <motion.div
+              className="fixed inset-0 bg-black/40 z-40"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={overlayVariants}
+              transition={{ duration: 0.2 }}
+              onClick={toggleMenu}
+            />
+            <motion.div
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={sidebarVariants}
+              className="fixed top-0 left-0 bg-background z-50 flex flex-col shadow-2xl h-screen"
+              style={{ width: '320px' }} // Фиксированная ширина в px
+            >
+              <div className="flex justify-end p-4">
+                <Button variant="ghost" size="icon" onClick={toggleMenu}>
+                  <X className="w-5 h-5" />
+                </Button>
               </div>
-            </div>
-          </motion.div>
+
+              <nav className="flex flex-col flex-1 px-6">
+                <motion.ul
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-1"
+                >
+                  {navItems.map((item, index) => {
+                    const Icon = item.icon;
+                    return (
+                      <motion.li key={index} variants={itemVariants}>
+                        <Link
+                          to={item.href}
+                          onClick={toggleMenu}
+                          className="flex items-center gap-3 px-3 py-3 rounded-md text-lg font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-all duration-200 ease-out"
+                          target={item.isExternal ? '_blank' : '_self'}
+                          rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                        >
+                          <Icon className="w-5 h-5" />
+                          {t(item.label)}
+                        </Link>
+                      </motion.li>
+                    );
+                  })}
+                </motion.ul>
+
+                <div className="flex gap-2 p-4 mt-auto border-t border-border">
+                  <LanguageSelector />
+                  <ThemeSelector />
+                </div>
+              </nav>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
