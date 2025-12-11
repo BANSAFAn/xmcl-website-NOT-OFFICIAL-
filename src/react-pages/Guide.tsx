@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "@/hooks/useRouting";
 import { PageTransition } from "@/components/PageTransition";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,8 +20,10 @@ import {
   X,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/contexts/TranslationContext";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+
+import { AppShell } from "@/components/AppShell";
 
 interface GuidePost {
   id: string;
@@ -68,7 +70,7 @@ const GuideCard = React.memo(
     onClick: () => void;
     searchQuery: string;
   }) => {
-    const { t } = useTranslation();
+const { t } = useTranslation();
 
     const difficultyColors = {
       beginner: "bg-green-500",
@@ -180,7 +182,7 @@ const GuideCard = React.memo(
 GuideCard.displayName = "GuideCard";
 
 // Main Component
-const Guide = () => {
+const GuideContent = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -567,4 +569,10 @@ const Guide = () => {
   );
 };
 
-export default Guide;
+export default function Guide() {
+  return (
+    <AppShell>
+      <GuideContent />
+    </AppShell>
+  );
+}

@@ -3,12 +3,13 @@ import { PageTransition } from '@/components/PageTransition';
 import { HeroSection } from '@/components/HeroSection';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/Link';
 import { Download, ArrowRight, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/hooks/useTranslation';
+import { AppShell } from '@/components/AppShell';
 
-const Index = () => {
+const IndexContent = () => {
   const { t } = useTranslation();
 
   const handleDownloadClick = () => {
@@ -65,4 +66,10 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default function Index() {
+  return (
+    <AppShell>
+      <IndexContent />
+    </AppShell>
+  );
+}

@@ -25,6 +25,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { toast } from "sonner";
 import { PlatformSelector } from '@/components/testing/PlatformSelector';
 import { DownloadArtifacts } from '@/components/testing/DownloadArtifacts';
+import { AppShell } from '@/components/AppShell';
 
 // Мемоизированные компоненты для предотвращения лишних ререндеров
 const StatusIcon = memo(({ status, conclusion }: { status: string, conclusion: string }) => {
@@ -112,7 +113,7 @@ interface WorkflowRun {
   run_number: number;
 }
 
-const Testing = () => {
+const TestingContent = () => {
   const { t } = useTranslation();
   const [selectedPlatform, setSelectedPlatform] = useState('windows');
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
@@ -435,4 +436,10 @@ const Testing = () => {
   );
 };
 
-export default Testing;
+export default function Testing() {
+  return (
+    <AppShell>
+      <TestingContent />
+    </AppShell>
+  );
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { generateRSSFeed, downloadRSSFeed } from '@/utils/rssGenerator';
 import { getAllBlogPosts } from '@/utils/blogUtils';
 import { BlogPost } from '@/types/blog';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/Link';
 import { Rss, Download, ExternalLink, Calendar, User, Tag, FileJson } from 'lucide-react';
 import { useI18n } from '@/i18n/context';
 

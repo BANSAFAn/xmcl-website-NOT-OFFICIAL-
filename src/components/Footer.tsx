@@ -5,7 +5,7 @@ import {
   FileText, Bug, Download, Users, Zap, Shield, Star, ArrowRight
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/Link';
 import { motion } from 'framer-motion';
 
 interface FooterProps {

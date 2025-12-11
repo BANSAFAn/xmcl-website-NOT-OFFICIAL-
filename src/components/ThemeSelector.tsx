@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useTheme, Theme } from "@/hooks/useTheme";
+import { useTheme, type Theme } from "@/hooks/useTheme";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const ThemeSelector = () => {

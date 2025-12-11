@@ -8,6 +8,7 @@ import { PageTransition } from '@/components/PageTransition';
 import { useTranslation } from '@/hooks/useTranslation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { AppShell } from '@/components/AppShell';
 
 // Стили для анимированного фона (встроенные через style)
 const AnimatedBackground = () => {
@@ -102,7 +103,7 @@ const truncateUrl = (url: string) => {
   }
 };
 
-const ModernChangelog: React.FC = () => {
+const ModernChangelogContent: React.FC = () => {
   const { t } = useTranslation();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [visibleLinks, setVisibleLinks] = useState<{ [key: string]: boolean }>({});
@@ -259,7 +260,7 @@ const ModernChangelog: React.FC = () => {
                                         <span>{content.replace('<LINKS_BUTTON />', '')}</span>
                                         {links.length > 0 && (
                                           <Button
-                                            size="xs"
+                                            size="sm"
                                             variant="ghost"
                                             className="text-xs px-2 py-1 h-7 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100/50 dark:hover:bg-indigo-900/20"
                                             onClick={() => setVisibleLinks(prev => ({ ...prev, [release.id]: !prev[release.id] }))}
@@ -296,7 +297,7 @@ const ModernChangelog: React.FC = () => {
                                     <Button 
                                       key={idx} 
                                       asChild 
-                                      size="xs" 
+                                      size="sm" 
                                       variant="secondary"
                                       className="text-xs px-2 py-1 h-7"
                                     >
@@ -342,4 +343,10 @@ const ModernChangelog: React.FC = () => {
   );
 };
 
-export default ModernChangelog;
+export default function ModernChangelog() {
+  return (
+    <AppShell>
+      <ModernChangelogContent />
+    </AppShell>
+  );
+}

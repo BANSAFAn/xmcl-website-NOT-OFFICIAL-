@@ -5,7 +5,7 @@ import { LanguageSelector } from '@/components/LanguageSelector';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { Button } from '@/components/ui/button';
 import { X, Menu, Home, FileText, BookOpen, GitBranch, AlertCircle, TestTube, Info, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/Link';
 
 // Выносим массив за пределы компонента, чтобы он не пересоздавался при каждом рендере
 const navItems = [

@@ -1,8 +1,9 @@
 import React from 'react';
 import { PageTransition } from '@/components/PageTransition';
 import NewDownloadSection from '@/components/download/NewDownloadSection';
+import { AppShell } from '@/components/AppShell';
 
-const Download = () => {
+const DownloadContent = () => {
   return (
     <PageTransition>
       <NewDownloadSection />
@@ -10,4 +11,10 @@ const Download = () => {
   );
 };
 
-export default Download;
+export default function Download() {
+  return (
+    <AppShell>
+      <DownloadContent />
+    </AppShell>
+  );
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Download, Globe, Shield, Users, Package, Server, HardDrive, UserCheck, Link as LinkIcon, Code, Lock, Sparkles, Star, Gift } from 'lucide-react';
+import { AppShell } from '@/components/AppShell';
 
 interface Contributor {
   login: string;
@@ -8,7 +9,7 @@ interface Contributor {
   avatar_url: string;
 }
 
-const Information: React.FC = () => {
+const InformationContent: React.FC = () => {
   const { t } = useTranslation();
   const [contributors, setContributors] = useState<Contributor[]>([]);
 
@@ -367,4 +368,10 @@ const Information: React.FC = () => {
   );
 };
 
-export default Information;
+export default function Information() {
+  return (
+    <AppShell>
+      <InformationContent />
+    </AppShell>
+  );
+}

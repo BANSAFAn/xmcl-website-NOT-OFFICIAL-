@@ -28,8 +28,10 @@ import {
   BarChart3,
   Eye,
   ArrowUpRight,
+  MessageSquareText,
   MessageSquareTextIcon
 } from 'lucide-react';
+import { AppShell } from '@/components/AppShell';
 
 
 const StateIcon = ({ state }: { state: string }) => (
@@ -307,7 +309,7 @@ const StatsWidget = ({ stats, isVisible, onClose }: {
   );
 };
 
-export default function ModernIssues() {
+function ModernIssuesContent() {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [stateFilter, setStateFilter] = useState('all');
@@ -625,5 +627,13 @@ export default function ModernIssues() {
         </div>
       </div>
     </PageTransition>
+  );
+}
+
+export default function ModernIssues() {
+  return (
+    <AppShell>
+      <ModernIssuesContent />
+    </AppShell>
   );
 }

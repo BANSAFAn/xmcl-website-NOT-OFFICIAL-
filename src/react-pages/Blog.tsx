@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "@/hooks/useRouting";
 import { PageTransition } from "@/components/PageTransition";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,10 +22,21 @@ import {
   Share2,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation } from "@/contexts/TranslationContext";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
 import { motion, AnimatePresence } from "framer-motion";
+import { AppShell } from "@/components/AppShell";
+
+// Safe translation hook that works in SSR
+const useSafeTranslation = () => {
+  try {
+    return useTranslation();
+  } catch (e) {
+    // Return dummy t function for SSR
+    return { t: (key: string) => key };
+  }
+};
 
 const LoadingSpinner = () => (
   <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
@@ -48,7 +59,7 @@ const PostCard = React.memo(
     featured: boolean;
     onClick: () => void;
   }) => {
-    const { t } = useTranslation();
+const { t } = useSafeTranslation();
     const readTime = Math.ceil((post.content?.length || 0) / 1000);
 
     return (
@@ -144,7 +155,7 @@ const FilterSidebar = React.memo(
     isOpen,
     onClose,
   }: any) => {
-    const { t } = useTranslation();
+const { t } = useSafeTranslation();
 
     return (
       <AnimatePresence>
@@ -264,7 +275,7 @@ const FilterSidebar = React.memo(
 
 FilterSidebar.displayName = "FilterSidebar";
 
-const Blog = () => {
+const BlogContent = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -363,7 +374,7 @@ const Blog = () => {
 
     return (
       <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
           <div className="container mx-auto px-4 py-8">
             <div className="mx-auto max-w-4xl">
               <div className="mb-8 flex items-center justify-between">
@@ -546,4 +557,10 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default function Blog() {
+  return (
+    <AppShell>
+      <BlogContent />
+    </AppShell>
+  );
+}

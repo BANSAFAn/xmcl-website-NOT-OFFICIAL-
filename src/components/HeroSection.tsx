@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Star, Download, GitBranch, Activity, ArrowRight, Zap, ExternalLink, TrendingUp, Package, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/Link';
 
 interface HeroSectionProps {
   onDownloadClick: () => void;

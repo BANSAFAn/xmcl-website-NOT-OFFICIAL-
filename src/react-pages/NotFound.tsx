@@ -1,17 +1,19 @@
-import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useTranslation } from "@/hooks/useTranslation";
+import { AppShell } from '@/components/AppShell';
 
-const NotFound = () => {
-  const location = useLocation();
-  const { t } = useTranslation();
-
+/**
+ * NotFound component - simplified version without hooks that require context
+ * to work during Astro SSR where React context is not available
+ */
+const NotFoundContent = () => {
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+    if (typeof window !== 'undefined') {
+      console.error(
+        "404 Error: User attempted to access non-existent route:",
+        window.location.pathname
+      );
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900">
@@ -26,4 +28,10 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default function NotFound() {
+  return (
+    <AppShell>
+      <NotFoundContent />
+    </AppShell>
+  );
+}
