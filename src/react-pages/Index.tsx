@@ -26,7 +26,7 @@ const IndexContent = () => {
         <HeroSection onDownloadClick={handleDownloadClick} />
 
         {/* Features Section */}
-        <section id="features-section">
+        <section id="features-section" className="relative">
           <FeaturesSection />
         </section>
 
