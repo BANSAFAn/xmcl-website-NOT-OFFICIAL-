@@ -20,12 +20,23 @@ const {
     <title>{title}</title>
     <link rel="icon" href="/PhotoXMCL/logo.ico" />
     <meta name="description" content={description} />
-    <meta name="author" content="Volexum" />
+    <meta name="author" content="Voxelum" />
+    <meta name="theme-color" content="#3b82f6" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
     <meta property="og:image" content="/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png" />
-    <meta name="twitter:image" content="/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png" />
+    <meta property="og:site_name" content="X Minecraft Launcher" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content="/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png" />
   </head>
   <body>
     <slot />
