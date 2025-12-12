@@ -1,6 +1,5 @@
 import React, { useState, useMemo, memo } from 'react';
 import { PageTransition } from "@/components/PageTransition";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,7 +17,11 @@ import {
   Package,
   Cpu,
   HardDrive,
-  Monitor
+  Monitor,
+  AlertTriangle,
+  Info,
+  Terminal,
+  ShieldAlert
 } from "lucide-react";
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -27,80 +30,7 @@ import { PlatformSelector } from '@/components/testing/PlatformSelector';
 import { DownloadArtifacts } from '@/components/testing/DownloadArtifacts';
 import { AppShell } from '@/components/AppShell';
 
-// Мемоизированные компоненты для предотвращения лишних ререндеров
-const StatusIcon = memo(({ status, conclusion }: { status: string, conclusion: string }) => {
-  if (status === 'completed' && conclusion === 'success') return <CheckCircle className="w-6 h-6 text-green-500" />;
-  if (status === 'completed' && conclusion === 'failure') return <XCircle className="w-6 h-6 text-red-500" />;
-  return <AlertCircle className="w-6 h-6 text-yellow-500" />;
-});
-
-StatusIcon.displayName = 'StatusIcon';
-
-const LoadingState = memo(() => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-950/20 dark:to-indigo-950/20 flex items-center justify-center px-4">
-      <div className="text-center">
-        <div className="relative mb-8">
-          <motion.div
-            className="w-20 h-20 border-4 border-muted rounded-full mx-auto"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          />
-          <motion.div
-            className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-indigo-500 border-r-indigo-400 rounded-full mx-auto"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          />
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center"
-          >
-            <motion.div
-              className="w-3 h-3 bg-indigo-500 rounded-full"
-              animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </motion.div>
-        </div>
-        <motion.p
-          className="text-slate-600 dark:text-slate-400 text-lg font-medium"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          {t('testing.loading')}
-        </motion.p>
-      </div>
-    </div>
-  );
-});
-
-LoadingState.displayName = 'LoadingState';
-
-const ErrorState = memo(() => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-950/20 dark:to-indigo-950/20">
-      <div className="container mx-auto px-4 pt-8 pb-16">
-        <div className="text-center">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <p className="text-red-600 dark:text-red-400 text-lg">{t('common.error')}</p>
-          </motion.div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-ErrorState.displayName = 'ErrorState';
-
+// Types
 interface WorkflowRun {
   id: number;
   status: string;
@@ -111,14 +41,18 @@ interface WorkflowRun {
   head_branch: string;
   head_sha: string;
   run_number: number;
+  display_title: string;
+  actor: {
+    login: string;
+    avatar_url: string;
+  };
 }
 
 const TestingContent = () => {
   const { t } = useTranslation();
   const [selectedPlatform, setSelectedPlatform] = useState('windows');
-  const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+  const [expandedRunId, setExpandedRunId] = useState<number | null>(null);
 
-  // Оптимизированные запросы с кэшированием
   const { data: workflowRuns, isLoading, error } = useQuery({
     queryKey: ['workflow-runs'],
     queryFn: async () => {
@@ -126,320 +60,268 @@ const TestingContent = () => {
       if (!response.ok) throw new Error('Failed to fetch workflow runs');
       return response.json();
     },
-    staleTime: 5 * 60 * 1000, // Кэширование на 5 минут
-    refetchOnWindowFocus: false,
-  });
-
-  const { data: artifactsData } = useQuery({
-    queryKey: ['artifacts', workflowRuns?.workflow_runs?.[0]?.id],
-    queryFn: async () => {
-      if (!workflowRuns?.workflow_runs?.[0]?.id) return null;
-      const response = await fetch(`https://api.github.com/repos/Voxelum/x-minecraft-launcher/actions/runs/${workflowRuns.workflow_runs[0].id}/artifacts`);
-      if (!response.ok) throw new Error('Failed to fetch artifacts');
-      return response.json();
-    },
-    enabled: !!workflowRuns?.workflow_runs?.[0]?.id,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
-  // Мемоизация последнего запуска для предотвращения лишних вычислений
-  const latestRun = useMemo(() => workflowRuns?.workflow_runs?.[0], [workflowRuns]);
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString(undefined, {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
-  // Определение иконки платформы
+  const getStatusColor = (conclusion: string) => {
+    switch (conclusion) {
+      case 'success': return 'text-green-500 bg-green-500/10 border-green-500/20';
+      case 'failure': return 'text-red-500 bg-red-500/10 border-red-500/20';
+      default: return 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20';
+    }
+  };
+
+  const StatusIcon = ({ conclusion }: { conclusion: string }) => {
+    switch (conclusion) {
+      case 'success': return <CheckCircle className="w-5 h-5 text-green-500" />;
+      case 'failure': return <XCircle className="w-5 h-5 text-red-500" />;
+      default: return <AlertCircle className="w-5 h-5 text-yellow-500" />;
+    }
+  };
+
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
-      case 'windows': return <Monitor className="w-5 h-5" />;
-      case 'macos': return <Cpu className="w-5 h-5" />;
-      case 'linux': return <HardDrive className="w-5 h-5" />;
+      case 'windows': return (
+        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+      );
+      case 'macos': return (
+        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.74-3.03 1.59-.67.78-1.26 2.05-1.11 3.17 1.17.09 2.36-.75 3.07-1.65z"/></svg>
+      );
+      case 'linux': return (
+        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M13.13 18c-.26-.18-.59-.33-1-.46a4.3 4.3 0 0 1-1-.44 3.73 3.73 0 0 1-.78-.66 2.3 2.3 0 0 1-.36-.61c-.08-.22-.12-.47-.11-.77v-.21a1.69 1.69 0 0 1 .15-.65 2.5 2.5 0 0 1 .42-.64 3.78 3.78 0 0 1 .63-.56c.14-.1.27-.19.38-.26l.16-.1.17-.07.13-.04h.16l.16.03.11.04.1.06a.8.8 0 0 1 .28.32l.06.14a1.76 1.76 0 0 1 .05.45v.69a1.69 1.69 0 0 1-.16.65 2.42 2.42 0 0 1-.42.63 3.6 3.6 0 0 1-.62.56c-.25.17-.5.31-.76.43zm-2-2.52a.76.76 0 0 0-.25.07.67.67 0 0 0-.21.15.6.6 0 0 0-.13.2.73.73 0 0 0-.05.23v.2a1 1 0 0 0 .09.4 1 1 0 0 0 .23.32 1.6 1.6 0 0 0 .34.25c.13.07.27.13.41.17v-1.7a1.43 1.43 0 0 0-.43-.29zM12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 21.8c-2.07 0-3.96-.34-5.69-1a10.9 10.9 0 0 1-4.83-3.6 8.35 8.35 0 0 1-1.63-4.84 8.7 8.7 0 0 1 1-4.08 10.43 10.43 0 0 1 3.2-3.6A11.53 11.53 0 0 1 12 2.2a11.53 11.53 0 0 1 7.9 2.51 10.4 10.4 0 0 1 3.22 3.6 8.7 8.7 0 0 1 1.05 4.09 8.38 8.38 0 0 1-1.62 4.83 10.92 10.92 0 0 1-4.84 3.6c-1.74.63-3.63.97-5.71.97z"/></svg>
+      );
       default: return <Package className="w-5 h-5" />;
     }
   };
 
-  if (isLoading) return <LoadingState />;
-  if (error) return <ErrorState />;
-
   return (
-    <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-950 dark:via-purple-950/20 dark:to-indigo-950/20">
-        {/* Анимированный фон с оптимизацией производительности */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-3xl"
-            animate={{
-              rotate: 360,
-              scale: [1, 1.2, 1],
-            }}
-            transition={{ duration: 20, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"
-            animate={{
-              rotate: -360,
-              scale: [1.2, 1, 1.2],
-            }}
-            transition={{ duration: 25, repeat: Infinity }}
-          />
-        </div>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950">
+      {/* SEO Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "X Minecraft Launcher (Testing)",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Windows, macOS, Linux",
+          "releaseNotes": "Development builds and nightly releases",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        })
+      }} />
 
-        <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
-          {/* Заголовок с улучшенной анимацией */}
+      {/* Animated Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+
+      <div className="container mx-auto px-4 py-24 relative z-10">
+        
+        {/* Header */}
+        <header className="mb-20 text-center max-w-4xl mx-auto">
           <motion.div
-            className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-4 mb-6">
-              <div className="relative">
-                <Activity className="w-14 h-14 text-indigo-600 dark:text-indigo-400" />
-                <motion.div
-                  className="absolute -inset-2 bg-indigo-500/20 rounded-full blur-lg"
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              </div>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                {t('testing.title')}
-              </h1>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-yellow-500 text-sm mb-8 font-medium">
+              <AlertTriangle className="w-4 h-4" />
+              <span>Experimental Builds</span>
             </div>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            
+            <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">
+              {t('testing.title')}
+            </h1>
+            <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
               {t('testing.subtitle')}
             </p>
           </motion.div>
+        </header>
 
-          {/* Статус последней сборки с улучшенным дизайном */}
-          {latestRun && (
-            <motion.div
-              className="mb-12 max-w-5xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Card className="p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-2xl overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-green-400/20 to-transparent rounded-bl-full"></div>
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ type: "spring", stiffness: 500 }}
-                      >
-                        <StatusIcon status={latestRun.status} conclusion={latestRun.conclusion} />
-                      </motion.div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
-                          {t('testing.buildStatus')} #{latestRun.run_number}
-                        </h3>
-                        <p className="text-slate-600 dark:text-slate-400">
-                          {latestRun.conclusion === 'success' ? t('testing.buildSuccessful') : t('testing.buildFailed')}
-                        </p>
+        <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {/* Main Content - Builds List */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                <GitBranch className="w-6 h-6 text-indigo-400" />
+                Latest Builds
+              </h2>
+            <div className="flex gap-2">
+                 {['windows', 'macos', 'linux'].map(p => (
+                   <button
+                    key={p}
+                    onClick={() => setSelectedPlatform(p)}
+                    className={`p-2 rounded-lg transition-all ${selectedPlatform === p ? 'bg-indigo-600 text-white' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`}
+                   >
+                     {getPlatformIcon(p)}
+                   </button>
+                 ))}
+            </div>
+            </div>
+
+            {isLoading ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="h-32 bg-white/5 rounded-2xl animate-pulse" />
+                ))}
+              </div>
+            ) : error ? (
+               <div className="p-8 bg-red-500/10 border border-red-500/20 rounded-2xl text-center">
+                 <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                 <p className="text-red-400">Failed to load builds</p>
+               </div>
+            ) : (
+              <div className="space-y-4">
+                {workflowRuns?.workflow_runs?.map((run: WorkflowRun) => (
+                  <motion.div
+                    key={run.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:bg-white/[0.07] transition-all"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-2">
+                             <StatusIcon conclusion={run.conclusion} />
+                             <span className="font-mono text-sm text-slate-400">#{run.run_number}</span>
+                             <span className={`px-2 py-0.5 rounded text-xs border ${getStatusColor(run.conclusion)}`}>
+                               {run.conclusion}
+                             </span>
+                          </div>
+                          <h3 className="text-lg font-bold text-white truncate mb-2 group-hover:text-indigo-400 transition-colors">
+                            {run.display_title}
+                          </h3>
+                          <div className="flex items-center gap-4 text-sm text-slate-400">
+                            <div className="flex items-center gap-1.5">
+                              <img src={run.actor.avatar_url} alt="" className="w-5 h-5 rounded-full" />
+                              <span>{run.actor.login}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <Clock className="w-4 h-4" />
+                              <span>{formatDate(run.updated_at)}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 font-mono">
+                              <GitBranch className="w-4 h-4" />
+                              <span>{run.head_branch}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setExpandedRunId(expandedRunId === run.id ? null : run.id)}
+                          className={`rounded-xl transition-all ${expandedRunId === run.id ? 'bg-indigo-500/20 text-indigo-400' : 'text-slate-400 hover:text-white'}`}
+                        >
+                           <Download className="w-5 h-5" />
+                        </Button>
                       </div>
                     </div>
-                    <Badge
-                      className={`px-4 py-2 text-lg ${
-                        latestRun.conclusion === 'success'
-                          ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-                          : 'bg-gradient-to-r from-red-500 to-rose-500 text-white'
-                      }`}
-                    >
-                      {latestRun.conclusion === 'success' ? t('testing.ready') : t('testing.failed')}
-                    </Badge>
-                  </div>
 
-                  <AnimatePresence>
-                    {isDetailsExpanded && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                          <motion.div
-                            className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl"
-                            whileHover={{ scale: 1.02, x: 5 }}
-                            transition={{ type: "spring", stiffness: 400 }}
-                          >
-                            <GitBranch className="w-6 h-6 text-indigo-500" />
-                            <div>
-                              <p className="text-sm text-slate-600 dark:text-slate-400">{t('testing.branch')}</p>
-                              <p className="font-semibold text-slate-800 dark:text-slate-200">{latestRun.head_branch}</p>
-                            </div>
-                          </motion.div>
-                          <motion.div
-                            className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl"
-                            whileHover={{ scale: 1.02, x: 5 }}
-                            transition={{ type: "spring", stiffness: 400 }}
-                          >
-                            <Code className="w-6 h-6 text-purple-500" />
-                            <div>
-                              <p className="text-sm text-slate-600 dark:text-slate-400">{t('testing.commit')}</p>
-                              <p className="font-mono font-semibold text-slate-800 dark:text-slate-200">{latestRun.head_sha.substring(0, 8)}</p>
-                            </div>
-                          </motion.div>
-                          <motion.div
-                            className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl"
-                            whileHover={{ scale: 1.02, x: 5 }}
-                            transition={{ type: "spring", stiffness: 400 }}
-                          >
-                            <Clock className="w-6 h-6 text-pink-500" />
-                            <div>
-                              <p className="text-sm text-slate-600 dark:text-slate-400">{t('testing.lastUpdated')}</p>
-                              <p className="font-semibold text-slate-800 dark:text-slate-200">
-                                {new Date(latestRun.updated_at).toLocaleDateString()}
-                              </p>
-                            </div>
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <div className="flex gap-4">
-                    <Button
-                      onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
-                      variant="outline"
-                      className="flex-1 border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
-                    >
-                      {isDetailsExpanded ? t('testing.hideDetails') : t('testing.showDetails')}
-                    </Button>
-                    <Button
-                      onClick={() => window.open(latestRun.html_url, '_blank')}
-                      className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
-                    >
-                      <ExternalLink className="w-5 h-5 mr-2" />
-                      {t('testing.viewOnGitHub')}
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          )}
-
-          {/* Выбор платформы с улучшенным дизайном */}
-          <motion.div
-            className="mb-12 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-xl">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-6 text-center">{t('testing.selectPlatform')}</h2>
-              <div className="grid grid-cols-3 gap-4">
-                {['windows', 'macos', 'linux'].map((platform) => (
-                  <motion.div
-                    key={platform}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Button
-                      variant={selectedPlatform === platform ? "default" : "outline"}
-                      className={`w-full h-20 flex flex-col gap-2 ${
-                        selectedPlatform === platform
-                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
-                          : 'border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20'
-                      }`}
-                      onClick={() => setSelectedPlatform(platform)}
-                    >
-                      {getPlatformIcon(platform)}
-                      <span className="capitalize">{platform === 'macos' ? 'macOS' : platform}</span>
-                    </Button>
+                    <AnimatePresence>
+                      {expandedRunId === run.id && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="border-t border-white/10 bg-black/20"
+                        >
+                          <div className="p-6">
+                            <DownloadArtifacts runId={run.id} platform={selectedPlatform} />
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 ))}
               </div>
-            </Card>
-          </motion.div>
+            )}
+          </div>
 
-          {/* Карточки загрузки с улучшенным дизайном */}
-          {latestRun && latestRun.conclusion === 'success' && artifactsData && (
-            <motion.div
-              className="mb-12 max-w-6xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <DownloadArtifacts
-                artifacts={artifactsData.artifacts || []}
-                selectedPlatform={selectedPlatform}
-                runId={latestRun.id}
-              />
-            </motion.div>
-          )}
+          {/* Sidebar - Info & Warning */}
+          <div className="space-y-6">
+            
+            {/* Warning Card */}
+            <div className="p-6 bg-amber-500/10 backdrop-blur-xl border border-amber-500/20 rounded-2xl">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-amber-500/20 rounded-xl">
+                  <ShieldAlert className="w-6 h-6 text-amber-500" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-amber-500 text-lg mb-2">Warning</h3>
+                  <p className="text-amber-200/80 text-sm leading-relaxed">
+                    These are development builds. They may contain bugs, incomplete features, or cause data issues. Always backup your data before using testing builds.
+                  </p>
+                </div>
+              </div>
+            </div>
 
-          {/* Улучшенное предупреждение */}
-          <motion.div
-            className="max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <Card className="p-8 bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-900/30 dark:via-amber-900/30 dark:to-orange-900/30 border-2 border-yellow-300/50 dark:border-yellow-600/50 rounded-2xl shadow-xl overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-yellow-400/20 to-transparent rounded-bl-full"></div>
-              <div className="relative">
-                <div className="flex items-start gap-6">
-                  <motion.div
-                    className="p-3 rounded-xl bg-yellow-500 text-white shadow-lg flex-shrink-0"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    animate={{
-                      boxShadow: [
-                        "0 0 20px rgba(234, 179, 8, 0.3)",
-                        "0 0 40px rgba(234, 179, 8, 0.5)",
-                        "0 0 20px rgba(234, 179, 8, 0.3)"
-                      ]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <AlertCircle className="w-8 h-8" />
-                  </motion.div>
-                  <div className="flex-1">
-                    <motion.h3
-                      className="text-2xl font-bold text-yellow-800 dark:text-yellow-200 mb-4"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      ⚠️ {t('testing.warningTitle')}
-                    </motion.h3>
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 }}
-                    >
-                      <p className="text-yellow-700 dark:text-yellow-300 leading-relaxed text-lg mb-4">
-                        {t('testing.warningDescription')}
-                      </p>
-                      <ul className="text-yellow-700 dark:text-yellow-300 space-y-2 text-lg">
-                        <li className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                          {t('testing.useAtOwnRisk')}
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                          {t('testing.notRecommendedProduction')}
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                          {t('testing.reportIssuesGitHub')}
-                        </li>
-                      </ul>
-                    </motion.div>
+            {/* How to Use */}
+            <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
+              <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
+                <Terminal className="w-5 h-5 text-indigo-400" />
+                How to Install
+              </h3>
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <div className="flex-none w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">1</div>
+                  <div>
+                    <h4 className="text-white font-medium text-sm">Download Artifact</h4>
+                    <p className="text-slate-400 text-xs mt-1">Select your platform and download the latest successful build artifact.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-none w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm border border-purple-500/30">2</div>
+                  <div>
+                    <h4 className="text-white font-medium text-sm">Extract & Run</h4>
+                    <p className="text-slate-400 text-xs mt-1">Extract the archive. The executable is portable and can be run directly.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-none w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold text-sm border border-pink-500/30">3</div>
+                  <div>
+                    <h4 className="text-white font-medium text-sm">Report Bugs</h4>
+                    <p className="text-slate-400 text-xs mt-1">If you find issues, please report them on our GitHub Issues page.</p>
                   </div>
                 </div>
               </div>
-            </Card>
-          </motion.div>
+              
+              <Button 
+                variant="outline" 
+                className="w-full mt-6 border-white/10 hover:bg-white/5 text-slate-300"
+                onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/issues', '_blank')}
+              >
+                Report Issue <ExternalLink className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+
+          </div>
         </div>
       </div>
-    </PageTransition>
+    </div>
   );
 };
 
-export default function Testing() {
-  return (
-    <AppShell>
-      <TestingContent />
-    </AppShell>
-  );
-}
+// Export wrappper
+export const Testing = () => (
+  <AppShell>
+    <TestingContent />
+  </AppShell>
+);
+
+export default Testing;

@@ -71,7 +71,7 @@ const InformationContent: React.FC = () => {
 
   const sponsors = [
     { name: 'SignPath', logo: 'https://avatars.githubusercontent.com/u/34448643', url: 'https://signpath.io/', desc: 'Free code signing on Windows' },
-    { name: 'Netlify', logo: 'https://avatars.githubusercontent.com/u/7892489', url: 'https://netlify.com/', desc: 'Hosting & Deployment' },
+    { name: 'Deno Deploy', logo: 'https://avatars.githubusercontent.com/u/42048915', url: 'https://deno.com/deploy', desc: 'Serverless JavaScript Hosting' },
     { name: 'Tencent EdgeOne', logo: 'https://edgeone.ai/logo.png', url: 'https://edgeone.ai/', desc: 'CDN Acceleration & Security Protection' },
   ];
 
