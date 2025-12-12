@@ -4,12 +4,12 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import rehypeHighlight from "rehype-highlight";
+
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import MermaidDiagram from "./MermaidDiagram";
 import "katex/dist/katex.min.css";
-import "highlight.js/styles/github-dark.css";
+
 
 interface MarkdownRendererProps {
   content: string;
@@ -270,7 +270,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeKatex, rehypeRaw, rehypeHighlight]}
+        rehypePlugins={[rehypeKatex, rehypeRaw]}
         components={components}
       >
         {content}
