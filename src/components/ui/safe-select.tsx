@@ -39,6 +39,7 @@ interface SafeSelectProps {
   placeholder?: string;
   children: React.ReactNode;
   disabled?: boolean;
+  className?: string;
 }
 
 const SafeSelect = React.forwardRef<
@@ -47,7 +48,7 @@ const SafeSelect = React.forwardRef<
 >(({ children, ...props }, ref) => {
   return (
     <Select value={props.value} onValueChange={props.onValueChange} disabled={props.disabled}>
-      <SelectTrigger ref={ref}>
+      <SelectTrigger ref={ref} className={props.className}>
         <SelectValue placeholder={props.placeholder} />
       </SelectTrigger>
       <SelectContent>

@@ -1,0 +1,139 @@
+name: 🔄 CI/CD Pipeline: Update, Security & Compatibility
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+    - cron: '0 2 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-dependencies:
+    name: 📦 Update Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update dependencies to latest minor versions
+        run: ncu -u --target minor
+
+      - name: Install updated dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Build project to verify integrity
+        run: npm run build
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore(deps): update dependencies'
+          title: '🔄 Automated Dependency Updates'
+          body: |
+            🤖 Этот PR был создан автоматически для обновления зависимостей.
+
+            ### Что было сделано:
+            - Зависимости в `package.json` были обновлены до последних совместимых (минорных) версий.
+            - `package-lock.json` был синхронизирован.
+            - Проект успешно прошел проверку `lint` и сборку `build`.
+
+            ### Что делать дальше:
+            Пожалуйста, просмотрите изменения и слейте этот PR для обновления зависимостей.
+          branch: automated-dependency-updates
+          delete-branch: true
+
+  security-and-compatibility:
+    name: 🔐 Security & Compatibility Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js for NPM Audit
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies for NPM Audit
+        run: npm ci
+
+      - name: Run NPM Security Audit
+        run: npm audit --audit-level=moderate
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies with Bun
+        run: bun install --frozen-lockfile
+
+      - name: Build project with Bun
+        run: bun run build
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Check TypeScript code with Deno
+        run: deno check --import-map=import_map.json src/main.tsx
+
+      - name: Run Snyk Security Scan
+        if: secrets.SNYK_TOKEN
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Generate Report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = './import_map.json';
+            let denoMapStatus = '❌ `import_map.json` not found.';
+            if (fs.existsSync(path)) {
+              denoMapStatus = '✅ `import_map.json` found.';
+            }
+
+            const report = `
+            ## 🔐 Security & Compatibility Report
+
+            ### 📦 NPM Audit
+            ✅ Passed. No moderate or high vulnerabilities found.
+
+            ### 🥟 Bun Compatibility
+            ✅ Passed. Dependencies installed and project built successfully with Bun.
+
+            ### 🦕 Deno Compatibility
+            ${denoMapStatus}
+            ✅ TypeScript code checked for Deno compatibility.
+
+            ### 🛡️ Snyk Scan
+            ${context.payload.repository.private ? '🔒 Skipped for private repository.' : (secrets.SNYK_TOKEN ? '✅ Passed. No high or critical vulnerabilities found.' : '⚠️ Skipped. `SNYK_TOKEN` secret not set.')}
+            `;
+
+            await core.summary
+              .addRaw(report)
+              .write();

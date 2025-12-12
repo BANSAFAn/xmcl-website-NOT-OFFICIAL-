@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import Guide from "../../react-pages/Guide";
+---
+
+<Layout title="Guide - X Minecraft Launcher" description="Read our guide about X Minecraft Launcher.">
+  <Guide client:load />
+</Layout>

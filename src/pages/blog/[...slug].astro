@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import Blog from "../../react-pages/Blog";
+---
+
+<Layout title="Blog Post - X Minecraft Launcher" description="Read our blog post about X Minecraft Launcher.">
+  <Blog client:load />
+</Layout>

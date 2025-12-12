@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from '@/components/Link';
+import { useLocation } from '@/hooks/useRouting';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface NavItem {
@@ -35,7 +36,8 @@ const NavItems: React.FC<NavItemsProps> = ({ className = '', onItemClick }) => {
           key={item.path}
           to={item.path}
           className={`${baseClassName} ${activeClassName} ${className} ${
-            location.pathname === item.path
+            (location.pathname === item.path || 
+             (location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname) === item.path)
               ? 'text-blue-600 dark:text-blue-400 after:scale-x-100'
               : 'text-slate-700 dark:text-slate-300'
           }`}

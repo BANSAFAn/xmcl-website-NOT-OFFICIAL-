@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/Link";
 import { InfoSection } from "./translations";
 import { Lens } from "@/components/ui/lens";
 
