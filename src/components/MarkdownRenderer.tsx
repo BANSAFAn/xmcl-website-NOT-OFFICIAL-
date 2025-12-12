@@ -4,12 +4,10 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import MermaidDiagram from "./MermaidDiagram";
 import "katex/dist/katex.min.css";
-
 
 interface MarkdownRendererProps {
   content: string;
@@ -19,7 +17,7 @@ interface MarkdownRendererProps {
 const components = {
   h1: ({ children, ...props }: any) => (
     <h1
-      className="mb-6 mt-8 text-5xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+      className="mb-6 mt-10 text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight"
       {...props}
     >
       {children}
@@ -27,15 +25,18 @@ const components = {
   ),
   h2: ({ children, ...props }: any) => (
     <h2
-      className="mb-5 mt-8 text-4xl font-bold text-slate-900 dark:text-slate-100 border-b-2 border-blue-500/30 pb-2"
+      className="mb-5 mt-10 text-3xl font-bold text-slate-900 dark:text-white border-b-2 border-gradient-to-r from-blue-500 to-purple-500 pb-3 border-blue-500/30"
       {...props}
     >
-      {children}
+      <span className="flex items-center gap-3">
+        <span className="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full" />
+        {children}
+      </span>
     </h2>
   ),
   h3: ({ children, ...props }: any) => (
     <h3
-      className="mb-4 mt-6 text-3xl font-bold text-slate-800 dark:text-slate-200"
+      className="mb-4 mt-8 text-2xl font-bold text-slate-800 dark:text-slate-100"
       {...props}
     >
       {children}
@@ -43,7 +44,7 @@ const components = {
   ),
   h4: ({ children, ...props }: any) => (
     <h4
-      className="mb-3 mt-5 text-2xl font-semibold text-slate-800 dark:text-slate-200"
+      className="mb-3 mt-6 text-xl font-semibold text-slate-800 dark:text-slate-200"
       {...props}
     >
       {children}
@@ -51,7 +52,7 @@ const components = {
   ),
   h5: ({ children, ...props }: any) => (
     <h5
-      className="mb-3 mt-4 text-xl font-semibold text-slate-700 dark:text-slate-300"
+      className="mb-3 mt-5 text-lg font-semibold text-slate-700 dark:text-slate-300"
       {...props}
     >
       {children}
@@ -59,40 +60,44 @@ const components = {
   ),
   h6: ({ children, ...props }: any) => (
     <h6
-      className="mb-2 mt-3 text-lg font-semibold text-slate-700 dark:text-slate-300"
+      className="mb-2 mt-4 text-base font-semibold text-slate-700 dark:text-slate-300"
       {...props}
     >
       {children}
     </h6>
   ),
-  p: ({ children, ...props }: any) => {
-    // Проверяем, содержит ли children блочные элементы (img, div, table и т.д.)
-    // Если да, не оборачиваем в <p>, а возвращаем их как есть
+  // Use div instead of p to avoid nesting issues
+  p: ({ children, node, ...props }: any) => {
+    // Check if children contain block elements that shouldn't be in <p>
     const hasBlockElement = React.Children.toArray(children).some((child) => {
       if (React.isValidElement(child)) {
-        const tag = child.type;
-        return [
-          "img",
-          "div",
-          "table",
-          "video",
-          "blockquote",
-          "pre",
-          "hr",
-          "ul",
-          "ol",
-        ].includes(tag as string);
+        const type = child.type;
+        // Check for string tags or component display names
+        if (typeof type === 'string') {
+          return ["img", "div", "figure", "table", "video", "blockquote", "pre", "hr", "ul", "ol"].includes(type);
+        }
+        // Check for function components that render block elements
+        if (typeof type === 'function') {
+          const name = (type as any).displayName || (type as any).name || '';
+          return ["img", "ClickableImage", "code", "video"].includes(name);
+        }
       }
       return false;
     });
 
-    if (hasBlockElement) {
-      return <>{children}</>;
+    // Also check for image or code in node children (from markdown AST)
+    const hasBlockInNode = node?.children?.some((child: any) => 
+      child.tagName === 'img' || child.type === 'image' || 
+      child.tagName === 'code' || child.tagName === 'pre'
+    );
+
+    if (hasBlockElement || hasBlockInNode) {
+      return <div className="mb-4">{children}</div>;
     }
 
     return (
       <p
-        className="mb-4 text-lg leading-relaxed text-slate-700 dark:text-slate-300"
+        className="mb-5 text-lg leading-relaxed text-slate-700 dark:text-slate-300"
         {...props}
       >
         {children}
@@ -102,17 +107,20 @@ const components = {
   a: ({ children, href, ...props }: any) => (
     <a
       href={href}
-      className="font-semibold text-blue-600 underline decoration-blue-500/30 underline-offset-2 transition-all hover:text-blue-700 hover:decoration-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+      className="inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-blue-500/40 underline-offset-2 hover:decoration-blue-500 transition-all duration-200"
       target="_blank"
       rel="noopener noreferrer"
       {...props}
     >
       {children}
+      <svg className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+      </svg>
     </a>
   ),
   ul: ({ children, ...props }: any) => (
     <ul
-      className="mb-4 ml-6 list-disc space-y-2 text-slate-700 dark:text-slate-300"
+      className="mb-6 ml-2 space-y-3 text-slate-700 dark:text-slate-300"
       {...props}
     >
       {children}
@@ -120,22 +128,24 @@ const components = {
   ),
   ol: ({ children, ...props }: any) => (
     <ol
-      className="mb-4 ml-6 list-decimal space-y-2 text-slate-700 dark:text-slate-300"
+      className="mb-6 ml-2 space-y-3 text-slate-700 dark:text-slate-300 list-none counter-reset-item"
       {...props}
     >
       {children}
     </ol>
   ),
-  li: ({ children, ...props }: any) => (
-    <li className="text-lg leading-relaxed" {...props}>
-      {children}
+  li: ({ children, ordered, index, ...props }: any) => (
+    <li className="flex items-start gap-3 text-lg leading-relaxed" {...props}>
+      <span className="flex-shrink-0 mt-1.5 w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
+      <span>{children}</span>
     </li>
   ),
   blockquote: ({ children, ...props }: any) => (
     <blockquote
-      className="my-6 border-l-4 border-blue-500 bg-blue-50 p-4 italic text-slate-700 dark:bg-blue-900/20 dark:text-slate-300"
+      className="my-8 relative pl-6 py-4 pr-4 border-l-4 border-blue-500 bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/20 dark:to-transparent rounded-r-xl italic text-slate-700 dark:text-slate-300"
       {...props}
     >
+      <span className="absolute -left-3 -top-2 text-4xl text-blue-300 dark:text-blue-700 font-serif">"</span>
       {children}
     </blockquote>
   ),
@@ -148,37 +158,56 @@ const components = {
       return <MermaidDiagram code={childrenStr} />;
     }
 
-    return !inline ? (
-      <div className="my-6 overflow-hidden rounded-xl">
+    // Inline code
+    if (inline) {
+      return (
+        <code
+          className="px-2 py-0.5 rounded-md bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 text-pink-600 dark:text-pink-400 font-mono text-[0.9em] font-medium"
+          {...props}
+        >
+          {children}
+        </code>
+      );
+    }
+
+    // Block code
+    return (
+      <div className="my-8 group">
+        <div className="flex items-center justify-between px-4 py-2 bg-slate-800 rounded-t-xl border-b border-slate-700">
+          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">{language}</span>
+          <div className="flex gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-red-500/80" />
+            <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+            <span className="w-3 h-3 rounded-full bg-green-500/80" />
+          </div>
+        </div>
         <SyntaxHighlighter
           style={vscDarkPlus}
           language={language}
           PreTag="div"
-          className="text-sm"
+          className="!mt-0 !rounded-t-none !rounded-b-xl text-sm"
           showLineNumbers
+          customStyle={{
+            margin: 0,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+          }}
           {...props}
         >
           {childrenStr}
         </SyntaxHighlighter>
       </div>
-    ) : (
-      <code
-        className="rounded bg-slate-200 px-1.5 py-0.5 font-mono text-sm text-slate-800 dark:bg-slate-700 dark:text-slate-200"
-        {...props}
-      >
-        {children}
-      </code>
     );
   },
   table: ({ children, ...props }: any) => (
-    <div className="my-6 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+    <div className="my-8 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg">
       <table className="w-full border-collapse text-left text-sm" {...props}>
         {children}
       </table>
     </div>
   ),
   thead: ({ children, ...props }: any) => (
-    <thead className="bg-slate-100 dark:bg-slate-800" {...props}>
+    <thead className="bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-850" {...props}>
       {children}
     </thead>
   ),
@@ -192,7 +221,7 @@ const components = {
   ),
   tr: ({ children, ...props }: any) => (
     <tr
-      className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+      className="transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800/50"
       {...props}
     >
       {children}
@@ -200,51 +229,53 @@ const components = {
   ),
   th: ({ children, ...props }: any) => (
     <th
-      className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100"
+      className="px-5 py-4 font-bold text-slate-900 dark:text-slate-100 uppercase text-xs tracking-wider"
       {...props}
     >
       {children}
     </th>
   ),
   td: ({ children, ...props }: any) => (
-    <td className="px-4 py-3 text-slate-700 dark:text-slate-300" {...props}>
+    <td className="px-5 py-4 text-slate-700 dark:text-slate-300" {...props}>
       {children}
     </td>
   ),
+  // Simple image component
   img: ({ src, alt, ...props }: any) => (
-    <figure className="my-8">
+    <span className="block my-8">
       <img
         src={src}
-        alt={alt}
-        className="mx-auto rounded-2xl shadow-2xl transition-transform hover:scale-105"
+        alt={alt || ""}
+        className="mx-auto rounded-2xl shadow-xl max-w-full h-auto transition-transform hover:scale-[1.02] duration-300"
         loading="lazy"
         {...props}
       />
       {alt && (
-        <figcaption className="mt-3 text-center text-sm italic text-slate-500 dark:text-slate-400">
+        <span className="block mt-3 text-center text-sm italic text-slate-500 dark:text-slate-400">
           {alt}
-        </figcaption>
+        </span>
       )}
-    </figure>
+    </span>
   ),
   hr: ({ ...props }: any) => (
-    <hr
-      className="my-8 border-t-2 border-slate-200 dark:border-slate-700"
-      {...props}
-    />
+    <div className="my-12 flex items-center justify-center gap-3">
+      <span className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent dark:via-slate-600" />
+      <span className="text-slate-400">✦</span>
+      <span className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent dark:via-slate-600" />
+    </div>
   ),
   video: ({ src, ...props }: any) => (
-    <figure className="my-8">
+    <span className="block my-8">
       <video
         src={src}
         controls
-        className="mx-auto w-full max-w-4xl rounded-2xl shadow-2xl"
+        className="mx-auto w-full max-w-4xl rounded-2xl shadow-xl"
         {...props}
       />
-    </figure>
+    </span>
   ),
   strong: ({ children, ...props }: any) => (
-    <strong className="font-bold text-slate-900 dark:text-slate-100" {...props}>
+    <strong className="font-bold text-slate-900 dark:text-white" {...props}>
       {children}
     </strong>
   ),
@@ -254,10 +285,40 @@ const components = {
     </em>
   ),
   del: ({ children, ...props }: any) => (
-    <del className="line-through text-slate-500 dark:text-slate-400" {...props}>
+    <del className="line-through text-slate-500 dark:text-slate-400 opacity-70" {...props}>
       {children}
     </del>
   ),
+  // GitHub-style alerts
+  div: ({ children, className, ...props }: any) => {
+    // Check for custom alert types
+    if (className?.includes('markdown-alert')) {
+      const alertType = className.includes('note') ? 'note' 
+        : className.includes('tip') ? 'tip'
+        : className.includes('warning') ? 'warning'
+        : className.includes('caution') ? 'caution'
+        : className.includes('important') ? 'important'
+        : null;
+      
+      if (alertType) {
+        const styles: Record<string, string> = {
+          note: 'border-blue-500 bg-blue-50 dark:bg-blue-900/20',
+          tip: 'border-green-500 bg-green-50 dark:bg-green-900/20',
+          warning: 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20',
+          caution: 'border-red-500 bg-red-50 dark:bg-red-900/20',
+          important: 'border-purple-500 bg-purple-50 dark:bg-purple-900/20',
+        };
+        
+        return (
+          <div className={`my-6 p-4 border-l-4 rounded-r-lg ${styles[alertType]}`} {...props}>
+            {children}
+          </div>
+        );
+      }
+    }
+    
+    return <div className={className} {...props}>{children}</div>;
+  },
 };
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
@@ -266,7 +327,10 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 }) => {
   return (
     <div
-      className={`prose prose-lg prose-slate max-w-none dark:prose-invert ${className}`}
+      className={`prose prose-lg prose-slate max-w-none dark:prose-invert 
+        prose-headings:scroll-mt-20
+        prose-pre:p-0 prose-pre:bg-transparent
+        ${className}`}
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
