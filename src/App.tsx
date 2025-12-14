@@ -15,15 +15,15 @@ import { TranslationProvider } from "@/contexts/TranslationContext";
  */
 
 // Lazy-loaded page components (assumed default exports)
-const Index = lazy(() => import("./pages/Index"));
-const Download = lazy(() => import("./pages/Download"));
-const Blog = lazy(() => import("./pages/Blog"));
-const Guide = lazy(() => import("./pages/Guide"));
-const ModernChangelog = lazy(() => import("./pages/ModernChangelog"));
-const ModernIssues = lazy(() => import("./pages/ModernIssues"));
-const Testing = lazy(() => import("./pages/Testing"));
-const Information = lazy(() => import("./pages/Information"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Index = lazy(() => import("./react-pages/Index"));
+const Download = lazy(() => import("./react-pages/Download"));
+const Blog = lazy(() => import("./react-pages/Blog"));
+const Guide = lazy(() => import("./react-pages/Guide"));
+const ModernChangelog = lazy(() => import("./react-pages/ModernChangelog"));
+const ModernIssues = lazy(() => import("./react-pages/ModernIssues"));
+const Testing = lazy(() => import("./react-pages/Testing"));
+const Information = lazy(() => import("./react-pages/Information"));
+const NotFound = lazy(() => import("./react-pages/NotFound"));
 
 // Lazy-load named-export components by mapping to default
 const StaggeredMenu = lazy(() =>

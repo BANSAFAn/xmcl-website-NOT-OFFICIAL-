@@ -114,7 +114,7 @@ async function loadModuleTranslations() {
       if (sectionName === "osSwitch") sectionName = "osSwitch";
 
       const translationsMatch = content.match(
-        new RegExp(`export const ${varName}[\\s\\S]*?=\\s*{([\\s\\S]*?)}\\s*;`),
+        new RegExp(`export const ${varName}[\s\S]*?=\s*{([\s\S]*?)}\s*;`),
       );
       if (!translationsMatch) continue;
 
@@ -123,7 +123,7 @@ async function loadModuleTranslations() {
       for (const locale of SUPPORTED_LOCALES) {
         const localeMatch = translationsBlock.match(
           new RegExp(
-            `${locale}\\s*:\\s*{([\\s\\S]*?)}\\s*,?\\s*(?:${SUPPORTED_LOCALES.join("|")}|$)`,
+            `${locale}\s*:\s*{([\s\S]*?)}\s*,?\s*(?:${SUPPORTED_LOCALES.join("|")}|$)`,
           ),
         );
         if (!localeMatch) continue;
