@@ -4,7 +4,7 @@ import { ChevronRight, Calendar, Package, ArrowRight, ChevronDown, ChevronUp } f
 import { Release } from "./types";
 import { formatDate } from "./utils";
 import { useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from '@/hooks/useRouting';
 import { useEffect } from 'react';
 
 interface VersionMapProps {

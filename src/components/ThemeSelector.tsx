@@ -1,74 +1,70 @@
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, ChevronDown } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useTheme, Theme } from "@/hooks/useTheme";
+import { useTheme, type Theme } from "@/hooks/useTheme";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const ThemeSelector = () => {
   const { t } = useTranslation();
   const { theme, setTheme } = useTheme();
+  const isDark = theme === 'dark';
 
-  const themes = [
-    // We ignore this part, as the translations work!
-    { 
-      value: 'light' as Theme, 
-      name: t('theme.light'),
-      icon: Sun,
-      gradient: 'from-amber-400 via-orange-400 to-yellow-400'
-    },
-    { 
-      value: 'dark' as Theme, 
-      name: t('theme.dark'),
-      icon: Moon,
-      gradient: 'from-slate-700 via-slate-800 to-slate-900'
-    }
-  ];
-
-  const currentTheme = themes.find(th => th.value === theme);
-  const IconComponent = currentTheme?.icon || Sun;
+  const toggleTheme = () => {
+    setTheme(isDark ? 'light' : 'dark');
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="relative h-9 w-9 sm:w-auto px-0 sm:px-3 text-foreground/80 hover:text-foreground hover:bg-accent/50 transition-all duration-300 gap-2 py-2 rounded-lg backdrop-blur-sm"
-        >
-          <div className="relative">
-            <div className={`w-5 h-5 rounded-full bg-gradient-to-r ${currentTheme?.gradient} shadow-lg ring-2 ring-background/20`} />
-            <IconComponent className="w-3 h-3 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-sm" />
-          </div>
-          <span className="hidden sm:inline font-medium">{currentTheme?.name}</span>
-          <ChevronDown className="hidden sm:inline w-3 h-3 opacity-60" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        className="bg-background/95 backdrop-blur-md border border-border shadow-xl z-[10000] min-w-[160px] rounded-lg"
-        align="end"
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={toggleTheme}
+        className="relative h-10 w-10 p-0 overflow-hidden rounded-full bg-muted/80 hover:bg-accent/60 transition-colors"
+        aria-label={isDark ? t('theme.light') : t('theme.dark')}
       >
-        {themes.map((themeOption) => {
-          const Icon = themeOption.icon;
-          return (
-            <DropdownMenuItem
-              key={themeOption.value}
-              onClick={() => setTheme(themeOption.value)}
-              className={`text-foreground/80 hover:text-foreground hover:bg-accent/50 cursor-pointer transition-all duration-200 gap-3 py-3 px-4 rounded-md mx-1 my-0.5 ${
-                theme === themeOption.value ? 'bg-primary/10 text-primary border border-primary/20' : ''
-              }`}
-            >
-              <div className="relative">
-                <div className={`w-5 h-5 rounded-full bg-gradient-to-r ${themeOption.gradient} shadow-md ring-2 ring-background/30`} />
-                <Icon className="w-3 h-3 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-sm" />
-              </div>
-              <span className="font-medium">{themeOption.name}</span>
-              {theme === themeOption.value && (
-                <div className="ml-auto w-2 h-2 rounded-full bg-primary" />
-              )}
-            </DropdownMenuItem>
-          );
-        })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+        {/* Subtle background glow effect */}
+        <motion.div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: isDark
+              ? 'radial-gradient(circle, rgb(99 102 241 / 0.5) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgb(251 191 36 / 0.5) 0%, transparent 70%)',
+          }}
+          animate={{ opacity: isDark ? 0.5 : 0.3 }}
+          transition={{ duration: 0.4 }}
+        />
+
+        {/* Icon container with animation */}
+        <div className="relative flex items-center justify-center w-full h-full">
+          <AnimatePresence mode="wait">
+            {isDark ? (
+              <motion.div
+                key="moon"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+              >
+                <Moon className="w-5 h-5 text-foreground" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="sun"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+              >
+                <Sun className="w-5 h-5 text-foreground" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <span className="sr-only">
+          {isDark ? t('theme.light') : t('theme.dark')}
+        </span>
+      </Button>
+    </motion.div>
   );
-};
+}

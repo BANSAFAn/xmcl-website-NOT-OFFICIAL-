@@ -12,10 +12,9 @@ export type SupportedLocale =
   | "kz"
   | "by"
   | "fr"
-  | "es";
-// | "pt"
-// | "pt-BR"
-// | "pt-PT";
+  | "es"
+  | "pt"
+  | "tr";
 
 export const languageConfigs: { code: string; name: string }[] = [
   { code: "en", name: "English" },
@@ -32,7 +31,6 @@ export const languageConfigs: { code: string; name: string }[] = [
   { code: "by", name: " Беларуская" },
   { code: "fr", name: "Français" },
   { code: "es", name: "Español" },
-  // Beta 1.7 Translation 2x
-  // { code: "pt", name: "Português" },
-  // { code: "pt-BR", name: "Português (Brasil)" },
+  { code: "pt", name: "Português" },
+  { code: "tr", name: "Türkçe" },
 ];

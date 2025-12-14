@@ -29,6 +29,16 @@
       "tags": ["update", "news"],
       "slug": "Beta1.5V",
       "featured": true
+    },
+    {
+      "id": "3",
+      "title": "Beta 1.6 V: Performance Update",
+      "excerpt": "Major performance overhaul (LCP, INP) and rendering fixes.",
+      "date": "2025-12-14",
+      "author": "Baneronetwo",
+      "tags": ["update", "performance"],
+      "slug": "Beta1.6V",
+      "featured": true
     }
   ],
   "categories": ["update", "news"],

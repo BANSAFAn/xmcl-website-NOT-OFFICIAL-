@@ -129,6 +129,7 @@ export const FeaturesSection = () => {
     <section
       ref={sectionRef}
       className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      style={{ position: 'relative' }}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div

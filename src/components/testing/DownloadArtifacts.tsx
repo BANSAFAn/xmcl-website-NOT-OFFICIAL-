@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, Monitor, Apple, Smartphone, Zap } from 'lucide-react';
+import { Download, Monitor, Apple, Smartphone, Zap, Loader2 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { toast } from "sonner";
+import { useQuery } from '@tanstack/react-query';
 
 interface Artifact {
   id: number;
@@ -17,37 +17,46 @@ interface Artifact {
 }
 
 interface DownloadArtifactsProps {
-  artifacts: Artifact[];
-  selectedPlatform: string;
+  platform: string;
   runId: number;
 }
 
 const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({ 
-  artifacts, 
-  selectedPlatform, 
+  platform, 
   runId 
 }) => {
   const { t } = useTranslation();
 
+  const { data: artifactsData, isLoading, error } = useQuery({
+    queryKey: ['artifacts', runId],
+    queryFn: async () => {
+      const response = await fetch(`https://api.github.com/repos/Voxelum/x-minecraft-launcher/actions/runs/${runId}/artifacts`);
+      if (!response.ok) throw new Error('Failed to fetch artifacts');
+      return response.json();
+    },
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+
   const getPlatformArtifacts = () => {
-    if (!artifacts) return [];
+    if (!artifactsData?.artifacts) return [];
     
-    switch (selectedPlatform) {
+    switch (platform) {
       case 'windows':
-        return artifacts.filter((a: Artifact) => 
+        return artifactsData.artifacts.filter((a: Artifact) => 
           a.name.toLowerCase().includes('windows') || 
           a.name.toLowerCase().includes('win') ||
           a.name.toLowerCase().includes('exe')
         );
       case 'linux':
-        return artifacts.filter((a: Artifact) => 
+        return artifactsData.artifacts.filter((a: Artifact) => 
           a.name.toLowerCase().includes('linux') ||
           a.name.toLowerCase().includes('appimage') ||
           a.name.toLowerCase().includes('deb') ||
           a.name.toLowerCase().includes('rpm')
         );
       case 'macos':
-        return artifacts.filter((a: Artifact) => 
+        return artifactsData.artifacts.filter((a: Artifact) => 
           a.name.toLowerCase().includes('mac') ||
           a.name.toLowerCase().includes('darwin') ||
           a.name.toLowerCase().includes('dmg')
@@ -67,6 +76,22 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
     toast.success(t('testing.downloadStarted'));
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-red-400">
+        Failed to load artifacts
+      </div>
+    );
+  }
+
   const platformArtifacts = getPlatformArtifacts();
 
   if (platformArtifacts.length === 0) {
@@ -77,14 +102,14 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="w-16 h-16 bg-gradient-to-br from-slate-400 to-slate-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <Monitor className="w-8 h-8 text-white" />
+        <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <Monitor className="w-8 h-8 text-slate-400" />
         </div>
-        <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
+        <h3 className="text-xl font-semibold text-white mb-2">
           {t('testing.noArtifacts')}
         </h3>
-        <p className="text-slate-600 dark:text-slate-400">
-          No artifacts available for {selectedPlatform}
+        <p className="text-slate-400">
+          No artifacts available for {platform}
         </p>
       </motion.div>
     );
@@ -99,18 +124,18 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 * index }}
         >
-          <Card className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-white/20 dark:border-slate-700/20 shadow-xl hover:shadow-2xl transition-all duration-500 group">
+          <Card className="p-6 bg-white/10 backdrop-blur-xl border-white/10 shadow-xl hover:bg-white/15 transition-all duration-300 group">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Zap className="w-8 h-8 text-white" />
+              <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Zap className="w-7 h-7 text-white" />
               </div>
               
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-2 truncate">
+              <h3 className="text-sm font-bold text-white mb-2 truncate px-2" title={artifact.name}>
                 {artifact.name}
               </h3>
               
-              <div className="flex justify-between items-center mb-4">
-                <Badge variant="secondary" className="text-xs">
+              <div className="flex justify-center gap-2 mb-4">
+                <Badge variant="secondary" className="text-xs bg-black/20 text-slate-300">
                   {formatFileSize(artifact.size_in_bytes)}
                 </Badge>
                 <Badge 
@@ -127,7 +152,8 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
               <Button
                 onClick={() => handleDownload(artifact)}
                 disabled={artifact.expired}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                size="sm"
+                className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/10"
               >
                 <Download className="w-4 h-4 mr-2" />
                 {t('testing.downloadArtifact')}
