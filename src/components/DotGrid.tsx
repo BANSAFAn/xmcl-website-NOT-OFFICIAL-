@@ -1,6 +1,5 @@
 'use client';
 import React, { useRef, useEffect, useCallback, useMemo } from "react";
-import { gsap } from "gsap";
 
 const throttle = (func: (...args: any[]) => void, limit: number) => {
   let lastCall = 0;
@@ -18,7 +17,8 @@ interface Dot {
   cy: number;
   xOffset: number;
   yOffset: number;
-  _inertiaApplied: boolean;
+  vx: number;
+  vy: number;
 }
 
 export interface DotGridProps {
@@ -31,8 +31,6 @@ export interface DotGridProps {
   shockRadius?: number;
   shockStrength?: number;
   maxSpeed?: number;
-  resistance?: number;
-  returnDuration?: number;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -53,12 +51,8 @@ const DotGrid: React.FC<DotGridProps> = ({
   baseColor = "#3b82f6",
   activeColor = "#8b5cf6",
   proximity = 120,
-  speedTrigger = 100,
   shockRadius = 200,
-  shockStrength = 3,
-  maxSpeed = 5000,
-  resistance = 750,
-  returnDuration = 1.5,
+  shockStrength = 10,
   className = "",
   style,
 }) => {
@@ -68,12 +62,6 @@ const DotGrid: React.FC<DotGridProps> = ({
   const pointerRef = useRef({
     x: 0,
     y: 0,
-    vx: 0,
-    vy: 0,
-    speed: 0,
-    lastTime: 0,
-    lastX: 0,
-    lastY: 0,
   });
 
   const baseRgb = useMemo(() => hexToRgb(baseColor), [baseColor]);
@@ -120,7 +108,7 @@ const DotGrid: React.FC<DotGridProps> = ({
       for (let x = 0; x < cols; x++) {
         const cx = startX + x * cell;
         const cy = startY + y * cell;
-        dots.push({ cx, cy, xOffset: 0, yOffset: 0, _inertiaApplied: false });
+        dots.push({ cx, cy, xOffset: 0, yOffset: 0, vx: 0, vy: 0 });
       }
     }
     dotsRef.current = dots;
@@ -132,6 +120,10 @@ const DotGrid: React.FC<DotGridProps> = ({
     let rafId: number;
     const proxSq = proximity * proximity;
 
+    // Physics constants for spring effect
+    const stiffness = 0.05;
+    const damping = 0.85;
+
     const draw = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -142,6 +134,29 @@ const DotGrid: React.FC<DotGridProps> = ({
       const { x: px, y: py } = pointerRef.current;
 
       for (const dot of dotsRef.current) {
+        // Physics update
+        
+        // Spring force towards origin (0,0 offset)
+        const ax = -stiffness * dot.xOffset;
+        const ay = -stiffness * dot.yOffset;
+
+        dot.vx += ax;
+        dot.vy += ay;
+        dot.vx *= damping;
+        dot.vy *= damping;
+        dot.xOffset += dot.vx;
+        dot.yOffset += dot.vy;
+
+        // Snap to zero if very small to save processing (optional, but good for stable state)
+        if (Math.abs(dot.xOffset) < 0.01 && Math.abs(dot.vx) < 0.01) {
+          dot.xOffset = 0;
+          dot.vx = 0;
+        }
+        if (Math.abs(dot.yOffset) < 0.01 && Math.abs(dot.vy) < 0.01) {
+          dot.yOffset = 0;
+          dot.vy = 0;
+        }
+
         const ox = dot.cx + dot.xOffset;
         const oy = dot.cy + dot.yOffset;
         const dx = dot.cx - px;
@@ -156,6 +171,13 @@ const DotGrid: React.FC<DotGridProps> = ({
           const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t);
           const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t);
           style = `rgb(${r},${g},${b})`;
+        }
+
+        if (dot.xOffset !== 0 || dot.yOffset !== 0 || dsq <= proxSq) {
+             // Optimization: only render significant dots or all? 
+             // With thousands of dots, rendering all circles is costly. 
+             // But clearing rect forces redraw anyway.
+             // Path2D cache helps.
         }
 
         ctx.save();
@@ -189,64 +211,32 @@ const DotGrid: React.FC<DotGridProps> = ({
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      const now = performance.now();
-      const pr = pointerRef.current;
-      const dt = pr.lastTime ? now - pr.lastTime : 16;
-      const dx = e.clientX - pr.lastX;
-      const dy = e.clientY - pr.lastY;
-      let vx = (dx / dt) * 1000;
-      let vy = (dy / dt) * 1000;
-      let speed = Math.hypot(vx, vy);
-      if (speed > maxSpeed) {
-        const scale = maxSpeed / speed;
-        vx *= scale;
-        vy *= scale;
-        speed = maxSpeed;
-      }
-      pr.lastTime = now;
-      pr.lastX = e.clientX;
-      pr.lastY = e.clientY;
-      pr.vx = vx;
-      pr.vy = vy;
-      pr.speed = speed;
-
       const rect = canvasRef.current!.getBoundingClientRect();
-      pr.x = e.clientX - rect.left;
-      pr.y = e.clientY - rect.top;
+      pointerRef.current.x = e.clientX - rect.left;
+      pointerRef.current.y = e.clientY - rect.top;
     };
 
     const onClick = (e: MouseEvent) => {
       const rect = canvasRef.current!.getBoundingClientRect();
       const cx = e.clientX - rect.left;
       const cy = e.clientY - rect.top;
+
       for (const dot of dotsRef.current) {
-        const dist = Math.hypot(dot.cx - cx, dot.cy - cy);
-        if (dist < shockRadius && !dot._inertiaApplied) {
-          dot._inertiaApplied = true;
-          gsap.killTweensOf(dot);
-          const falloff = Math.max(0, 1 - dist / shockRadius);
-          const pushX = (dot.cx - cx) * shockStrength * falloff;
-          const pushY = (dot.cy - cy) * shockStrength * falloff;
-          gsap.to(dot, {
-            duration: 0.8,
-            xOffset: pushX,
-            yOffset: pushY,
-            ease: "power2.out",
-            onComplete: () => {
-              gsap.to(dot, {
-                xOffset: 0,
-                yOffset: 0,
-                duration: returnDuration,
-                ease: "elastic.out(1,0.75)",
-              });
-              dot._inertiaApplied = false;
-            },
-          });
+        const dx = dot.cx - cx;
+        const dy = dot.cy - cy;
+        const dist = Math.hypot(dx, dy);
+        
+        if (dist < shockRadius) {
+           const force = (1 - dist / shockRadius) * shockStrength;
+           // Apply impulse to velocity
+           const angle = Math.atan2(dy, dx);
+           dot.vx += Math.cos(angle) * force;
+           dot.vy += Math.sin(angle) * force;
         }
       }
     };
 
-    const throttledMove = throttle(onMove, 50);
+    const throttledMove = throttle(onMove, 16);
     window.addEventListener("mousemove", throttledMove, { passive: true });
     window.addEventListener("click", onClick);
 
@@ -254,15 +244,7 @@ const DotGrid: React.FC<DotGridProps> = ({
       window.removeEventListener("mousemove", throttledMove);
       window.removeEventListener("click", onClick);
     };
-  }, [
-    maxSpeed,
-    speedTrigger,
-    proximity,
-    resistance,
-    returnDuration,
-    shockRadius,
-    shockStrength,
-  ]);
+  }, [shockRadius, shockStrength]);
 
   return (
     <div
