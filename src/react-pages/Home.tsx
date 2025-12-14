@@ -116,7 +116,7 @@ const Home = () => {
               className="text-7xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               {t('home.heroTitle')}
             </motion.h1>
@@ -125,7 +125,7 @@ const Home = () => {
               className="text-2xl text-slate-600 dark:text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
               {t('home.heroSubtitle')}
             </motion.p>

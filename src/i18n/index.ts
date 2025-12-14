@@ -8,11 +8,7 @@ const supportedLocales = new Set(languageConfigs.map(lang => lang.code));
 export function isSupportedLocale(locale: string): locale is SupportedLocale {
   return supportedLocales.has(locale as SupportedLocale);
 }
-
-// Use Vite's import.meta.glob for static analysis - this works with Astro
 const translationModules = import.meta.glob('../translations/*.json', { eager: false });
-
-// Map locale codes to their module paths
 const localeToModulePath: Record<string, string> = {
   en: '../translations/en.json',
   ru: '../translations/ru.json',
@@ -27,6 +23,8 @@ const localeToModulePath: Record<string, string> = {
   ar: '../translations/ar.json',
   by: '../translations/by.json',
   kz: '../translations/kz.json',
+  pt: '../translations/pt.json',
+  tr: '../translations/tr.json',
 };
 
 const translationsCache = new Map<SupportedLocale, Promise<Translations>>();

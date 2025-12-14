@@ -149,17 +149,23 @@ const components = {
       {children}
     </blockquote>
   ),
-  code: ({ inline, className, children, ...props }: any) => {
+  code: ({ className, children, ...props }: any) => {
     const match = /language-(\w+)/.exec(className || "");
     const language = match ? match[1] : "text";
     const childrenStr = String(children).replace(/\n$/, "");
+    
+    // Heuristic for inline vs block:
+    // 1. If language is specified (e.g. ```js), it's a block.
+    // 2. If content has newlines, it's likely a block.
+    // 3. Otherwise, treat as inline.
+    const isBlock = match || String(children).includes("\n");
 
     if (language === "mermaid") {
       return <MermaidDiagram code={childrenStr} />;
     }
 
     // Inline code
-    if (inline) {
+    if (!isBlock) {
       return (
         <code
           className="px-2 py-0.5 rounded-md bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 text-pink-600 dark:text-pink-400 font-mono text-[0.9em] font-medium"
@@ -172,25 +178,27 @@ const components = {
 
     // Block code
     return (
-      <div className="my-8 group">
-        <div className="flex items-center justify-between px-4 py-2 bg-slate-800 rounded-t-xl border-b border-slate-700">
-          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">{language}</span>
-          <div className="flex gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-red-500/80" />
-            <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <span className="w-3 h-3 rounded-full bg-green-500/80" />
+      <div className="my-8 group shadow-2xl rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+            {language}
+          </span>
+          <div className="flex gap-1.5 bg-slate-800/50 p-1.5 rounded-full">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
           </div>
         </div>
         <SyntaxHighlighter
           style={vscDarkPlus}
           language={language}
           PreTag="div"
-          className="!mt-0 !rounded-t-none !rounded-b-xl text-sm"
+          className="!mt-0 !rounded-none text-sm !bg-[#1e1e1e]"
           showLineNumbers
           customStyle={{
             margin: 0,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
+            padding: '1.5rem',
           }}
           {...props}
         >

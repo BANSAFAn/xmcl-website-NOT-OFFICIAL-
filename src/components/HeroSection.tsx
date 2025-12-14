@@ -91,7 +91,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
               className="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 leading-[0.9] tracking-tight"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               <span className="inline-block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {t('home.heroTitle')}
@@ -103,7 +103,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
               className="text-lg sm:text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed font-light mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
               {t('home.heroSubtitle')}
             </motion.p>

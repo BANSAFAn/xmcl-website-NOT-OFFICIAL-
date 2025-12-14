@@ -131,6 +131,17 @@
       "slug": "play-p2p",
       "readTime": "25 min",
       "difficulty": "Online"
+    },
+    {
+      "id": "13",
+      "title": "Bad Name ?",
+      "excerpt": "Is your username invalid for the servers?",
+      "author": "Baneronetwo",
+      "date": "2025-14-12",
+      "tags": ["launcher", "nickname"],
+      "slug": "name-bad",
+      "readTime": "25 min",
+      "difficulty": "Online"
     }
   ],
   "categories": [
