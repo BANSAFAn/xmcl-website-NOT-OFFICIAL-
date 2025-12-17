@@ -1,0 +1,62 @@
+import { jsxs, jsx } from 'react/jsx-runtime';
+import { motion } from 'framer-motion';
+import 'react';
+
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    y: 30,
+    scale: 0.95,
+    filter: "blur(8px)",
+    rotateX: 5
+  },
+  in: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    rotateX: 0
+  },
+  out: {
+    opacity: 0,
+    y: -30,
+    scale: 1.05,
+    filter: "blur(8px)",
+    rotateX: -5
+  }
+};
+const pageTransition = {
+  type: "spring",
+  stiffness: 260,
+  damping: 20,
+  duration: 0.6
+};
+const PageTransition = ({ children, className }) => {
+  return /* @__PURE__ */ jsxs(
+    motion.div,
+    {
+      initial: "initial",
+      animate: "in",
+      exit: "out",
+      variants: pageVariants,
+      transition: pageTransition,
+      className: `${className} relative`,
+      style: { perspective: 1e3 },
+      children: [
+        /* @__PURE__ */ jsx(
+          motion.div,
+          {
+            className: "absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10 rounded-lg blur-xl",
+            initial: { opacity: 0, scale: 0.8 },
+            animate: { opacity: 1, scale: 1 },
+            exit: { opacity: 0, scale: 0.8 },
+            transition: { duration: 0.4 }
+          }
+        ),
+        /* @__PURE__ */ jsx("div", { className: "relative z-10", children })
+      ]
+    }
+  );
+};
+
+export { PageTransition as P };

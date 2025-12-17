@@ -94,9 +94,9 @@ const InformationContent: React.FC = () => {
         })
       }} />
       
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 relative overflow-hidden">
+      <div className="min-h-screen bg-background dark:bg-gradient-to-br dark:from-slate-950 dark:via-indigo-950 dark:to-purple-950 transition-colors duration-300 relative overflow-hidden">
         {/* Animated Background */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none opacity-30 dark:opacity-100">
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-3xl" />
@@ -119,10 +119,10 @@ const InformationContent: React.FC = () => {
               />
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
               X Minecraft Launcher
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-muted-foreground dark:text-slate-300 mb-8 max-w-3xl mx-auto">
               {t('information.launcher_created_by')}{' '}
               <a href="https://github.com/ci010" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 font-semibold underline decoration-wavy">
                 CI010
@@ -137,26 +137,26 @@ const InformationContent: React.FC = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="flex flex-wrap justify-center gap-6 mb-10"
               >
-                <div className="px-6 py-4 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
+                <div className="px-6 py-4 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10">
                   <div className="flex items-center gap-3">
                     <Star className="w-6 h-6 text-yellow-400" />
-                    <span className="text-3xl font-bold text-white">{(repoStats.stargazers_count / 1000).toFixed(1)}K</span>
+                    <span className="text-3xl font-bold text-foreground dark:text-white">{(repoStats.stargazers_count / 1000).toFixed(1)}K</span>
                   </div>
-                  <div className="text-sm text-slate-400 mt-1">GitHub Stars</div>
+                  <div className="text-sm text-muted-foreground dark:text-slate-400 mt-1">GitHub Stars</div>
                 </div>
-                <div className="px-6 py-4 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
+                <div className="px-6 py-4 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10">
                   <div className="flex items-center gap-3">
                     <Users className="w-6 h-6 text-indigo-400" />
-                    <span className="text-3xl font-bold text-white">{contributors.length}+</span>
+                    <span className="text-3xl font-bold text-foreground dark:text-white">{contributors.length}+</span>
                   </div>
-                  <div className="text-sm text-slate-400 mt-1">Contributors</div>
+                  <div className="text-sm text-muted-foreground dark:text-slate-400 mt-1">Contributors</div>
                 </div>
-                <div className="px-6 py-4 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
+                <div className="px-6 py-4 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10">
                   <div className="flex items-center gap-3">
                     <Code className="w-6 h-6 text-green-400" />
-                    <span className="text-3xl font-bold text-white">{repoStats.forks_count}</span>
+                    <span className="text-3xl font-bold text-foreground dark:text-white">{repoStats.forks_count}</span>
                   </div>
-                  <div className="text-sm text-slate-400 mt-1">Forks</div>
+                  <div className="text-sm text-muted-foreground dark:text-slate-400 mt-1">Forks</div>
                 </div>
               </motion.div>
             )}
@@ -194,20 +194,20 @@ const InformationContent: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="mb-20"
           >
-            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-white">
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-foreground dark:text-white">
               <Zap className="w-8 h-8 text-yellow-400" />
               <span>{t('downloadSection.title')}</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Winget */}
-              <div className="p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
+              <div className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 transition-all">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500">
                     <Code className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-xl">Winget</h3>
-                    <p className="text-sm text-slate-400">{t('information.install.winget_desc')}</p>
+                    <h3 className="font-bold text-foreground dark:text-white text-xl">Winget</h3>
+                    <p className="text-sm text-muted-foreground dark:text-slate-400">{t('information.install.winget_desc')}</p>
                   </div>
                 </div>
                 <div className="relative">
@@ -219,14 +219,14 @@ const InformationContent: React.FC = () => {
               </div>
               
               {/* Homebrew */}
-              <div className="p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
+              <div className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 transition-all">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500">
                     <Cpu className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-xl">Homebrew</h3>
-                    <p className="text-sm text-slate-400">{t('information.install.brew_desc')}</p>
+                    <h3 className="font-bold text-foreground dark:text-white text-xl">Homebrew</h3>
+                    <p className="text-sm text-muted-foreground dark:text-slate-400">{t('information.install.brew_desc')}</p>
                   </div>
                 </div>
                 <div className="relative">
@@ -247,7 +247,7 @@ const InformationContent: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="mb-20"
           >
-            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-white">
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-foreground dark:text-white">
               <Sparkles className="w-8 h-8 text-purple-400" />
               <span>{t('information.features.title')}</span>
             </h2>
@@ -259,13 +259,13 @@ const InformationContent: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="group p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-[1.02]"
+                  className="group p-6 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 transition-all duration-300 hover:scale-[1.02]"
                 >
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} p-3 mb-4 group-hover:scale-110 transition-transform`}>
                     <feature.icon className="w-full h-full text-white" />
                   </div>
-                  <h3 className="font-bold text-white mb-2 text-lg">{feature.title}</h3>
-                  <p className="text-sm text-slate-400">{feature.desc}</p>
+                  <h3 className="font-bold text-foreground dark:text-white mb-2 text-lg">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground dark:text-slate-400">{feature.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -279,7 +279,7 @@ const InformationContent: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="mb-20"
           >
-            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-white">
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-foreground dark:text-white">
               <Users className="w-8 h-8 text-indigo-400" />
               <span>{t('information.contributors.title')}</span>
             </h2>
@@ -314,7 +314,7 @@ const InformationContent: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="mb-20"
           >
-            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-white">
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-foreground dark:text-white">
               <Shield className="w-8 h-8 text-green-400" />
               <span>{t('information.sponsors.title')}</span>
             </h2>
@@ -325,12 +325,12 @@ const InformationContent: React.FC = () => {
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 hover:bg-white/10 transition-all group"
+                  className="flex items-center gap-4 p-6 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 transition-all group"
                 >
                   <img src={sponsor.logo} alt={sponsor.name} className="w-16 h-16 rounded-xl group-hover:scale-110 transition-transform" />
                   <div>
-                    <h3 className="font-bold text-white text-xl">{sponsor.name}</h3>
-                    <p className="text-sm text-slate-400">{sponsor.desc}</p>
+                    <h3 className="font-bold text-foreground dark:text-white text-xl">{sponsor.name}</h3>
+                    <p className="text-sm text-muted-foreground dark:text-slate-400">{sponsor.desc}</p>
                   </div>
                   <ExternalLink className="w-5 h-5 text-slate-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>

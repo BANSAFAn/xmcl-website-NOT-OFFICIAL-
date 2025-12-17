@@ -105,7 +105,7 @@ const TestingContent = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950">
+    <div className="min-h-screen relative overflow-hidden bg-background dark:bg-gradient-to-br dark:from-slate-950 dark:via-indigo-950 dark:to-purple-950 transition-colors duration-300">
       {/* SEO Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{
         __html: JSON.stringify({
@@ -143,10 +143,10 @@ const TestingContent = () => {
               <span>Experimental Builds</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
               {t('testing.title')}
             </h1>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-muted-foreground dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
               {t('testing.subtitle')}
             </p>
           </motion.div>
@@ -156,7 +156,7 @@ const TestingContent = () => {
           {/* Main Content - Builds List */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-foreground dark:text-white flex items-center gap-3">
                 <GitBranch className="w-6 h-6 text-indigo-400" />
                 Latest Builds
               </h2>
@@ -165,7 +165,7 @@ const TestingContent = () => {
                    <button
                     key={p}
                     onClick={() => setSelectedPlatform(p)}
-                    className={`p-2 rounded-lg transition-all ${selectedPlatform === p ? 'bg-indigo-600 text-white' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`}
+                    className={`p-2 rounded-lg transition-all ${selectedPlatform === p ? 'bg-indigo-600 text-white' : 'bg-black/5 dark:bg-white/5 text-muted-foreground dark:text-slate-400 hover:bg-black/10 dark:hover:bg-white/10'}`}
                    >
                      {getPlatformIcon(p)}
                    </button>
@@ -191,7 +191,7 @@ const TestingContent = () => {
                     key={run.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:bg-white/[0.07] transition-all"
+                    className="group relative bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden hover:bg-white/60 dark:hover:bg-white/[0.07] transition-all"
                   >
                     <div className="p-6">
                       <div className="flex items-start justify-between gap-4">
@@ -203,10 +203,10 @@ const TestingContent = () => {
                                {run.conclusion}
                              </span>
                           </div>
-                          <h3 className="text-lg font-bold text-white truncate mb-2 group-hover:text-indigo-400 transition-colors">
+                          <h3 className="text-lg font-bold text-foreground dark:text-white truncate mb-2 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
                             {run.display_title}
                           </h3>
-                          <div className="flex items-center gap-4 text-sm text-slate-400">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground dark:text-slate-400">
                             <div className="flex items-center gap-1.5">
                               <img src={run.actor.avatar_url} alt="" className="w-5 h-5 rounded-full" />
                               <span>{run.actor.login}</span>
@@ -263,8 +263,8 @@ const TestingContent = () => {
                   <ShieldAlert className="w-6 h-6 text-amber-500" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-amber-500 text-lg mb-2">Warning</h3>
-                  <p className="text-amber-200/80 text-sm leading-relaxed">
+                  <h3 className="font-bold text-amber-600 dark:text-amber-500 text-lg mb-2">Warning</h3>
+                  <p className="text-amber-700/80 dark:text-amber-200/80 text-sm leading-relaxed">
                     These are development builds. They may contain bugs, incomplete features, or cause data issues. Always backup your data before using testing builds.
                   </p>
                 </div>
@@ -272,8 +272,8 @@ const TestingContent = () => {
             </div>
 
             {/* How to Use */}
-            <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
-              <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
+            <div className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl">
+              <h3 className="font-bold text-foreground dark:text-white text-lg mb-4 flex items-center gap-2">
                 <Terminal className="w-5 h-5 text-indigo-400" />
                 How to Install
               </h3>
@@ -281,22 +281,22 @@ const TestingContent = () => {
                 <div className="flex gap-4">
                   <div className="flex-none w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">1</div>
                   <div>
-                    <h4 className="text-white font-medium text-sm">Download Artifact</h4>
-                    <p className="text-slate-400 text-xs mt-1">Select your platform and download the latest successful build artifact.</p>
+                    <h4 className="text-foreground dark:text-white font-medium text-sm">Download Artifact</h4>
+                    <p className="text-muted-foreground dark:text-slate-400 text-xs mt-1">Select your platform and download the latest successful build artifact.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-none w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm border border-purple-500/30">2</div>
                   <div>
-                    <h4 className="text-white font-medium text-sm">Extract & Run</h4>
-                    <p className="text-slate-400 text-xs mt-1">Extract the archive. The executable is portable and can be run directly.</p>
+                    <h4 className="text-foreground dark:text-white font-medium text-sm">Extract & Run</h4>
+                    <p className="text-muted-foreground dark:text-slate-400 text-xs mt-1">Extract the archive. The executable is portable and can be run directly.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-none w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold text-sm border border-pink-500/30">3</div>
                   <div>
-                    <h4 className="text-white font-medium text-sm">Report Bugs</h4>
-                    <p className="text-slate-400 text-xs mt-1">If you find issues, please report them on our GitHub Issues page.</p>
+                    <h4 className="text-foreground dark:text-white font-medium text-sm">Report Bugs</h4>
+                    <p className="text-muted-foreground dark:text-slate-400 text-xs mt-1">If you find issues, please report them on our GitHub Issues page.</p>
                   </div>
                 </div>
               </div>

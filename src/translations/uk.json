@@ -326,7 +326,17 @@
     "rpmPackageARM64": "Пакет RPM (ARM64)",
     "tarArchiveARM64": "Архів TAR (ARM64)",
     "releaseNotes": "Примітки до релізу",
-    "allReleases": "Усі релізи"
+    "allReleases": "Усі релізи",
+    "macosDescription": "macOS 11.0+",
+    "linuxDescription": "Debian, RPM, AppImage",
+    "packageManagers": "Пакетні менеджери",
+    "windowsInstallers": "x64 / Інсталятори",
+    "otherOption": "App Store / Інше",
+    "otherPlatforms": "Інші платформи",
+    "appleSilicon": "Apple Silicon (M1/M2)",
+    "intel": "Intel (x64)",
+    "windowsDescription": "Windows 10/11 (64-біт)",
+    "lookingForOlder": "Шукаєте старіші версії?"
   },
   "issues": {
     "title": "Проблеми та звіти про помилки",
