@@ -99,7 +99,7 @@ const ModernChangelogContent: React.FC = () => {
         })
       }} />
       
-      <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950">
+      <div className="min-h-screen relative overflow-hidden bg-background dark:bg-gradient-to-br dark:from-slate-950 dark:via-indigo-950 dark:to-purple-950 transition-colors duration-300">
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" />
@@ -120,10 +120,10 @@ const ModernChangelogContent: React.FC = () => {
                 <span>{t('changelog.latestUpdates') || 'Latest Updates'}</span>
               </div>
               
-              <h1 className="text-5xl sm:text-6xl font-black mb-6 bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">
+              <h1 className="text-5xl sm:text-6xl font-black mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
                 {t('changelog.title')}
               </h1>
-              <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl text-muted-foreground dark:text-slate-300 mb-8 max-w-2xl mx-auto">
                 {t('changelog.subtitle')}
               </p>
 
@@ -131,8 +131,8 @@ const ModernChangelogContent: React.FC = () => {
               {!isLoading && releases && (
                 <div className="flex flex-wrap justify-center gap-8 mb-8">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-white">{releases.length}</div>
-                    <div className="text-sm text-slate-400">{t('changelog.releases') || 'Releases'}</div>
+                    <div className="text-3xl font-bold text-foreground dark:text-white">{releases.length}</div>
+                    <div className="text-sm text-muted-foreground dark:text-slate-400">{t('changelog.releases') || 'Releases'}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-green-400">{formatCount(totalDownloads)}</div>
@@ -162,7 +162,7 @@ const ModernChangelogContent: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-4xl mx-auto mb-10"
           >
-            <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
+            <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-black/5 dark:border-white/10 shadow-sm">
               {/* Search */}
               <div className="flex-1 relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -171,7 +171,7 @@ const ModernChangelogContent: React.FC = () => {
                   placeholder={t('changelog.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  className="w-full pl-12 pr-4 py-3 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl text-foreground dark:text-white placeholder-muted-foreground dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                 />
               </div>
 
@@ -181,7 +181,7 @@ const ModernChangelogContent: React.FC = () => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortType)}
-                  className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all appearance-none min-w-[180px]"
+                  className="px-4 py-3 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl text-foreground dark:text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all appearance-none min-w-[180px]"
                   style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`, backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '2.5rem' }}
                 >
                   <option value="newest" className="bg-slate-800">📅 {t('changelog.sortNewest')}</option>
@@ -246,13 +246,13 @@ const ModernChangelogContent: React.FC = () => {
                         {/* Timeline Dot */}
                         <div className="absolute left-6 top-8 w-4 h-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 border-4 border-slate-950 hidden lg:block" />
                         
-                        <Card className="overflow-hidden bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/10">
+                        <Card className="overflow-hidden bg-white/50 dark:bg-white/5 backdrop-blur-xl border-black/5 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/10">
                           <div className="p-6">
                             {/* Header */}
                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
                               <div className="flex-1">
                                 <div className="flex items-center gap-3 flex-wrap mb-2">
-                                  <h2 className="text-2xl font-bold text-white">
+                                  <h2 className="text-2xl font-bold text-foreground dark:text-white">
                                     {release.name || release.tag_name}
                                   </h2>
                                   {release.prerelease ? (
@@ -297,8 +297,8 @@ const ModernChangelogContent: React.FC = () => {
                             </div>
 
                             {/* Content */}
-                            <div className="prose prose-invert prose-sm max-w-none">
-                              <div className="bg-white/5 rounded-xl p-4 text-slate-300">
+                            <div className="prose prose-slate dark:prose-invert prose-sm max-w-none">
+                              <div className="bg-black/5 dark:bg-white/5 rounded-xl p-4 text-slate-700 dark:text-slate-300">
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                   {isExpanded ? body : preview}
                                 </ReactMarkdown>

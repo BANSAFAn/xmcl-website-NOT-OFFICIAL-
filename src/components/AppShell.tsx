@@ -34,22 +34,21 @@ export function AppShell({ children }: AppShellProps) {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <div className="min-h-screen bg-background text-foreground">
-            <header className="fixed top-0 left-0 right-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40">
-              <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                {!isDesktopStyle && <StaggeredMenu />}
-                {isDesktopStyle && <div />} {/* Spacer if menu is hidden */}
-              </div>
-            </header>
-            
-            <main className="pt-16">
-              {children}
-            </main>
-            
-            {isDesktopStyle && <MacOSDock />}
+            <div className="min-h-screen bg-background text-foreground">
+              {!isDesktopStyle && (
+                <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+                  <StaggeredMenu />
+                </div>
+              )}
+              
+              <main>
+                {children}
+              </main>
+              
+              {isDesktopStyle && <MacOSDock />}
 
-            <Footer onDownloadClick={handleDownloadClick} />
-          </div>
+              <Footer onDownloadClick={handleDownloadClick} />
+            </div>
         </TooltipProvider>
       </TranslationProvider>
     </QueryClientProvider>

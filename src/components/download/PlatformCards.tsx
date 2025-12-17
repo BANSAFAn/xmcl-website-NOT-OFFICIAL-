@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Button } from '@/components/ui/button';
 import { Laptop, Apple, Monitor, Download, ExternalLink } from 'lucide-react';
+import { FaLinux } from 'react-icons/fa';
 import type { PlatformAssets, GitHubAsset } from './types';
 
 interface PlatformCardsProps {
@@ -116,7 +117,7 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-orange-400">
-                <Monitor className="w-7 h-7" />
+                <FaLinux className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">Linux</h3>
               <p className="text-slate-400 mb-8 h-6">{t('downloadMessages.linuxDescription') || 'Debian, RPM, AppImage'}</p>
