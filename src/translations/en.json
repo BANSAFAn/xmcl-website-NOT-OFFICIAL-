@@ -342,6 +342,7 @@
     "packageManagers": "Package Managers",
     "windowsInstallers": "x64 / Installers",
     "otherOption": "App Store / Other",
+    "otherPlatforms": "Other Platforms",
     "appleSilicon": "Apple Silicon (M1/M2)",
     "intel": "Intel (x64)",
     "windowsDescription": "Windows 10/11 (64-bit)",

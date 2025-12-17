@@ -332,6 +332,7 @@
     "packageManagers": "Пакетні менеджери",
     "windowsInstallers": "x64 / Інсталятори",
     "otherOption": "App Store / Інше",
+    "otherPlatforms": "Інші платформи",
     "appleSilicon": "Apple Silicon (M1/M2)",
     "intel": "Intel (x64)",
     "windowsDescription": "Windows 10/11 (64-біт)",
