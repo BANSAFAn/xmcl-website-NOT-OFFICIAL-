@@ -10,6 +10,7 @@ Beta:
 | 1.3   | :x:                |
 | 1.4   | :yellow_circle: |
 | 1.5   | 🔨                |
+| 1.6   | :white_check_mark:      |
 
 The release will be when the following parts are configured:
 - Optimization

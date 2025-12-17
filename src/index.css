@@ -97,7 +97,14 @@
   }
 
   /* Enhanced light theme background */
-  .light body {
+  .light body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
     background: linear-gradient(
       135deg,
       hsl(220 70% 97%) 0%,
@@ -106,11 +113,18 @@
       hsl(280 40% 98%) 75%,
       hsl(300 30% 99%) 100%
     );
-    background-attachment: fixed;
+    pointer-events: none;
   }
 
   /* Enhanced dark theme background */
-  .dark body {
+  .dark body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
     background: linear-gradient(
       135deg,
       hsl(222 84% 4.9%) 0%,
@@ -119,7 +133,7 @@
       hsl(250 70% 7%) 75%,
       hsl(260 80% 5%) 100%
     );
-    background-attachment: fixed;
+    pointer-events: none;
   }
 
   /* Light theme navigation improvements */
@@ -163,6 +177,7 @@
 @layer utilities {
   .animate-float {
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
   }
 
   .animate-glow {
@@ -268,6 +283,40 @@
 
 .animate-blob {
   animation: blob 7s infinite;
+  will-change: transform;
+}
+
+/* Firefox-specific optimizations */
+@-moz-document url-prefix() {
+  .glass-effect,
+  .backdrop-blur-2xl,
+  .backdrop-blur-xl,
+  .backdrop-blur-md,
+  .backdrop-blur {
+    backdrop-filter: none !important;
+    background: rgba(30, 41, 59, 0.95) !important; /* Fallback for dark/glass backgrounds */
+  }
+  
+  .light .glass-effect,
+  .light .backdrop-blur-2xl,
+  .light .backdrop-blur-xl,
+  .light .backdrop-blur-md,
+  .light .backdrop-blur,
+  .light nav,
+  .light footer {
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .animate-blob {
+    animation: none !important; /* Disable blob animation in Firefox if it causes lag */
+    opacity: 0.5;
+  }
+
+  /* Reduce heavy blurs in Firefox */
+  div[class*="blur-[100px]"] {
+    filter: blur(60px) !important;
+    opacity: 0.8;
+  }
 }
 
 .animation-delay-2000 {

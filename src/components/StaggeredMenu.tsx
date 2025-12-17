@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { X, Menu, Home, FileText, BookOpen, GitBranch, AlertCircle, TestTube, Info, ExternalLink } from 'lucide-react';
 import { Link } from '@/components/Link';
 
-// Выносим массив за пределы компонента, чтобы он не пересоздавался при каждом рендере
 const navItems = [
   { label: 'nav.home', href: '/', icon: Home },
   { label: 'nav.blog', href: '/blog', icon: FileText },
@@ -50,7 +49,6 @@ export const StaggeredMenu = () => {
     },
   };
 
-  // Анимация для оверлея
   const overlayVariants = {
     closed: { opacity: 0 },
     open: { opacity: 1 },
