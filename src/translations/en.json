@@ -344,6 +344,7 @@
     "otherOption": "App Store / Other",
     "appleSilicon": "Apple Silicon (M1/M2)",
     "intel": "Intel (x64)",
+    "windowsDescription": "Windows 10/11 (64-bit)",
     "lookingForOlder": "Looking for older versions?"
   },
   "issues": {

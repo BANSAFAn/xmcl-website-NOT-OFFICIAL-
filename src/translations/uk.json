@@ -334,6 +334,7 @@
     "otherOption": "App Store / Інше",
     "appleSilicon": "Apple Silicon (M1/M2)",
     "intel": "Intel (x64)",
+    "windowsDescription": "Windows 10/11 (64-біт)",
     "lookingForOlder": "Шукаєте старіші версії?"
   },
   "issues": {
