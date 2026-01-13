@@ -1,0 +1,67 @@
+---
+import { GuideBrowser } from "@/components/guide/GuideBrowser";
+import Sparkles from "lucide-react/dist/esm/icons/sparkles";
+import GraduationCap from "lucide-react/dist/esm/icons/graduation-cap";
+import guidesData from "@/data/guides.json";
+
+const { posts, categories, featured } = guidesData;
+
+// Переклади для UI
+const translations = {
+  searchPlaceholder: "Пошук гайдів...",
+  noGuidesFound: "Гайдів не знайдено",
+  clearFilters: "Очистити фільтри",
+  readMore: "Читати",
+  filterByTag: "Фільтр за тегом",
+  clearAll: "Очистити все"
+};
+
+const title = "Гайди та Туторіали";
+const description = "Колекція корисних гайдів та інструкцій.";
+---
+
+import Layout from "@/layouts/Layout.astro";
+
+<Layout title={title} description={description}>
+  <AppShell client:load>
+    <div class="relative min-h-screen bg-gradient-to-br from-emerald-50/50 via-teal-50/30 to-cyan-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl animate-blob"></div>
+        <div class="absolute top-1/2 right-1/4 w-72 h-72 bg-teal-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+      </div>
+
+      <header class="relative border-b border-white/20 bg-white/50 backdrop-blur-xl py-16 dark:bg-slate-900/50">
+        <div class="container mx-auto px-4 text-center">
+          <div class="mb-6 inline-flex items-center justify-center">
+            <div class="rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-4 shadow-lg shadow-emerald-500/25">
+              <GraduationCap className="h-10 w-10 text-white" />
+            </div>
+          </div>
+
+          <div class="mb-4 inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 px-4 py-2 rounded-full text-emerald-700 dark:text-emerald-300 text-sm font-medium">
+            <Sparkles className="h-4 w-4" />
+            <span>Навчання та Відкриття</span>
+          </div>
+
+          <h1 class="mb-4 text-5xl md:text-6xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+            Гайди
+          </h1>
+
+          <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            {description}
+          </p>
+        </div>
+      </header>
+
+      <div class="container relative z-10 mx-auto px-4 py-10">
+        <GuideBrowser
+          client:load
+          posts={posts}
+          categories={categories}
+          featuredIds={featured}
+          translations={translations}
+        />
+      </div>
+    </div>
+  </AppShell>
+</Layout>

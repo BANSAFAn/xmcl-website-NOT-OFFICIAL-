@@ -11,17 +11,19 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Globe, ChevronDown, Search, Check } from "lucide-react";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { languageConfigs } from "@/i18n/languageConfigs";
+import { motion } from "framer-motion";
 
 const USER_PREFERENCE_KEY = "userPreferredLanguage";
 const IP_PREFERENCE_KEY = "userIpLanguageMap";
 
+// ... (Оставляем логику получения IP без изменений для краткости, она была хорошей)
 const getUserIP = async (): Promise<string | null> => {
   try {
     const response = await fetch("https://api.ipify.org?format=json");
     const data = await response.json();
     return data.ip;
   } catch (error) {
-    console.warn("Could not fetch user IP:", error);
+    // console.warn("Could not fetch user IP:", error);
     return null;
   }
 };
@@ -66,7 +68,6 @@ const LanguageSelectorComponent = () => {
       }
       return localStorage.getItem(USER_PREFERENCE_KEY);
     } catch (e) {
-      console.warn("Could not get language preference:", e);
       return null;
     }
   }, [userIP]);
@@ -93,9 +94,7 @@ const LanguageSelectorComponent = () => {
 
   useEffect(() => {
     if (!userIP) return;
-
     const savedLang = getUserLanguagePreference();
-
     if (savedLang && languageConfigs.some((lang) => lang.code === savedLang)) {
       if (savedLang !== locale) {
         changeLanguage(savedLang);
@@ -116,38 +115,41 @@ const LanguageSelectorComponent = () => {
         <Button
           variant="ghost"
           size="sm"
-          className="group relative h-10 gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-slate-100 to-slate-50 px-4 text-slate-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 dark:from-slate-800 dark:to-slate-700 dark:text-slate-200"
+          className="group relative w-full h-10 justify-between gap-2 overflow-hidden rounded-xl bg-black/5 dark:bg-white/10 px-3 text-slate-700 dark:text-slate-200 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/15 border border-transparent dark:border-white/5"
           aria-label={t("ui.changeLanguage")}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 group-hover:opacity-100" />
-          <Globe className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
-          <span className="relative z-10 hidden font-semibold sm:inline">
-            {currentLanguage?.name ||
-              t("language.defaultName", { name: "English" })}
-          </span>
-          <ChevronDown className="relative z-10 hidden h-4 w-4 opacity-60 transition-all duration-300 group-hover:translate-y-0.5 group-hover:opacity-100 sm:inline" />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/50 dark:bg-black/20 text-slate-600 dark:text-slate-300">
+               <Globe className="h-3.5 w-3.5" />
+            </div>
+            <span className="font-medium text-sm truncate">
+              {currentLanguage?.name || "English"}
+            </span>
+          </div>
+          <ChevronDown className={`h-4 w-4 opacity-50 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent
-        className="z-[10000] w-[280px] overflow-hidden rounded-2xl border-2 border-slate-200/50 bg-white/95 p-0 shadow-2xl backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-800/95"
-        align="end"
+        className="z-[100] w-[260px] overflow-hidden rounded-2xl border border-white/20 bg-white/80 p-0 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/80"
+        align="start"
         sideOffset={8}
       >
-        <div className="border-b border-slate-200/50 bg-gradient-to-r from-slate-50 to-white p-3 dark:from-slate-800 dark:to-slate-700 dark:border-slate-700/50">
+        {/* Search Header */}
+        <div className="border-b border-black/5 p-3 dark:border-white/5 bg-slate-50/50 dark:bg-slate-900/50">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
             <Input
-              placeholder={t("language.searchPlaceholder")}
+              placeholder={t("language.searchPlaceholder") || "Search..."}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-10 border-slate-200 bg-white pl-10 pr-4 text-sm transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-700"
-              aria-label={t("language.searchLabel")}
+              className="h-9 border-none bg-black/5 pl-9 pr-4 text-sm rounded-lg focus-visible:ring-1 focus-visible:ring-indigo-500/50 dark:bg-white/5 dark:text-slate-200"
             />
           </div>
         </div>
 
-        <ScrollArea className="h-[320px]">
-          <div className="p-2">
+        <ScrollArea className="h-[280px]">
+          <div className="p-2 space-y-1">
             {filteredLanguages.length > 0 ? (
               filteredLanguages.map((lang) => {
                 const isSelected = locale === lang.code;
@@ -156,47 +158,34 @@ const LanguageSelectorComponent = () => {
                     key={lang.code}
                     onClick={() => handleLanguageChange(lang.code)}
                     className={`
-                      group relative cursor-pointer gap-3 overflow-hidden rounded-xl px-4 py-3 transition-all duration-200
+                      cursor-pointer gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors
                       ${
                         isSelected
-                          ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30"
-                          : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700/50"
+                          ? "bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300"
+                          : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
                       }
                     `}
-                    aria-checked={isSelected}
                   >
-                    <div className="flex flex-1 items-center justify-between">
-                      <span className="relative z-10 font-semibold">
-                        {lang.name}
-                      </span>
-                      {isSelected && (
-                        <Check className="relative z-10 h-5 w-5 animate-in zoom-in-50" />
-                      )}
-                    </div>
-                    {!isSelected && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    <span className="flex-1 truncate">{lang.name}</span>
+                    {isSelected && (
+                      <motion.div layoutId="check" initial={{opacity:0, scale:0.5}} animate={{opacity:1, scale:1}}>
+                         <Check className="h-4 w-4" />
+                      </motion.div>
                     )}
                   </DropdownMenuItem>
                 );
               })
             ) : (
-              <div className="py-8 text-center text-sm text-slate-500">
-                {t("language.noLanguageFound")}
+              <div className="py-8 text-center text-sm text-slate-400">
+                {t("language.noLanguageFound") || "No results"}
               </div>
             )}
           </div>
         </ScrollArea>
-
-        <div className="border-t border-slate-200/50 bg-gradient-to-r from-slate-50 to-white p-2 dark:from-slate-800 dark:to-slate-700 dark:border-slate-700/50">
-          <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-            {languageConfigs.length} {t("language.availableLanguages")}
-          </p>
-        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
 const LanguageSelector = React.memo(LanguageSelectorComponent);
-
 export { LanguageSelector };

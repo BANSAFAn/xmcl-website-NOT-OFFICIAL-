@@ -9,9 +9,9 @@ interface PlatformSelectorProps {
   onSelectPlatform: (platform: string) => void;
 }
 
-const PlatformSelector: React.FC<PlatformSelectorProps> = ({ 
-  selectedPlatform, 
-  onSelectPlatform 
+const PlatformSelector: React.FC<PlatformSelectorProps> = ({
+  selectedPlatform,
+  onSelectPlatform
 }) => {
   const { t } = useTranslation();
 

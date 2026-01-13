@@ -11,6 +11,13 @@ export default defineConfig({
   adapter: vercel(),
   outDir: './build',
   vite: {
+    server: {
+      port: 8080,
+      host: true,
+      hmr: {
+        clientPort: 8080,
+      },
+    },
     plugins: [tailwind()],
     resolve: {
       alias: {

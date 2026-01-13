@@ -542,6 +542,8 @@
   },
   "changelog": {
     "title": "Changelog",
+    "whatsNew": "What's New",
+    "search":"Search",
     "subtitle": "Stay up-to-date with the latest changes, new features, and bug fixes in XMCL",
     "version": "Version",
     "released": "Released",
