@@ -53,14 +53,14 @@ const FloatingOrbs = React.memo(() => (
 const BlogHeader = React.memo(() => {
   const { t } = useTranslation();
   return (
-    <header className="relative border-b border-white/20 bg-white/50 backdrop-blur-xl py-16 dark:bg-slate-900/50 contain-layout">
+    <header className="relative border-b border-white/20 bg-white/50 backdrop-blur-xl py-10 md:py-16 dark:bg-slate-900/50 contain-layout">
       <div className="container mx-auto px-4 text-center">
         <div className="inline-flex items-center gap-2 mb-4 bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium">
           <Rss className="h-4 w-4" />
           <span>Latest Updates</span>
         </div>
 
-        <h1 className="mb-4 text-5xl md:text-6xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
           {t("blog.title")}
         </h1>
 

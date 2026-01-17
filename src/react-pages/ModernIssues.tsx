@@ -141,7 +141,7 @@ const IssueCard = memo(({ issue, expanded, onToggleExpand, t }: any) => {
       animate={{ opacity: 1, y: 0 }}
       className="mb-4 bg-slate-800/40 backdrop-blur-md border border-slate-700/50 hover:border-violet-500/30 hover:bg-slate-700/40 transition-all duration-300 rounded-xl overflow-hidden group"
     >
-      <div className="p-5">
+      <div className="p-4 md:p-5">
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1 min-w-0">
@@ -290,7 +290,7 @@ function ModernIssuesContent() {
       <div className="min-h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black relative">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20 pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 relative z-10">
           {/* Header */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
             <div>

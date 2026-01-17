@@ -90,7 +90,7 @@ const Home = () => {
 
         <Navigation />
         
-        <main className="container mx-auto px-4 pt-20 pb-12 relative z-10">
+        <main className="container mx-auto px-4 pt-12 md:pt-20 pb-12 relative z-10">
           {/* Hero Section */}
           <motion.section
             className="text-center py-20 mb-20"
@@ -113,7 +113,7 @@ const Home = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-7xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent leading-tight"
+              className="text-5xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -197,7 +197,7 @@ const Home = () => {
           >
             <div className="text-center mb-20">
               <motion.h2 
-                className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
+                className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

@@ -72,7 +72,9 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
   };
 
   const handleDownload = (artifact: Artifact) => {
-    window.open(`https://github.com/Voxelum/x-minecraft-launcher/actions/runs/${runId}`, '_blank');
+    // Use nightly.link for direct download without authentication/redirection to GitHub actions page
+    const directDownloadUrl = `https://nightly.link/Voxelum/x-minecraft-launcher/actions/runs/${runId}/${encodeURIComponent(artifact.name)}.zip`;
+    window.open(directDownloadUrl, '_blank');
     toast.success(t('testing.downloadStarted'));
   };
 

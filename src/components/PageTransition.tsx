@@ -34,7 +34,11 @@ const pageTransition = {
   type: 'spring' as const,
   stiffness: 260,
   damping: 20,
-  duration: 0.6
+  filter: { 
+    type: "tween",
+    ease: "linear",
+    duration: 0.3
+  }
 };
 
 export const PageTransition = ({ children, className }: PageTransitionProps) => {

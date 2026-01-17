@@ -166,9 +166,9 @@ const NewDownloadSection = () => {
   // Loading state
   if (isLoading) {
     return (
-      <section className="min-h-screen flex flex-col items-center justify-center pt-20">
-        <Loader2 className="w-12 h-12 animate-spin text-blue-500 mb-4" />
-        <p className="text-slate-400">{t("downloadMessages.loadingReleases") || "Loading releases..."}</p>
+      <section className="min-h-screen flex flex-col items-center justify-center pt-24 md:pt-20">
+        <Loader2 className="w-10 h-10 md:w-12 md:h-12 animate-spin text-blue-500 mb-4" />
+        <p className="text-slate-400 text-sm md:text-base">{t("downloadMessages.loadingReleases") || "Loading releases..."}</p>
       </section>
     );
   }
@@ -176,10 +176,10 @@ const NewDownloadSection = () => {
   // Error state
   if (error || !latestRelease) {
     return (
-      <section className="min-h-screen flex flex-col items-center justify-center pt-20 px-4 text-center">
-        <div className="p-8 rounded-3xl bg-red-500/10 border border-red-500/20 max-w-md w-full">
-            <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">{t("downloadMessages.errorTitle") || "Unable to load releases"}</h3>
+      <section className="min-h-screen flex flex-col items-center justify-center pt-24 md:pt-20 px-4 text-center">
+        <div className="p-6 md:p-8 rounded-3xl bg-red-500/10 border border-red-500/20 max-w-md w-full">
+            <AlertCircle className="w-10 h-10 md:w-12 md:h-12 text-red-400 mx-auto mb-4" />
+            <h3 className="text-lg md:text-xl font-bold text-white mb-2">{t("downloadMessages.errorTitle") || "Unable to load releases"}</h3>
             <p className="text-slate-400 mb-6">{t("downloadMessages.errorDescription") || "Please try again later or visit our GitHub."}</p>
             <Button
                 onClick={() => window.open("https://github.com/Voxelum/x-minecraft-launcher/releases", "_blank")}
@@ -209,9 +209,9 @@ const NewDownloadSection = () => {
       </div>
 
        {/* Footer / All Releases Link */}
-       <div className="py-20 text-center border-t border-slate-900">
-         <p className="text-slate-400 mb-6">{t('downloadMessages.lookingForOlder') || "Looking for older versions?"}</p>
-         <div className="flex justify-center gap-4">
+       <div className="py-12 md:py-20 text-center border-t border-slate-900">
+         <p className="text-slate-400 mb-4 md:mb-6 text-sm md:text-base">{t('downloadMessages.lookingForOlder') || "Looking for older versions?"}</p>
+         <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 px-4">
             <Button
               variant="outline"
               onClick={() => window.open(latestRelease.html_url, "_blank")}

@@ -128,7 +128,7 @@ export const FeaturesSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative py-20 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
       style={{ position: 'relative' }}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -147,7 +147,7 @@ export const FeaturesSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader t={t} />
 
-        <div className="space-y-40">
+        <div className="space-y-24 lg:space-y-40">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}
@@ -193,7 +193,7 @@ const SectionHeader = memo(({ t }) => (
     </motion.div>
 
     <motion.h2
-      className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-[0.9] tracking-tight"
+      className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-8 leading-[0.9] tracking-tight"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -443,7 +443,7 @@ const ContentSection = memo(({ feature, reverse, index }) => (
       </motion.div>
 
       <motion.h3
-        className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tight"
+        className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tight"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

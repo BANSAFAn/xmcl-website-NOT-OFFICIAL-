@@ -54,19 +54,19 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
   );
 
   return (
-    <section className="py-20 px-4">
+    <section className="py-10 md:py-20 px-4">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-16 text-slate-200">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-16 text-slate-200">
            {t('downloadMessages.otherPlatforms') || 'Other Platforms'}
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 max-w-6xl mx-auto">
           {/* Windows Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="group relative p-8 rounded-3xl bg-slate-900/40 backdrop-blur-xl border border-white/5 group-hover:border-blue-500/50 transition-colors duration-300"
+            className="group relative p-6 md:p-8 rounded-3xl bg-slate-900/40 backdrop-blur-xl border border-white/5 group-hover:border-blue-500/50 transition-colors duration-300"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
             <div className="relative z-10">
@@ -89,7 +89,7 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="group relative p-8 rounded-3xl bg-slate-900/40 backdrop-blur-xl border border-white/5 group-hover:border-slate-500/50 transition-colors duration-300"
+            className="group relative p-6 md:p-8 rounded-3xl bg-slate-900/40 backdrop-blur-xl border border-white/5 group-hover:border-slate-500/50 transition-colors duration-300"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-slate-500/10 to-gray-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
             <div className="relative z-10">
@@ -112,7 +112,7 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="group relative p-8 rounded-3xl bg-slate-900/40 backdrop-blur-xl border border-white/5 group-hover:border-orange-500/50 transition-colors duration-300"
+            className="group relative p-6 md:p-8 rounded-3xl bg-slate-900/40 backdrop-blur-xl border border-white/5 group-hover:border-orange-500/50 transition-colors duration-300"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
             <div className="relative z-10">

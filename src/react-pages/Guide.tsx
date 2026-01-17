@@ -171,7 +171,7 @@ const GuideDetail = ({ post, content, onBack }: {
         Back
       </Button>
 
-      <article className="rounded-3xl bg-white/90 backdrop-blur-xl p-8 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
+      <article className="rounded-3xl bg-white/90 backdrop-blur-xl p-6 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
         <header className="mb-10 border-b border-slate-200/50 pb-8 dark:border-slate-700/50">
           <h1 className="mb-6 text-4xl md:text-5xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
             {post.title}
@@ -269,7 +269,7 @@ const GuideContent = ({ initialSlug }: { initialSlug?: string }) => {
       {/* --- LCP OPTIMIZATION --- */}
       {/* Хедер рендерится ВСЕГДА, даже если isLoading=true. */}
       {/* Это позволяет тексту (subtitle) появиться мгновенно. */}
-      <header className="relative border-b border-white/20 bg-white/50 backdrop-blur-xl py-16 dark:bg-slate-900/50">
+      <header className="relative border-b border-white/20 bg-white/50 backdrop-blur-xl py-10 md:py-16 dark:bg-slate-900/50">
         <div className="container mx-auto px-4 text-center">
           <div className="mb-6 inline-flex items-center justify-center animate-in fade-in zoom-in duration-500">
             <div className="rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-4 shadow-lg shadow-emerald-500/25">
@@ -282,7 +282,7 @@ const GuideContent = ({ initialSlug }: { initialSlug?: string }) => {
             Learn & Discover
           </div>
 
-          <h1 className="mb-4 text-5xl md:text-6xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+          <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
             {t("guide.title")}
           </h1>
 

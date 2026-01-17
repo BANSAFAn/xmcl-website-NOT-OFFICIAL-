@@ -119,7 +119,7 @@ const InformationContent: React.FC = () => {
               />
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-7xl font-black mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
               X Minecraft Launcher
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground dark:text-slate-300 mb-8 max-w-3xl mx-auto">
@@ -247,8 +247,8 @@ const InformationContent: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="mb-20"
           >
-            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3 text-foreground dark:text-white">
-              <Sparkles className="w-8 h-8 text-purple-400" />
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 flex items-center gap-3 text-foreground dark:text-white">
+              <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-purple-400" />
               <span>{t('information.features.title')}</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -283,7 +283,7 @@ const InformationContent: React.FC = () => {
               <Users className="w-8 h-8 text-indigo-400" />
               <span>{t('information.contributors.title')}</span>
             </h2>
-            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3 md:gap-4">
               {contributors.map((contributor: Contributor) => (
                 <a
                   key={contributor.login}
