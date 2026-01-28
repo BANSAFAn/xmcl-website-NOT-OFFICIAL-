@@ -304,7 +304,7 @@ const ModernChangelogContent: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "out" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <Badge variant="secondary" className="mb-6 px-4 py-1.5 rounded-full bg-white/50 dark:bg-white/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-white/10 backdrop-blur-sm shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 mr-2 fill-current" />
