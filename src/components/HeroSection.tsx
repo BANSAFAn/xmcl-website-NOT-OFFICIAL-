@@ -75,7 +75,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
           >
             {/* Status Badge */}
             <motion.div
-              className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 mb-4 md:mb-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm rounded-full border border-blue-500/20"
+              className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 mb-4 md:mb-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full border border-blue-500/20"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -147,11 +147,11 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <Badge variant="outline" className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+              <Badge variant="outline" className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm bg-white/50 dark:bg-slate-800/50">
                 <Package className="w-3 h-3 md:w-4 md:h-4 mr-1 text-blue-500" />
                 {t('home.crossPlatform')}
               </Badge>
-              <Badge variant="outline" className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+              <Badge variant="outline" className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm bg-white/50 dark:bg-slate-800/50">
                 <Zap className="w-3 h-3 md:w-4 md:h-4 mr-1 text-yellow-500" />
                 {t('home.highPerformance')}
               </Badge>
@@ -167,7 +167,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
           >
             {/* Downloads Card */}
             <motion.div
-              className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 backdrop-blur-xl rounded-2xl p-6 border border-blue-500/20 shadow-lg"
+              className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-2xl p-6 border border-blue-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
@@ -186,7 +186,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
 
             {/* Stars Card */}
             <motion.div
-              className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-xl rounded-2xl p-6 border border-yellow-500/20 shadow-lg"
+              className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl p-6 border border-yellow-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
@@ -205,7 +205,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
 
             {/* Forks Card */}
             <motion.div
-              className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 shadow-lg"
+              className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
@@ -224,7 +224,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
 
             {/* Issues Card */}
             <motion.div
-              className="bg-gradient-to-br from-red-500/10 to-orange-500/10 backdrop-blur-xl rounded-2xl p-6 border border-red-500/20 shadow-lg"
+              className="bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-2xl p-6 border border-red-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
@@ -254,7 +254,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
             href="https://github.com/Voxelum/x-minecraft-launcher"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/50 dark:bg-slate-800/50 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 transition-colors"
           >
             <Github className="w-5 h-5" />
             {t('home.viewOnGitHub')}

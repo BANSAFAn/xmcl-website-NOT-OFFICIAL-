@@ -47,7 +47,7 @@ export const DownloadHero: React.FC<DownloadHeroProps> = ({ latestRelease, detec
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Badge className="mb-4 md:mb-6 py-1.5 px-3 md:py-2 md:px-4 bg-slate-800/50 hover:bg-slate-800/50 backdrop-blur border-slate-700/50 text-blue-300 text-xs md:text-sm">
+          <Badge className="mb-4 md:mb-6 py-1.5 px-3 md:py-2 md:px-4 bg-slate-800/50 hover:bg-slate-800/50 border-slate-700/50 text-blue-300 text-xs md:text-sm">
             {t('downloadMessages.version')} {latestRelease.tag_name}
           </Badge>
           

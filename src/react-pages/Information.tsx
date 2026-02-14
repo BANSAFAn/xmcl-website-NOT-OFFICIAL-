@@ -249,17 +249,17 @@ const InformationContent: React.FC = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="flex flex-wrap justify-center gap-4 mb-10"
               >
-                <div className="flex items-center gap-2 px-5 py-3 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10">
+                <div className="flex items-center gap-2 px-5 py-3 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
                   <Star className="w-5 h-5 text-yellow-500" />
                   <span className="text-2xl font-bold text-slate-900 dark:text-white">{(repoStats.stargazers_count / 1000).toFixed(1)}K</span>
                   <span className="text-sm text-slate-500">Stars</span>
                 </div>
-                <div className="flex items-center gap-2 px-5 py-3 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10">
+                <div className="flex items-center gap-2 px-5 py-3 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
                   <Users className="w-5 h-5 text-indigo-500" />
                   <span className="text-2xl font-bold text-slate-900 dark:text-white">{contributors.length}+</span>
                   <span className="text-sm text-slate-500">Contributors</span>
                 </div>
-                <div className="flex items-center gap-2 px-5 py-3 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10">
+                <div className="flex items-center gap-2 px-5 py-3 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
                   <Code className="w-5 h-5 text-green-500" />
                   <span className="text-2xl font-bold text-slate-900 dark:text-white">{repoStats.forks_count}</span>
                   <span className="text-sm text-slate-500">Forks</span>
@@ -283,7 +283,7 @@ const InformationContent: React.FC = () => {
                 href="https://github.com/Voxelum/x-minecraft-launcher"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white/80 dark:bg-white/10 backdrop-blur-xl text-slate-900 dark:text-white rounded-2xl font-bold text-lg hover:bg-white dark:hover:bg-white/20 transition-all border border-slate-200 dark:border-white/10"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white/80 dark:bg-white/10 text-slate-900 dark:text-white rounded-2xl font-bold text-lg hover:bg-white dark:hover:bg-white/20 transition-all border border-slate-200 dark:border-white/10"
               >
                 <Github className="w-5 h-5" />
                 GitHub
@@ -304,7 +304,7 @@ const InformationContent: React.FC = () => {
               Quick Install
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-5 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10">
+              <div className="p-5 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 rounded-lg bg-blue-500/10">
                     <Code className="w-5 h-5 text-blue-500" />
@@ -318,7 +318,7 @@ const InformationContent: React.FC = () => {
                   <CopyButton text={wingetCommand} />
                 </div>
               </div>
-              <div className="p-5 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10">
+              <div className="p-5 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 rounded-lg bg-amber-500/10">
                     <Cpu className="w-5 h-5 text-amber-500" />
@@ -355,7 +355,7 @@ const InformationContent: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className={`group p-5 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/5
+                  className={`group p-5 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/5
                     ${feature.size === 'large' ? 'sm:col-span-2' : ''}
                   `}
                 >
@@ -381,7 +381,7 @@ const InformationContent: React.FC = () => {
               <Users className="w-7 h-7 text-indigo-500" />
               {t('information.contributors.title')}
             </h2>
-            <div className="p-6 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10">
+            <div className="p-6 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
               <ContributorCarousel contributors={contributors} />
             </div>
           </motion.section>
@@ -404,7 +404,7 @@ const InformationContent: React.FC = () => {
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-5 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10 hover:border-indigo-500/30 transition-all hover:shadow-xl group"
+                  className="flex items-center gap-4 p-5 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10 hover:border-indigo-500/30 transition-all hover:shadow-xl group"
                 >
                   <img src={sponsor.logo} alt={sponsor.name} className="w-12 h-12 rounded-xl group-hover:scale-110 transition-transform" />
                   <div className="flex-1 min-w-0">

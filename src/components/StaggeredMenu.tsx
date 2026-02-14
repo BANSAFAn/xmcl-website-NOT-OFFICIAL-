@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslation } from '@/contexts/TranslationContext';
-import { LanguageSelector } from '@/components/LanguageSelector';
+import { LanguageTrigger, LanguagePanel } from '@/components/LanguageSelector';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { X, Menu, Home, FileText, BookOpen, GitBranch, AlertCircle, TestTube, Info, ExternalLink } from 'lucide-react';
 import { Link } from '@/components/Link';
@@ -51,9 +51,20 @@ const socialLinks = [
 
 export const StaggeredMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [view, setView] = useState<'menu' | 'language'>('menu');
   const { t } = useTranslation();
 
-  const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
+  const toggleMenu = useCallback(() => {
+    setIsOpen(prev => {
+      if (prev) setView('menu'); // reset view when closing
+      return !prev;
+    });
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setIsOpen(false);
+    setView('menu');
+  }, []);
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -62,6 +73,7 @@ export const StaggeredMenu = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setView('menu');
       }
     };
     if (isOpen) {
@@ -102,7 +114,7 @@ export const StaggeredMenu = () => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="relative z-50 flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:shadow-indigo-500/25 transition-all"
+        className="relative z-50 flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-white/80 dark:bg-slate-900/80 border border-white/20 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:shadow-indigo-500/25 transition-all"
         onClick={toggleMenu}
       >
         <AnimatePresence mode="wait">
@@ -134,11 +146,11 @@ export const StaggeredMenu = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-black/5 dark:bg-black/20 backdrop-blur-[1px]"
+            className="fixed inset-0 z-40 bg-black/5 dark:bg-black/20"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
+            onClick={closeMenu}
           />
         )}
       </AnimatePresence>
@@ -153,63 +165,91 @@ export const StaggeredMenu = () => {
             variants={menuVariants}
             className="absolute top-16 right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 w-[300px] z-50"
           >
-            <div className="overflow-hidden rounded-3xl bg-white/85 dark:bg-slate-950/85 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-2xl ring-1 ring-black/5 dark:ring-white/5">
+            <div className="overflow-hidden rounded-3xl bg-white/85 dark:bg-slate-950/85 border border-white/40 dark:border-white/10 shadow-2xl ring-1 ring-black/5 dark:ring-white/5">
+              
+              <AnimatePresence mode="wait">
+                {view === 'menu' ? (
+                  /* =================== MAIN MENU VIEW =================== */
+                  <motion.div
+                    key="menu-view"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Navigation Items */}
+                    <div className="p-2 flex flex-col gap-1 max-h-[50vh] overflow-y-auto custom-scrollbar">
+                      {navItems.map((item, index) => {
+                        const Icon = item.icon;
+                        return (
+                          <motion.div
+                            key={index}
+                            custom={index}
+                            variants={itemVariants}
+                          >
+                            <Link
+                              to={item.href}
+                              onClick={closeMenu}
+                              className="group flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-all active:scale-[0.98]"
+                            >
+                              <Icon className="w-4 h-4 text-slate-400 group-hover:text-indigo-500 transition-colors" />
+                              {t(item.label)}
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
 
-              {/* Navigation Items */}
-              <div className="p-2 flex flex-col gap-1 max-h-[50vh] overflow-y-auto custom-scrollbar">
-                {navItems.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <motion.div
-                      key={index}
-                      custom={index}
-                      variants={itemVariants}
-                    >
-                      <Link
-                        to={item.href}
-                        onClick={() => setIsOpen(false)}
-                        className="group flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-all active:scale-[0.98]"
-                      >
-                        <Icon className="w-4 h-4 text-slate-400 group-hover:text-indigo-500 transition-colors" />
-                        {t(item.label)}
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                    {/* Divider */}
+                    <div className="h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent mx-4 my-1" />
 
-              {/* Divider */}
-              <div className="h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent mx-4 my-1" />
+                    {/* Social Icons Grid */}
+                    <div className="p-3">
+                      <div className="grid grid-cols-4 gap-3">
+                        {socialLinks.map((social, idx) => (
+                          <motion.a
+                            key={idx}
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`flex items-center justify-center aspect-square rounded-2xl ${social.bg} ${social.color} hover:brightness-110 hover:scale-105 active:scale-95 transition-all border border-transparent hover:border-white/20 shadow-sm`}
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.15 + (idx * 0.05) }}
+                          >
+                            {social.icon}
+                          </motion.a>
+                        ))}
+                      </div>
+                    </div>
 
-              {/* Social Icons Grid */}
-              <div className="p-3">
-                <div className="grid grid-cols-4 gap-3">
-                  {socialLinks.map((social, idx) => (
-                    <motion.a
-                      key={idx}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`flex items-center justify-center aspect-square rounded-2xl ${social.bg} ${social.color} hover:brightness-110 hover:scale-105 active:scale-95 transition-all border border-transparent hover:border-white/20 shadow-sm`}
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.15 + (idx * 0.05) }}
-                    >
-                      {social.icon}
-                    </motion.a>
-                  ))}
-                </div>
-              </div>
+                    {/* Footer: Settings */}
+                    <div className="bg-slate-50/50 dark:bg-slate-900/50 p-3 flex gap-2 border-t border-slate-200/50 dark:border-slate-800/50">
+                       <div className="flex-1">
+                          <LanguageTrigger onClick={() => setView('language')} />
+                       </div>
+                       <div>
+                          <ThemeSelector />
+                       </div>
+                    </div>
+                  </motion.div>
 
-              {/* Footer: Settings */}
-              <div className="bg-slate-50/50 dark:bg-slate-900/50 p-3 flex gap-2 border-t border-slate-200/50 dark:border-slate-800/50">
-                 <div className="flex-1">
-                    <LanguageSelector />
-                 </div>
-                 <div>
-                    <ThemeSelector />
-                 </div>
-              </div>
+                ) : (
+                  /* =================== LANGUAGE PANEL VIEW =================== */
+                  <motion.div
+                    key="language-view"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <LanguagePanel
+                      onBack={() => setView('menu')}
+                      onClose={closeMenu}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
             </div>
           </motion.div>

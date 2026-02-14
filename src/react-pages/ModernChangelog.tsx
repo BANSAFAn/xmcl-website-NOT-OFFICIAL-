@@ -113,7 +113,7 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
       <div className="md:ml-20">
         <Card 
           className={`relative overflow-hidden transition-all duration-300 cursor-pointer
-            bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl
+            bg-white/80 dark:bg-white/[0.03]
             border-slate-200/50 dark:border-white/10
             hover:border-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/5
             ${isExpanded ? 'ring-2 ring-indigo-500/20' : ''}
@@ -365,7 +365,7 @@ const ModernChangelogContent: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <Badge variant="secondary" className="mb-6 px-4 py-1.5 rounded-full bg-white/50 dark:bg-white/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-white/10 backdrop-blur-sm shadow-sm">
+              <Badge variant="secondary" className="mb-6 px-4 py-1.5 rounded-full bg-white/50 dark:bg-white/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-white/10 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 mr-2 fill-current" />
                 <span>What's New</span>
               </Badge>
@@ -387,7 +387,7 @@ const ModernChangelogContent: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="max-w-4xl mx-auto mb-10"
           >
-            <div suppressHydrationWarning className="flex flex-col sm:flex-row gap-3 p-3 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-white/10 shadow-lg shadow-slate-200/50 dark:shadow-none">
+            <div suppressHydrationWarning className="flex flex-col sm:flex-row gap-3 p-3 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-lg shadow-slate-200/50 dark:shadow-none">
               {/* Search */}
               <div className="relative flex-1 group">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />

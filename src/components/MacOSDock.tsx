@@ -29,7 +29,7 @@ export const MacOSDock = () => {
       <motion.div
         onMouseMove={(e) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
-        className="flex items-end gap-4 h-16 px-4 pb-3 mx-auto rounded-2xl bg-white/20 dark:bg-black/20 backdrop-blur-2xl border border-white/20 shadow-2xl"
+        className="flex items-end gap-4 h-16 px-4 pb-3 mx-auto rounded-2xl bg-white/20 dark:bg-black/20 border border-white/20 shadow-2xl"
       >
         {navItems.map((item, index) => (
           <DockIcon key={index} mouseX={mouseX} item={item} t={t} />
@@ -59,7 +59,7 @@ function DockIcon({ mouseX, item, t }: { mouseX: MotionValue; item: any; t: any 
                 <motion.div
                     ref={ref}
                     style={{ width, willChange: 'width' }}
-                    className="aspect-square rounded-full bg-slate-800/80 backdrop-blur-md border border-slate-700/50 flex items-center justify-center relative hover:bg-slate-700/80 transition-colors group"
+                    className="aspect-square rounded-full bg-slate-800/80 border border-slate-700/50 flex items-center justify-center relative hover:bg-slate-700/80 transition-colors group"
                 >
                     <Icon className="w-1/2 h-1/2 text-slate-200 group-hover:text-white" />
                 </motion.div>

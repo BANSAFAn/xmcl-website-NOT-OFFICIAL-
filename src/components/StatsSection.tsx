@@ -63,7 +63,7 @@ export const StatsSection = () => {
           {stats.map((stat, index) => (
             <div 
               key={index}
-              className={`group relative p-4 md:p-8 bg-gradient-to-br ${stat.color} backdrop-blur-xl rounded-3xl border border-border/30 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 text-center overflow-hidden`}
+              className={`group relative p-4 md:p-8 bg-gradient-to-br ${stat.color} rounded-3xl border border-border/30 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 text-center overflow-hidden`}
               style={{ animationDelay: `${index * 150}ms` }}
             >
               {/* Animated background elements */}

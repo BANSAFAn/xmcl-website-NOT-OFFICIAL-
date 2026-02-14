@@ -56,7 +56,7 @@ const FloatingOrbs = React.memo(() => (
 const BlogHeader = React.memo(() => {
   const { t } = useTranslation();
   return (
-    <header className="relative border-b border-white/20 bg-white/50 backdrop-blur-xl py-10 md:py-16 dark:bg-slate-900/50 contain-layout">
+    <header className="relative border-b border-white/20 bg-white/50 py-10 md:py-16 dark:bg-slate-900/50 contain-layout">
       <div className="container mx-auto px-4 text-center">
         <div className="inline-flex items-center gap-2 mb-4 bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium">
           <Rss className="h-4 w-4" />
@@ -83,7 +83,7 @@ const SearchControls = React.memo(({
   setShowFilters,
   t
 }: any) => (
-  <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl p-4 rounded-2xl border border-white/20 contain-content">
+  <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-white/20 contain-content">
     <div className="relative flex-1 max-w-md">
       <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
       <Input
@@ -133,7 +133,7 @@ const PostCard = React.memo(({ post, featured, onClick, index }: {
     >
       <Card
         onClick={onClick}
-        className="group relative cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 backdrop-blur-sm p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80 h-full flex flex-col"
+        className="group relative cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80 h-full flex flex-col"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:via-purple-500/5 group-hover:to-pink-500/5 group-hover:opacity-100" />
         <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ padding: '2px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899)', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
@@ -221,7 +221,7 @@ const PostDetail = ({ post, content, onBack }: { post: any; content: string; onB
         />
       </div>
 
-      <article className="rounded-3xl bg-white/90 backdrop-blur-xl p-8 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
+      <article className="rounded-3xl bg-white/90 p-8 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
         <header className="mb-10 border-b border-slate-200/50 pb-8 dark:border-slate-700/50">
           <h1 className="mb-6 text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
             {post.title}
@@ -342,7 +342,7 @@ const BlogContent = () => {
                   exit={{ opacity: 0, height: 0 }}
                   className="mb-8 overflow-hidden contain-content"
                 >
-                  <div className="flex flex-wrap gap-2 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl p-5 border border-white/20">
+                  <div className="flex flex-wrap gap-2 rounded-xl bg-white/60 dark:bg-slate-800/60 p-5 border border-white/20">
                     {categories.map((tag: string) => (
                       <Button
                         key={tag}

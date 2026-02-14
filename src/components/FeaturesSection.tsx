@@ -177,7 +177,7 @@ const SectionHeader = memo(({ t }: SectionHeaderProps) => (
     transition={{ duration: 1 }}
   >
     <motion.div
-      className="inline-flex items-center gap-3 px-6 py-3 mb-8 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-cyan-500/10 backdrop-blur-2xl rounded-full border border-white/20 dark:border-white/10 shadow-2xl"
+      className="inline-flex items-center gap-3 px-6 py-3 mb-8 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-cyan-500/10 rounded-full border border-white/20 dark:border-white/10 shadow-2xl"
       initial={{ scale: 0, rotate: -180 }}
       whileInView={{ scale: 1, rotate: 0 }}
       viewport={{ once: true }}
@@ -440,7 +440,7 @@ const ImageSection = memo(
           {feature.tags.slice(0, 3).map((tag, i) => (
             <motion.span
               key={i}
-              className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 backdrop-blur-xl"
+              className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}

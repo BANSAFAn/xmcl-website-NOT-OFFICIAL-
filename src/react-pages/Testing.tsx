@@ -103,7 +103,7 @@ const BuildCard = memo(({ run, isExpanded, onToggle, selectedPlatform, isLatestS
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={`group relative overflow-hidden rounded-2xl transition-all duration-300
-        bg-white/70 dark:bg-white/5 backdrop-blur-xl
+        bg-white/70 dark:bg-white/5
         border ${isSuccess ? 'border-slate-200/50 dark:border-white/10' : 'border-red-500/20'}
         hover:shadow-xl hover:shadow-indigo-500/5
         ${isLatestSuccess ? 'ring-2 ring-green-500/30' : ''}
@@ -272,7 +272,7 @@ const TestingContent = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="max-w-4xl mx-auto mb-10"
         >
-          <div className="flex justify-center gap-3 p-2 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-white/10 shadow-lg w-fit mx-auto">
+          <div className="flex justify-center gap-3 p-2 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-lg w-fit mx-auto">
             {platforms.map((platform) => (
               <button
                 key={platform.key}
@@ -362,7 +362,7 @@ const TestingContent = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="p-5 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-white/10"
+              className="p-5 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10"
             >
               <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <Terminal className="w-5 h-5 text-indigo-500" />

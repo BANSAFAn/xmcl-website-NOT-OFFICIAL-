@@ -39,7 +39,7 @@ export const PlatformWarning = ({ detectedOS, selectedOS, onContinue, onCancel }
     >
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in" 
+        className="absolute inset-0 bg-black/50 animate-fade-in" 
         onClick={onCancel}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
       />

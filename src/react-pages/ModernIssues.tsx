@@ -83,7 +83,7 @@ const StatsDashboard = memo(({ stats }: { stats: any }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md p-4 rounded-xl flex items-center justify-between"
+        className="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-xl flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
           <div className="p-2 bg-emerald-500/20 rounded-lg">
@@ -100,7 +100,7 @@ const StatsDashboard = memo(({ stats }: { stats: any }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-violet-500/10 border border-violet-500/20 backdrop-blur-md p-4 rounded-xl flex items-center justify-between"
+        className="bg-violet-500/10 border border-violet-500/20 p-4 rounded-xl flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
           <div className="p-2 bg-violet-500/20 rounded-lg">
@@ -117,7 +117,7 @@ const StatsDashboard = memo(({ stats }: { stats: any }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-blue-500/10 border border-blue-500/20 backdrop-blur-md p-4 rounded-xl flex items-center justify-between"
+        className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
           <div className="p-2 bg-blue-500/20 rounded-lg">
@@ -139,7 +139,7 @@ const IssueCard = memo(({ issue, expanded, onToggleExpand, t }: any) => {
       layout="position"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mb-4 bg-slate-800/40 backdrop-blur-md border border-slate-700/50 hover:border-violet-500/30 hover:bg-slate-700/40 transition-all duration-300 rounded-xl overflow-hidden group"
+      className="mb-4 bg-slate-800/40 border border-slate-700/50 hover:border-violet-500/30 hover:bg-slate-700/40 transition-all duration-300 rounded-xl overflow-hidden group"
     >
       <div className="p-4 md:p-5">
         <div className="flex flex-col gap-4">
@@ -341,7 +341,7 @@ function ModernIssuesContent() {
 
           {/* Filters & Search - Glassmorphic Bar */}
           <div className="sticky top-4 z-30 mb-8">
-            <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-2 shadow-2xl flex flex-col md:flex-row gap-2">
+            <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-2 shadow-2xl flex flex-col md:flex-row gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input 

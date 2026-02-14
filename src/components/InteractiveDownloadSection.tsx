@@ -121,7 +121,7 @@ const InteractiveDownloadSection = memo(() => {
         className={`relative px-4 py-3 md:px-8 md:py-4 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 md:gap-3 overflow-hidden ${
           isSelected
             ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl scale-105'
-            : 'bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50'
+            : 'bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 border border-slate-200/50 dark:border-slate-700/50'
         }`}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -146,7 +146,7 @@ const InteractiveDownloadSection = memo(() => {
         transition={{ duration: 0.6, delay: index * 0.1 }}
         className="relative group"
       >
-        <Card className="p-8 hover:shadow-xl transition-all duration-500 relative overflow-hidden backdrop-blur-sm bg-white/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl shadow-sm">
+        <Card className="p-8 hover:shadow-xl transition-all duration-500 relative overflow-hidden bg-white/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl shadow-sm">
           <div className="text-center relative z-10">
             <motion.div 
               className="text-5xl mb-6"
@@ -264,7 +264,7 @@ const InteractiveDownloadSection = memo(() => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <div className="bg-white/50 dark:bg-slate-800/50 rounded-2xl p-3 shadow-2xl backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50">
+          <div className="bg-white/50 dark:bg-slate-800/50 rounded-2xl p-3 shadow-2xl border border-slate-200/50 dark:border-slate-700/50">
             <div className="flex gap-3">
               <OSButton
                 id="windows"
@@ -415,7 +415,7 @@ const InteractiveDownloadSection = memo(() => {
               <Button
                 variant="outline"
                 onClick={() => window.open(latestRelease.html_url, '_blank')}
-                className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
+                className="bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
               >
                 <ExternalLink className="w-5 h-5 mr-3" />
                 {t('downloadSection.releaseNotes')}
@@ -426,7 +426,7 @@ const InteractiveDownloadSection = memo(() => {
               <Button
                 variant="outline"
                 onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/releases', '_blank')}
-                className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
+                className="bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
               >
                 <Github className="w-5 h-5 mr-3" />
                 {t('downloadMessages.viewAllReleases')}

@@ -93,7 +93,9 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   /* Enhanced light theme background */
@@ -140,18 +142,21 @@
   .light nav {
     background: rgba(255, 255, 255, 0.95) !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
-    backdrop-filter: blur(12px);
   }
 
   /* Light theme card improvements */
   .light .card-elevated {
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.12);
   }
 
   .light .card-elevated:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.12),
+      0 4px 12px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
   }
 
@@ -159,7 +164,6 @@
   .light footer {
     background: rgba(248, 250, 252, 0.9) !important;
     border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
-    backdrop-filter: blur(12px);
   }
 
   /* Button improvements for light theme */
@@ -185,7 +189,6 @@
   }
 
   .glass-effect {
-    backdrop-filter: blur(12px);
     background: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
@@ -219,11 +222,15 @@
   }
 
   .dark .card-elevated {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.5);
   }
 
   .dark .card-elevated:hover {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5), 0 10px 10px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.5),
+      0 10px 10px rgba(0, 0, 0, 0.4);
   }
 
   /* Light theme specific improvements */
@@ -252,11 +259,13 @@
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3),
+    box-shadow:
+      0 0 20px rgba(59, 130, 246, 0.3),
       0 0 40px rgba(147, 51, 234, 0.2);
   }
   to {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5),
+    box-shadow:
+      0 0 30px rgba(59, 130, 246, 0.5),
       0 0 60px rgba(147, 51, 234, 0.3);
   }
 }
@@ -294,9 +303,14 @@
   .backdrop-blur-md,
   .backdrop-blur {
     backdrop-filter: none !important;
-    background: rgba(30, 41, 59, 0.95) !important; /* Fallback for dark/glass backgrounds */
+    background: rgba(
+      30,
+      41,
+      59,
+      0.95
+    ) !important; /* Fallback for dark/glass backgrounds */
   }
-  
+
   .light .glass-effect,
   .light .backdrop-blur-2xl,
   .light .backdrop-blur-xl,
@@ -325,4 +339,143 @@
 
 .animation-delay-4000 {
   animation-delay: 4s;
+}
+
+/* ============================================
+   FIX: Prevent text from appearing blurry.
+   
+   Root cause: backdrop-filter: blur() on UI elements (cards, inputs,
+   badges, tabs) creates GPU compositing layers that cause text inside
+   to render with sub-pixel blur artifacts on many browsers/GPUs.
+   
+   Solution: Disable backdrop-filter globally. Replace with higher 
+   background opacity for visual depth.
+   ============================================ */
+
+/* Kill backdrop-filter everywhere — it causes blurry text */
+* {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Force decorative blur blobs into isolated GPU layers */
+[class*="blur-3xl"],
+[class*="blur-[100px]"],
+[class*="blur-[150px]"],
+.animate-blob {
+  transform: translate3d(0, 0, 0);
+  will-change: filter;
+  pointer-events: none;
+}
+
+
+/* ============================================
+   View Transitions — Astro and fallback
+   ============================================ */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(page-content) {
+  animation: slide-out-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+::view-transition-new(page-content) {
+  animation: slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+::view-transition-old(root) {
+  animation: fade-out 0.2s ease-out forwards;
+}
+
+::view-transition-new(root) {
+  animation: fade-in 0.3s ease-in forwards;
+}
+
+@keyframes slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Page entrance animation (used by React pages) */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: page-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger children entrance */
+.stagger-children > * {
+  opacity: 0;
+  animation: page-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.stagger-children > *:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.stagger-children > *:nth-child(8) {
+  animation-delay: 0.4s;
 }

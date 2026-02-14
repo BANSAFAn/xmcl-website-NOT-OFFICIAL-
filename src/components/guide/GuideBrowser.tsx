@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Clock, User, ArrowRight, Filter, X, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 export interface GuidePost {
   id: string;
@@ -22,14 +23,6 @@ interface GuideBrowserProps {
   posts: GuidePost[];
   categories: string[];
   featuredIds: string[];
-  translations: {
-    searchPlaceholder: string;
-    noGuidesFound: string;
-    clearFilters: string;
-    readMore: string;
-    filterByTag: string;
-    clearAll: string;
-  };
 }
 
 const difficultyStyles: Record<string, { bg: string; text: string }> = {
@@ -38,7 +31,8 @@ const difficultyStyles: Record<string, { bg: string; text: string }> = {
   advanced: { bg: "from-red-400 to-pink-500", text: "text-white" },
 };
 
-export const GuideBrowser = ({ posts, categories, featuredIds, translations }: GuideBrowserProps) => {
+export const GuideBrowser = ({ posts, categories, featuredIds }: GuideBrowserProps) => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -66,12 +60,12 @@ export const GuideBrowser = ({ posts, categories, featuredIds, translations }: G
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl p-4 rounded-2xl border border-white/20 dark:border-white/10"
+        className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-white/20 dark:border-white/10"
       >
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
           <Input
-            placeholder={translations.searchPlaceholder}
+            placeholder={t("guide.searchPlaceholder", "Search guides...")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-12 h-12 rounded-xl border-0 bg-white dark:bg-slate-700 shadow-sm"
@@ -84,7 +78,7 @@ export const GuideBrowser = ({ posts, categories, featuredIds, translations }: G
           className={`rounded-xl h-12 ${showFilters ? "bg-emerald-600 hover:bg-emerald-700" : ""}`}
         >
           <Filter className="mr-2 h-4 w-4" />
-          {translations.filterByTag}
+          {t("guide.filterByTags", "Filter by tag")}
         </Button>
       </motion.div>
 
@@ -97,7 +91,7 @@ export const GuideBrowser = ({ posts, categories, featuredIds, translations }: G
             exit={{ opacity: 0, height: 0 }}
             className="mb-8 overflow-hidden"
           >
-            <div className="flex flex-wrap gap-2 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl p-5 border border-white/20 dark:border-white/10">
+            <div className="flex flex-wrap gap-2 rounded-xl bg-white/60 dark:bg-slate-800/60 p-5 border border-white/20 dark:border-white/10">
               {categories.map((tag) => (
                 <Button
                   key={tag}
@@ -117,7 +111,7 @@ export const GuideBrowser = ({ posts, categories, featuredIds, translations }: G
                   className="text-red-500 hover:text-red-600"
                 >
                   <X className="mr-1 h-3 w-3" />
-                  {translations.clearAll}
+                  {t("guide.clear", "Clear all")}
                 </Button>
               )}
             </div>
@@ -134,21 +128,21 @@ export const GuideBrowser = ({ posts, categories, featuredIds, translations }: G
               post={post}
               featured={featuredIds.includes(post.slug) || featuredIds.includes(post.id)}
               index={index}
-              readMoreText={translations.readMore}
+              readMoreText={t("guide.readMore", "Read")}
             />
           ))}
         </div>
       ) : (
         <div className="py-20 text-center">
           <h3 className="text-xl font-bold text-slate-600 dark:text-slate-400 mb-2">
-            {translations.noGuidesFound}
+            {t("guide.noGuidesFound", "No guides found")}
           </h3>
           <Button
             variant="link"
             onClick={() => { setSearchQuery(""); setSelectedTags([]); }}
             className="text-emerald-600"
           >
-            {translations.clearFilters}
+            {t("guide.clearFilters", "Clear filters")}
           </Button>
         </div>
       )}
@@ -166,7 +160,7 @@ const GuideCard = ({ post, featured, index, readMoreText }: { post: GuidePost; f
       transition={{ duration: 0.4, delay: index * 0.1 }}
     >
       <a href={`/guide/${post.slug}`} className="block h-full">
-        <Card className="group relative h-full cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 backdrop-blur-sm p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80">
+        <Card className="group relative h-full cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-teal-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-500 group-hover:from-emerald-500/5 group-hover:via-teal-500/5 group-hover:to-cyan-500/5 group-hover:opacity-100" />
           <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border-2 border-emerald-500/20" />
 

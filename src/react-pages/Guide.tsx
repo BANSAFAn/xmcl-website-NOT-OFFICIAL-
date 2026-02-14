@@ -92,7 +92,7 @@ const GuideCard = React.memo(({ post, featured, onClick, index }: {
     >
       <Card
         onClick={onClick}
-        className="group relative cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 backdrop-blur-sm p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80 h-full flex flex-col"
+        className="group relative cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80 h-full flex flex-col"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-teal-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-500 group-hover:from-emerald-500/5 group-hover:via-teal-500/5 group-hover:to-cyan-500/5 group-hover:opacity-100" />
         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ padding: '2px', background: 'linear-gradient(135deg, #10b981, #14b8a6, #06b6d4)', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
@@ -187,7 +187,7 @@ const GuideDetail = ({ post, content, onBack }: {
         />
       </div>
 
-      <article className="rounded-3xl bg-white/90 backdrop-blur-xl p-6 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
+      <article className="rounded-3xl bg-white/90 p-6 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
         <header className="mb-10 border-b border-slate-200/50 pb-8 dark:border-slate-700/50">
           <h1 className="mb-6 text-4xl md:text-5xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
             {post.title}
@@ -285,7 +285,7 @@ const GuideContent = ({ initialSlug }: { initialSlug?: string }) => {
       {/* --- LCP OPTIMIZATION --- */}
       {/* Хедер рендерится ВСЕГДА, даже если isLoading=true. */}
       {/* Это позволяет тексту (subtitle) появиться мгновенно. */}
-      <header className="relative border-b border-white/20 bg-white/50 backdrop-blur-xl py-10 md:py-16 dark:bg-slate-900/50">
+      <header className="relative border-b border-white/20 bg-white/50 py-10 md:py-16 dark:bg-slate-900/50">
         <div className="container mx-auto px-4 text-center">
           <div className="mb-6 inline-flex items-center justify-center animate-in fade-in zoom-in duration-500">
             <div className="rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-4 shadow-lg shadow-emerald-500/25">
@@ -314,7 +314,7 @@ const GuideContent = ({ initialSlug }: { initialSlug?: string }) => {
           <GuideGridSkeleton />
         ) : (
           <>
-            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl p-4 rounded-2xl border border-white/20">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-white/20">
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                 <Input
@@ -343,7 +343,7 @@ const GuideContent = ({ initialSlug }: { initialSlug?: string }) => {
                   exit={{ opacity: 0, height: 0 }}
                   className="mb-8 overflow-hidden"
                 >
-                  <div className="flex flex-wrap gap-2 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl p-5 border border-white/20">
+                  <div className="flex flex-wrap gap-2 rounded-xl bg-white/60 dark:bg-slate-800/60 p-5 border border-white/20">
                     {categories.map((tag) => (
                       <Button
                         key={tag}

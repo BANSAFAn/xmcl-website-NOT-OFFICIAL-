@@ -288,7 +288,7 @@ export default function Contact() {
             </div>
             
             <Tabs defaultValue="all" className="w-full">
-              <TabsList className="mb-8 w-full justify-center bg-white/5 backdrop-blur-sm border border-white/10">
+              <TabsList className="mb-8 w-full justify-center bg-white/5 border border-white/10">
                 <TabsTrigger value="all" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.allContacts}</TabsTrigger>
                 <TabsTrigger value="support" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.support}</TabsTrigger>
                 <TabsTrigger value="community" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.community}</TabsTrigger>
@@ -362,7 +362,7 @@ function ContactCard({ icon, title, value, link, description, gradient, delay = 
         <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" 
              style={{ background: `linear-gradient(135deg, var(--gradient-from), var(--gradient-to))` }} />
         
-        <div className="relative p-5 md:p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 group-hover:border-white/20 transition-all duration-300">
+        <div className="relative p-5 md:p-6 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 group-hover:border-white/20 transition-all duration-300">
           <div className="flex items-start mb-4">
             <div className={`p-3 rounded-lg bg-gradient-to-r ${gradient} text-white mr-4 group-hover:scale-110 transition-transform duration-300`}>
               {icon}

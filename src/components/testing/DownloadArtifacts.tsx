@@ -126,7 +126,7 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 * index }}
         >
-          <Card className="p-6 bg-white/10 backdrop-blur-xl border-white/10 shadow-xl hover:bg-white/15 transition-all duration-300 group">
+          <Card className="p-6 bg-white/10 border-white/10 shadow-xl hover:bg-white/15 transition-all duration-300 group">
             <div className="text-center">
               <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Zap className="w-7 h-7 text-white" />
