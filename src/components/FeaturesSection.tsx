@@ -37,7 +37,7 @@ const COLOR_MAP = {
   amber: "bg-amber-500 hover:bg-amber-600 shadow-amber-500/50",
 };
 
-export const FeaturesSection = () => {
+export const FeaturesSection = memo(() => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -162,9 +162,13 @@ export const FeaturesSection = () => {
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent" />
     </section>
   );
-};
+});
 
-const SectionHeader = memo(({ t }) => (
+interface SectionHeaderProps {
+  t: (key: string) => string;
+}
+
+const SectionHeader = memo(({ t }: SectionHeaderProps) => (
   <motion.div
     className="text-center mb-28"
     initial={{ opacity: 0 }}
@@ -275,10 +279,33 @@ const FloatingOrbs = memo(() => {
   );
 });
 
-const FeatureCard = memo(({ feature, index, scrollProgress }) => {
+interface FeatureLink {
+  name: string;
+  url: string;
+  color: string;
+}
+
+interface Feature {
+  icon: any;
+  title: string;
+  description: string;
+  image: string;
+  gradient: string;
+  accentColor: string;
+  tags: string[];
+  links: FeatureLink[];
+}
+
+interface FeatureCardProps {
+  feature: Feature;
+  index: number;
+  scrollProgress: any;
+}
+
+const FeatureCard = memo(({ feature, index, scrollProgress }: FeatureCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const reverse = index % 2 !== 0;
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -291,7 +318,7 @@ const FeatureCard = memo(({ feature, index, scrollProgress }) => {
     ANIMATION_CONFIG.spring,
   );
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -332,8 +359,17 @@ const FeatureCard = memo(({ feature, index, scrollProgress }) => {
   );
 });
 
+interface ImageSectionProps {
+  cardRef: React.RefObject<HTMLDivElement | null>;
+  feature: Feature;
+  reverse: boolean;
+  isHovered: boolean;
+  rotateX: any;
+  rotateY: any;
+}
+
 const ImageSection = memo(
-  ({ cardRef, feature, reverse, isHovered, rotateX, rotateY }) => (
+  ({ cardRef, feature, reverse, isHovered, rotateX, rotateY }: ImageSectionProps) => (
     <motion.div
       ref={cardRef}
       className={`relative ${reverse ? "lg:col-start-2" : ""}`}
@@ -420,7 +456,13 @@ const ImageSection = memo(
   ),
 );
 
-const ContentSection = memo(({ feature, reverse, index }) => (
+interface ContentSectionProps {
+  feature: Feature;
+  reverse: boolean;
+  index: number;
+}
+
+const ContentSection = memo(({ feature, reverse, index }: ContentSectionProps) => (
   <motion.div
     className={`space-y-6 ${reverse ? "lg:col-start-1 lg:row-start-1" : ""}`}
     initial={{ opacity: 0, x: reverse ? 50 : -50 }}
@@ -477,12 +519,17 @@ const ContentSection = memo(({ feature, reverse, index }) => (
   </motion.div>
 ));
 
-const ActionButton = memo(({ link, index }) => (
+interface ActionButtonProps {
+  link: FeatureLink;
+  index: number;
+}
+
+const ActionButton = memo(({ link, index }: ActionButtonProps) => (
   <motion.a
     href={link.url}
     target="_blank"
     rel="noopener noreferrer"
-    className={`group relative inline-flex items-center gap-2 px-6 py-3 ${COLOR_MAP[link.color]} text-white font-bold rounded-xl shadow-lg overflow-hidden transition-all duration-300`}
+    className={`group relative inline-flex items-center gap-2 px-6 py-3 ${(COLOR_MAP as any)[link.color]} text-white font-bold rounded-xl shadow-lg overflow-hidden transition-all duration-300`}
     initial={{ opacity: 0, scale: 0.8 }}
     whileInView={{ opacity: 1, scale: 1 }}
     viewport={{ once: true }}

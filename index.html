@@ -35,8 +35,33 @@
     <!-- Theme initialization script - runs before React to prevent flash -->
     <script>
       (function () {
-        const savedTheme = localStorage.getItem("theme") || "light";
-        document.documentElement.classList.add(savedTheme);
+        try {
+          // Get saved theme mode from localStorage
+          const savedMode = localStorage.getItem("theme");
+          const mode = savedMode === "dark" || savedMode === "light" || savedMode === "system" ? savedMode : "light";
+          
+          // Determine effective theme
+          let effectiveTheme;
+          if (mode === "system") {
+            // Detect system preference
+            effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          } else {
+            effectiveTheme = mode;
+          }
+          
+          // Remove any existing theme classes
+          document.documentElement.classList.remove("light", "dark");
+          
+          // Apply the effective theme
+          document.documentElement.classList.add(effectiveTheme);
+          
+          // Debug log
+          console.log("Theme initialized:", effectiveTheme, "| Mode:", mode, "| Saved:", savedMode);
+        } catch (e) {
+          // Fallback to light theme if anything fails
+          document.documentElement.classList.add("light");
+          console.error("Theme initialization failed:", e);
+        }
       })();
     </script>
   </head>

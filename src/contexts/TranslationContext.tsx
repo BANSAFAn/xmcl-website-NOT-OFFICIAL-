@@ -172,13 +172,16 @@ export function TranslationProvider({ children }: TranslationProviderProps) {
     [currentTranslations],
   );
 
-  const value: TranslationContextType = {
-    locale,
-    translations: currentTranslations,
-    changeLanguage,
-    t,
-    isLoading,
-  };
+  const value: TranslationContextType = React.useMemo(
+    () => ({
+      locale,
+      translations: currentTranslations,
+      changeLanguage,
+      t,
+      isLoading,
+    }),
+    [locale, currentTranslations, changeLanguage, t, isLoading],
+  );
 
   return (
     <TranslationContext.Provider value={value}>

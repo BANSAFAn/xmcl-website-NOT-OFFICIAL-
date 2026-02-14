@@ -7,6 +7,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { StaggeredMenu } from "@/components/StaggeredMenu";
 import { Footer } from "@/components/Footer";
 import { useOS } from '@/hooks/useOS';
+import { useTheme } from '@/hooks/useTheme';
 import { MacOSDock } from '@/components/MacOSDock';
 
 const queryClient = new QueryClient();
@@ -22,9 +23,12 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   const os = useOS();
   
-  const handleDownloadClick = () => {
+  // Initialize theme on app load
+  useTheme();
+  
+  const handleDownloadClick = React.useCallback(() => {
     window.location.href = '/download';
-  };
+  }, []);
 
   const isDesktopStyle = os === 'macos' || os === 'linux';
 

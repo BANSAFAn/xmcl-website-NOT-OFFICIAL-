@@ -34,7 +34,19 @@ const sponsors = [
   },
 ];
 
-const AnimatedLink = ({
+const socialLinks = [
+  { icon: Github, href: 'https://github.com/voxelum/x-minecraft-launcher', label: 'GitHub' },
+  { icon: MessageCircle, href: 'https://discord.gg/W5XVwYY7GQ', label: 'Discord' },
+  { icon: Heart, href: 'https://afdian.com/@ci010', label: 'Afdian' },
+  { icon: Coffee, href: 'https://ko-fi.com/ci010', label: 'Ko-fi' },
+];
+
+const features = [
+  { icon: Zap, label: 'Lightning Fast' },
+  { icon: Shield, label: 'Secure' },
+];
+
+const AnimatedLink = React.memo(({
   icon: Icon,
   label,
   href,
@@ -100,9 +112,11 @@ const AnimatedLink = ({
   }
 
   return <>{content}</>;
-};
+});
 
-const LinksSection = ({ title, links, delay = 0 }: {
+AnimatedLink.displayName = "AnimatedLink";
+
+const LinksSection = React.memo(({ title, links, delay = 0 }: {
   title: string;
   links: any[];
   delay?: number;
@@ -137,9 +151,11 @@ const LinksSection = ({ title, links, delay = 0 }: {
       </nav>
     </motion.div>
   );
-};
+});
 
-export const Footer = ({ onDownloadClick }: FooterProps) => {
+LinksSection.displayName = "LinksSection";
+
+export const Footer = React.memo(({ onDownloadClick }: FooterProps) => {
   const { t } = useTranslation();
   const [latestVersion, setLatestVersion] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -162,24 +178,12 @@ export const Footer = ({ onDownloadClick }: FooterProps) => {
     fetchRepoData();
   }, []);
 
-  const socialLinks = [
-    { icon: Github, href: 'https://github.com/voxelum/x-minecraft-launcher', label: 'GitHub' },
-    { icon: MessageCircle, href: 'https://discord.gg/W5XVwYY7GQ', label: 'Discord' },
-    { icon: Heart, href: 'https://afdian.com/@ci010', label: 'Afdian' },
-    { icon: Coffee, href: 'https://ko-fi.com/ci010', label: 'Ko-fi' },
-  ];
-
-  const quickLinks = [
+  const quickLinks = React.useMemo(() => [
     { icon: Home, label: t('nav.home'), to: '/' },
     { icon: BookOpen, label: t('nav.guide'), to: '/guide' },
     { icon: FileText, label: t('nav.changelog'), to: '/changelog' },
     { icon: Bug, label: t('nav.issues'), to: '/issues' },
-  ];
-
-  const features = [
-    { icon: Zap, label: 'Lightning Fast' },
-    { icon: Shield, label: 'Secure' },
-  ];
+  ], [t]);
 
   return (
     <footer className="relative border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0a0a0b] text-foreground overflow-hidden">
@@ -348,4 +352,6 @@ export const Footer = ({ onDownloadClick }: FooterProps) => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = "Footer";

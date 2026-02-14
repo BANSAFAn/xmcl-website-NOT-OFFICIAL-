@@ -6,7 +6,7 @@
     <atom:link href="https://xmcl-website-not-official.vercel.app/guide-rss.xml" rel="self" type="application/rss+xml" />
     <description>Latest guides and tutorials from XMCL</description>
     <language>en</language>
-    <lastBuildDate>Wed, 17 Dec 2025 18:20:23 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 10 Feb 2026 09:27:10 GMT</lastBuildDate>
     <generator>XMCL Website</generator>
 
     <item>
@@ -153,6 +153,18 @@
       <author><![CDATA[Baneronetwo]]></author>
       <category><![CDATA[launcher]]></category>
       <category><![CDATA[nickname]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Licences NOT WORK ?!]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/licence-not-work</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/licence-not-work</guid>
+      <description><![CDATA[I bought a license, but it doesn't work in the launcher?]]></description>
+      <pubDate>Mon, 31 Mar 2025 21:00:00 GMT</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[launcher]]></category>
+      <category><![CDATA[licence]]></category>
+      <category><![CDATA[account]]></category>
     </item>
   </channel>
 </rss>

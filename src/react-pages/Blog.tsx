@@ -22,6 +22,9 @@ import { useTranslation } from "@/contexts/TranslationContext";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
 import { motion, AnimatePresence } from "framer-motion";
 import { AppShell } from "@/components/AppShell";
+import { TranslateButton } from "@/components/TranslateButton";
+import { useContentTranslation } from "@/hooks/useContentTranslation";
+
 
 const MarkdownRenderer = lazy(() =>
   import("@/components/MarkdownRenderer").then(m => ({ default: m.MarkdownRenderer }))
@@ -193,16 +196,30 @@ const PostCard = React.memo(({ post, featured, onClick, index }: {
 
 // 6. Detail View
 const PostDetail = ({ post, content, onBack }: { post: any; content: string; onBack: () => void; }) => {
+  const { translate, isTranslating, translatedContent, error, isTranslated, currentLanguage, resetTranslation } = useContentTranslation();
+  const displayContent = isTranslated && translatedContent ? translatedContent : content;
+
   return (
     <div className="mx-auto max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <Button
-        variant="ghost"
-        onClick={onBack}
-        className="mb-6 group text-blue-600 hover:text-blue-700 dark:text-blue-400"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-        Back
-      </Button>
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+        <Button
+          variant="ghost"
+          onClick={onBack}
+          className="group text-blue-600 hover:text-blue-700 dark:text-blue-400"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+          Back
+        </Button>
+
+        <TranslateButton
+          onTranslate={(lang) => translate(content, lang)}
+          isTranslating={isTranslating}
+          isTranslated={isTranslated}
+          currentLanguage={currentLanguage}
+          onReset={resetTranslation}
+          error={error}
+        />
+      </div>
 
       <article className="rounded-3xl bg-white/90 backdrop-blur-xl p-8 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
         <header className="mb-10 border-b border-slate-200/50 pb-8 dark:border-slate-700/50">
@@ -233,13 +250,14 @@ const PostDetail = ({ post, content, onBack }: { post: any; content: string; onB
         </header>
         <Suspense fallback={<div className="h-64 animate-pulse bg-slate-100 rounded-xl" />}>
           <div className="prose prose-lg dark:prose-invert max-w-none">
-            <MarkdownRenderer content={content || ""} />
+            <MarkdownRenderer content={displayContent || ""} />
           </div>
         </Suspense>
       </article>
     </div>
   );
 };
+
 
 // --- MAIN COMPONENT ---
 const BlogContent = () => {

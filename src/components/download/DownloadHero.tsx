@@ -64,7 +64,7 @@ export const DownloadHero: React.FC<DownloadHeroProps> = ({ latestRelease, detec
           <div className="flex flex-col items-center gap-6">
             <Button 
               size="lg" 
-              onClick={onDownloadClick}
+              onClick={onDownload}
               className="h-14 px-8 md:h-16 md:px-10 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-xl shadow-blue-500/20 rounded-2xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
             >
               {getOSIcon()}
