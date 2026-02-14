@@ -3,15 +3,15 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslation } from '@/contexts/TranslationContext';
 import { LanguageTrigger, LanguagePanel } from '@/components/LanguageSelector';
 import { ThemeSelector } from '@/components/ThemeSelector';
-import { X, Menu, Home, FileText, BookOpen, GitBranch, AlertCircle, TestTube, Info, ExternalLink } from 'lucide-react';
+import { X, List, House, FileText, BookOpen, GitBranch, WarningCircle, TestTube, Info, ArrowSquareOut } from '@phosphor-icons/react';
 import { Link } from '@/components/Link';
 
 const navItems = [
-  { label: 'nav.home', href: '/', icon: Home },
+  { label: 'nav.home', href: '/', icon: House },
   { label: 'nav.blog', href: '/blog', icon: FileText },
   { label: 'nav.guide', href: '/guide', icon: BookOpen },
   { label: 'nav.changelog', href: '/changelog', icon: GitBranch },
-  { label: 'nav.issues', href: '/issues', icon: AlertCircle },
+  { label: 'nav.issues', href: '/issues', icon: WarningCircle },
   { label: 'nav.testing', href: '/testing', icon: TestTube },
   { label: 'nav.information', href: '/information', icon: Info },
 ];
@@ -29,7 +29,7 @@ const socialLinks = [
     href: "https://kook.top/wM7X1f",
     color: "text-green-500",
     bg: "bg-green-500/10",
-    icon: <ExternalLink className="w-5 h-5" />
+    icon: <ArrowSquareOut className="w-5 h-5" />
   },
   {
     href: "https://afdian.com/@ci010",
@@ -136,7 +136,7 @@ export const StaggeredMenu = () => {
               exit={{ rotate: -90, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <Menu className="w-5 h-5" />
+              <List className="w-5 h-5" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -201,7 +201,7 @@ export const StaggeredMenu = () => {
                     </div>
 
                     {/* Divider */}
-                    <div className="h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent mx-4 my-1" />
+                    <div className="h-px bg-slate-200 dark:bg-slate-700 mx-4 my-1" />
 
                     {/* Social Icons Grid */}
                     <div className="p-3">

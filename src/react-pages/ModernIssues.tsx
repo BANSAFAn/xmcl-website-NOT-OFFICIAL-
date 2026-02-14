@@ -11,35 +11,35 @@ import { Virtuoso } from 'react-virtuoso';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { 
-  Search, 
-  Github, 
-  ExternalLink, 
-  MessageCircle, 
-  Calendar, 
-  User, 
-  AlertTriangle, 
-  CheckCircle2, 
-  Plus, 
-  Bug, 
-  Lightbulb, 
-  Zap, 
-  GitBranch, 
+import {
+  MagnifyingGlass,
+  GithubLogo,
+  ArrowSquareOut,
+  ChatCircle,
+  Calendar,
+  User,
+  Warning,
+  CheckCircle,
+  Plus,
+  Bug,
+  Lightbulb,
+  Lightning,
+  GitBranch,
   Eye,
   ArrowUpRight,
-  Filter,
-  SortDesc,
-  LayoutGrid,
+  FunnelSimple,
+  CaretDown,
+  SquaresFour,
   List as ListIcon
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import { AppShell } from '@/components/AppShell';
 
 // Memoized Components for Performance
 
 const StateIcon = memo(({ state }: { state: string }) => (
-  state === 'open' ? 
-    <AlertTriangle className="w-4 h-4 text-emerald-500" /> : 
-    <CheckCircle2 className="w-4 h-4 text-violet-500" />
+  state === 'open' ?
+    <Warning className="w-4 h-4 text-emerald-500" /> :
+    <CheckCircle className="w-4 h-4 text-violet-500" />
 ));
 
 const IssueTypeIcon = memo(({ labels }: { labels: any[] }) => {
@@ -49,7 +49,7 @@ const IssueTypeIcon = memo(({ labels }: { labels: any[] }) => {
   
   if (hasLabel('bug')) return <Bug className="w-4 h-4 text-red-500" />;
   if (hasLabel('enhancement') || hasLabel('feature')) return <Lightbulb className="w-4 h-4 text-amber-500" />;
-  if (hasLabel('performance')) return <Zap className="w-4 h-4 text-blue-500" />;
+  if (hasLabel('performance')) return <Lightning className="w-4 h-4 text-blue-500" />;
   return <GitBranch className="w-4 h-4 text-slate-500" />;
 });
 
@@ -87,7 +87,7 @@ const StatsDashboard = memo(({ stats }: { stats: any }) => {
       >
         <div className="flex items-center gap-3">
           <div className="p-2 bg-emerald-500/20 rounded-lg">
-            <AlertTriangle className="w-5 h-5 text-emerald-500" />
+            <Warning className="w-5 h-5 text-emerald-500" />
           </div>
           <div>
             <p className="text-slate-400 text-xs font-medium uppercase tracking-wider">{t('issues.openIssues')}</p>
@@ -104,7 +104,7 @@ const StatsDashboard = memo(({ stats }: { stats: any }) => {
       >
         <div className="flex items-center gap-3">
           <div className="p-2 bg-violet-500/20 rounded-lg">
-            <CheckCircle2 className="w-5 h-5 text-violet-500" />
+            <CheckCircle className="w-5 h-5 text-violet-500" />
           </div>
           <div>
             <p className="text-slate-400 text-xs font-medium uppercase tracking-wider">{t('issues.closedIssues')}</p>
@@ -121,7 +121,7 @@ const StatsDashboard = memo(({ stats }: { stats: any }) => {
       >
         <div className="flex items-center gap-3">
           <div className="p-2 bg-blue-500/20 rounded-lg">
-            <LayoutGrid className="w-5 h-5 text-blue-500" />
+            <SquaresFour className="w-5 h-5 text-blue-500" />
           </div>
           <div>
             <p className="text-slate-400 text-xs font-medium uppercase tracking-wider">{t('issues.allIssues')}</p>
@@ -182,7 +182,7 @@ const IssueCard = memo(({ issue, expanded, onToggleExpand, t }: any) => {
                 onClick={() => window.open(issue.html_url, '_blank')}
                 title={t('actions.goToIssue')}
               >
-                <ExternalLink className="w-4 h-4" />
+                <ArrowSquareOut className="w-4 h-4" />
               </Button>
               <Button
                 size="sm"
@@ -202,7 +202,7 @@ const IssueCard = memo(({ issue, expanded, onToggleExpand, t }: any) => {
               <span className="text-slate-400">{issue.user.login}</span>
              </div>
              <div className="flex items-center gap-1.5">
-               <MessageCircle className="w-3.5 h-3.5" />
+               <ChatCircle className="w-3.5 h-3.5" />
                <span>{issue.comments}</span>
              </div>
           </div>
@@ -275,7 +275,7 @@ function ModernIssuesContent() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center p-8 bg-red-500/10 rounded-2xl border border-red-500/20">
-          <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <Warning className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-white mb-2">{t('errors.issuesLoad')}</h2>
           <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">
             {t('actions.retry')}
@@ -287,8 +287,8 @@ function ModernIssuesContent() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black relative">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20 pointer-events-none" />
+      <div className="min-h-screen bg-slate-950 relative">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 relative z-10">
           {/* Header */}
@@ -324,7 +324,7 @@ function ModernIssuesContent() {
                 variant="outline"
                 className="border-slate-700 hover:bg-slate-800 text-slate-300"
               >
-                <Github className="w-4 h-4 mr-2" />
+                <GithubLogo className="w-4 h-4 mr-2" />
                 GitHub
               </Button>
               <Button 
@@ -343,7 +343,7 @@ function ModernIssuesContent() {
           <div className="sticky top-4 z-30 mb-8">
             <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-2 shadow-2xl flex flex-col md:flex-row gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <MagnifyingGlass className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input 
                   placeholder={t('issues.searchPlaceholder')}
                   value={searchTerm}
@@ -364,14 +364,14 @@ function ModernIssuesContent() {
                     onClick={() => setStateFilter('open')}
                     className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${stateFilter === 'open' ? 'bg-emerald-500/20 text-emerald-400 shadow-sm' : 'text-slate-400 hover:text-emerald-400'}`}
                   >
-                    <AlertTriangle className="w-3.5 h-3.5" />
+                    <Warning className="w-3.5 h-3.5" />
                     {t('issues.openFilter')}
                   </button>
                   <button
                     onClick={() => setStateFilter('closed')}
                     className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${stateFilter === 'closed' ? 'bg-violet-500/20 text-violet-400 shadow-sm' : 'text-slate-400 hover:text-violet-400'}`}
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <CheckCircle className="w-3.5 h-3.5" />
                     {t('issues.closedFilter')}
                   </button>
                 </div>
@@ -384,7 +384,7 @@ function ModernIssuesContent() {
                     className="px-3 py-1.5 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
                     title={t('issues.sortBy')}
                    >
-                     {sortBy === 'created' ? <Calendar className="w-4 h-4" /> : <SortDesc className="w-4 h-4" />}
+                     {sortBy === 'created' ? <Calendar className="w-4 h-4" /> : <CaretDown className="w-4 h-4" />}
                    </button>
                 </div>
               </div>
@@ -420,7 +420,7 @@ function ModernIssuesContent() {
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center bg-slate-900/30 rounded-3xl border border-slate-800 border-dashed">
                <div className="p-4 bg-slate-800/50 rounded-full mb-4">
-                 <Search className="w-8 h-8 text-slate-500" />
+                 <MagnifyingGlass className="w-8 h-8 text-slate-500" />
                </div>
                <h3 className="text-xl font-bold text-white mb-2">{t('issues.noIssuesFound')}</h3>
                <p className="text-slate-400 max-w-sm">{t('issues.tryAdjusting')}</p>

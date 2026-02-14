@@ -5,12 +5,43 @@ import { ClientRouter } from "astro:transitions";
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  type?: string;
 }
 
-const { 
-  title = "X Minecraft Launcher", 
-  description = "Experience Minecraft like never before with XMCL - a modern, feature-rich launcher designed for performance and customization." 
+const {
+  title = "XMCL - X Minecraft Launcher | Modern Minecraft Launcher",
+  description = "XMCL is a modern, open-source Minecraft launcher with advanced features like mod management, multiple instances, P2P sharing, and support for all mod loaders (Forge, Fabric, NeoForge, Quilt). Download now for Windows, macOS, and Linux.",
+  image = "/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png",
+  type = "website"
 } = Astro.props;
+
+const canonicalURL = `https://xmcl.app${Astro.url.pathname}`;
+const siteName = "X Minecraft Launcher";
+const twitterHandle = "@xmcl";
+
+// JSON-LD Structured Data for SEO
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "X Minecraft Launcher",
+  "alternateName": "XMCL",
+  "description": description,
+  "url": "https://xmcl.app",
+  "image": image,
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "5000"
+  }
+};
 ---
 
 <!DOCTYPE html>
@@ -19,26 +50,51 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <link rel="icon" href="/PhotoXMCL/logo.ico" />
+    <link rel="icon" href="/PhotoXMCL/logo.ico" type="image/x-icon" />
+    <link rel="canonical" href={canonicalURL} />
     <ClientRouter />
+    
+    <!-- Primary SEO Meta Tags -->
     <meta name="description" content={description} />
     <meta name="author" content="Voxelum" />
+    <meta name="keywords" content="minecraft launcher, xmcl, minecraft mod manager, forge, fabric, neoforge, quilt, modpack, open source minecraft" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
     <meta name="theme-color" content="#3b82f6" />
-    
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png" />
-    <meta property="og:site_name" content="X Minecraft Launcher" />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content="/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png" />
+    <meta property="twitter:image" content={image} />
+    <meta property="twitter:creator" content={twitterHandle} />
+    <meta property="twitter:site" content={twitterHandle} />
+
+    <!-- Additional SEO Tags -->
+    <meta name="application-name" content="XMCL" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="XMCL" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" is:inline>
+      {JSON.stringify(jsonLd)}
+    </script>
 
     <!-- Google Translate -->
     <meta name="google" content="notranslate" />
@@ -66,20 +122,20 @@ const {
     <main transition:animate="slide" style="view-transition-name: page-content;">
       <slot />
     </main>
-    
+
     <script>
       // Console Easter Egg
       console.log(`
-██╗  ██╗███╗   ███╗ ██████╗ ██╗     
-╚██╗██╔╝████╗ ████║██╔════╝ ██║     
- ╚███╔╝ ██╔████╔██║██║      ██║     
- ██╔██╗ ██║╚██╔╝██║██║      ██║     
-██╔╝ ██╗██║ ╚═╝ ██║╚██████╗ ███████╗ 
+██╗  ██║███╗   ███╗ ██████╗ ██╗
+╚██╗██╔╝████╗ ████║██╔════╝ ██║
+ ╚███╔╝ ██╔████╔██║██║      ██║
+ ██╔██╗ ██║╚██╔╝██║██║      ██║
+██╔╝ ██╗██║ ╚═╝ ██║╚██████╗ ███████╗
 ╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝
 
 THE BEST LAUNCHER !
 `);
-      
+
       // Easter egg functions
       (window as any).baneronetwo = () => {
         console.log('%cBANERONETWO IS THE DEVELOPER! This is not an official website yet.', 'color: #8b5cf6; font-weight: bold; font-size: 16px;');

@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Copy, Download, Maximize2, Minimize2, Code2, FileText } from 'lucide-react';
+import { X, Copy, Download, ArrowsOut, ArrowsIn, Code, FileText } from '@phosphor-icons/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
@@ -85,7 +85,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
             }`}
             style={{ 
               zIndex: 9999999,
-              background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.98) 50%, rgba(15, 23, 42, 0.98) 100%)',
+              background: 'rgba(15, 23, 42, 0.98)',
               borderRadius: isFullscreen ? '0' : '1rem'
             }}
             initial={{ opacity: 0, scale: 0.8, y: 100 }}
@@ -94,14 +94,14 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {/* Premium Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-gradient-to-r from-slate-800/60 to-slate-700/60">
+            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-slate-800/60">
               <div className="flex items-center gap-4">
                 <motion.div 
-                  className="p-3 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl border border-blue-400/30"
+                  className="p-3 bg-blue-500/20 rounded-xl border border-blue-400/30"
                   whileHover={{ scale: 1.05, rotate: [0, -5, 5, 0] }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Code2 className="w-6 h-6 text-blue-400" />
+                  <Code className="w-6 h-6 text-blue-400" />
                 </motion.div>
                 <div>
                   <h3 className="text-white font-bold text-xl">
@@ -125,7 +125,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
                 {/* Copy button */}
                 <motion.button
                   onClick={copyToClipboard}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 border border-green-500/30 hover:border-green-500/50 rounded-xl transition-all duration-300 group"
+                  className="flex items-center gap-2 px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 hover:border-green-500/50 rounded-xl transition-all duration-300 group"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -138,7 +138,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
                 {/* Download button */}
                 <motion.button
                   onClick={downloadCode}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-violet-500/20 hover:from-purple-500/30 hover:to-violet-500/30 border border-purple-500/30 hover:border-purple-500/50 rounded-xl transition-all duration-300 group"
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30 hover:border-purple-500/50 rounded-xl transition-all duration-300 group"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -151,14 +151,14 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
                 {/* Fullscreen toggle */}
                 <motion.button
                   onClick={toggleFullscreen}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30 border border-blue-500/30 hover:border-blue-500/50 rounded-xl transition-all duration-300 group"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 hover:border-blue-500/50 rounded-xl transition-all duration-300 group"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {isFullscreen ? (
-                    <Minimize2 className="w-4 h-4 text-blue-400 group-hover:text-blue-300" />
+                    <ArrowsIn className="w-4 h-4 text-blue-400 group-hover:text-blue-300" />
                   ) : (
-                    <Maximize2 className="w-4 h-4 text-blue-400 group-hover:text-blue-300" />
+                    <ArrowsOut className="w-4 h-4 text-blue-400 group-hover:text-blue-300" />
                   )}
                   <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300">
                     {isFullscreen ? 'Выйти' : 'Полный экран'}
@@ -168,7 +168,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
                 {/* Close button */}
                 <motion.button
                   onClick={onClose}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500/20 to-orange-500/20 hover:from-red-500/30 hover:to-orange-500/30 border border-red-500/30 hover:border-red-500/50 rounded-xl transition-all duration-300 group"
+                  className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-500/50 rounded-xl transition-all duration-300 group"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -182,7 +182,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
             
             {/* Code content with enhanced styling */}
             <div className="flex-1 overflow-hidden h-full">
-              <div className="h-full overflow-auto custom-scrollbar bg-gradient-to-br from-slate-900/50 to-slate-800/50">
+              <div className="h-full overflow-auto custom-scrollbar bg-slate-900/50">
                 <SyntaxHighlighter
                   language={language}
                   style={tomorrow}
@@ -215,7 +215,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
             <AnimatePresence>
               {copied && (
                 <motion.div
-                  className="absolute top-24 right-6 bg-gradient-to-r from-green-500/90 to-emerald-500/90 border border-green-400/50 text-white px-6 py-3 rounded-xl shadow-2xl shadow-green-500/20"
+                  className="absolute top-24 right-6 bg-green-500/90 border border-green-400/50 text-white px-6 py-3 rounded-xl shadow-2xl shadow-green-500/20"
                   initial={{ opacity: 0, x: 100, scale: 0.8 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 100, scale: 0.8 }}

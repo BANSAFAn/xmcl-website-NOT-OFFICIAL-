@@ -3,7 +3,7 @@ import { generateRSSFeed, downloadRSSFeed } from '@/utils/rssGenerator';
 import { getAllBlogPosts } from '@/utils/blogUtils';
 import { BlogPost } from '@/types/blog';
 import { Link } from '@/components/Link';
-import { Rss, Download, ExternalLink, Calendar, User, Tag, FileJson } from 'lucide-react';
+import { RssSimple, DownloadSimple, ArrowSquareOut, Calendar, User, Tag, FileCode } from '@phosphor-icons/react';
 import { useI18n } from '@/i18n/context';
 
 /**
@@ -86,7 +86,7 @@ const RSSFeed = () => {
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <div className="flex flex-col items-center justify-center text-center mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <Rss size={24} className="text-orange-400" />
+          <RssSimple size={24} className="text-orange-400" />
           <h1 className="text-3xl font-bold">{t.blogs.rssFeedTitle || 'XMCL Blog RSS Feed'}</h1>
         </div>
         <p className="text-lg text-white/70 mb-6">{t.blogs.rssFeedDescription || 'Subscribe to our RSS feed to stay updated with the latest blog posts'}</p>
@@ -97,16 +97,16 @@ const RSSFeed = () => {
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
             disabled={loading || !rssContent}
           >
-            <Download size={18} />
+            <DownloadSimple size={18} />
             {t.blogs.downloadXmlFeed || 'Download XML Feed'}
           </button>
-          
-          <button 
+
+          <button
             onClick={() => handleDownloadRSS('json')}
             className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
             disabled={loading || !rssContent}
           >
-            <FileJson size={18} />
+            <FileCode size={18} />
             {t.blogs.downloadJsonFeed || 'Download JSON Feed'}
           </button>
           
@@ -117,7 +117,7 @@ const RSSFeed = () => {
             className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors"
             disabled={loading || !rssContent}
           >
-            <ExternalLink size={18} />
+            <ArrowSquareOut size={18} />
             {t.blogs.viewRawXml || 'View Raw XML'}
           </a>
         </div>

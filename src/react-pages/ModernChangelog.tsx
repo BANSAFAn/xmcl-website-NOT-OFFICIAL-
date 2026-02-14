@@ -4,10 +4,10 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  Calendar, Tag, Github, Download, ChevronDown, ChevronUp,
-  ExternalLink, Search, Rocket, Copy, Check, Info, Sparkles, Filter,
-  Clock, ArrowUp, Package, Zap
-} from 'lucide-react';
+  Calendar, Tag, GithubLogo, DownloadSimple, CaretDown, CaretUp,
+  ArrowSquareOut, MagnifyingGlass, Rocket, Copy, Check, Info, Sparkle, FunnelSimple,
+  Clock, ArrowUp, Package, Lightning
+} from '@phosphor-icons/react';
 import { PageTransition } from '@/components/PageTransition';
 import { useTranslation } from '@/hooks/useTranslation';
 import ReactMarkdown from 'react-markdown';
@@ -87,14 +87,14 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
       className="group relative"
     >
       {/* Timeline connector */}
-      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-indigo-500/30 to-purple-500/10 hidden md:block" style={{ left: '23px' }} />
+      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-indigo-500/30 hidden md:block" style={{ left: '23px' }} />
       
       {/* Timeline dot */}
       <div className="absolute left-0 top-6 z-10 hidden md:flex items-center justify-center">
         <div className={`relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300
-          ${isStable 
-            ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-500/30' 
-            : 'bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-500/30'
+          ${isStable
+            ? 'bg-green-500 shadow-lg shadow-green-500/30'
+            : 'bg-amber-500 shadow-lg shadow-amber-500/30'
           }
           ${isFirst ? 'scale-110 ring-4 ring-white/20' : ''}
         `}>
@@ -104,7 +104,7 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
           {isStable ? (
             <Rocket className="w-5 h-5 text-white" />
           ) : (
-            <Zap className="w-5 h-5 text-white" />
+            <Lightning className="w-5 h-5 text-white" />
           )}
         </div>
       </div>
@@ -123,13 +123,13 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
         >
           {/* Latest badge */}
           {isFirst && (
-            <div className="absolute top-0 right-0 px-4 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-bl-xl">
+            <div className="absolute top-0 right-0 px-4 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-bl-xl">
               LATEST
             </div>
           )}
 
           {/* Glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
           <div className="relative p-5 md:p-6">
             {/* Header - Always visible */}
@@ -147,7 +147,7 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
                     </Badge>
                   ) : (
                     <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 px-2 py-0.5">
-                      <Zap className="w-3 h-3 mr-1" />
+                      <Lightning className="w-3 h-3 mr-1" />
                       Pre-release
                     </Badge>
                   )}
@@ -165,7 +165,7 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
                   </span>
                   {downloads > 0 && (
                     <span className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
-                      <Download className="w-4 h-4" />
+                      <DownloadSimple className="w-4 h-4" />
                       {formatCount(downloads)} downloads
                     </span>
                   )}
@@ -189,14 +189,14 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
                   onClick={() => window.open(release.html_url, '_blank')}
                   className="h-9 w-9 rounded-xl text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/20"
                 >
-                  <Github className="w-4 h-4" />
+                  <GithubLogo className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon"
                   className={`h-9 w-9 rounded-xl transition-all ${isExpanded ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600' : 'text-slate-400'}`}
                 >
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                  <CaretDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                 </Button>
               </div>
             </div>
@@ -227,7 +227,7 @@ const ReleaseCard = ({ release, index, isFirst }: { release: Release; index: num
                               onClick={e => e.stopPropagation()}
                               className="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-white/10 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors border border-slate-200 dark:border-white/10"
                             >
-                              <Download className="w-3.5 h-3.5" />
+                              <DownloadSimple className="w-3.5 h-3.5" />
                               {asset.name.length > 30 ? asset.name.slice(0, 27) + '...' : asset.name}
                             </a>
                           ))}
@@ -366,11 +366,11 @@ const ModernChangelogContent: React.FC = () => {
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <Badge variant="secondary" className="mb-6 px-4 py-1.5 rounded-full bg-white/50 dark:bg-white/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-white/10 shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 mr-2 fill-current" />
+                <Sparkle className="w-3.5 h-3.5 mr-2 fill-current" />
                 <span>What's New</span>
               </Badge>
               
-              <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight bg-gradient-to-b from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-6xl font-black mb-6 text-slate-900 dark:text-white">
                 {t('changelog.title') || "Changelog"}
               </h1>
               
@@ -390,7 +390,7 @@ const ModernChangelogContent: React.FC = () => {
             <div suppressHydrationWarning className="flex flex-col sm:flex-row gap-3 p-3 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-lg shadow-slate-200/50 dark:shadow-none">
               {/* Search */}
               <div className="relative flex-1 group">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                <MagnifyingGlass className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                 <input
                   type="text"
                   placeholder="Search releases..."

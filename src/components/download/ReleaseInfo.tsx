@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from 'lucide-react';
+import { ArrowSquareOut } from '@phosphor-icons/react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface ReleaseInfoProps {
@@ -26,7 +26,7 @@ export const ReleaseInfo = ({ latestRelease }: ReleaseInfoProps) => {
           className="text-blue-300 hover:text-blue-200 hover:bg-white/10 transition-all duration-300 transform hover:scale-105"
         >
           {t('downloadSection.releaseNotes')}
-          <ExternalLink className="w-4 h-4 ml-2" />
+          <ArrowSquareOut className="w-4 h-4 ml-2" />
         </Button>
       </div>
     </div>

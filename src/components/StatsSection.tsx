@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Download, Users, Code, Zap } from 'lucide-react';
+import { DownloadSimple, Users, Code, Lightning } from '@phosphor-icons/react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export const StatsSection = () => {
@@ -11,28 +11,28 @@ export const StatsSection = () => {
       icon: Code,
       number: "50K+",
       label: t('stats.linesOfCode'),
-      color: "from-blue-500/20 to-cyan-500/20",
+      color: "bg-blue-500/20",
       iconColor: "text-blue-500"
     },
     {
       icon: Users,
       number: "25K+",
       label: t('stats.activeUsers'),
-      color: "from-green-500/20 to-emerald-500/20",
+      color: "bg-green-500/20",
       iconColor: "text-green-500"
     },
     {
       icon: Download,
       number: "45+",
       label: t('stats.countries'),
-      color: "from-purple-500/20 to-violet-500/20",
+      color: "bg-purple-500/20",
       iconColor: "text-purple-500"
     },
     {
       icon: Zap,
       number: "99.9%",
       label: t('stats.uptime'),
-      color: "from-orange-500/20 to-red-500/20",
+      color: "bg-orange-500/20",
       iconColor: "text-orange-500"
     }
   ];
@@ -40,7 +40,7 @@ export const StatsSection = () => {
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
       {/* Background with subtle pattern */}
-      <div className="absolute inset-0 bg-gradient-to-r from-muted/30 via-muted/20 to-muted/30"></div>
+      <div className="absolute inset-0 bg-muted/20"></div>
       <div className="absolute inset-0 opacity-30" style={{
         backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--muted-foreground)) 1px, transparent 0)`,
         backgroundSize: '32px 32px'
@@ -51,7 +51,7 @@ export const StatsSection = () => {
           <div className="inline-flex items-center px-4 py-2 bg-secondary/10 rounded-full text-secondary-foreground font-medium text-sm mb-6">
             📊 Project Statistics
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent mb-4 md:mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4 md:mb-6">
             Numbers That Matter
           </h2>
           <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto">
@@ -63,7 +63,7 @@ export const StatsSection = () => {
           {stats.map((stat, index) => (
             <div 
               key={index}
-              className={`group relative p-4 md:p-8 bg-gradient-to-br ${stat.color} rounded-3xl border border-border/30 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 text-center overflow-hidden`}
+              className={`group relative p-4 md:p-8 ${stat.color} rounded-3xl border border-border/30 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 text-center overflow-hidden`}
               style={{ animationDelay: `${index * 150}ms` }}
             >
               {/* Animated background elements */}
@@ -78,7 +78,7 @@ export const StatsSection = () => {
                     <stat.icon className={`w-6 h-6 md:w-8 md:h-8 ${stat.iconColor}`} />
                   </div>
                 </div>
-                <div className="text-2xl md:text-4xl font-black bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent mb-2 md:mb-3">
+                <div className="text-2xl md:text-4xl font-black text-foreground mb-2 md:mb-3">
                   {stat.number}
                 </div>
                 <div className="text-muted-foreground font-medium text-xs md:text-sm">

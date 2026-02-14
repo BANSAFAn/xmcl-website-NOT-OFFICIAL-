@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { X, Info, Download, Package, Archive, Plane, Rocket, Monitor } from 'lucide-react';
+import { X, Info, DownloadSimple, Package, Archive, Airplane, Rocket, Monitor } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -11,7 +11,7 @@ interface PackageInfoModalProps {
 
 const packageInfoData = {
   'App Installer': {
-    icon: Plane,
+    icon: Airplane,
     title: 'App Installer (.exe)',
     description: 'Установщик приложения для Windows',
     features: [

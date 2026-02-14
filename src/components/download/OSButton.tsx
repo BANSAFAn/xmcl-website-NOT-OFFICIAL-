@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Zap } from "lucide-react";
+import { Lightning } from "@phosphor-icons/react";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface OSButtonProps {
@@ -27,25 +27,14 @@ export const OSButton: React.FC<OSButtonProps> = ({
       onClick={onClick}
       className={`relative px-6 py-4 rounded-2xl font-bold text-lg transition-all duration-300 overflow-hidden ${
         isSelected
-          ? `bg-gradient-to-r ${color} text-white shadow-2xl scale-105`
+          ? `bg-blue-500/20 ${color} text-white shadow-2xl scale-105`
           : "bg-slate-800/50 text-slate-400 hover:bg-slate-700/50 hover:text-white hover:scale-105"
       }`}
       whileHover={{ y: -5 }}
       whileTap={{ scale: 0.95 }}
     >
       {isSelected && (
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl -z-10"
-          animate={{
-            background: [
-              "radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 50%)",
-              "radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.2) 0%, transparent 50%)",
-              "radial-gradient(circle at 50% 20%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)",
-              "radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 50%)",
-            ]
-          }}
-          transition={{ duration: 5, repeat: Infinity }}
-        />
+        <div className="absolute inset-0 bg-blue-500/20 rounded-2xl blur-xl -z-10" />
       )}
 
       <div className="flex flex-col items-center gap-2">

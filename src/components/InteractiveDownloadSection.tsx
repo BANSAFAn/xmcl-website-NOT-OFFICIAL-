@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Github, ExternalLink, Monitor, Terminal, Laptop } from 'lucide-react';
+import { DownloadSimple, GithubLogo, ArrowSquareOut, MonitorPlay, Terminal, DeviceMobile } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -120,7 +120,7 @@ const InteractiveDownloadSection = memo(() => {
         onClick={onClick}
         className={`relative px-4 py-3 md:px-8 md:py-4 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 md:gap-3 overflow-hidden ${
           isSelected
-            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl scale-105'
+            ? 'bg-blue-600 text-white shadow-xl scale-105'
             : 'bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 border border-slate-200/50 dark:border-slate-700/50'
         }`}
         whileHover={{ scale: 1.05 }}
@@ -130,7 +130,7 @@ const InteractiveDownloadSection = memo(() => {
         <span className="text-base md:text-lg">{name}</span>
         {isSelected && (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-xl"
+            className="absolute inset-0 bg-blue-600/20 rounded-xl"
             layoutId="selectedOS"
           />
         )}
@@ -155,7 +155,7 @@ const InteractiveDownloadSection = memo(() => {
               {icon}
             </motion.div>
             
-            <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+            <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100">
               {title}
             </h3>
             
@@ -171,9 +171,9 @@ const InteractiveDownloadSection = memo(() => {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button
                 onClick={() => window.open(downloadUrl, '_blank')}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
               >
-                <Download className="w-5 h-5 mr-3" />
+                <DownloadSimple className="w-5 h-5 mr-3" />
                 {t('downloadSection.download')}
               </Button>
             </motion.div>
@@ -221,12 +221,12 @@ const InteractiveDownloadSection = memo(() => {
       ref={sectionRef}
       className="py-12 md:py-20 px-4 relative overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
+      <div className="absolute inset-0 bg-slate-50 dark:bg-slate-950" />
       
       <div className="container mx-auto relative z-10">
         <div className="text-center mb-10 md:mb-16">
           <motion.h2 
-            className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent"
+            className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-blue-600"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -249,7 +249,7 @@ const InteractiveDownloadSection = memo(() => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Badge variant="secondary" className="text-lg py-2 px-4 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
+            <Badge variant="secondary" className="text-lg py-2 px-4 bg-blue-100 dark:bg-blue-900/30">
               {t('downloadSection.version')} {latestRelease.tag_name}
             </Badge>
             <Badge variant="outline" className="text-lg py-2 px-4">
@@ -269,7 +269,7 @@ const InteractiveDownloadSection = memo(() => {
               <OSButton
                 id="windows"
                 name="Windows"
-                icon={<Monitor />}
+                icon={<MonitorPlay />}
                 isSelected={selectedOS === 'windows'}
                 onClick={() => {
                   setSelectedOS('windows');
@@ -279,7 +279,7 @@ const InteractiveDownloadSection = memo(() => {
               <OSButton
                 id="macos"
                 name="macOS"
-                icon={<Laptop />}
+                icon={<DeviceMobile />}
                 isSelected={selectedOS === 'macos'}
                 onClick={() => {
                   setSelectedOS('macos');
@@ -315,7 +315,7 @@ const InteractiveDownloadSection = memo(() => {
                   key={asset.id}
                   title={asset.name.includes('.exe') ? 'Windows Installer' : 'Windows Archive'}
                   description={asset.name}
-                  icon={<Monitor />}
+                  icon={<MonitorPlay />}
                   downloadUrl={asset.browser_download_url}
                   size={Math.round(asset.size / 1024 / 1024)}
                   downloads={asset.download_count}
@@ -339,7 +339,7 @@ const InteractiveDownloadSection = memo(() => {
                   key={asset.id}
                   title="macOS Package"
                   description={asset.name}
-                  icon={<Laptop />}
+                  icon={<DeviceMobile />}
                   downloadUrl={asset.browser_download_url}
                   size={Math.round(asset.size / 1024 / 1024)}
                   downloads={asset.download_count}
@@ -376,10 +376,10 @@ const InteractiveDownloadSection = memo(() => {
                 if (asset.isExternal) {
                   if (asset.name.includes('AUR')) {
                     packageType = 'AUR Package';
-                    icon = <ExternalLink />;
+                    icon = <ArrowSquareOut />;
                   } else if (asset.name.includes('Flathub')) {
                     packageType = 'Flathub';
-                    icon = <ExternalLink />;
+                    icon = <ArrowSquareOut />;
                   }
                 } else {
                   if (asset.name.includes('.deb')) packageType = 'Debian Package';
@@ -417,18 +417,18 @@ const InteractiveDownloadSection = memo(() => {
                 onClick={() => window.open(latestRelease.html_url, '_blank')}
                 className="bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
               >
-                <ExternalLink className="w-5 h-5 mr-3" />
+                <ArrowSquareOut className="w-5 h-5 mr-3" />
                 {t('downloadSection.releaseNotes')}
               </Button>
             </motion.div>
-            
+
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 variant="outline"
                 onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/releases', '_blank')}
                 className="bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
               >
-                <Github className="w-5 h-5 mr-3" />
+                <GithubLogo className="w-5 h-5 mr-3" />
                 {t('downloadMessages.viewAllReleases')}
               </Button>
             </motion.div>

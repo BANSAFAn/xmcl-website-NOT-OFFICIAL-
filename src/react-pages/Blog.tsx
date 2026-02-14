@@ -5,18 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
-  Search,
+  MagnifyingGlass,
   Calendar,
   User,
   ArrowRight,
-  Sparkles,
+  Sparkle,
   FileText,
   X,
   ArrowLeft,
   Clock,
-  Filter,
-  Rss,
-} from "lucide-react";
+  FunnelSimple,
+  RssSimple,
+} from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
@@ -59,11 +59,11 @@ const BlogHeader = React.memo(() => {
     <header className="relative border-b border-white/20 bg-white/50 py-10 md:py-16 dark:bg-slate-900/50 contain-layout">
       <div className="container mx-auto px-4 text-center">
         <div className="inline-flex items-center gap-2 mb-4 bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium">
-          <Rss className="h-4 w-4" />
+          <RssSimple className="h-4 w-4" />
           <span>Latest Updates</span>
         </div>
 
-        <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-black text-blue-600">
           {t("blog.title")}
         </h1>
 
@@ -85,7 +85,7 @@ const SearchControls = React.memo(({
 }: any) => (
   <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-white/20 contain-content">
     <div className="relative flex-1 max-w-md">
-      <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+      <MagnifyingGlass className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
       <Input
         placeholder={t("blog.searchPlaceholder")}
         value={searchQuery}
@@ -98,7 +98,7 @@ const SearchControls = React.memo(({
       onClick={() => setShowFilters(!showFilters)}
       className="rounded-xl h-12"
     >
-      <Filter className="mr-2 h-4 w-4" />
+      <FunnelSimple className="mr-2 h-4 w-4" />
       {t("blog.filterByCategory")}
     </Button>
   </div>
@@ -135,14 +135,14 @@ const PostCard = React.memo(({ post, featured, onClick, index }: {
         onClick={onClick}
         className="group relative cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80 h-full flex flex-col"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:via-purple-500/5 group-hover:to-pink-500/5 group-hover:opacity-100" />
-        <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ padding: '2px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899)', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
+        <div className="absolute inset-0 bg-blue-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute inset-0 rounded-2xl border-2 border-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ padding: '2px', background: '#3b82f6', WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }} />
 
         {featured && (
           <div className="absolute -right-12 -top-12 h-24 w-24 pointer-events-none">
             <div className="absolute bottom-6 right-6">
-              <Badge className="bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg">
-                <Sparkles className="mr-1 h-3 w-3" />
+              <Badge className="bg-amber-400 text-white shadow-lg">
+                <Sparkle className="mr-1 h-3 w-3" />
                 Featured
               </Badge>
             </div>
@@ -150,7 +150,7 @@ const PostCard = React.memo(({ post, featured, onClick, index }: {
         )}
 
         <div className="relative z-10 flex flex-col h-full">
-          <h3 className="mb-3 text-xl font-bold text-slate-900 transition-colors group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent dark:text-white">
+          <h3 className="mb-3 text-xl font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white">
             {post.title}
           </h3>
 
@@ -164,7 +164,7 @@ const PostCard = React.memo(({ post, featured, onClick, index }: {
                 <Badge
                   key={tag}
                   variant="secondary"
-                  className="bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 dark:from-blue-900/30 dark:to-purple-900/30 dark:text-blue-300"
+                  className="bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
                 >
                   {tag}
                 </Badge>
@@ -223,7 +223,7 @@ const PostDetail = ({ post, content, onBack }: { post: any; content: string; onB
 
       <article className="rounded-3xl bg-white/90 p-8 md:p-12 shadow-2xl dark:bg-slate-800/90 border border-white/20">
         <header className="mb-10 border-b border-slate-200/50 pb-8 dark:border-slate-700/50">
-          <h1 className="mb-6 text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="mb-6 text-4xl md:text-5xl font-black text-blue-600">
             {post.title}
           </h1>
           <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500 dark:text-slate-400">
@@ -242,7 +242,7 @@ const PostDetail = ({ post, content, onBack }: { post: any; content: string; onB
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {post.tags?.map((tag: string) => (
-              <Badge key={tag} className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+              <Badge key={tag} className="bg-blue-500 text-white">
                 {tag}
               </Badge>
             ))}
@@ -301,7 +301,7 @@ const BlogContent = () => {
   // Detail View Render
   if (id && selectedPost) {
     return (
-      <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8">
+      <div className="relative min-h-screen bg-slate-50 dark:bg-slate-950 py-8">
         <FloatingOrbs />
         <div className="container relative z-10 mx-auto px-4">
           <PostDetail post={selectedPost} content={postContent || ""} onBack={() => { window.location.hash = ''; }} />
@@ -312,7 +312,7 @@ const BlogContent = () => {
 
   // List View Render
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="relative min-h-screen bg-slate-50 dark:bg-slate-950">
       <FloatingOrbs />
 
       {/* LCP OPTIMIZATION:
@@ -349,7 +349,7 @@ const BlogContent = () => {
                         variant={selectedTags.includes(tag) ? "default" : "outline"}
                         size="sm"
                         onClick={() => toggleTag(tag)}
-                        className={`rounded-full ${selectedTags.includes(tag) ? "bg-gradient-to-r from-blue-500 to-purple-500 border-0" : ""}`}
+                        className={`rounded-full ${selectedTags.includes(tag) ? "bg-blue-500 border-0" : ""}`}
                       >
                         {tag}
                       </Button>

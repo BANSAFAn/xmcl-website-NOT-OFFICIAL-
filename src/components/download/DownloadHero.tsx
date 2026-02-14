@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Download, Laptop, Apple, Monitor } from 'lucide-react';
+import { ArrowRight, DownloadSimple, Laptop, AppleLogo, MonitorPlay } from '@phosphor-icons/react';
 import type { GitHubRelease } from './types';
 
 interface DownloadHeroProps {
@@ -18,8 +18,8 @@ export const DownloadHero: React.FC<DownloadHeroProps> = ({ latestRelease, detec
   const getOSIcon = () => {
     switch (detectedOS) {
       case 'windows': return <Laptop className="w-6 h-6 mr-2" />;
-      case 'macos': return <Apple className="w-6 h-6 mr-2" />;
-      case 'linux': return <Monitor className="w-6 h-6 mr-2" />;
+      case 'macos': return <AppleLogo className="w-6 h-6 mr-2" />;
+      case 'linux': return <MonitorPlay className="w-6 h-6 mr-2" />;
     }
   };
 
@@ -52,7 +52,7 @@ export const DownloadHero: React.FC<DownloadHeroProps> = ({ latestRelease, detec
           </Badge>
           
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 md:mb-8 tracking-tight transform-gpu">
-            <span className="bg-gradient-to-r from-white via-blue-100 to-slate-300 bg-clip-text text-transparent">
+            <span className="text-white">
               {t('downloadMessages.downloadTitle')}
             </span>
           </h1>
@@ -65,11 +65,11 @@ export const DownloadHero: React.FC<DownloadHeroProps> = ({ latestRelease, detec
             <Button 
               size="lg" 
               onClick={onDownload}
-              className="h-14 px-8 md:h-16 md:px-10 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-xl shadow-blue-500/20 rounded-2xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+              className="h-14 px-8 md:h-16 md:px-10 text-base md:text-lg bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-500/20 rounded-2xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
             >
               {getOSIcon()}
               {t('downloadMessages.download')} {getOSName()}
-              <Download className="w-5 h-5 ml-3" />
+              <DownloadSimple className="w-5 h-5 ml-3" />
             </Button>
             
             <span className="text-sm text-slate-500">

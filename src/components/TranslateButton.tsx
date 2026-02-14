@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { Languages, Check, Loader2, RotateCcw } from 'lucide-react';
+import { Translate, Check, Spinner, ArrowCounterClockwise } from '@phosphor-icons/react';
 import { useTranslation } from '@/contexts/TranslationContext';
 
 interface Language {
@@ -151,7 +151,7 @@ export function TranslateButton({
         disabled
         className="rounded-xl bg-white/60 dark:bg-slate-800/60 border-white/20"
       >
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        <Spinner className="mr-2 h-4 w-4 animate-spin" />
         {t('translate.translating', 'Translating...')}
       </Button>
     );
@@ -163,9 +163,9 @@ export function TranslateButton({
         <Button
           variant="outline"
           onClick={onReset}
-          className="rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-800 hover:from-green-100 hover:to-emerald-100 dark:hover:from-green-900/30 dark:hover:to-emerald-900/30"
+          className="rounded-xl bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/30"
         >
-          <RotateCcw className="mr-2 h-4 w-4 text-green-600 dark:text-green-400" />
+          <ArrowCounterClockwise className="mr-2 h-4 w-4 text-green-600 dark:text-green-400" />
           <span className="text-green-700 dark:text-green-300">
             {t('translate.showOriginal', 'Show Original')}
           </span>
@@ -187,7 +187,7 @@ export function TranslateButton({
             variant="outline"
             className="rounded-xl bg-white/60 dark:bg-slate-800/60 border-white/20 hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all"
           >
-            <Languages className="mr-2 h-4 w-4" />
+            <Translate className="mr-2 h-4 w-4" />
             {t('translate.button', 'Translate')}
           </Button>
         </DropdownMenuTrigger>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import {
-  Github, MessageCircle, Heart, Coffee, Home, BookOpen,
-  FileText, Bug, Download, Zap, Shield, ArrowRight
-} from 'lucide-react';
+  GithubLogo, ChatCircle, Heart, Coffee, House, BookOpen,
+  FileText, Bug, DownloadSimple, Lightning, Shield, ArrowRight
+} from '@phosphor-icons/react';
 import { useTranslation } from '@/hooks/useTranslation';
 // Reverted back to the custom Link component to fix the CommonJS import error
 import { Link } from '@/components/Link';
@@ -35,15 +35,15 @@ const sponsors = [
 ];
 
 const socialLinks = [
-  { icon: Github, href: 'https://github.com/voxelum/x-minecraft-launcher', label: 'GitHub' },
-  { icon: MessageCircle, href: 'https://discord.gg/W5XVwYY7GQ', label: 'Discord' },
+  { icon: GithubLogo, href: 'https://github.com/voxelum/x-minecraft-launcher', label: 'GitHub' },
+  { icon: ChatCircle, href: 'https://discord.gg/W5XVwYY7GQ', label: 'Discord' },
   { icon: Heart, href: 'https://afdian.com/@ci010', label: 'Afdian' },
   { icon: Coffee, href: 'https://ko-fi.com/ci010', label: 'Ko-fi' },
 ];
 
 const features = [
-  { icon: Zap, label: 'Lightning Fast' },
-  { icon: Shield, label: 'Secure' },
+  { icon: Lightning, label: 'highPerformance' },
+  { icon: Shield, label: 'secure' },
 ];
 
 const AnimatedLink = React.memo(({
@@ -179,7 +179,7 @@ export const Footer = React.memo(({ onDownloadClick }: FooterProps) => {
   }, []);
 
   const quickLinks = React.useMemo(() => [
-    { icon: Home, label: t('nav.home'), to: '/' },
+    { icon: House, label: t('nav.home'), to: '/' },
     { icon: BookOpen, label: t('nav.guide'), to: '/guide' },
     { icon: FileText, label: t('nav.changelog'), to: '/changelog' },
     { icon: Bug, label: t('nav.issues'), to: '/issues' },
@@ -225,7 +225,7 @@ export const Footer = React.memo(({ onDownloadClick }: FooterProps) => {
                 </h2>
                 <div className="flex items-center gap-2 mt-2">
                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20">
-                    {loading ? 'Loading...' : (latestVersion || 'Latest')}
+                    {loading ? t('common.loading') : (latestVersion || t('lastVersion'))}
                   </span>
                 </div>
               </div>
@@ -244,7 +244,7 @@ export const Footer = React.memo(({ onDownloadClick }: FooterProps) => {
                   className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10 text-xs font-medium"
                 >
                   <feature.icon className="w-3.5 h-3.5" />
-                  {feature.label}
+                  {t(`footer.features.${feature.label}`)}
                 </div>
               ))}
             </div>
@@ -252,12 +252,12 @@ export const Footer = React.memo(({ onDownloadClick }: FooterProps) => {
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button asChild className="h-11 px-6 rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all bg-indigo-600 hover:bg-indigo-700 text-white border-0">
                 <Link to="/#download-section" onClick={onDownloadClick}>
-                  <Download className="w-4 h-4 mr-2" />
+                  <DownloadSimple className="w-4 h-4 mr-2" />
                   {t('footer.downloadXMCL')}
                 </Link>
               </Button>
               <Button variant="outline" className="h-11 px-6 rounded-xl border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-200" onClick={() => window.open('https://github.com/voxelum/x-minecraft-launcher/releases', '_blank')}>
-                <Github className="w-4 h-4 mr-2" />
+                <GithubLogo className="w-4 h-4 mr-2" />
                 {t('footer.viewReleases')}
               </Button>
             </div>
@@ -288,7 +288,7 @@ export const Footer = React.memo(({ onDownloadClick }: FooterProps) => {
         >
           <div className="text-center mb-8">
             <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">
-              Sponsored by
+              {t('sponsoredBy')}
             </h3>
           </div>
 
@@ -344,8 +344,8 @@ export const Footer = React.memo(({ onDownloadClick }: FooterProps) => {
              <div className="hidden sm:block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
 
              <div className="flex gap-4">
-                <span>By <span className="font-medium text-slate-700 dark:text-slate-200">CIO10</span></span>
-                <span>Web <span className="font-medium text-slate-700 dark:text-slate-200">Baneronetwo</span></span>
+                <span>{t('footer.launcherBy')} <span className="font-medium text-slate-700 dark:text-slate-200">CIO10</span></span>
+                <span>{t('footer.websiteBy')} <span className="font-medium text-slate-700 dark:text-slate-200">Baneronetwo</span></span>
              </div>
           </div>
         </motion.div>

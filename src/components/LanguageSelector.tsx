@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { Input } from "@/components/ui/input";
-import { Globe, Search, Check, Sparkles, ArrowLeft, X } from "lucide-react";
+import { Globe, MagnifyingGlass, Check, Sparkle, ArrowLeft, X } from "@phosphor-icons/react";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { languageConfigs } from "@/i18n/languageConfigs";
 import { motion, AnimatePresence } from "framer-motion";
@@ -93,7 +93,7 @@ export const LanguageTrigger = ({ onClick }: { onClick?: () => void }) => {
     >
       <div className="flex items-center gap-2">
         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/50 dark:bg-black/20 text-slate-600 dark:text-slate-300">
-          {autoTranslateLanguage ? <Sparkles className="h-3.5 w-3.5 text-yellow-500" /> : <Globe className="h-3.5 w-3.5" />}
+          {autoTranslateLanguage ? <Sparkle className="h-3.5 w-3.5 text-yellow-500" /> : <Globe className="h-3.5 w-3.5" />}
         </div>
         <span className="truncate">
           {autoLangDisplay || currentLanguage?.name || "English"}
@@ -190,7 +190,7 @@ export const LanguagePanel = ({ onBack, onClose }: { onBack: () => void; onClose
       {/* Search */}
       <div className="p-3 border-b border-black/5 dark:border-white/5">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+          <MagnifyingGlass className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
           <Input
             placeholder={t("language.searchPlaceholder", "Search...")}
             value={searchTerm}
@@ -220,7 +220,7 @@ export const LanguagePanel = ({ onBack, onClose }: { onBack: () => void; onClose
               : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
-          <Sparkles className="w-3 h-3" />
+          <Sparkle className="w-3 h-3" />
           Auto ({AUTO_TRANSLATE_LANGUAGES.length})
         </button>
       </div>
@@ -289,7 +289,7 @@ export const LanguagePanel = ({ onBack, onClose }: { onBack: () => void; onClose
                         }
                       `}
                     >
-                      <Sparkles className="h-3 w-3 text-yellow-500 flex-shrink-0" />
+                      <Sparkle className="h-3 w-3 text-yellow-500 flex-shrink-0" />
                       <span className="flex-1">{lang.nativeName}</span>
                       <span className="text-xs text-slate-400">{lang.name}</span>
                       {isSelected && <Check className="h-4 w-4 flex-shrink-0 text-yellow-500" />}

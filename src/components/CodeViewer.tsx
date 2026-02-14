@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { X, Code, Folder, File, ExternalLink } from 'lucide-react';
+import { X, Code, Folder, File, ArrowSquareOut } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 
 interface FileTree {
@@ -91,7 +91,7 @@ export const CodeViewer = ({ isOpen, onClose }: CodeViewerProps) => {
               onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher', '_blank')}
               className="text-gray-400 hover:text-white border-gray-600"
             >
-              <ExternalLink className="w-4 h-4 mr-2" />
+              <ArrowSquareOut className="w-4 h-4 mr-2" />
               GitHub
             </Button>
             <Button

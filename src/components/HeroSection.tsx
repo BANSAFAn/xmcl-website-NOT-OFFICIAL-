@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useQuery } from '@tanstack/react-query';
-import { Star, Download, GitBranch, Activity, ArrowRight, Zap, ExternalLink, TrendingUp, Package, Github } from 'lucide-react';
+import { Star, DownloadSimple, GitBranch, Pulse, ArrowRight, Lightning, ArrowSquareOut, TrendUp, Package, GithubLogo } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from '@/components/Link';
@@ -75,7 +75,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
           >
             {/* Status Badge */}
             <motion.div
-              className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 mb-4 md:mb-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full border border-blue-500/20"
+              className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 mb-4 md:mb-6 bg-blue-500/10 rounded-full border border-blue-500/20"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -93,7 +93,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <span className="inline-block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="text-blue-600">
                 {t('home.heroTitle')}
               </span>
             </motion.h1>
@@ -117,13 +117,13 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
             >
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link to="/download">
-                  <Button size="lg" className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-5 md:px-8 md:py-6 text-base md:text-lg">
+                  <Button size="lg" className="w-full sm:w-auto group relative overflow-hidden bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-5 md:px-8 md:py-6 text-base md:text-lg">
                     <span className="relative z-10 flex items-center justify-center gap-2">
-                      <Download className="w-5 h-5 group-hover:animate-bounce" />
+                      <DownloadSimple className="w-5 h-5 group-hover:animate-bounce" />
                       {t('home.getStarted')}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </Button>
                 </Link>
               </motion.div>
@@ -152,7 +152,7 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
                 {t('home.crossPlatform')}
               </Badge>
               <Badge variant="outline" className="px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm bg-white/50 dark:bg-slate-800/50">
-                <Zap className="w-3 h-3 md:w-4 md:h-4 mr-1 text-yellow-500" />
+                <Lightning className="w-3 h-3 md:w-4 md:h-4 mr-1 text-yellow-500" />
                 {t('home.highPerformance')}
               </Badge>
             </motion.div>
@@ -167,12 +167,12 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
           >
             {/* Downloads Card */}
             <motion.div
-              className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-2xl p-6 border border-blue-500/20 shadow-lg"
+              className="bg-blue-500/10 rounded-2xl p-6 border border-blue-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
-                <Download className="w-8 h-8 text-blue-500" />
-                <TrendingUp className="w-5 h-5 text-blue-400" />
+                <DownloadSimple className="w-8 h-8 text-blue-500" />
+                <TrendUp className="w-5 h-5 text-blue-400" />
               </div>
               <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 {isLoading ? (
@@ -186,12 +186,12 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
 
             {/* Stars Card */}
             <motion.div
-              className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl p-6 border border-yellow-500/20 shadow-lg"
+              className="bg-yellow-500/10 rounded-2xl p-6 border border-yellow-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
                 <Star className="w-8 h-8 text-yellow-500" />
-                <ExternalLink className="w-5 h-5 text-yellow-400" />
+                <ArrowSquareOut className="w-5 h-5 text-yellow-400" />
               </div>
               <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 {isLoading ? (
@@ -205,12 +205,12 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
 
             {/* Forks Card */}
             <motion.div
-              className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-500/20 shadow-lg"
+              className="bg-purple-500/10 rounded-2xl p-6 border border-purple-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
                 <GitBranch className="w-8 h-8 text-purple-500" />
-                <Activity className="w-5 h-5 text-purple-400" />
+                <Pulse className="w-5 h-5 text-purple-400" />
               </div>
               <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 {isLoading ? (
@@ -224,12 +224,12 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
 
             {/* Issues Card */}
             <motion.div
-              className="bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-2xl p-6 border border-red-500/20 shadow-lg"
+              className="bg-red-500/10 rounded-2xl p-6 border border-red-500/20 shadow-lg"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center justify-between mb-4">
-                <Activity className="w-8 h-8 text-red-500" />
-                <ExternalLink className="w-5 h-5 text-red-400" />
+                <Pulse className="w-8 h-8 text-red-500" />
+                <ArrowSquareOut className="w-5 h-5 text-red-400" />
               </div>
               <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 {isLoading ? (
@@ -256,9 +256,9 @@ export const HeroSection = ({ onDownloadClick }: HeroSectionProps) => {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-white/50 dark:bg-slate-800/50 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 transition-colors"
           >
-            <Github className="w-5 h-5" />
+            <GithubLogo className="w-5 h-5" />
             {t('home.viewOnGitHub')}
-            <ExternalLink className="w-4 h-4" />
+            <ArrowSquareOut className="w-4 h-4" />
           </a>
         </motion.div>
       </div>

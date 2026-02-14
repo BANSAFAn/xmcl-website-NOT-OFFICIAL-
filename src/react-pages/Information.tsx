@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useQuery } from '@tanstack/react-query';
-import { 
-  Download, Globe, Shield, Users, Package, Server, HardDrive, 
-  UserCheck, Code, Sparkles, Star, ChevronRight, Zap, ShieldCheck, 
-  Cpu, Database, Globe2, Layers, Heart, Github, ExternalLink, 
-  Copy, Check, ChevronLeft, ArrowRight, Play
-} from 'lucide-react';
+import {
+  DownloadSimple, Globe, Shield, Users, Package, HardDrive,
+  UserCheck, Code, Sparkle, Star, CaretRight, Lightning, ShieldCheck,
+  Cpu, Database, GlobeSimple, Layers, Heart, GithubLogo, ArrowSquareOut,
+  Copy, Check, CaretLeft, ArrowRight
+} from '@phosphor-icons/react';
 import { AppShell } from '@/components/AppShell';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -41,60 +41,60 @@ const CopyButton = ({ text }: { text: string }) => {
 
 // Feature card data with different sizes for bento grid
 const features = [
-  { 
-    icon: Download, 
-    title: 'Smart Downloads', 
+  {
+    icon: DownloadSimple,
+    title: 'Smart Downloads',
     desc: 'Auto-download Minecraft, Forge, Fabric, Quilt, OptiFine, and JVM from official or third-party mirrors.',
-    gradient: 'from-blue-500 to-cyan-500',
+    gradient: 'bg-blue-500',
     size: 'large' // spans 2 columns
   },
-  { 
-    icon: HardDrive, 
-    title: 'Disk Optimization', 
+  {
+    icon: HardDrive,
+    title: 'Disk Optimization',
     desc: 'Hard/symbolic links keep your disk usage minimal. No duplicate mods!',
-    gradient: 'from-green-500 to-emerald-500',
+    gradient: 'bg-green-500',
     size: 'normal'
   },
-  { 
-    icon: Globe2, 
-    title: 'Cross Platform', 
+  {
+    icon: GlobeSimple,
+    title: 'Cross Platform',
     desc: 'Windows 10/11, macOS, and Linux support.',
-    gradient: 'from-purple-500 to-pink-500',
+    gradient: 'bg-purple-500',
     size: 'normal'
   },
-  { 
-    icon: Users, 
-    title: 'Multi-Account', 
+  {
+    icon: Users,
+    title: 'Multi-Account',
     desc: 'Microsoft, Mojang, ely.by, and littleskin.cn support.',
-    gradient: 'from-amber-500 to-orange-500',
+    gradient: 'bg-amber-500',
     size: 'normal'
   },
-  { 
-    icon: Server, 
-    title: 'P2P Multiplayer', 
+  {
+    icon: Server,
+    title: 'P2P Multiplayer',
     desc: 'Play LAN games with friends anywhere in the world!',
-    gradient: 'from-red-500 to-rose-500',
+    gradient: 'bg-red-500',
     size: 'large'
   },
-  { 
-    icon: ShieldCheck, 
-    title: 'Code Signed', 
+  {
+    icon: ShieldCheck,
+    title: 'Code Signed',
     desc: 'APPX installer with no SmartScreen warnings.',
-    gradient: 'from-indigo-500 to-violet-500',
+    gradient: 'bg-indigo-500',
     size: 'normal'
   },
-  { 
-    icon: Database, 
-    title: 'Instance Manager', 
+  {
+    icon: Database,
+    title: 'Instance Manager',
     desc: 'Unlimited instances with different configs.',
-    gradient: 'from-pink-500 to-fuchsia-500',
+    gradient: 'bg-pink-500',
     size: 'normal'
   },
-  { 
-    icon: Heart, 
-    title: 'Open Source', 
+  {
+    icon: Heart,
+    title: 'Open Source',
     desc: 'Community driven with active development.',
-    gradient: 'from-rose-500 to-pink-500',
+    gradient: 'bg-rose-500',
     size: 'normal'
   }
 ];
@@ -115,7 +115,7 @@ const ContributorCarousel = ({ contributors }: { contributors: Contributor[] }) 
         onClick={() => scroll('left')}
         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2"
       >
-        <ChevronLeft className="w-5 h-5" />
+        <CaretLeft className="w-5 h-5" />
       </button>
       
       <div
@@ -138,7 +138,7 @@ const ContributorCarousel = ({ contributors }: { contributors: Contributor[] }) 
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end justify-center pb-2">
+              <div className="absolute inset-0 bg-black/80 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end justify-center pb-2">
                 <span className="text-xs text-white font-medium truncate px-1">{contributor.login}</span>
               </div>
             </div>
@@ -153,7 +153,7 @@ const ContributorCarousel = ({ contributors }: { contributors: Contributor[] }) 
         onClick={() => scroll('right')}
         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2"
       >
-        <ChevronRight className="w-5 h-5" />
+        <CaretRight className="w-5 h-5" />
       </button>
     </div>
   );
@@ -222,7 +222,7 @@ const InformationContent: React.FC = () => {
             className="text-center mb-16 md:mb-24"
           >
             <div className="relative inline-block mb-8">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl blur-3xl opacity-40 scale-150" />
+              <div className="absolute inset-0 bg-indigo-500 rounded-3xl blur-3xl opacity-40 scale-150" />
               <img
                 src="https://github.com/Voxelum/x-minecraft-launcher/raw/master/xmcl-electron-app/icons/dark@256x256.png"
                 alt="XMCL Logo"
@@ -230,7 +230,7 @@ const InformationContent: React.FC = () => {
               />
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-slate-900 dark:text-white">
               X Minecraft Launcher
             </h1>
             
@@ -273,9 +273,9 @@ const InformationContent: React.FC = () => {
                 href="https://xmcl.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-bold text-lg hover:from-indigo-500 hover:to-purple-500 transition-all shadow-xl shadow-indigo-500/25 hover:scale-105"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg hover:bg-indigo-500 transition-all shadow-xl shadow-indigo-500/25 hover:scale-105"
               >
-                <Download className="w-5 h-5" />
+                <DownloadSimple className="w-5 h-5" />
                 Download
                 <ArrowRight className="w-5 h-5" />
               </a>
@@ -285,7 +285,7 @@ const InformationContent: React.FC = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-white/80 dark:bg-white/10 text-slate-900 dark:text-white rounded-2xl font-bold text-lg hover:bg-white dark:hover:bg-white/20 transition-all border border-slate-200 dark:border-white/10"
               >
-                <Github className="w-5 h-5" />
+                <GithubLogo className="w-5 h-5" />
                 GitHub
               </a>
             </div>
@@ -300,7 +300,7 @@ const InformationContent: React.FC = () => {
             className="mb-16 md:mb-24"
           >
             <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
-              <Zap className="w-7 h-7 text-yellow-500" />
+              <Lightning className="w-7 h-7 text-yellow-500" />
               Quick Install
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -344,7 +344,7 @@ const InformationContent: React.FC = () => {
             className="mb-16 md:mb-24"
           >
             <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
-              <Sparkles className="w-7 h-7 text-purple-500" />
+              <Sparkle className="w-7 h-7 text-purple-500" />
               {t('information.features.title')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -359,7 +359,7 @@ const InformationContent: React.FC = () => {
                     ${feature.size === 'large' ? 'sm:col-span-2' : ''}
                   `}
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} p-2.5 mb-4 group-hover:scale-110 transition-transform`}>
+                  <div className={`w-12 h-12 rounded-xl ${feature.gradient} p-2.5 mb-4 group-hover:scale-110 transition-transform`}>
                     <feature.icon className="w-full h-full text-white" />
                   </div>
                   <h3 className="font-bold text-slate-900 dark:text-white mb-2 text-lg">{feature.title}</h3>
@@ -411,7 +411,7 @@ const InformationContent: React.FC = () => {
                     <h3 className="font-bold text-slate-900 dark:text-white truncate">{sponsor.name}</h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{sponsor.desc}</p>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                  <ArrowSquareOut className="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                 </a>
               ))}
             </div>

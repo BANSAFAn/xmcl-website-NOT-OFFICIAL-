@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from "react";
 import {
-  Github,
-  ExternalLink,
-  Loader2,
-  AlertCircle,
-} from "lucide-react";
+  GithubLogo,
+  ArrowSquareOut,
+  Spinner,
+  Warning,
+} from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useQuery } from "@tanstack/react-query";
@@ -167,7 +167,7 @@ const NewDownloadSection = () => {
   if (isLoading) {
     return (
       <section className="min-h-screen flex flex-col items-center justify-center pt-24 md:pt-20">
-        <Loader2 className="w-10 h-10 md:w-12 md:h-12 animate-spin text-blue-500 mb-4" />
+        <Spinner className="w-10 h-10 md:w-12 md:h-12 animate-spin text-blue-500 mb-4" />
         <p className="text-slate-400 text-sm md:text-base">{t("downloadMessages.loadingReleases") || "Loading releases..."}</p>
       </section>
     );
@@ -178,14 +178,14 @@ const NewDownloadSection = () => {
     return (
       <section className="min-h-screen flex flex-col items-center justify-center pt-24 md:pt-20 px-4 text-center">
         <div className="p-6 md:p-8 rounded-3xl bg-red-500/10 border border-red-500/20 max-w-md w-full">
-            <AlertCircle className="w-10 h-10 md:w-12 md:h-12 text-red-400 mx-auto mb-4" />
+            <Warning className="w-10 h-10 md:w-12 md:h-12 text-red-400 mx-auto mb-4" />
             <h3 className="text-lg md:text-xl font-bold text-white mb-2">{t("downloadMessages.errorTitle") || "Unable to load releases"}</h3>
             <p className="text-slate-400 mb-6">{t("downloadMessages.errorDescription") || "Please try again later or visit our GitHub."}</p>
             <Button
                 onClick={() => window.open("https://github.com/Voxelum/x-minecraft-launcher/releases", "_blank")}
                 className="bg-red-500 hover:bg-red-600 text-white"
             >
-                <Github className="w-4 h-4 mr-2" />
+                <GithubLogo className="w-4 h-4 mr-2" />
                 {t("downloadMessages.openGitHub") || "Open GitHub"}
             </Button>
         </div>
@@ -217,7 +217,7 @@ const NewDownloadSection = () => {
               onClick={() => window.open(latestRelease.html_url, "_blank")}
               className="border-slate-800 hover:bg-slate-900 text-slate-300"
             >
-              <ExternalLink className="w-4 h-4 mr-2" />
+              <ArrowSquareOut className="w-4 h-4 mr-2" />
               {t("downloadMessages.releaseNotes")}
             </Button>
             <Button
@@ -225,7 +225,7 @@ const NewDownloadSection = () => {
               onClick={() => window.open("https://github.com/Voxelum/x-minecraft-launcher/releases", "_blank")}
               className="border-slate-800 hover:bg-slate-900 text-slate-300"
             >
-              <Github className="w-4 h-4 mr-2" />
+              <GithubLogo className="w-4 h-4 mr-2" />
               {t("downloadMessages.allReleases")}
             </Button>
          </div>

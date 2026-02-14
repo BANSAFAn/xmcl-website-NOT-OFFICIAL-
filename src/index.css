@@ -107,14 +107,7 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: linear-gradient(
-      135deg,
-      hsl(220 70% 97%) 0%,
-      hsl(240 60% 96%) 25%,
-      hsl(260 50% 97%) 50%,
-      hsl(280 40% 98%) 75%,
-      hsl(300 30% 99%) 100%
-    );
+    background: hsl(240 60% 97%);
     pointer-events: none;
   }
 
@@ -127,14 +120,7 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: linear-gradient(
-      135deg,
-      hsl(222 84% 4.9%) 0%,
-      hsl(230 70% 8%) 25%,
-      hsl(240 60% 6%) 50%,
-      hsl(250 70% 7%) 75%,
-      hsl(260 80% 5%) 100%
-    );
+    background: hsl(230 70% 6%);
     pointer-events: none;
   }
 
@@ -199,17 +185,11 @@
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #3b82f6;
   }
 
   .dark .text-gradient {
-    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #22d3ee 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #60a5fa;
   }
 
   /* Enhanced card effects */

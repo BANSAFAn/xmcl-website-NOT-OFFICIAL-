@@ -2,24 +2,24 @@ import React, { useState, memo } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Download,
-  ExternalLink,
+  DownloadSimple,
+  ArrowSquareOut,
   GitBranch,
   Clock,
   CheckCircle,
   XCircle,
-  AlertCircle,
+  WarningCircle,
   Package,
-  AlertTriangle,
+  Warning,
   Terminal,
-  ShieldAlert,
-  ChevronDown,
-  Sparkles,
-  Zap,
-  Monitor,
-  Apple,
+  WarningOctagon,
+  CaretDown,
+  Sparkle,
+  Lightning,
+  MonitorPlay,
+  AppleLogo,
   User
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/hooks/useTranslation';
 import { DownloadArtifacts } from '@/components/testing/DownloadArtifacts';
@@ -46,9 +46,9 @@ const LinuxIcon = () => (
 );
 
 const platforms = [
-  { key: 'windows', label: 'Windows', icon: WindowsIcon, color: 'from-blue-500 to-cyan-500' },
-  { key: 'macos', label: 'macOS', icon: MacOSIcon, color: 'from-slate-600 to-slate-800' },
-  { key: 'linux', label: 'Linux', icon: LinuxIcon, color: 'from-orange-500 to-amber-500' },
+  { key: 'windows', label: 'Windows', icon: WindowsIcon, color: 'bg-blue-500' },
+  { key: 'macos', label: 'macOS', icon: MacOSIcon, color: 'bg-slate-600' },
+  { key: 'linux', label: 'Linux', icon: LinuxIcon, color: 'bg-orange-500' },
 ];
 
 const StatusBadge = memo(({ conclusion }: { conclusion: string }) => {
@@ -70,7 +70,7 @@ const StatusBadge = memo(({ conclusion }: { conclusion: string }) => {
     default:
       return (
         <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 gap-1.5">
-          <AlertCircle className="w-3.5 h-3.5" />
+          <WarningCircle className="w-3.5 h-3.5" />
           {conclusion || 'Unknown'}
         </Badge>
       );
@@ -111,7 +111,7 @@ const BuildCard = memo(({ run, isExpanded, onToggle, selectedPlatform, isLatestS
     >
       {/* Latest success indicator */}
       {isLatestSuccess && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-500" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-green-500" />
       )}
 
       {/* Main content */}
@@ -136,7 +136,7 @@ const BuildCard = memo(({ run, isExpanded, onToggle, selectedPlatform, isLatestS
               <StatusBadge conclusion={run.conclusion} />
               {isLatestSuccess && (
                 <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">
-                  <Sparkles className="w-3 h-3 mr-1" />
+                  <Sparkle className="w-3 h-3 mr-1" />
                   Latest
                 </Badge>
               )}
@@ -183,9 +183,9 @@ const BuildCard = memo(({ run, isExpanded, onToggle, selectedPlatform, isLatestS
               }
             `}
           >
-            <Download className="w-4 h-4" />
+            <DownloadSimple className="w-4 h-4" />
             <span className="hidden sm:inline">Downloads</span>
-            <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+            <CaretDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
           </Button>
         </div>
       </div>
@@ -251,11 +251,11 @@ const TestingContent = () => {
             transition={{ duration: 0.6 }}
           >
             <Badge className="mb-6 px-4 py-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 gap-2">
-              <AlertTriangle className="w-4 h-4" />
+              <Warning className="w-4 h-4" />
               Experimental Builds
             </Badge>
 
-            <h1 className="text-4xl md:text-6xl font-black mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-black mb-6 text-slate-900 dark:text-white">
               {t('testing.title')}
             </h1>
 
@@ -279,7 +279,7 @@ const TestingContent = () => {
                 onClick={() => setSelectedPlatform(platform.key)}
                 className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all duration-300
                   ${selectedPlatform === platform.key
-                    ? `bg-gradient-to-r ${platform.color} text-white shadow-lg`
+                    ? `${platform.color} text-white shadow-lg`
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10'
                   }
                 `}
@@ -296,7 +296,7 @@ const TestingContent = () => {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Zap className="w-5 h-5 text-indigo-500" />
+                <Lightning className="w-5 h-5 text-indigo-500" />
                 Recent Builds
               </h2>
             </div>
@@ -346,7 +346,7 @@ const TestingContent = () => {
             >
               <div className="flex gap-4">
                 <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                  <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  <WarningOctagon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div>
                   <h3 className="font-bold text-amber-800 dark:text-amber-400 mb-1">Warning</h3>
@@ -390,7 +390,7 @@ const TestingContent = () => {
                 onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/issues', '_blank')}
               >
                 Report Issue
-                <ExternalLink className="w-4 h-4" />
+                <ArrowSquareOut className="w-4 h-4" />
               </Button>
             </motion.div>
           </div>

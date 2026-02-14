@@ -2,8 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Button } from '@/components/ui/button';
-import { Laptop, Apple, Monitor, Download, ExternalLink } from 'lucide-react';
-import { FaLinux } from 'react-icons/fa';
+import { Laptop, AppleLogo, Monitor, DownloadSimple, ArrowSquareOut, LinuxLogo } from '@phosphor-icons/react';
 import type { PlatformAssets, GitHubAsset } from './types';
 
 interface PlatformCardsProps {
@@ -31,7 +30,7 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
                 <span className="truncate w-full font-medium">{asset.name}</span>
                 <span className="text-xs text-slate-500">{(asset.size / 1024 / 1024).toFixed(1)} MB</span>
               </div>
-              <Download className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity shrink-0" />
+              <DownloadSimple className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity shrink-0" />
             </Button>
           ))}
         </div>
@@ -49,7 +48,7 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
             <span className="truncate w-full font-medium">{name}</span>
             <span className="text-xs text-slate-500">{description}</span>
         </div>
-        <ExternalLink className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity shrink-0" />
+        <ArrowSquareOut className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity shrink-0" />
     </Button>
   );
 
@@ -68,7 +67,7 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
             viewport={{ once: true }}
             className="group relative p-6 md:p-8 rounded-3xl bg-slate-900/40 border border-white/5 group-hover:border-blue-500/50 transition-colors duration-300"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-blue-400">
                 <Laptop className="w-7 h-7" />
@@ -91,10 +90,10 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
             transition={{ delay: 0.1 }}
             className="group relative p-6 md:p-8 rounded-3xl bg-slate-900/40 border border-white/5 group-hover:border-slate-500/50 transition-colors duration-300"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-500/10 to-gray-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-slate-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-slate-200">
-                <Apple className="w-7 h-7" />
+                <AppleLogo className="w-7 h-7" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">macOS</h3>
               <p className="text-slate-400 mb-8 h-6">{t('downloadMessages.macosDescription') || 'macOS 11.0+'}</p>
@@ -114,10 +113,10 @@ export const PlatformCards: React.FC<PlatformCardsProps> = ({ platformAssets, on
             transition={{ delay: 0.2 }}
             className="group relative p-6 md:p-8 rounded-3xl bg-slate-900/40 border border-white/5 group-hover:border-orange-500/50 transition-colors duration-300"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300" />
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-orange-400">
-                <FaLinux className="w-8 h-8" />
+                <LinuxLogo className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">Linux</h3>
               <p className="text-slate-400 mb-8 h-6">{t('downloadMessages.linuxDescription') || 'Debian, RPM, AppImage'}</p>

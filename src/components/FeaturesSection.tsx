@@ -7,16 +7,16 @@ import {
   useSpring,
 } from "framer-motion";
 import {
-  Download,
+  DownloadSimple,
   HardDrive,
-  Gamepad2,
-  Zap,
-  Sparkles,
-  ExternalLink,
+  GameController,
+  Lightning,
+  Sparkle,
+  ArrowSquareOut,
   ArrowRight,
   Star,
-  Layers,
-} from "lucide-react";
+  Stack,
+} from "@phosphor-icons/react";
 import { useTranslation } from "@/hooks/useTranslation";
 
 const ANIMATION_CONFIG = {
@@ -48,11 +48,11 @@ export const FeaturesSection = memo(() => {
   const features = useMemo(
     () => [
       {
-        icon: Download,
+        icon: DownloadSimple,
         title: t("home.downloadManageWhatever"),
         description: t("home.downloadManageWhateverDesc"),
         image: "/PhotoXMCL/477b2df8-4979-4097-95e5-b918123b0cf7.png",
-        gradient: "from-orange-500 via-red-500 to-pink-600",
+        gradient: "bg-orange-500",
         accentColor: "orange",
         tags: ["CurseForge", "Modrinth", "Modpacks"],
         links: [
@@ -69,7 +69,7 @@ export const FeaturesSection = memo(() => {
         title: t("home.optimalDiskSpace"),
         description: t("home.optimalDiskSpaceDesc"),
         image: "/PhotoXMCL/c1b9c039-948c-498e-b2c7-9389ef257ae0.png",
-        gradient: "from-cyan-500 via-blue-500 to-indigo-600",
+        gradient: "bg-cyan-500",
         accentColor: "cyan",
         tags: ["Hard Links", "Symbolic Links", "Optimization"],
         links: [
@@ -86,11 +86,11 @@ export const FeaturesSection = memo(() => {
         ],
       },
       {
-        icon: Gamepad2,
+        icon: GameController,
         title: t("home.installingAnyFramework"),
         description: t("home.installingAnyFrameworkDesc"),
         image: "/PhotoXMCL/download minecrat.png",
-        gradient: "from-purple-500 via-violet-500 to-fuchsia-600",
+        gradient: "bg-purple-500",
         accentColor: "purple",
         tags: ["Forge", "Fabric", "NeoForge", "Quilt"],
         links: [
@@ -106,11 +106,11 @@ export const FeaturesSection = memo(() => {
         ],
       },
       {
-        icon: Zap,
+        icon: Lightning,
         title: t("home.multipleInstances"),
         description: t("home.multipleInstancesDesc"),
         image: "/PhotoXMCL/X_Minecraft_Launcher_O3OyGdWjN6.png",
-        gradient: "from-amber-500 via-yellow-500 to-lime-500",
+        gradient: "bg-amber-500",
         accentColor: "amber",
         tags: ["P2P", "Fast", "Efficient"],
         links: [
@@ -131,7 +131,7 @@ export const FeaturesSection = memo(() => {
       className="relative py-20 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
       style={{ position: 'relative' }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="absolute inset-0 bg-slate-50 dark:bg-slate-950">
         <div
           className="absolute inset-0 opacity-30 dark:opacity-20"
           style={{
@@ -158,8 +158,6 @@ export const FeaturesSection = memo(() => {
           ))}
         </div>
       </div>
-
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent" />
     </section>
   );
 });
@@ -170,42 +168,20 @@ interface SectionHeaderProps {
 
 const SectionHeader = memo(({ t }: SectionHeaderProps) => (
   <motion.div
-    className="text-center mb-28"
+    className="text-center mb-20"
     initial={{ opacity: 0 }}
     whileInView={{ opacity: 1 }}
     viewport={{ once: true, amount: 0.3 }}
     transition={{ duration: 1 }}
   >
-    <motion.div
-      className="inline-flex items-center gap-3 px-6 py-3 mb-8 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-cyan-500/10 rounded-full border border-white/20 dark:border-white/10 shadow-2xl"
-      initial={{ scale: 0, rotate: -180 }}
-      whileInView={{ scale: 1, rotate: 0 }}
-      viewport={{ once: true }}
-      transition={{ type: "spring", ...ANIMATION_CONFIG.spring, delay: 0.2 }}
-      whileHover={{ scale: 1.05 }}
-    >
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-      >
-        <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-      </motion.div>
-      <span className="text-sm font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 dark:from-purple-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-        {t("home.powerfulFeatures")}
-      </span>
-      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-    </motion.div>
-
     <motion.h2
-      className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-8 leading-[0.9] tracking-tight"
+      className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-8 leading-[0.9] tracking-tight text-slate-900 dark:text-white"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: 0.3 }}
     >
-      <span className="inline-block bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-100 dark:to-white bg-clip-text text-transparent drop-shadow-2xl">
-        {t("home.featuresTitle")}
-      </span>
+      {t("home.featuresTitle")}
     </motion.h2>
 
     <motion.p
@@ -376,62 +352,58 @@ const ImageSection = memo(
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
     >
       <div className="relative group">
+        {/* Soft glow effect on hover */}
         <motion.div
-          className={`absolute -inset-4 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-30 blur-3xl transition-opacity duration-700 rounded-3xl will-change-transform`}
-          animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
+          className={`absolute -inset-2 ${feature.gradient} opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500 rounded-3xl will-change-transform`}
+          animate={isHovered ? { scale: 1.05 } : { scale: 1 }}
         />
 
-        <div className="relative rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-1 shadow-2xl">
-          <div className="relative overflow-hidden rounded-[1.3rem] bg-white dark:bg-slate-950">
-            <div
-              className="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none z-20"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)",
-                backgroundSize: "20px 20px",
-              }}
-            />
-
+        <div className="relative rounded-2xl bg-slate-100 dark:bg-slate-800/50 p-0.5 shadow-xl group-hover:shadow-2xl transition-shadow duration-500">
+          <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-950">
             <motion.img
               src={feature.image}
               alt={feature.title}
               loading="lazy"
-              className="w-full h-auto relative z-10"
-              initial={{ scale: 1.1, opacity: 0 }}
+              className="w-full h-auto relative z-10 rounded-2xl"
+              initial={{ scale: 1.05, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             />
 
+            {/* Subtle shine effect on hover */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none z-30"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none z-30"
               initial={{ x: "-100%" }}
               animate={isHovered ? { x: "100%" } : { x: "-100%" }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
             />
 
+            {/* Color overlay on hover */}
             <div
-              className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500 mix-blend-overlay pointer-events-none z-20`}
+              className={`absolute inset-0 ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none z-20 rounded-2xl`}
             />
           </div>
         </div>
 
+        {/* Icon badge */}
         <motion.div
-          className={`absolute -top-6 ${reverse ? "-left-6" : "-right-6"} p-5 bg-gradient-to-br ${feature.gradient} rounded-2xl shadow-2xl z-50`}
+          className={`absolute -top-4 ${reverse ? "-left-4" : "-right-4"} p-3 ${feature.gradient} rounded-xl shadow-lg z-50`}
           initial={{ scale: 0, rotate: -180 }}
           whileInView={{ scale: 1, rotate: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 300, delay: 0.4 }}
-          whileHover={{ scale: 1.15, rotate: 10 }}
+          whileHover={{ scale: 1.1, rotate: 5 }}
         >
           <feature.icon
-            className="w-8 h-8 text-white drop-shadow-lg"
+            className="w-6 h-6 text-white drop-shadow-lg"
             strokeWidth={2.5}
           />
         </motion.div>
 
+        {/* Tags */}
         <motion.div
-          className={`absolute -bottom-4 ${reverse ? "left-4" : "right-4"} flex gap-2 z-50`}
+          className={`absolute -bottom-3 ${reverse ? "left-3" : "right-3"} flex gap-2 z-50`}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -440,12 +412,12 @@ const ImageSection = memo(
           {feature.tags.slice(0, 3).map((tag, i) => (
             <motion.span
               key={i}
-              className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
+              className="px-2 py-1 text-xs font-semibold bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 rounded-md shadow-md border border-slate-200 dark:border-slate-700 backdrop-blur-sm"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.6 + i * 0.1, type: "spring" }}
-              whileHover={{ scale: 1.1, y: -2 }}
+              whileHover={{ scale: 1.05, y: -2 }}
             >
               {tag}
             </motion.span>
@@ -478,10 +450,7 @@ const ContentSection = memo(({ feature, reverse, index }: ContentSectionProps) =
         viewport={{ once: true }}
         transition={{ delay: 0.4 }}
       >
-        <div
-          className={`w-1.5 h-12 bg-gradient-to-b ${feature.gradient} rounded-full`}
-        />
-        <Layers className={`w-5 h-5 text-${feature.accentColor}-500`} />
+        <Stack className={`w-5 h-5 text-${feature.accentColor}-500`} />
       </motion.div>
 
       <motion.h3
@@ -552,7 +521,7 @@ const ActionButton = memo(({ link, index }: ActionButtonProps) => (
       animate={{ x: [0, 4, 0] }}
       transition={{ duration: 1.5, repeat: Infinity }}
     >
-      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 relative z-10" />
+      <ArrowSquareOut className="w-4 h-4 sm:w-5 sm:h-5 relative z-10" />
     </motion.div>
   </motion.a>
 ));

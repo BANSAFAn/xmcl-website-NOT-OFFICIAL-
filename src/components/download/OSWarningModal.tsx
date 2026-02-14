@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, X } from "lucide-react";
+import { WarningCircle, X } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -41,7 +41,7 @@ export const OSWarningModal: React.FC<OSWarningModalProps> = ({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
-              <AlertCircle className="w-6 h-6 text-amber-500" />
+              <WarningCircle className="w-6 h-6 text-amber-500" />
             </div>
             <h3 className="text-xl font-bold text-white dark:text-white light:text-slate-800">
               {t("downloadMessages.osWarningTitle")}

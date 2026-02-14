@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { AlertTriangle, X } from 'lucide-react';
+import { Warning, X } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -52,7 +52,7 @@ export const PlatformWarning = ({ detectedOS, selectedOS, onContinue, onCancel }
       >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <AlertTriangle className="w-8 h-8 text-orange-500" />
+              <Warning className="w-8 h-8 text-orange-500" />
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">

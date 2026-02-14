@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, Monitor, Apple, Smartphone, Zap, Loader2 } from 'lucide-react';
+import { Download, Monitor, AppleLogo, DeviceMobile, Lightning, Spinner } from '@phosphor-icons/react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { toast } from "sonner";
 import { useQuery } from '@tanstack/react-query';
@@ -81,7 +81,7 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+        <Spinner className="w-8 h-8 animate-spin text-indigo-500" />
       </div>
     );
   }
@@ -128,8 +128,8 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
         >
           <Card className="p-6 bg-white/10 border-white/10 shadow-xl hover:bg-white/15 transition-all duration-300 group">
             <div className="text-center">
-              <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Zap className="w-7 h-7 text-white" />
+              <div className="w-14 h-14 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Lightning className="w-7 h-7 text-white" />
               </div>
 
               <h3 className="text-sm font-bold text-white mb-2 truncate px-2" title={artifact.name}>

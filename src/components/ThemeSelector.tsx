@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { Sun, Moon, MonitorPlay } from "@phosphor-icons/react";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { useTheme } from "@/hooks/useTheme";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,7 +15,7 @@ export const ThemeSelector = () => {
   };
 
   const getIcon = () => {
-    if (themeMode === 'system') return Monitor;
+    if (themeMode === 'system') return MonitorPlay;
     return theme === 'dark' ? Moon : Sun;
   };
 
@@ -25,10 +25,10 @@ export const ThemeSelector = () => {
   };
 
   const getGlow = () => {
-    if (themeMode === 'system') return 'radial-gradient(circle at center, rgba(59, 130, 246, 0.4) 0%, transparent 70%)';
-    return theme === 'dark' 
-      ? 'radial-gradient(circle at center, rgba(99, 102, 241, 0.4) 0%, transparent 70%)'
-      : 'radial-gradient(circle at center, rgba(251, 191, 36, 0.4) 0%, transparent 70%)';
+    if (themeMode === 'system') return 'rgba(59, 130, 246, 0.4)';
+    return theme === 'dark'
+      ? 'rgba(99, 102, 241, 0.4)'
+      : 'rgba(251, 191, 36, 0.4)';
   };
 
   const Icon = getIcon();

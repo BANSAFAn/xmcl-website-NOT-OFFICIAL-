@@ -2,7 +2,7 @@ import { motion, useMotionValue, useSpring, useTransform, MotionValue } from 'fr
 import { useRef } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Link } from '@/components/Link';
-import { Home, FileText, BookOpen, GitBranch, AlertCircle, TestTube, Info, ExternalLink } from 'lucide-react';
+import { House, FileText, BookOpen, GitBranch, WarningCircle, TestTube, Info } from '@phosphor-icons/react';
 import {
   Tooltip,
   TooltipContent,
@@ -15,11 +15,11 @@ export const MacOSDock = () => {
   const mouseX = useMotionValue(Infinity);
 
   const navItems = [
-      { label: 'nav.home', href: '/', icon: Home },
+      { label: 'nav.home', href: '/', icon: House },
       { label: 'nav.blog', href: '/blog', icon: FileText },
       { label: 'nav.guide', href: '/guide', icon: BookOpen },
       { label: 'nav.changelog', href: '/changelog', icon: GitBranch },
-      { label: 'nav.issues', href: '/issues', icon: AlertCircle },
+      { label: 'nav.issues', href: '/issues', icon: WarningCircle },
       { label: 'nav.testing', href: '/testing', icon: TestTube },
       { label: 'nav.information', href: '/information', icon: Info },
     ];

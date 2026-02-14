@@ -37,7 +37,11 @@
     "downloadXMCL": "Download XMCL",
     "viewReleases": "View Releases",
     "launcherBy": "Launcher by",
-    "websiteBy": "Website by"
+    "websiteBy": "Website by",
+    "features": {
+      "highPerformance": "High Performance",
+      "secure": "Secure"
+    }
   },
   "theme": {
     "light": "Light",
@@ -626,6 +630,7 @@
   "modernCrossplatformDescription": "Modern cross-platform Minecraft launcher",
   "githubStars": "GitHub Stars",
   "forks": "Forks",
+  "sponsoredBy": "Sponsored by",
   "lastVersion": "Latest Version",
   "stats": {
     "downloads": "Downloads",

@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Clock, User, ArrowRight, Filter, X, Star } from "lucide-react";
+import { MagnifyingGlass, Clock, User, ArrowRight, Filter, X, Star } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/contexts/TranslationContext";
 
@@ -63,7 +63,7 @@ export const GuideBrowser = ({ posts, categories, featuredIds }: GuideBrowserPro
         className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-white/20 dark:border-white/10"
       >
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+          <MagnifyingGlass className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
           <Input
             placeholder={t("guide.searchPlaceholder", "Search guides...")}
             value={searchQuery}
@@ -98,7 +98,7 @@ export const GuideBrowser = ({ posts, categories, featuredIds }: GuideBrowserPro
                   variant={selectedTags.includes(tag) ? "default" : "outline"}
                   size="sm"
                   onClick={() => toggleTag(tag)}
-                  className={`rounded-full ${selectedTags.includes(tag) ? "bg-gradient-to-r from-emerald-500 to-teal-500 border-0" : ""}`}
+                  className={`rounded-full ${selectedTags.includes(tag) ? "bg-emerald-500 border-0" : ""}`}
                 >
                   {tag}
                 </Button>
@@ -161,25 +161,25 @@ const GuideCard = ({ post, featured, index, readMoreText }: { post: GuidePost; f
     >
       <a href={`/guide/${post.slug}`} className="block h-full">
         <Card className="group relative h-full cursor-pointer overflow-hidden rounded-2xl border-0 bg-white/80 p-6 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-slate-800/80">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-teal-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-500 group-hover:from-emerald-500/5 group-hover:via-teal-500/5 group-hover:to-cyan-500/5 group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-emerald-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border-2 border-emerald-500/20" />
 
           <div className="relative z-10 flex flex-col h-full">
             <div className="mb-4 flex items-center justify-between">
               {featured && (
-                <Badge className="bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg border-0">
+                <Badge className="bg-amber-400 text-white shadow-lg border-0">
                   <Star className="mr-1 h-3 w-3 fill-current" />
                   Featured
                 </Badge>
               )}
               {post.difficulty && (
-                <Badge className={`bg-gradient-to-r ${diffStyle.bg} ${diffStyle.text} border-0 ml-auto`}>
+                <Badge className={`bg-amber-400 ${diffStyle.text} border-0 ml-auto`}>
                   {post.difficulty}
                 </Badge>
               )}
             </div>
 
-            <h3 className="mb-3 text-xl font-bold text-slate-900 transition-colors group-hover:bg-gradient-to-r group-hover:from-emerald-600 group-hover:to-teal-600 group-hover:bg-clip-text group-hover:text-transparent dark:text-white">
+            <h3 className="mb-3 text-xl font-bold text-slate-900 transition-colors group-hover:text-emerald-600 dark:text-white">
               {post.title}
             </h3>
 
