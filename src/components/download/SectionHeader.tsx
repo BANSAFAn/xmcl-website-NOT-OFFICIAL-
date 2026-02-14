@@ -37,7 +37,7 @@ export function SectionHeader({ title, subtitle, versionLabel, versionTag }: Sec
         
         {/* Badge */}
         <motion.div
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-full border border-blue-500/30 mb-8"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full border border-blue-500/30 mb-8"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -91,7 +91,7 @@ export function SectionHeader({ title, subtitle, versionLabel, versionTag }: Sec
         >
           {/* Version Badge */}
           <motion.div
-            className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-xl border border-green-500/30"
+            className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl border border-green-500/30"
             whileHover={{ scale: 1.05, y: -2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
@@ -110,7 +110,7 @@ export function SectionHeader({ title, subtitle, versionLabel, versionTag }: Sec
           {/* GitHub Stats */}
           <div className="flex flex-wrap gap-3 justify-center">
             <motion.div
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10"
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-lg border border-white/10"
               whileHover={{ scale: 1.05 }}
             >
               <Star className="w-4 h-4 text-yellow-400" />
@@ -120,7 +120,7 @@ export function SectionHeader({ title, subtitle, versionLabel, versionTag }: Sec
             </motion.div>
             
             <motion.div
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10"
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-lg border border-white/10"
               whileHover={{ scale: 1.05 }}
             >
               <Users className="w-4 h-4 text-blue-400" />
@@ -130,7 +130,7 @@ export function SectionHeader({ title, subtitle, versionLabel, versionTag }: Sec
             </motion.div>
             
             <motion.div
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10"
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-lg border border-white/10"
               whileHover={{ scale: 1.05 }}
             >
               <GitFork className="w-4 h-4 text-purple-400" />
@@ -140,7 +140,7 @@ export function SectionHeader({ title, subtitle, versionLabel, versionTag }: Sec
             </motion.div>
             
             <motion.div
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10"
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-lg border border-white/10"
               whileHover={{ scale: 1.05 }}
             >
               <Zap className="w-4 h-4 text-yellow-400" />

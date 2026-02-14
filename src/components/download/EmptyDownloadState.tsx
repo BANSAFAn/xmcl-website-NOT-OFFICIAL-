@@ -14,7 +14,7 @@ export const EmptyDownloadState = ({ latestRelease, selectedOS }: EmptyDownloadS
   const { t } = useTranslation();
   return (
     <div className="col-span-full">
-      <Card className="p-8 text-center bg-white/5 backdrop-blur-md border border-white/10 text-white">
+      <Card className="p-8 text-center bg-white/5 border border-white/10 text-white">
         <Package className="w-12 h-12 mx-auto mb-4 text-slate-400" />
         <p className="text-slate-300 mb-4">
           {latestRelease ? 

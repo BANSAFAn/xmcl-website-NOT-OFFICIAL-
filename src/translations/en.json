@@ -336,7 +336,17 @@
     "rpmPackageARM64": "RPM Package (ARM64)",
     "tarArchiveARM64": "TAR Archive (ARM64)",
     "releaseNotes": "Release Notes",
-    "allReleases": "All Releases"
+    "allReleases": "All Releases",
+    "macosDescription": "macOS 11.0+",
+    "linuxDescription": "Debian, RPM, AppImage",
+    "packageManagers": "Package Managers",
+    "windowsInstallers": "x64 / Installers",
+    "otherOption": "App Store / Other",
+    "otherPlatforms": "Other Platforms",
+    "appleSilicon": "Apple Silicon (M1/M2)",
+    "intel": "Intel (x64)",
+    "windowsDescription": "Windows 10/11 (64-bit)",
+    "lookingForOlder": "Looking for older versions?"
   },
   "issues": {
     "title": "Issues & Bug Reports",
@@ -532,6 +542,8 @@
   },
   "changelog": {
     "title": "Changelog",
+    "whatsNew": "What's New",
+    "search":"Search",
     "subtitle": "Stay up-to-date with the latest changes, new features, and bug fixes in XMCL",
     "version": "Version",
     "released": "Released",

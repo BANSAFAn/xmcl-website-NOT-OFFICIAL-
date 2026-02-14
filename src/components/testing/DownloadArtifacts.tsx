@@ -21,9 +21,9 @@ interface DownloadArtifactsProps {
   runId: number;
 }
 
-const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({ 
-  platform, 
-  runId 
+const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
+  platform,
+  runId
 }) => {
   const { t } = useTranslation();
 
@@ -40,23 +40,23 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
 
   const getPlatformArtifacts = () => {
     if (!artifactsData?.artifacts) return [];
-    
+
     switch (platform) {
       case 'windows':
-        return artifactsData.artifacts.filter((a: Artifact) => 
-          a.name.toLowerCase().includes('windows') || 
+        return artifactsData.artifacts.filter((a: Artifact) =>
+          a.name.toLowerCase().includes('windows') ||
           a.name.toLowerCase().includes('win') ||
           a.name.toLowerCase().includes('exe')
         );
       case 'linux':
-        return artifactsData.artifacts.filter((a: Artifact) => 
+        return artifactsData.artifacts.filter((a: Artifact) =>
           a.name.toLowerCase().includes('linux') ||
           a.name.toLowerCase().includes('appimage') ||
           a.name.toLowerCase().includes('deb') ||
           a.name.toLowerCase().includes('rpm')
         );
       case 'macos':
-        return artifactsData.artifacts.filter((a: Artifact) => 
+        return artifactsData.artifacts.filter((a: Artifact) =>
           a.name.toLowerCase().includes('mac') ||
           a.name.toLowerCase().includes('darwin') ||
           a.name.toLowerCase().includes('dmg')
@@ -72,7 +72,9 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
   };
 
   const handleDownload = (artifact: Artifact) => {
-    window.open(`https://github.com/Voxelum/x-minecraft-launcher/actions/runs/${runId}`, '_blank');
+    // Use nightly.link for direct download without authentication/redirection to GitHub actions page
+    const directDownloadUrl = `https://nightly.link/Voxelum/x-minecraft-launcher/actions/runs/${runId}/${encodeURIComponent(artifact.name)}.zip`;
+    window.open(directDownloadUrl, '_blank');
     toast.success(t('testing.downloadStarted'));
   };
 
@@ -96,7 +98,7 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
 
   if (platformArtifacts.length === 0) {
     return (
-      <motion.div 
+      <motion.div
         className="text-center py-12"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -124,31 +126,31 @@ const DownloadArtifacts: React.FC<DownloadArtifactsProps> = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 * index }}
         >
-          <Card className="p-6 bg-white/10 backdrop-blur-xl border-white/10 shadow-xl hover:bg-white/15 transition-all duration-300 group">
+          <Card className="p-6 bg-white/10 border-white/10 shadow-xl hover:bg-white/15 transition-all duration-300 group">
             <div className="text-center">
               <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Zap className="w-7 h-7 text-white" />
               </div>
-              
+
               <h3 className="text-sm font-bold text-white mb-2 truncate px-2" title={artifact.name}>
                 {artifact.name}
               </h3>
-              
+
               <div className="flex justify-center gap-2 mb-4">
                 <Badge variant="secondary" className="text-xs bg-black/20 text-slate-300">
                   {formatFileSize(artifact.size_in_bytes)}
                 </Badge>
-                <Badge 
+                <Badge
                   className={`text-xs ${
-                    artifact.expired 
-                      ? 'bg-red-500 text-white' 
+                    artifact.expired
+                      ? 'bg-red-500 text-white'
                       : 'bg-green-500 text-white'
                   }`}
                 >
                   {artifact.expired ? 'Expired' : 'Available'}
                 </Badge>
               </div>
-              
+
               <Button
                 onClick={() => handleDownload(artifact)}
                 disabled={artifact.expired}

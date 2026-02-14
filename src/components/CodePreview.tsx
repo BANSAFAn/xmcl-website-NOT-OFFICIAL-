@@ -68,7 +68,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
         <>
           {/* Enhanced backdrop with maximum z-index */}
           <motion.div
-            className="fixed inset-0 bg-black/90 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/90"
             style={{ zIndex: 999999 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -78,7 +78,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
           
           {/* Code preview modal with absolute maximum z-index */}
           <motion.div
-            className={`fixed backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden ${
+            className={`fixed border border-white/20 shadow-2xl overflow-hidden ${
               isFullscreen 
                 ? 'inset-2' 
                 : 'top-[5%] left-[5%] right-[5%] bottom-[5%] max-w-7xl mx-auto rounded-2xl'
@@ -215,7 +215,7 @@ export function CodePreview({ isOpen, onClose, code, language, filename }: CodeP
             <AnimatePresence>
               {copied && (
                 <motion.div
-                  className="absolute top-24 right-6 bg-gradient-to-r from-green-500/90 to-emerald-500/90 border border-green-400/50 text-white px-6 py-3 rounded-xl shadow-2xl shadow-green-500/20 backdrop-blur-md"
+                  className="absolute top-24 right-6 bg-gradient-to-r from-green-500/90 to-emerald-500/90 border border-green-400/50 text-white px-6 py-3 rounded-xl shadow-2xl shadow-green-500/20"
                   initial={{ opacity: 0, x: 100, scale: 0.8 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 100, scale: 0.8 }}

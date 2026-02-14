@@ -47,7 +47,7 @@ export const DownloadItem: React.FC<DownloadItemProps> = ({
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.02]">
+    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.02]">
       <div className="p-6 flex items-center gap-6 flex-wrap sm:flex-nowrap">
         <PackageIcon type={packageType} gradient={gradient} />
 

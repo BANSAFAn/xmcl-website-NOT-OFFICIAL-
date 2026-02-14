@@ -1,7 +1,5 @@
-import React, { useState, useMemo, memo } from 'react';
-import { PageTransition } from "@/components/PageTransition";
+import React, { useState, memo } from 'react';
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Download,
@@ -11,42 +9,210 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  Activity,
-  Code,
-  Zap,
   Package,
-  Cpu,
-  HardDrive,
-  Monitor,
   AlertTriangle,
-  Info,
   Terminal,
-  ShieldAlert
+  ShieldAlert,
+  ChevronDown,
+  Sparkles,
+  Zap,
+  Monitor,
+  Apple,
+  User
 } from "lucide-react";
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/hooks/useTranslation';
-import { toast } from "sonner";
-import { PlatformSelector } from '@/components/testing/PlatformSelector';
 import { DownloadArtifacts } from '@/components/testing/DownloadArtifacts';
 import { AppShell } from '@/components/AppShell';
+import { Badge } from '@/components/ui/badge';
 
-// Types
-interface WorkflowRun {
-  id: number;
-  status: string;
-  conclusion: string;
-  created_at: string;
-  updated_at: string;
-  html_url: string;
-  head_branch: string;
-  head_sha: string;
-  run_number: number;
-  display_title: string;
-  actor: {
-    login: string;
-    avatar_url: string;
+// Platform Icons
+const WindowsIcon = () => (
+  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+  </svg>
+);
+
+const MacOSIcon = () => (
+  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.74-3.03 1.59-.67.78-1.26 2.05-1.11 3.17 1.17.09 2.36-.75 3.07-1.65z"/>
+  </svg>
+);
+
+const LinuxIcon = () => (
+  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+    <path d="M12.03 0C5.396 0 .024 5.362.024 11.988S5.384 24 12.03 24c6.634 0 11.964-5.362 11.964-11.988S18.664 0 12.03 0zm4.512 20.328c-1.2 1.392-3.528 1.152-4.488.984-1.008.168-3.36.36-4.512-.984-.96-1.152.024-3.84 1.392-4.968-1.08-2.352-.336-4.92 1.776-6.504.624-.48 2.112-.624 2.808-.024.696-.6 2.184-.456 2.808.024 2.112 1.584 2.856 4.152 1.776 6.504 1.32 1.128 2.424 3.816 1.344 4.968h-2.904z"/>
+  </svg>
+);
+
+const platforms = [
+  { key: 'windows', label: 'Windows', icon: WindowsIcon, color: 'from-blue-500 to-cyan-500' },
+  { key: 'macos', label: 'macOS', icon: MacOSIcon, color: 'from-slate-600 to-slate-800' },
+  { key: 'linux', label: 'Linux', icon: LinuxIcon, color: 'from-orange-500 to-amber-500' },
+];
+
+const StatusBadge = memo(({ conclusion }: { conclusion: string }) => {
+  switch (conclusion) {
+    case 'success':
+      return (
+        <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20 gap-1.5">
+          <CheckCircle className="w-3.5 h-3.5" />
+          Success
+        </Badge>
+      );
+    case 'failure':
+      return (
+        <Badge className="bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 gap-1.5">
+          <XCircle className="w-3.5 h-3.5" />
+          Failed
+        </Badge>
+      );
+    default:
+      return (
+        <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 gap-1.5">
+          <AlertCircle className="w-3.5 h-3.5" />
+          {conclusion || 'Unknown'}
+        </Badge>
+      );
+  }
+});
+
+// Build Card Component
+const BuildCard = memo(({ run, isExpanded, onToggle, selectedPlatform, isLatestSuccess }: any) => {
+  const formatDate = (dateString: string) => {
+    const d = new Date(dateString);
+    return d.toLocaleDateString(undefined, {
+      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
   };
-}
+
+  const formatRelativeTime = (dateString: string) => {
+    const diff = Date.now() - new Date(dateString).getTime();
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    if (hours < 1) return 'Just now';
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days === 1) return 'Yesterday';
+    return `${days} days ago`;
+  };
+
+  const isSuccess = run.conclusion === 'success';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`group relative overflow-hidden rounded-2xl transition-all duration-300
+        bg-white/70 dark:bg-white/5
+        border ${isSuccess ? 'border-slate-200/50 dark:border-white/10' : 'border-red-500/20'}
+        hover:shadow-xl hover:shadow-indigo-500/5
+        ${isLatestSuccess ? 'ring-2 ring-green-500/30' : ''}
+      `}
+    >
+      {/* Latest success indicator */}
+      {isLatestSuccess && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-500" />
+      )}
+
+      {/* Main content */}
+      <div className="p-5 md:p-6">
+        <div className="flex items-start gap-4">
+          {/* Status indicator */}
+          <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center
+            ${isSuccess 
+              ? 'bg-green-500/10 text-green-500' 
+              : 'bg-red-500/10 text-red-500'
+            }
+          `}>
+            {isSuccess ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
+          </div>
+
+          {/* Info */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 mb-2 flex-wrap">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white truncate">
+                {run.display_title}
+              </h3>
+              <StatusBadge conclusion={run.conclusion} />
+              {isLatestSuccess && (
+                <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">
+                  <Sparkles className="w-3 h-3 mr-1" />
+                  Latest
+                </Badge>
+              )}
+            </div>
+
+            <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 flex-wrap">
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4" />
+                {formatRelativeTime(run.updated_at)}
+              </span>
+              <span className="flex items-center gap-1.5 font-mono text-xs bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md">
+                #{run.run_number}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <GitBranch className="w-4 h-4" />
+                {run.head_branch}
+              </span>
+              <a 
+                href={run.actor?.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 hover:text-indigo-500 transition-colors"
+              >
+                <img 
+                  src={run.actor?.avatar_url} 
+                  alt="" 
+                  className="w-5 h-5 rounded-full"
+                  loading="lazy" 
+                />
+                {run.actor?.login}
+              </a>
+            </div>
+          </div>
+
+          {/* Expand button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onToggle(run.id)}
+            className={`flex items-center gap-2 rounded-xl transition-all
+              ${isExpanded 
+                ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' 
+                : 'text-slate-500 hover:text-indigo-600'
+              }
+            `}
+          >
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Downloads</span>
+            <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+          </Button>
+        </div>
+      </div>
+
+      {/* Expanded artifacts section */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
+              <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200/50 dark:border-white/10">
+                <DownloadArtifacts runId={run.id} platform={selectedPlatform} />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+});
+
+// --- Main Content ---
 
 const TestingContent = () => {
   const { t } = useTranslation();
@@ -56,7 +222,7 @@ const TestingContent = () => {
   const { data: workflowRuns, isLoading, error } = useQuery({
     queryKey: ['workflow-runs'],
     queryFn: async () => {
-      const response = await fetch('https://api.github.com/repos/Voxelum/x-minecraft-launcher/actions/runs?status=completed&per_page=10&event=push');
+      const response = await fetch('https://api.github.com/repos/Voxelum/x-minecraft-launcher/actions/runs?status=completed&per_page=15&event=push');
       if (!response.ok) throw new Error('Failed to fetch workflow runs');
       return response.json();
     },
@@ -64,252 +230,169 @@ const TestingContent = () => {
     refetchOnWindowFocus: false,
   });
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString(undefined, {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getStatusColor = (conclusion: string) => {
-    switch (conclusion) {
-      case 'success': return 'text-green-500 bg-green-500/10 border-green-500/20';
-      case 'failure': return 'text-red-500 bg-red-500/10 border-red-500/20';
-      default: return 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20';
-    }
-  };
-
-  const StatusIcon = ({ conclusion }: { conclusion: string }) => {
-    switch (conclusion) {
-      case 'success': return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'failure': return <XCircle className="w-5 h-5 text-red-500" />;
-      default: return <AlertCircle className="w-5 h-5 text-yellow-500" />;
-    }
-  };
-
-  const getPlatformIcon = (platform: string) => {
-    switch (platform) {
-      case 'windows': return (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
-      );
-      case 'macos': return (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.74-3.03 1.59-.67.78-1.26 2.05-1.11 3.17 1.17.09 2.36-.75 3.07-1.65z"/></svg>
-      );
-      case 'linux': return (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M13.13 18c-.26-.18-.59-.33-1-.46a4.3 4.3 0 0 1-1-.44 3.73 3.73 0 0 1-.78-.66 2.3 2.3 0 0 1-.36-.61c-.08-.22-.12-.47-.11-.77v-.21a1.69 1.69 0 0 1 .15-.65 2.5 2.5 0 0 1 .42-.64 3.78 3.78 0 0 1 .63-.56c.14-.1.27-.19.38-.26l.16-.1.17-.07.13-.04h.16l.16.03.11.04.1.06a.8.8 0 0 1 .28.32l.06.14a1.76 1.76 0 0 1 .05.45v.69a1.69 1.69 0 0 1-.16.65 2.42 2.42 0 0 1-.42.63 3.6 3.6 0 0 1-.62.56c-.25.17-.5.31-.76.43zm-2-2.52a.76.76 0 0 0-.25.07.67.67 0 0 0-.21.15.6.6 0 0 0-.13.2.73.73 0 0 0-.05.23v.2a1 1 0 0 0 .09.4 1 1 0 0 0 .23.32 1.6 1.6 0 0 0 .34.25c.13.07.27.13.41.17v-1.7a1.43 1.43 0 0 0-.43-.29zM12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 21.8c-2.07 0-3.96-.34-5.69-1a10.9 10.9 0 0 1-4.83-3.6 8.35 8.35 0 0 1-1.63-4.84 8.7 8.7 0 0 1 1-4.08 10.43 10.43 0 0 1 3.2-3.6A11.53 11.53 0 0 1 12 2.2a11.53 11.53 0 0 1 7.9 2.51 10.4 10.4 0 0 1 3.22 3.6 8.7 8.7 0 0 1 1.05 4.09 8.38 8.38 0 0 1-1.62 4.83 10.92 10.92 0 0 1-4.84 3.6c-1.74.63-3.63.97-5.71.97z"/></svg>
-      );
-      default: return <Package className="w-5 h-5" />;
-    }
-  };
+  const runs = workflowRuns?.workflow_runs || [];
+  const latestSuccessId = runs.find((r: any) => r.conclusion === 'success')?.id;
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950">
-      {/* SEO Schema */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "X Minecraft Launcher (Testing)",
-          "applicationCategory": "GameApplication",
-          "operatingSystem": "Windows, macOS, Linux",
-          "releaseNotes": "Development builds and nightly releases",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        })
-      }} />
-
-      {/* Animated Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+    <div className="min-h-screen relative overflow-hidden bg-slate-50 dark:bg-[#0a0a0b] transition-colors duration-300">
+      {/* Background */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="container mx-auto px-4 py-24 relative z-10">
-        
+      <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
+
         {/* Header */}
-        <header className="mb-20 text-center max-w-4xl mx-auto">
+        <header className="text-center max-w-4xl mx-auto mb-12 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-yellow-500 text-sm mb-8 font-medium">
+            <Badge className="mb-6 px-4 py-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 gap-2">
               <AlertTriangle className="w-4 h-4" />
-              <span>Experimental Builds</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">
+              Experimental Builds
+            </Badge>
+
+            <h1 className="text-4xl md:text-6xl font-black mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 dark:from-white dark:via-indigo-200 dark:to-purple-200 bg-clip-text text-transparent">
               {t('testing.title')}
             </h1>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
               {t('testing.subtitle')}
             </p>
           </motion.div>
         </header>
 
+        {/* Platform Selector */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="max-w-4xl mx-auto mb-10"
+        >
+          <div className="flex justify-center gap-3 p-2 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-lg w-fit mx-auto">
+            {platforms.map((platform) => (
+              <button
+                key={platform.key}
+                onClick={() => setSelectedPlatform(platform.key)}
+                className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all duration-300
+                  ${selectedPlatform === platform.key
+                    ? `bg-gradient-to-r ${platform.color} text-white shadow-lg`
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10'
+                  }
+                `}
+              >
+                <platform.icon />
+                <span className="hidden sm:inline">{platform.label}</span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
         <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {/* Main Content - Builds List */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                <GitBranch className="w-6 h-6 text-indigo-400" />
-                Latest Builds
+          {/* Builds List */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Zap className="w-5 h-5 text-indigo-500" />
+                Recent Builds
               </h2>
-            <div className="flex gap-2">
-                 {['windows', 'macos', 'linux'].map(p => (
-                   <button
-                    key={p}
-                    onClick={() => setSelectedPlatform(p)}
-                    className={`p-2 rounded-lg transition-all ${selectedPlatform === p ? 'bg-indigo-600 text-white' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`}
-                   >
-                     {getPlatformIcon(p)}
-                   </button>
-                 ))}
-            </div>
             </div>
 
             {isLoading ? (
               <div className="space-y-4">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="h-32 bg-white/5 rounded-2xl animate-pulse" />
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="h-28 bg-white/50 dark:bg-white/5 rounded-2xl animate-pulse" />
                 ))}
               </div>
             ) : error ? (
-               <div className="p-8 bg-red-500/10 border border-red-500/20 rounded-2xl text-center">
-                 <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-                 <p className="text-red-400">Failed to load builds</p>
-               </div>
+              <div className="p-8 bg-red-500/10 border border-red-500/20 rounded-2xl text-center">
+                <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                <p className="text-red-500 font-medium">Failed to load builds</p>
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={() => window.location.reload()}
+                >
+                  Retry
+                </Button>
+              </div>
             ) : (
               <div className="space-y-4">
-                {workflowRuns?.workflow_runs?.map((run: WorkflowRun) => (
-                  <motion.div
+                {runs.map((run: any, index: number) => (
+                  <BuildCard
                     key={run.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:bg-white/[0.07] transition-all"
-                  >
-                    <div className="p-6">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-3 mb-2">
-                             <StatusIcon conclusion={run.conclusion} />
-                             <span className="font-mono text-sm text-slate-400">#{run.run_number}</span>
-                             <span className={`px-2 py-0.5 rounded text-xs border ${getStatusColor(run.conclusion)}`}>
-                               {run.conclusion}
-                             </span>
-                          </div>
-                          <h3 className="text-lg font-bold text-white truncate mb-2 group-hover:text-indigo-400 transition-colors">
-                            {run.display_title}
-                          </h3>
-                          <div className="flex items-center gap-4 text-sm text-slate-400">
-                            <div className="flex items-center gap-1.5">
-                              <img src={run.actor.avatar_url} alt="" className="w-5 h-5 rounded-full" />
-                              <span>{run.actor.login}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <Clock className="w-4 h-4" />
-                              <span>{formatDate(run.updated_at)}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 font-mono">
-                              <GitBranch className="w-4 h-4" />
-                              <span>{run.head_branch}</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setExpandedRunId(expandedRunId === run.id ? null : run.id)}
-                          className={`rounded-xl transition-all ${expandedRunId === run.id ? 'bg-indigo-500/20 text-indigo-400' : 'text-slate-400 hover:text-white'}`}
-                        >
-                           <Download className="w-5 h-5" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <AnimatePresence>
-                      {expandedRunId === run.id && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="border-t border-white/10 bg-black/20"
-                        >
-                          <div className="p-6">
-                            <DownloadArtifacts runId={run.id} platform={selectedPlatform} />
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
+                    run={run}
+                    isExpanded={expandedRunId === run.id}
+                    onToggle={(id: number) => setExpandedRunId(expandedRunId === id ? null : id)}
+                    selectedPlatform={selectedPlatform}
+                    isLatestSuccess={run.id === latestSuccessId}
+                  />
                 ))}
               </div>
             )}
           </div>
 
-          {/* Sidebar - Info & Warning */}
+          {/* Sidebar */}
           <div className="space-y-6">
-            
             {/* Warning Card */}
-            <div className="p-6 bg-amber-500/10 backdrop-blur-xl border border-amber-500/20 rounded-2xl">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-amber-500/20 rounded-xl">
-                  <ShieldAlert className="w-6 h-6 text-amber-500" />
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="p-5 bg-amber-50 dark:bg-amber-500/10 rounded-2xl border border-amber-200 dark:border-amber-500/20"
+            >
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
+                  <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-amber-500 text-lg mb-2">Warning</h3>
-                  <p className="text-amber-200/80 text-sm leading-relaxed">
-                    These are development builds. They may contain bugs, incomplete features, or cause data issues. Always backup your data before using testing builds.
+                  <h3 className="font-bold text-amber-800 dark:text-amber-400 mb-1">Warning</h3>
+                  <p className="text-sm text-amber-700 dark:text-amber-200/80 leading-relaxed">
+                    These are development builds. They may contain bugs or incomplete features. Always backup your data first.
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* How to Use */}
-            <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
-              <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-                <Terminal className="w-5 h-5 text-indigo-400" />
-                How to Install
+            {/* How to Install */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="p-5 bg-white/70 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10"
+            >
+              <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <Terminal className="w-5 h-5 text-indigo-500" />
+                Quick Start
               </h3>
-              <div className="space-y-4">
-                <div className="flex gap-4">
-                  <div className="flex-none w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">1</div>
-                  <div>
-                    <h4 className="text-white font-medium text-sm">Download Artifact</h4>
-                    <p className="text-slate-400 text-xs mt-1">Select your platform and download the latest successful build artifact.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-none w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm border border-purple-500/30">2</div>
-                  <div>
-                    <h4 className="text-white font-medium text-sm">Extract & Run</h4>
-                    <p className="text-slate-400 text-xs mt-1">Extract the archive. The executable is portable and can be run directly.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-none w-8 h-8 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold text-sm border border-pink-500/30">3</div>
-                  <div>
-                    <h4 className="text-white font-medium text-sm">Report Bugs</h4>
-                    <p className="text-slate-400 text-xs mt-1">If you find issues, please report them on our GitHub Issues page.</p>
-                  </div>
-                </div>
-              </div>
               
-              <Button 
-                variant="outline" 
-                className="w-full mt-6 border-white/10 hover:bg-white/5 text-slate-300"
+              <div className="space-y-4">
+                {[
+                  { num: 1, color: 'indigo', text: 'Click download button on any successful build' },
+                  { num: 2, color: 'purple', text: 'Extract the downloaded archive' },
+                  { num: 3, color: 'pink', text: 'Run the executable directly' },
+                ].map((step) => (
+                  <div key={step.num} className="flex gap-3">
+                    <div className={`flex-shrink-0 w-7 h-7 rounded-lg bg-${step.color}-500/20 text-${step.color}-500 flex items-center justify-center font-bold text-sm`}>
+                      {step.num}
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 pt-0.5">{step.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <Button
+                variant="outline"
+                className="w-full mt-5 gap-2"
                 onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/issues', '_blank')}
               >
-                Report Issue <ExternalLink className="w-4 h-4 ml-2" />
+                Report Issue
+                <ExternalLink className="w-4 h-4" />
               </Button>
-            </div>
-
+            </motion.div>
           </div>
         </div>
       </div>
@@ -317,7 +400,6 @@ const TestingContent = () => {
   );
 };
 
-// Export wrappper
 export const Testing = () => (
   <AppShell>
     <TestingContent />

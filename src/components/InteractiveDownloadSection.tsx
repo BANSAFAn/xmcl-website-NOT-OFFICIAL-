@@ -118,16 +118,16 @@ const InteractiveDownloadSection = memo(() => {
     return (
       <motion.button
         onClick={onClick}
-        className={`relative px-8 py-4 rounded-xl font-medium transition-all duration-300 flex items-center gap-3 overflow-hidden ${
+        className={`relative px-4 py-3 md:px-8 md:py-4 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 md:gap-3 overflow-hidden ${
           isSelected
             ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl scale-105'
-            : 'bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50'
+            : 'bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 border border-slate-200/50 dark:border-slate-700/50'
         }`}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <span className="text-2xl">{icon}</span>
-        <span className="text-lg">{name}</span>
+        <span className="text-xl md:text-2xl">{icon}</span>
+        <span className="text-base md:text-lg">{name}</span>
         {isSelected && (
           <motion.div
             className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-xl"
@@ -146,7 +146,7 @@ const InteractiveDownloadSection = memo(() => {
         transition={{ duration: 0.6, delay: index * 0.1 }}
         className="relative group"
       >
-        <Card className="p-8 hover:shadow-xl transition-all duration-500 relative overflow-hidden backdrop-blur-sm bg-white/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl shadow-sm">
+        <Card className="p-8 hover:shadow-xl transition-all duration-500 relative overflow-hidden bg-white/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl shadow-sm">
           <div className="text-center relative z-10">
             <motion.div 
               className="text-5xl mb-6"
@@ -219,14 +219,14 @@ const InteractiveDownloadSection = memo(() => {
   return (
     <section 
       ref={sectionRef}
-      className="py-20 px-4 relative overflow-hidden"
+      className="py-12 md:py-20 px-4 relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800" />
       
       <div className="container mx-auto relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <motion.h2 
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent"
+            className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -235,7 +235,7 @@ const InteractiveDownloadSection = memo(() => {
           </motion.h2>
           
           <motion.p 
-            className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -264,7 +264,7 @@ const InteractiveDownloadSection = memo(() => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <div className="bg-white/50 dark:bg-slate-800/50 rounded-2xl p-3 shadow-2xl backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50">
+          <div className="bg-white/50 dark:bg-slate-800/50 rounded-2xl p-3 shadow-2xl border border-slate-200/50 dark:border-slate-700/50">
             <div className="flex gap-3">
               <OSButton
                 id="windows"
@@ -415,7 +415,7 @@ const InteractiveDownloadSection = memo(() => {
               <Button
                 variant="outline"
                 onClick={() => window.open(latestRelease.html_url, '_blank')}
-                className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
+                className="bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
               >
                 <ExternalLink className="w-5 h-5 mr-3" />
                 {t('downloadSection.releaseNotes')}
@@ -426,7 +426,7 @@ const InteractiveDownloadSection = memo(() => {
               <Button
                 variant="outline"
                 onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher/releases', '_blank')}
-                className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
+                className="bg-white/80 dark:bg-slate-800/80 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 py-3 px-6 text-lg font-medium rounded-lg"
               >
                 <Github className="w-5 h-5 mr-3" />
                 {t('downloadMessages.viewAllReleases')}

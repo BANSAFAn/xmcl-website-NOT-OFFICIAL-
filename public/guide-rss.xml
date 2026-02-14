@@ -6,7 +6,7 @@
     <atom:link href="https://xmcl-website-not-official.vercel.app/guide-rss.xml" rel="self" type="application/rss+xml" />
     <description>Latest guides and tutorials from XMCL</description>
     <language>en</language>
-    <lastBuildDate>Tue, 09 Dec 2025 16:11:02 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 10 Feb 2026 09:27:10 GMT</lastBuildDate>
     <generator>XMCL Website</generator>
 
     <item>
@@ -142,6 +142,29 @@
       <category><![CDATA[launcher]]></category>
       <category><![CDATA[p2p]]></category>
       <category><![CDATA[online]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Bad Name ?]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/name-bad</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/name-bad</guid>
+      <description><![CDATA[Is your username invalid for the servers?]]></description>
+      <pubDate>Invalid Date</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[launcher]]></category>
+      <category><![CDATA[nickname]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Licences NOT WORK ?!]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/licence-not-work</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/licence-not-work</guid>
+      <description><![CDATA[I bought a license, but it doesn't work in the launcher?]]></description>
+      <pubDate>Mon, 31 Mar 2025 21:00:00 GMT</pubDate>
+      <author><![CDATA[Baneronetwo]]></author>
+      <category><![CDATA[launcher]]></category>
+      <category><![CDATA[licence]]></category>
+      <category><![CDATA[account]]></category>
     </item>
   </channel>
 </rss>

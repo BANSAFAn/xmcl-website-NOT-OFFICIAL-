@@ -37,7 +37,7 @@ const COLOR_MAP = {
   amber: "bg-amber-500 hover:bg-amber-600 shadow-amber-500/50",
 };
 
-export const FeaturesSection = () => {
+export const FeaturesSection = memo(() => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -128,7 +128,7 @@ export const FeaturesSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative py-20 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
       style={{ position: 'relative' }}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -147,7 +147,7 @@ export const FeaturesSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader t={t} />
 
-        <div className="space-y-40">
+        <div className="space-y-24 lg:space-y-40">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}
@@ -162,9 +162,13 @@ export const FeaturesSection = () => {
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent" />
     </section>
   );
-};
+});
 
-const SectionHeader = memo(({ t }) => (
+interface SectionHeaderProps {
+  t: (key: string) => string;
+}
+
+const SectionHeader = memo(({ t }: SectionHeaderProps) => (
   <motion.div
     className="text-center mb-28"
     initial={{ opacity: 0 }}
@@ -173,7 +177,7 @@ const SectionHeader = memo(({ t }) => (
     transition={{ duration: 1 }}
   >
     <motion.div
-      className="inline-flex items-center gap-3 px-6 py-3 mb-8 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-cyan-500/10 backdrop-blur-2xl rounded-full border border-white/20 dark:border-white/10 shadow-2xl"
+      className="inline-flex items-center gap-3 px-6 py-3 mb-8 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-cyan-500/10 rounded-full border border-white/20 dark:border-white/10 shadow-2xl"
       initial={{ scale: 0, rotate: -180 }}
       whileInView={{ scale: 1, rotate: 0 }}
       viewport={{ once: true }}
@@ -193,7 +197,7 @@ const SectionHeader = memo(({ t }) => (
     </motion.div>
 
     <motion.h2
-      className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-[0.9] tracking-tight"
+      className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-8 leading-[0.9] tracking-tight"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -275,10 +279,33 @@ const FloatingOrbs = memo(() => {
   );
 });
 
-const FeatureCard = memo(({ feature, index, scrollProgress }) => {
+interface FeatureLink {
+  name: string;
+  url: string;
+  color: string;
+}
+
+interface Feature {
+  icon: any;
+  title: string;
+  description: string;
+  image: string;
+  gradient: string;
+  accentColor: string;
+  tags: string[];
+  links: FeatureLink[];
+}
+
+interface FeatureCardProps {
+  feature: Feature;
+  index: number;
+  scrollProgress: any;
+}
+
+const FeatureCard = memo(({ feature, index, scrollProgress }: FeatureCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const reverse = index % 2 !== 0;
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -291,7 +318,7 @@ const FeatureCard = memo(({ feature, index, scrollProgress }) => {
     ANIMATION_CONFIG.spring,
   );
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -332,8 +359,17 @@ const FeatureCard = memo(({ feature, index, scrollProgress }) => {
   );
 });
 
+interface ImageSectionProps {
+  cardRef: React.RefObject<HTMLDivElement | null>;
+  feature: Feature;
+  reverse: boolean;
+  isHovered: boolean;
+  rotateX: any;
+  rotateY: any;
+}
+
 const ImageSection = memo(
-  ({ cardRef, feature, reverse, isHovered, rotateX, rotateY }) => (
+  ({ cardRef, feature, reverse, isHovered, rotateX, rotateY }: ImageSectionProps) => (
     <motion.div
       ref={cardRef}
       className={`relative ${reverse ? "lg:col-start-2" : ""}`}
@@ -404,7 +440,7 @@ const ImageSection = memo(
           {feature.tags.slice(0, 3).map((tag, i) => (
             <motion.span
               key={i}
-              className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 backdrop-blur-xl"
+              className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -420,7 +456,13 @@ const ImageSection = memo(
   ),
 );
 
-const ContentSection = memo(({ feature, reverse, index }) => (
+interface ContentSectionProps {
+  feature: Feature;
+  reverse: boolean;
+  index: number;
+}
+
+const ContentSection = memo(({ feature, reverse, index }: ContentSectionProps) => (
   <motion.div
     className={`space-y-6 ${reverse ? "lg:col-start-1 lg:row-start-1" : ""}`}
     initial={{ opacity: 0, x: reverse ? 50 : -50 }}
@@ -443,7 +485,7 @@ const ContentSection = memo(({ feature, reverse, index }) => (
       </motion.div>
 
       <motion.h3
-        className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tight"
+        className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tight"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -477,12 +519,17 @@ const ContentSection = memo(({ feature, reverse, index }) => (
   </motion.div>
 ));
 
-const ActionButton = memo(({ link, index }) => (
+interface ActionButtonProps {
+  link: FeatureLink;
+  index: number;
+}
+
+const ActionButton = memo(({ link, index }: ActionButtonProps) => (
   <motion.a
     href={link.url}
     target="_blank"
     rel="noopener noreferrer"
-    className={`group relative inline-flex items-center gap-2 px-6 py-3 ${COLOR_MAP[link.color]} text-white font-bold rounded-xl shadow-lg overflow-hidden transition-all duration-300`}
+    className={`group relative inline-flex items-center gap-2 px-6 py-3 ${(COLOR_MAP as any)[link.color]} text-white font-bold rounded-xl shadow-lg overflow-hidden transition-all duration-300`}
     initial={{ opacity: 0, scale: 0.8 }}
     whileInView={{ opacity: 1, scale: 1 }}
     viewport={{ once: true }}

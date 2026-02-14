@@ -1,5 +1,6 @@
 ---
 import "../index.css";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title?: string;
@@ -19,6 +20,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <link rel="icon" href="/PhotoXMCL/logo.ico" />
+    <ClientRouter />
     <meta name="description" content={description} />
     <meta name="author" content="Voxelum" />
     <meta name="theme-color" content="#3b82f6" />
@@ -37,9 +39,33 @@ const {
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content="/PhotoXMCL/591e0b02-a16f-4fe0-8eda-dd9a81f27cf8.png" />
+
+    <!-- Google Translate -->
+    <meta name="google" content="notranslate" />
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" is:inline></script>
+    <script is:inline>
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          autoDisplay: false,
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+      }
+    </script>
+    <style is:inline>
+      /* Hide Google Translate bar and widget UI */
+      .goog-te-banner-frame, .skiptranslate, #goog-gt-tt, .goog-te-balloon-frame {
+        display: none !important;
+      }
+      body { top: 0 !important; }
+      .goog-text-highlight { background: none !important; box-shadow: none !important; }
+    </style>
   </head>
   <body>
-    <slot />
+    <div id="google_translate_element" style="display:none"></div>
+    <main transition:animate="slide" style="view-transition-name: page-content;">
+      <slot />
+    </main>
     
     <script>
       // Console Easter Egg

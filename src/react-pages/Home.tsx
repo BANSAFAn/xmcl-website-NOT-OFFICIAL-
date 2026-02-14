@@ -90,7 +90,7 @@ const Home = () => {
 
         <Navigation />
         
-        <main className="container mx-auto px-4 pt-20 pb-12 relative z-10">
+        <main className="container mx-auto px-4 pt-12 md:pt-20 pb-12 relative z-10">
           {/* Hero Section */}
           <motion.section
             className="text-center py-20 mb-20"
@@ -99,7 +99,7 @@ const Home = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-4 mb-8 px-6 py-3 bg-white/30 dark:bg-slate-800/30 backdrop-blur-md rounded-full border border-white/20 dark:border-slate-700/20 shadow-2xl"
+              className="inline-flex items-center gap-4 mb-8 px-6 py-3 bg-white/30 dark:bg-slate-800/30 rounded-full border border-white/20 dark:border-slate-700/20 shadow-2xl"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -113,7 +113,7 @@ const Home = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-7xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent leading-tight"
+              className="text-5xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -161,7 +161,7 @@ const Home = () => {
                   variant="outline"
                   size="lg"
                   onClick={() => window.open('https://github.com/Voxelum/x-minecraft-launcher', '_blank')}
-                  className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 px-12 py-4 text-xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl"
+                  className="bg-white/90 dark:bg-slate-800/90 border-2 border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 px-12 py-4 text-xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl"
                 >
                   <Github className="w-6 h-6 mr-3" />
                   {t('home.viewOnGitHub')}
@@ -197,7 +197,7 @@ const Home = () => {
           >
             <div className="text-center mb-20">
               <motion.h2 
-                className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
+                className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -232,7 +232,7 @@ const Home = () => {
                   whileHover={{ y: -10, rotateX: 5 }}
                   className="group"
                 >
-                  <Card className="p-10 h-full hover:shadow-3xl transition-all duration-700 relative overflow-hidden backdrop-blur-xl bg-white/90 dark:bg-slate-800/90 border-2 border-white/20 dark:border-slate-700/20 rounded-3xl group-hover:border-purple-200/50 dark:group-hover:border-purple-700/50">
+                  <Card className="p-10 h-full hover:shadow-3xl transition-all duration-700 relative overflow-hidden bg-white/90 dark:bg-slate-800/90 border-2 border-white/20 dark:border-slate-700/20 rounded-3xl group-hover:border-purple-200/50 dark:group-hover:border-purple-700/50">
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
                       initial={false}

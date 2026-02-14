@@ -9,9 +9,9 @@ interface PlatformSelectorProps {
   onSelectPlatform: (platform: string) => void;
 }
 
-const PlatformSelector: React.FC<PlatformSelectorProps> = ({ 
-  selectedPlatform, 
-  onSelectPlatform 
+const PlatformSelector: React.FC<PlatformSelectorProps> = ({
+  selectedPlatform,
+  onSelectPlatform
 }) => {
   const { t } = useTranslation();
 
@@ -23,7 +23,7 @@ const PlatformSelector: React.FC<PlatformSelectorProps> = ({
 
   return (
     <div className="flex justify-center mb-12">
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl p-2 shadow-2xl border border-white/20 dark:border-slate-700/20">
+      <div className="bg-white/80 dark:bg-slate-800/80 rounded-2xl p-2 shadow-2xl border border-white/20 dark:border-slate-700/20">
         <div className="flex gap-2">
           {platforms.map((platform) => {
             const IconComponent = platform.icon;

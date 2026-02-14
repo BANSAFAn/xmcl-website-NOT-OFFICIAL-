@@ -1,75 +1,125 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import React, { useState, useCallback, useMemo } from "react";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Globe, ChevronDown, Search, Check } from "lucide-react";
+import { Globe, Search, Check, Sparkles, ArrowLeft, X } from "lucide-react";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { languageConfigs } from "@/i18n/languageConfigs";
+import { motion, AnimatePresence } from "framer-motion";
 
 const USER_PREFERENCE_KEY = "userPreferredLanguage";
-const IP_PREFERENCE_KEY = "userIpLanguageMap";
+const AUTO_TRANSLATE_KEY = "autoTranslateLanguage";
 
-const getUserIP = async (): Promise<string | null> => {
-  try {
-    const response = await fetch("https://api.ipify.org?format=json");
-    const data = await response.json();
-    return data.ip;
-  } catch (error) {
-    console.warn("Could not fetch user IP:", error);
-    return null;
+/**
+ * Set the Google Translate cookie and reload the page to trigger translation.
+ */
+function triggerGoogleTranslate(langCode: string) {
+  // Set the googtrans cookie for Google Translate
+  const value = `/en/${langCode}`;
+  document.cookie = `googtrans=${value};path=/`;
+  document.cookie = `googtrans=${value};path=/;domain=${window.location.hostname}`;
+  
+  // Reload to apply Google Translate
+  window.location.reload();
+}
+
+/**
+ * Remove Google Translate cookies and reload to restore original content.
+ */
+function removeGoogleTranslate() {
+  // Check if Google Translate is active
+  const hasGoogTrans = document.cookie.includes('googtrans');
+  
+  // Clear googtrans cookies
+  document.cookie = `googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  document.cookie = `googtrans=;path=/;domain=${window.location.hostname};expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  
+  // Only reload if Google Translate was actually active
+  if (hasGoogTrans) {
+    window.location.reload();
   }
-};
+}
 
-const LanguageSelectorComponent = () => {
-  const { t, locale, changeLanguage } = useTranslation();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [userIP, setUserIP] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+// Languages for auto-translate (not in manual translation list)
+const AUTO_TRANSLATE_LANGUAGES = [
+  { code: 'pl', name: 'Polish', nativeName: 'Polski' },
+  { code: 'cs', name: 'Czech', nativeName: 'Čeština' },
+  { code: 'sk', name: 'Slovak', nativeName: 'Slovenčina' },
+  { code: 'bg', name: 'Bulgarian', nativeName: 'Български' },
+  { code: 'sr', name: 'Serbian', nativeName: 'Српски' },
+  { code: 'hr', name: 'Croatian', nativeName: 'Hrvatski' },
+  { code: 'sl', name: 'Slovenian', nativeName: 'Slovenščina' },
+  { code: 'nl', name: 'Dutch', nativeName: 'Nederlands' },
+  { code: 'sv', name: 'Swedish', nativeName: 'Svenska' },
+  { code: 'no', name: 'Norwegian', nativeName: 'Norsk' },
+  { code: 'da', name: 'Danish', nativeName: 'Dansk' },
+  { code: 'fi', name: 'Finnish', nativeName: 'Suomi' },
+  { code: 'el', name: 'Greek', nativeName: 'Ελληνικά' },
+  { code: 'hu', name: 'Hungarian', nativeName: 'Magyar' },
+  { code: 'ro', name: 'Romanian', nativeName: 'Română' },
+  { code: 'th', name: 'Thai', nativeName: 'ไทย' },
+  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt' },
+  { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia' },
+  { code: 'ms', name: 'Malay', nativeName: 'Bahasa Melayu' },
+  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी' },
+  { code: 'bn', name: 'Bengali', nativeName: 'বাংলা' },
+  { code: 'fa', name: 'Persian', nativeName: 'فارسی' },
+  { code: 'he', name: 'Hebrew', nativeName: 'עברית' },
+  { code: 'sw', name: 'Swahili', nativeName: 'Kiswahili' },
+];
 
-  useEffect(() => {
-    getUserIP().then(setUserIP);
-  }, []);
+/**
+ * LanguageTrigger — the small button shown in the menu footer.
+ * When clicked, tells the parent to switch to the language panel view.
+ */
+export const LanguageTrigger = ({ onClick }: { onClick?: () => void }) => {
+  const { locale } = useTranslation();
+  
+  const [autoTranslateLanguage, setAutoTranslateLanguage] = useState<string | null>(() => {
+    try { return localStorage.getItem(AUTO_TRANSLATE_KEY); } catch { return null; }
+  });
 
-  const saveUserLanguagePreference = useCallback(
-    (langCode: string) => {
-      try {
-        if (userIP) {
-          const ipMap = JSON.parse(
-            localStorage.getItem(IP_PREFERENCE_KEY) || "{}",
-          );
-          ipMap[userIP] = langCode;
-          localStorage.setItem(IP_PREFERENCE_KEY, JSON.stringify(ipMap));
-        }
-        localStorage.setItem(USER_PREFERENCE_KEY, langCode);
-      } catch (e) {
-        console.warn("Could not save language preference:", e);
-      }
-    },
-    [userIP],
+  const currentLanguage = useMemo(
+    () => languageConfigs.find((lang) => lang.code === locale),
+    [locale],
   );
 
-  const getUserLanguagePreference = useCallback((): string | null => {
-    try {
-      if (userIP) {
-        const ipMap = JSON.parse(
-          localStorage.getItem(IP_PREFERENCE_KEY) || "{}",
-        );
-        if (ipMap[userIP]) {
-          return ipMap[userIP];
-        }
-      }
-      return localStorage.getItem(USER_PREFERENCE_KEY);
-    } catch (e) {
-      console.warn("Could not get language preference:", e);
-      return null;
-    }
-  }, [userIP]);
+  const autoLangDisplay = autoTranslateLanguage 
+    ? AUTO_TRANSLATE_LANGUAGES.find(l => l.code === autoTranslateLanguage)?.nativeName
+    : null;
+
+  return (
+    <button
+      onClick={onClick}
+      className="group relative w-full h-10 flex items-center justify-between gap-2 overflow-hidden rounded-xl bg-black/5 dark:bg-white/10 px-3 text-slate-700 dark:text-slate-200 transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/15 border border-transparent dark:border-white/5 text-sm font-medium"
+    >
+      <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/50 dark:bg-black/20 text-slate-600 dark:text-slate-300">
+          {autoTranslateLanguage ? <Sparkles className="h-3.5 w-3.5 text-yellow-500" /> : <Globe className="h-3.5 w-3.5" />}
+        </div>
+        <span className="truncate">
+          {autoLangDisplay || currentLanguage?.name || "English"}
+        </span>
+        {autoTranslateLanguage && (
+          <span className="text-[10px] bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 px-1.5 py-0.5 rounded-full">AUTO</span>
+        )}
+      </div>
+      <svg className="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  );
+};
+
+/**
+ * LanguagePanel — the full language selection panel shown inline in the menu.
+ * Replaces the main menu content when the user wants to change language.
+ */
+export const LanguagePanel = ({ onBack, onClose }: { onBack: () => void; onClose: () => void }) => {
+  const { t, locale, changeLanguage } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState<'manual' | 'auto'>('manual');
+  const [autoTranslateLanguage, setAutoTranslateLanguage] = useState<string | null>(() => {
+    try { return localStorage.getItem(AUTO_TRANSLATE_KEY); } catch { return null; }
+  });
 
   const filteredLanguages = useMemo(() => {
     if (!searchTerm) return languageConfigs;
@@ -81,122 +131,184 @@ const LanguageSelectorComponent = () => {
     );
   }, [searchTerm]);
 
+  const filteredAutoLanguages = useMemo(() => {
+    if (!searchTerm) return AUTO_TRANSLATE_LANGUAGES;
+    const term = searchTerm.toLowerCase();
+    return AUTO_TRANSLATE_LANGUAGES.filter(
+      (lang) =>
+        lang.name.toLowerCase().includes(term) ||
+        lang.nativeName.toLowerCase().includes(term) ||
+        lang.code.toLowerCase().includes(term),
+    );
+  }, [searchTerm]);
+
   const handleLanguageChange = useCallback(
     (langCode: string) => {
+      // Clear any active auto-translate first
+      removeGoogleTranslate();
       changeLanguage(langCode);
-      saveUserLanguagePreference(langCode);
-      setSearchTerm("");
-      setIsOpen(false);
+      localStorage.setItem(USER_PREFERENCE_KEY, langCode);
+      localStorage.removeItem(AUTO_TRANSLATE_KEY);
+      setAutoTranslateLanguage(null);
+      onClose();
     },
-    [changeLanguage, saveUserLanguagePreference],
+    [changeLanguage, onClose],
   );
 
-  useEffect(() => {
-    if (!userIP) return;
-
-    const savedLang = getUserLanguagePreference();
-
-    if (savedLang && languageConfigs.some((lang) => lang.code === savedLang)) {
-      if (savedLang !== locale) {
-        changeLanguage(savedLang);
-      }
-    } else if (locale !== "en") {
-      changeLanguage("en");
-    }
-  }, [userIP, getUserLanguagePreference, changeLanguage, locale]);
-
-  const currentLanguage = useMemo(
-    () => languageConfigs.find((lang) => lang.code === locale),
-    [locale],
+  const handleAutoTranslate = useCallback(
+    (langCode: string) => {
+      setAutoTranslateLanguage(langCode);
+      localStorage.setItem(AUTO_TRANSLATE_KEY, langCode);
+      // Trigger Google Translate by setting the googtrans cookie and reloading
+      triggerGoogleTranslate(langCode);
+      onClose();
+    },
+    [onClose],
   );
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="group relative h-10 gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-slate-100 to-slate-50 px-4 text-slate-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 dark:from-slate-800 dark:to-slate-700 dark:text-slate-200"
-          aria-label={t("ui.changeLanguage")}
+    <div className="flex flex-col h-full">
+      {/* Header with back button */}
+      <div className="flex items-center gap-2 p-3 border-b border-black/5 dark:border-white/5">
+        <button
+          onClick={onBack}
+          className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition-colors"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 group-hover:opacity-100" />
-          <Globe className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
-          <span className="relative z-10 hidden font-semibold sm:inline">
-            {currentLanguage?.name ||
-              t("language.defaultName", { name: "English" })}
-          </span>
-          <ChevronDown className="relative z-10 hidden h-4 w-4 opacity-60 transition-all duration-300 group-hover:translate-y-0.5 group-hover:opacity-100 sm:inline" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="z-[10000] w-[280px] overflow-hidden rounded-2xl border-2 border-slate-200/50 bg-white/95 p-0 shadow-2xl backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-800/95"
-        align="end"
-        sideOffset={8}
-      >
-        <div className="border-b border-slate-200/50 bg-gradient-to-r from-slate-50 to-white p-3 dark:from-slate-800 dark:to-slate-700 dark:border-slate-700/50">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 pointer-events-none" />
-            <Input
-              placeholder={t("language.searchPlaceholder")}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-10 border-slate-200 bg-white pl-10 pr-4 text-sm transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-700"
-              aria-label={t("language.searchLabel")}
-            />
-          </div>
-        </div>
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 flex-1">
+          {t("ui.changeLanguage", "Change language")}
+        </span>
+        <button
+          onClick={onClose}
+          className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
 
-        <ScrollArea className="h-[320px]">
-          <div className="p-2">
-            {filteredLanguages.length > 0 ? (
-              filteredLanguages.map((lang) => {
-                const isSelected = locale === lang.code;
-                return (
-                  <DropdownMenuItem
-                    key={lang.code}
-                    onClick={() => handleLanguageChange(lang.code)}
-                    className={`
-                      group relative cursor-pointer gap-3 overflow-hidden rounded-xl px-4 py-3 transition-all duration-200
-                      ${
-                        isSelected
-                          ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30"
-                          : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700/50"
-                      }
-                    `}
-                    aria-checked={isSelected}
-                  >
-                    <div className="flex flex-1 items-center justify-between">
-                      <span className="relative z-10 font-semibold">
-                        {lang.name}
-                      </span>
-                      {isSelected && (
-                        <Check className="relative z-10 h-5 w-5 animate-in zoom-in-50" />
-                      )}
-                    </div>
-                    {!isSelected && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    )}
-                  </DropdownMenuItem>
-                );
-              })
-            ) : (
-              <div className="py-8 text-center text-sm text-slate-500">
-                {t("language.noLanguageFound")}
-              </div>
-            )}
-          </div>
-        </ScrollArea>
-
-        <div className="border-t border-slate-200/50 bg-gradient-to-r from-slate-50 to-white p-2 dark:from-slate-800 dark:to-slate-700 dark:border-slate-700/50">
-          <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-            {languageConfigs.length} {t("language.availableLanguages")}
-          </p>
+      {/* Search */}
+      <div className="p-3 border-b border-black/5 dark:border-white/5">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+          <Input
+            placeholder={t("language.searchPlaceholder", "Search...")}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="h-9 border-none bg-black/5 pl-9 pr-4 text-sm rounded-lg focus-visible:ring-1 focus-visible:ring-indigo-500/50 dark:bg-white/5 dark:text-slate-200"
+          />
         </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </div>
+
+      {/* Tab Toggle */}
+      <div className="flex gap-1 p-2 border-b border-black/5 dark:border-white/5">
+        <button
+          onClick={() => setActiveTab('manual')}
+          className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+            activeTab === 'manual'
+              ? 'bg-indigo-500 text-white shadow-sm shadow-indigo-500/25' 
+              : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+          }`}
+        >
+          Manual ({languageConfigs.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('auto')}
+          className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-1.5 ${
+            activeTab === 'auto'
+              ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-white shadow-sm shadow-amber-500/25' 
+              : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+          }`}
+        >
+          <Sparkles className="w-3 h-3" />
+          Auto ({AUTO_TRANSLATE_LANGUAGES.length})
+        </button>
+      </div>
+
+      {/* Language List */}
+      <div className="flex-1 overflow-y-auto p-2 custom-scrollbar" style={{ maxHeight: '45vh' }}>
+        <AnimatePresence mode="wait">
+          {activeTab === 'manual' ? (
+            <motion.div
+              key="manual"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ duration: 0.15 }}
+              className="space-y-0.5"
+            >
+              {filteredLanguages.length > 0 ? (
+                filteredLanguages.map((lang) => {
+                  const isSelected = locale === lang.code && !autoTranslateLanguage;
+                  return (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                      className={`
+                        w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 text-left
+                        ${
+                          isSelected
+                            ? "bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300"
+                            : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                        }
+                      `}
+                    >
+                      <span className="flex-1">{lang.name}</span>
+                      {isSelected && <Check className="h-4 w-4 text-indigo-500" />}
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="py-8 text-center text-sm text-slate-400">
+                  {t("language.noLanguageFound", "No results")}
+                </div>
+              )}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="auto"
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.15 }}
+              className="space-y-0.5"
+            >
+              {filteredAutoLanguages.length > 0 ? (
+                filteredAutoLanguages.map((lang) => {
+                  const isSelected = autoTranslateLanguage === lang.code;
+                  return (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleAutoTranslate(lang.code)}
+                      className={`
+                        w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 text-left
+                        ${
+                          isSelected
+                            ? "bg-yellow-500/10 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-300"
+                            : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                        }
+                      `}
+                    >
+                      <Sparkles className="h-3 w-3 text-yellow-500 flex-shrink-0" />
+                      <span className="flex-1">{lang.nativeName}</span>
+                      <span className="text-xs text-slate-400">{lang.name}</span>
+                      {isSelected && <Check className="h-4 w-4 flex-shrink-0 text-yellow-500" />}
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="py-8 text-center text-sm text-slate-400">
+                  {t("language.noLanguageFound", "No results")}
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
   );
 };
 
-const LanguageSelector = React.memo(LanguageSelectorComponent);
-
+// Keep backward compatibility export  
+const LanguageSelector = LanguageTrigger;
 export { LanguageSelector };

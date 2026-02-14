@@ -38,7 +38,7 @@ export const StatsSection = () => {
   ];
 
   return (
-    <section className="py-32 relative overflow-hidden">
+    <section className="py-20 md:py-32 relative overflow-hidden">
       {/* Background with subtle pattern */}
       <div className="absolute inset-0 bg-gradient-to-r from-muted/30 via-muted/20 to-muted/30"></div>
       <div className="absolute inset-0 opacity-30" style={{
@@ -47,23 +47,23 @@ export const StatsSection = () => {
       }}></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 md:mb-20">
           <div className="inline-flex items-center px-4 py-2 bg-secondary/10 rounded-full text-secondary-foreground font-medium text-sm mb-6">
             📊 Project Statistics
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent mb-4 md:mb-6">
             Numbers That Matter
           </h2>
-          <p className="text-muted-foreground text-xl max-w-3xl mx-auto">
+          <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto">
             Our commitment to excellence and community impact reflected in real metrics
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {stats.map((stat, index) => (
             <div 
               key={index}
-              className={`group relative p-8 bg-gradient-to-br ${stat.color} backdrop-blur-xl rounded-3xl border border-border/30 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 text-center overflow-hidden`}
+              className={`group relative p-4 md:p-8 bg-gradient-to-br ${stat.color} rounded-3xl border border-border/30 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 text-center overflow-hidden`}
               style={{ animationDelay: `${index * 150}ms` }}
             >
               {/* Animated background elements */}
@@ -73,15 +73,15 @@ export const StatsSection = () => {
               </div>
               
               <div className="relative z-10">
-                <div className="flex justify-center mb-6">
-                  <div className="p-4 bg-card/50 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-500">
-                    <stat.icon className={`w-8 h-8 ${stat.iconColor}`} />
+                <div className="flex justify-center mb-3 md:mb-6">
+                  <div className="p-3 md:p-4 bg-card/50 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-500">
+                    <stat.icon className={`w-6 h-6 md:w-8 md:h-8 ${stat.iconColor}`} />
                   </div>
                 </div>
-                <div className="text-4xl font-black bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent mb-3">
+                <div className="text-2xl md:text-4xl font-black bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent mb-2 md:mb-3">
                   {stat.number}
                 </div>
-                <div className="text-muted-foreground font-medium text-sm">
+                <div className="text-muted-foreground font-medium text-xs md:text-sm">
                   {stat.label}
                 </div>
               </div>

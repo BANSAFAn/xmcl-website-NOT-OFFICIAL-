@@ -47,7 +47,7 @@ const Docs = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {docSections.map((section, index) => (
-            <Card key={index} className="p-6 bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 hover:scale-105">
+            <Card key={index} className="p-6 bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all duration-300 hover:scale-105">
               <div className={`${section.color} mb-4`}>
                 {section.icon}
               </div>
@@ -65,7 +65,7 @@ const Docs = () => {
           ))}
         </div>
 
-        <Card className="p-8 bg-gray-800/50 border-gray-700 backdrop-blur-sm text-center">
+        <Card className="p-8 bg-gray-800/50 border-gray-700 text-center">
           <h2 className="text-2xl font-bold mb-4 text-white">
             {t('docs.fullDocumentation')}
           </h2>

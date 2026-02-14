@@ -62,7 +62,7 @@ const AppContent: React.FC = () => {
     <BrowserRouter>
       <TranslationProvider>
         <div className="min-h-screen bg-background text-foreground">
-          <header className="fixed top-0 left-0 right-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40">
+          <header className="fixed top-0 left-0 right-0 z-40 bg-background/95 border-b border-border/40">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
               <Suspense fallback={<Fallback message="Loading menu…" />}>
                 <StaggeredMenu />

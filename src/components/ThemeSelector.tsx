@@ -1,69 +1,74 @@
 import { Button } from "@/components/ui/button";
-import { Sun, Moon } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
-import { useTheme, type Theme } from "@/hooks/useTheme";
+import { Sun, Moon, Monitor } from "lucide-react";
+import { useTranslation } from "@/contexts/TranslationContext";
+import { useTheme } from "@/hooks/useTheme";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const ThemeSelector = () => {
   const { t } = useTranslation();
-  const { theme, setTheme } = useTheme();
-  const isDark = theme === 'dark';
-
-  const toggleTheme = () => {
-    setTheme(isDark ? 'light' : 'dark');
+  const { theme, themeMode, setTheme } = useTheme();
+  
+  const cycleTheme = () => {
+    if (themeMode === 'light') setTheme('dark');
+    else if (themeMode === 'dark') setTheme('system');
+    else setTheme('light');
   };
 
+  const getIcon = () => {
+    if (themeMode === 'system') return Monitor;
+    return theme === 'dark' ? Moon : Sun;
+  };
+
+  const getColor = () => {
+    if (themeMode === 'system') return 'text-blue-400 fill-blue-400/20';
+    return theme === 'dark' ? 'text-indigo-300 fill-indigo-300/20' : 'text-amber-500 fill-amber-500/20';
+  };
+
+  const getGlow = () => {
+    if (themeMode === 'system') return 'radial-gradient(circle at center, rgba(59, 130, 246, 0.4) 0%, transparent 70%)';
+    return theme === 'dark' 
+      ? 'radial-gradient(circle at center, rgba(99, 102, 241, 0.4) 0%, transparent 70%)'
+      : 'radial-gradient(circle at center, rgba(251, 191, 36, 0.4) 0%, transparent 70%)';
+  };
+
+  const Icon = getIcon();
+
   return (
-    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.9 }}
+      className="relative"
+    >
       <Button
         variant="ghost"
-        size="sm"
-        onClick={toggleTheme}
-        className="relative h-10 w-10 p-0 overflow-hidden rounded-full bg-muted/80 hover:bg-accent/60 transition-colors"
-        aria-label={isDark ? t('theme.light') : t('theme.dark')}
+        size="icon"
+        onClick={cycleTheme}
+        className="relative h-10 w-10 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors border border-transparent dark:border-white/5 shadow-sm"
+        aria-label={`Theme: ${themeMode}`}
+        title={`Current: ${themeMode} (Click to cycle)`}
       >
-        {/* Subtle background glow effect */}
+        {/* Glow effect */}
         <motion.div
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: isDark
-              ? 'radial-gradient(circle, rgb(99 102 241 / 0.5) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgb(251 191 36 / 0.5) 0%, transparent 70%)',
-          }}
-          animate={{ opacity: isDark ? 0.5 : 0.3 }}
-          transition={{ duration: 0.4 }}
+          className="absolute inset-0 rounded-xl"
+          style={{ background: getGlow() }}
+          animate={{ opacity: theme === 'dark' ? 0.6 : 0.4 }}
+          transition={{ duration: 0.5 }}
         />
 
-        {/* Icon container with animation */}
-        <div className="relative flex items-center justify-center w-full h-full">
-          <AnimatePresence mode="wait">
-            {isDark ? (
-              <motion.div
-                key="moon"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.5, opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-              >
-                <Moon className="w-5 h-5 text-foreground" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="sun"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.5, opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-              >
-                <Sun className="w-5 h-5 text-foreground" />
-              </motion.div>
-            )}
+        {/* Icon container */}
+        <div className="relative z-10 flex items-center justify-center">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={themeMode}
+              initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
+              animate={{ rotate: 0, scale: 1, opacity: 1 }}
+              exit={{ rotate: 90, scale: 0.5, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            >
+              <Icon className={`w-5 h-5 ${getColor()}`} />
+            </motion.div>
           </AnimatePresence>
         </div>
-
-        <span className="sr-only">
-          {isDark ? t('theme.light') : t('theme.dark')}
-        </span>
       </Button>
     </motion.div>
   );
