@@ -17,7 +17,7 @@ interface MarkdownRendererProps {
 const components = {
   h1: ({ children, ...props }: any) => (
     <h1
-      className="mb-6 mt-10 text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight"
+      className="mb-6 mt-10 text-4xl font-black text-blue-600 leading-tight"
       {...props}
     >
       {children}
@@ -25,11 +25,11 @@ const components = {
   ),
   h2: ({ children, ...props }: any) => (
     <h2
-      className="mb-5 mt-10 text-3xl font-bold text-slate-900 dark:text-white border-b-2 border-gradient-to-r from-blue-500 to-purple-500 pb-3 border-blue-500/30"
+      className="mb-5 mt-10 text-3xl font-bold text-slate-900 dark:text-white border-b-2 border-blue-500/30 pb-3"
       {...props}
     >
       <span className="flex items-center gap-3">
-        <span className="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full" />
+        <span className="w-1 h-8 bg-blue-500 rounded-full" />
         {children}
       </span>
     </h2>
@@ -136,13 +136,13 @@ const components = {
   ),
   li: ({ children, ordered, index, ...props }: any) => (
     <li className="flex items-start gap-3 text-lg leading-relaxed" {...props}>
-      <span className="flex-shrink-0 mt-1.5 w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
+      <span className="flex-shrink-0 mt-1.5 w-2 h-2 rounded-full bg-blue-500" />
       <span>{children}</span>
     </li>
   ),
   blockquote: ({ children, ...props }: any) => (
     <blockquote
-      className="my-8 relative pl-6 py-4 pr-4 border-l-4 border-blue-500 bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/20 dark:to-transparent rounded-r-xl italic text-slate-700 dark:text-slate-300"
+      className="my-8 relative pl-6 py-4 pr-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded-r-xl italic text-slate-700 dark:text-slate-300"
       {...props}
     >
       <span className="absolute -left-3 -top-2 text-4xl text-blue-300 dark:text-blue-700 font-serif">"</span>
@@ -168,7 +168,7 @@ const components = {
     if (!isBlock) {
       return (
         <code
-          className="px-2 py-0.5 rounded-md bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 text-pink-600 dark:text-pink-400 font-mono text-[0.9em] font-medium"
+          className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700 text-pink-600 dark:text-pink-400 font-mono text-[0.9em] font-medium"
           {...props}
         >
           {children}
@@ -215,7 +215,7 @@ const components = {
     </div>
   ),
   thead: ({ children, ...props }: any) => (
-    <thead className="bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-850" {...props}>
+    <thead className="bg-slate-100 dark:bg-slate-800" {...props}>
       {children}
     </thead>
   ),
@@ -267,9 +267,9 @@ const components = {
   ),
   hr: ({ ...props }: any) => (
     <div className="my-12 flex items-center justify-center gap-3">
-      <span className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent dark:via-slate-600" />
+      <span className="flex-1 h-px bg-slate-300 dark:bg-slate-600" />
       <span className="text-slate-400">✦</span>
-      <span className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent dark:via-slate-600" />
+      <span className="flex-1 h-px bg-slate-300 dark:bg-slate-600" />
     </div>
   ),
   video: ({ src, ...props }: any) => (

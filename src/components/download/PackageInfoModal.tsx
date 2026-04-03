@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { X, Info, Download, Package, Archive, Plane, Rocket, Monitor } from 'lucide-react';
+import { X, Info, DownloadSimple, Package, Archive, Airplane, Rocket, Monitor } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -11,7 +11,7 @@ interface PackageInfoModalProps {
 
 const packageInfoData = {
   'App Installer': {
-    icon: Plane,
+    icon: Airplane,
     title: 'App Installer (.exe)',
     description: 'Установщик приложения для Windows',
     features: [
@@ -319,7 +319,7 @@ export const PackageInfoModal = ({ packageType, onClose }: PackageInfoModalProps
     >
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in" 
+        className="absolute inset-0 bg-black/50 animate-fade-in" 
         onClick={onClose}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
       />
