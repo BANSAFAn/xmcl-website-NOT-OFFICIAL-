@@ -1,6 +1,61 @@
 {
   "posts": [
     {
+      "id": "0",
+      "title": "Installation Guide",
+      "excerpt": "Complete guide to installing XMCL on Windows, macOS, and Linux",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["installation", "windows", "macos", "linux", "beginner"],
+      "slug": "install",
+      "readTime": "10 min",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "15",
+      "title": "Appearance Guide",
+      "excerpt": "Customize colors, themes, and background effects in XMCL",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["appearance", "themes", "customization", "beginner"],
+      "slug": "appearance",
+      "readTime": "5 min",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "16",
+      "title": "Contributing Guide",
+      "excerpt": "Learn how to contribute to XMCL development",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["contributing", "development", "advanced"],
+      "slug": "contributing",
+      "readTime": "15 min",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "17",
+      "title": "What is Modloader and Why I Need That",
+      "excerpt": "Understanding Minecraft mod loaders: Forge, Fabric, NeoForge, and Quilt",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["modloader", "forge", "fabric", "neoforge", "quilt", "beginner"],
+      "slug": "modloader",
+      "readTime": "12 min",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "18",
+      "title": "Update Guide",
+      "excerpt": "How to update XMCL and backup your data",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["update", "backup", "appx", "beginner"],
+      "slug": "update",
+      "readTime": "8 min",
+      "difficulty": "beginner"
+    },
+    {
       "id": "1",
       "title": "I18n Web",
       "excerpt": "How do I add a translation for a website?",
@@ -154,5 +209,5 @@
     "java",
     "instance"
   ],
-  "featured": ["demo-minecraft", "Data-Storage"]
+  "featured": ["install", "demo-minecraft", "Data-Storage"]
 }
