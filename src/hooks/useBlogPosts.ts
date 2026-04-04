@@ -1,5 +1,6 @@
 
 import { useQuery } from '@tanstack/react-query';
+import { preprocessMarkdown } from '@/utils/markdownUtils';
 
 interface BlogPost {
   id: string;
@@ -60,7 +61,8 @@ export const useBlogPosts = () => {
       if (!response.ok) {
         return '# Post not found\n\nThis post content is not available.';
       }
-      return response.text();
+      const rawContent = await response.text();
+      return preprocessMarkdown(rawContent);
     } catch (error) {
       return '# Error loading post\n\nFailed to load post content.';
     }

@@ -23,6 +23,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AppShell } from "@/components/AppShell";
 import { TranslateButton } from "@/components/TranslateButton";
 import { useContentTranslation } from "@/hooks/useContentTranslation";
+import { preprocessMarkdown } from "@/utils/markdownUtils";
 
 const MarkdownRenderer = lazy(() =>
   import("@/components/MarkdownRenderer").then(m => ({ default: m.MarkdownRenderer }))
@@ -230,7 +231,8 @@ const GuideContent = ({ initialSlug }: { initialSlug?: string }) => {
     queryFn: async () => {
       const response = await fetch(`/guide/${id}.md`);
       if (!response.ok) return "# Guide not found";
-      return response.text();
+      const rawContent = await response.text();
+      return preprocessMarkdown(rawContent);
     },
     enabled: !!id,
     staleTime: 30 * 60 * 1000,

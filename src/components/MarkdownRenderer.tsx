@@ -301,30 +301,47 @@ const components = {
   div: ({ children, className, ...props }: any) => {
     // Check for custom alert types
     if (className?.includes('markdown-alert')) {
-      const alertType = className.includes('note') ? 'note' 
+      const alertType = className.includes('note') ? 'note'
         : className.includes('tip') ? 'tip'
         : className.includes('warning') ? 'warning'
         : className.includes('caution') ? 'caution'
         : className.includes('important') ? 'important'
+        : className.includes('info') ? 'info'
         : null;
-      
+
       if (alertType) {
         const styles: Record<string, string> = {
-          note: 'border-blue-500 bg-blue-50 dark:bg-blue-900/20',
-          tip: 'border-green-500 bg-green-50 dark:bg-green-900/20',
-          warning: 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20',
-          caution: 'border-red-500 bg-red-50 dark:bg-red-900/20',
-          important: 'border-purple-500 bg-purple-50 dark:bg-purple-900/20',
+          note: 'border-blue-500 bg-blue-50/80 dark:bg-blue-900/20',
+          info: 'border-blue-500 bg-blue-50/80 dark:bg-blue-900/20',
+          tip: 'border-green-500 bg-green-50/80 dark:bg-green-900/20',
+          warning: 'border-yellow-500 bg-yellow-50/80 dark:bg-yellow-900/20',
+          caution: 'border-red-500 bg-red-50/80 dark:bg-red-900/20',
+          important: 'border-purple-500 bg-purple-50/80 dark:bg-purple-900/20',
         };
-        
+
+        const icons: Record<string, string> = {
+          note: '📝',
+          info: 'ℹ️',
+          tip: '💡',
+          warning: '⚠️',
+          caution: '🚫',
+          important: '🔥',
+        };
+
         return (
-          <div className={`my-6 p-4 border-l-4 rounded-r-lg ${styles[alertType]}`} {...props}>
-            {children}
+          <div className={`my-6 p-5 border-l-4 rounded-r-lg ${styles[alertType]}`} {...props}>
+            <div className="flex items-center gap-2 mb-2 font-semibold text-slate-900 dark:text-white">
+              <span className="text-lg">{icons[alertType]}</span>
+              <span className="uppercase text-sm tracking-wide">{alertType}</span>
+            </div>
+            <div className="text-slate-700 dark:text-slate-300">
+              {children}
+            </div>
           </div>
         );
       }
     }
-    
+
     return <div className={className} {...props}>{children}</div>;
   },
 };

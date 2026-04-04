@@ -24,6 +24,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AppShell } from "@/components/AppShell";
 import { TranslateButton } from "@/components/TranslateButton";
 import { useContentTranslation } from "@/hooks/useContentTranslation";
+import { preprocessMarkdown } from "@/utils/markdownUtils";
 
 
 const MarkdownRenderer = lazy(() =>
