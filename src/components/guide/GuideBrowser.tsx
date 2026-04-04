@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MagnifyingGlass, Clock, User, ArrowRight, Filter, X, Star } from "@phosphor-icons/react";
+import { MagnifyingGlass, Clock, User, ArrowRight, FunnelSimple, X, Star } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/contexts/TranslationContext";
 
@@ -77,7 +77,7 @@ export const GuideBrowser = ({ posts, categories, featuredIds }: GuideBrowserPro
           onClick={() => setShowFilters(!showFilters)}
           className={`rounded-xl h-12 ${showFilters ? "bg-emerald-600 hover:bg-emerald-700" : ""}`}
         >
-          <Filter className="mr-2 h-4 w-4" />
+          <FunnelSimple className="mr-2 h-4 w-4" />
           {t("guide.filterByTags", "Filter by tag")}
         </Button>
       </motion.div>

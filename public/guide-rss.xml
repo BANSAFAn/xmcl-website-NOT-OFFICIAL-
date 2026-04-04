@@ -6,7 +6,7 @@
     <atom:link href="https://xmcl-website-not-official.vercel.app/guide-rss.xml" rel="self" type="application/rss+xml" />
     <description>Latest guides and tutorials from XMCL</description>
     <language>en</language>
-    <lastBuildDate>Fri, 03 Apr 2026 19:39:35 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 04 Apr 2026 10:48:44 GMT</lastBuildDate>
     <generator>XMCL Website</generator>
 
     <item>
@@ -40,6 +40,112 @@
       <author><![CDATA[Baneronetwo]]></author>
       <category><![CDATA[web]]></category>
       <category><![CDATA[i18n]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Installation Guide]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/install</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/install</guid>
+      <description><![CDATA[Complete guide to installing XMCL on Windows, macOS, and Linux]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[installation]]></category>
+      <category><![CDATA[windows]]></category>
+      <category><![CDATA[macos]]></category>
+      <category><![CDATA[linux]]></category>
+      <category><![CDATA[beginner]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Appearance Guide]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/appearance</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/appearance</guid>
+      <description><![CDATA[Customize colors, themes, and background effects in XMCL]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[appearance]]></category>
+      <category><![CDATA[themes]]></category>
+      <category><![CDATA[customization]]></category>
+      <category><![CDATA[beginner]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Contributing Guide]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/contributing</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/contributing</guid>
+      <description><![CDATA[Learn how to contribute to XMCL development]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[contributing]]></category>
+      <category><![CDATA[development]]></category>
+      <category><![CDATA[advanced]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[What is Modloader and Why I Need That]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/modloader</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/modloader</guid>
+      <description><![CDATA[Understanding Minecraft mod loaders: Forge, Fabric, NeoForge, and Quilt]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[modloader]]></category>
+      <category><![CDATA[forge]]></category>
+      <category><![CDATA[fabric]]></category>
+      <category><![CDATA[neoforge]]></category>
+      <category><![CDATA[quilt]]></category>
+      <category><![CDATA[beginner]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Update Guide]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/update</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/update</guid>
+      <description><![CDATA[How to update XMCL and backup your data]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[update]]></category>
+      <category><![CDATA[backup]]></category>
+      <category><![CDATA[appx]]></category>
+      <category><![CDATA[beginner]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[APPX Migration Guide]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/appx-migration</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/appx-migration</guid>
+      <description><![CDATA[How to migrate from APPX to other formats]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[appx]]></category>
+      <category><![CDATA[migration]]></category>
+      <category><![CDATA[windows]]></category>
+      <category><![CDATA[intermediate]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Localization Guide]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/localization</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/localization</guid>
+      <description><![CDATA[How to add translations and localize XMCL]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[localization]]></category>
+      <category><![CDATA[i18n]]></category>
+      <category><![CDATA[translation]]></category>
+      <category><![CDATA[intermediate]]></category>
+    </item>
+
+    <item>
+      <title><![CDATA[Multiplayer Guide]]></title>
+      <link>https://xmcl-website-not-official.vercel.app/guide/multiplayer</link>
+      <guid>https://xmcl-website-not-official.vercel.app/guide/multiplayer</guid>
+      <description><![CDATA[How to play multiplayer with XMCL]]></description>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <author><![CDATA[XMCL Team]]></author>
+      <category><![CDATA[multiplayer]]></category>
+      <category><![CDATA[p2p]]></category>
+      <category><![CDATA[online]]></category>
+      <category><![CDATA[beginner]]></category>
     </item>
 
     <item>
@@ -153,18 +259,6 @@
       <author><![CDATA[Baneronetwo]]></author>
       <category><![CDATA[launcher]]></category>
       <category><![CDATA[nickname]]></category>
-    </item>
-
-    <item>
-      <title><![CDATA[Licences NOT WORK ?!]]></title>
-      <link>https://xmcl-website-not-official.vercel.app/guide/licence-not-work</link>
-      <guid>https://xmcl-website-not-official.vercel.app/guide/licence-not-work</guid>
-      <description><![CDATA[I bought a license, but it doesn't work in the launcher?]]></description>
-      <pubDate>Mon, 31 Mar 2025 21:00:00 GMT</pubDate>
-      <author><![CDATA[Baneronetwo]]></author>
-      <category><![CDATA[launcher]]></category>
-      <category><![CDATA[licence]]></category>
-      <category><![CDATA[account]]></category>
     </item>
   </channel>
 </rss>

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Lightning } from "@phosphor-icons/react";
+import { Lightning, Lightning as Zap } from "@phosphor-icons/react";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface OSButtonProps {

@@ -3,12 +3,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Envelope, ChatCircle, CurrencyDollar, ShareNetwork, Heart } from '@phosphor-icons/react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/Footer';
-import { useLanguage } from '@/components/navbar/LanguageContext';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Contact() {
-  const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
+  
+  const handleDownloadClick = () => {
+    window.location.href = '/download';
+  };
   
   // Translations for the Contact page
   const translations = {
@@ -206,8 +209,8 @@ export default function Contact() {
     }
   };
 
-  // Select the appropriate translation based on the current language
-  const text = translations[currentLanguage as keyof typeof translations] || translations.en;
+  // Use English as default, can be extended with i18n later
+  const text = translations.en;
 
   const contacts = [
     {
@@ -331,7 +334,7 @@ export default function Contact() {
         </div>
       </main>
       
-      <Footer />
+      <Footer onDownloadClick={handleDownloadClick} />
     </div>
   );
 }

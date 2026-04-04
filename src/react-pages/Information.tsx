@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   DownloadSimple, Globe, Shield, Users, Package, HardDrive,
   UserCheck, Code, Sparkle, Star, CaretRight, Lightning, ShieldCheck,
-  Cpu, Database, GlobeSimple, Layers, Heart, GithubLogo, ArrowSquareOut,
+  Cpu, Database, GlobeSimple, Heart, GithubLogo, ArrowSquareOut,
   Copy, Check, CaretLeft, ArrowRight
 } from '@phosphor-icons/react';
 import { AppShell } from '@/components/AppShell';
@@ -70,7 +70,7 @@ const features = [
     size: 'normal'
   },
   {
-    icon: Server,
+    icon: Globe,
     title: 'P2P Multiplayer',
     desc: 'Play LAN games with friends anywhere in the world!',
     gradient: 'bg-red-500',

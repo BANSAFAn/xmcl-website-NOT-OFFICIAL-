@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowSquareOut, Code, Book, Layers } from "@phosphor-icons/react";
+import { ArrowSquareOut, Code, Book } from "@phosphor-icons/react";
 import { useTranslation } from "@/hooks/useTranslation";
 
 const Docs = () => {

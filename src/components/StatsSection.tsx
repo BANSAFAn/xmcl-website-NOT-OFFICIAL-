@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { DownloadSimple, Users, Code, Lightning } from '@phosphor-icons/react';
+import { DownloadSimple, Users, Code, Lightning, Globe, Lightning as LightningIcon } from '@phosphor-icons/react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export const StatsSection = () => {
@@ -22,14 +22,14 @@ export const StatsSection = () => {
       iconColor: "text-green-500"
     },
     {
-      icon: Download,
+      icon: Globe,
       number: "45+",
       label: t('stats.countries'),
       color: "bg-purple-500/20",
       iconColor: "text-purple-500"
     },
     {
-      icon: Zap,
+      icon: Lightning,
       number: "99.9%",
       label: t('stats.uptime'),
       color: "bg-orange-500/20",

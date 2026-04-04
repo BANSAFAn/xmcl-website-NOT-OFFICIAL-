@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactMarkdown, { Components } from 'react-markdown';
+import ReactMarkdown from 'react-markdown';
+import type { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 // import { cn } from '@/lib/utils';
 import { WarningCircle, Warning, Check, Info, WarningOctagon } from '@phosphor-icons/react';
