@@ -56,6 +56,39 @@
       "difficulty": "beginner"
     },
     {
+      "id": "19",
+      "title": "APPX Migration Guide",
+      "excerpt": "How to migrate from APPX to other formats",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["appx", "migration", "windows", "intermediate"],
+      "slug": "appx-migration",
+      "readTime": "8 min",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "20",
+      "title": "Localization Guide",
+      "excerpt": "How to add translations and localize XMCL",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["localization", "i18n", "translation", "intermediate"],
+      "slug": "localization",
+      "readTime": "10 min",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "21",
+      "title": "Multiplayer Guide",
+      "excerpt": "How to play multiplayer with XMCL",
+      "author": "XMCL Team",
+      "date": "2025-01-15",
+      "tags": ["multiplayer", "p2p", "online", "beginner"],
+      "slug": "multiplayer",
+      "readTime": "10 min",
+      "difficulty": "beginner"
+    },
+    {
       "id": "1",
       "title": "I18n Web",
       "excerpt": "How do I add a translation for a website?",
