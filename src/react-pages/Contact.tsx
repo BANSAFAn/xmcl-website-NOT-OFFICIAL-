@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MessageCircle, DollarSign, Share, Heart } from 'lucide-react';
+import { Envelope, ChatCircle, CurrencyDollar, ShareNetwork, Heart } from '@phosphor-icons/react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/Footer';
@@ -211,20 +211,20 @@ export default function Contact() {
 
   const contacts = [
     {
-      icon: <Mail className="h-6 w-6" />,
+      icon: <Envelope className="h-6 w-6" />,
       title: text.email.title,
       value: text.email.value,
       link: "mailto:cijhn@hotmail.com",
       description: text.email.description,
-      gradient: "from-blue-500 to-cyan-500"
+      gradient: "bg-blue-500"
     },
     {
-      icon: <MessageCircle className="h-6 w-6" />,
+      icon: <ChatCircle className="h-6 w-6" />,
       title: text.discord.title,
       value: text.discord.value,
       link: "https://discord.gg/W5XVwYY7GQ",
       description: text.discord.description,
-      gradient: "from-indigo-500 to-purple-500"
+      gradient: "bg-indigo-500"
     },
     {
       icon: <Heart className="h-6 w-6" />,
@@ -232,23 +232,23 @@ export default function Contact() {
       value: text.kofi.value,
       link: "https://ko-fi.com/ci010",
       description: text.kofi.description,
-      gradient: "from-pink-500 to-rose-500"
+      gradient: "bg-pink-500"
     },
     {
-      icon: <DollarSign className="h-6 w-6" />,
+      icon: <CurrencyDollar className="h-6 w-6" />,
       title: text.afdian.title,
       value: text.afdian.value,
       link: "https://afdian.net/@ci010",
       description: text.afdian.description,
-      gradient: "from-orange-500 to-red-500"
+      gradient: "bg-orange-500"
     },
     {
-      icon: <Share className="h-6 w-6" />,
+      icon: <ShareNetwork className="h-6 w-6" />,
       title: text.kook.title,
       value: text.kook.value,
       link: "https://kook.top/gqjSHh",
       description: text.kook.description,
-      gradient: "from-green-500 to-emerald-500"
+      gradient: "bg-green-500"
     }
   ];
 
@@ -256,11 +256,11 @@ export default function Contact() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow pt-32 pb-20 relative overflow-hidden">
+      <main className="flex-grow pt-24 md:pt-32 pb-12 md:pb-20 relative overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full filter blur-[100px] animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-500/20 to-orange-500/20 rounded-full filter blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500/20 rounded-full filter blur-[100px] animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-pink-500/20 rounded-full filter blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -270,9 +270,9 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="text-center mb-12">
+            <div className="text-center mb-8 md:mb-12">
               <motion.h1 
-                className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent"
+                className="text-4xl md:text-5xl font-bold mb-6 text-blue-400"
                 initial={{ scale: 0.9 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -280,7 +280,7 @@ export default function Contact() {
                 {text.contactUs}
               </motion.h1>
               <motion.div
-                className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"
+                className="w-24 h-1 bg-blue-500 mx-auto rounded-full"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -288,11 +288,11 @@ export default function Contact() {
             </div>
             
             <Tabs defaultValue="all" className="w-full">
-              <TabsList className="mb-8 w-full justify-center bg-white/5 backdrop-blur-sm border border-white/10">
-                <TabsTrigger value="all" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.allContacts}</TabsTrigger>
-                <TabsTrigger value="support" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.support}</TabsTrigger>
-                <TabsTrigger value="community" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.community}</TabsTrigger>
-                <TabsTrigger value="donate" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500">{text.donate}</TabsTrigger>
+              <TabsList className="mb-8 w-full justify-center bg-white/5 border border-white/10">
+                <TabsTrigger value="all" className="data-[state=active]:bg-blue-500">{text.allContacts}</TabsTrigger>
+                <TabsTrigger value="support" className="data-[state=active]:bg-blue-500">{text.support}</TabsTrigger>
+                <TabsTrigger value="community" className="data-[state=active]:bg-blue-500">{text.community}</TabsTrigger>
+                <TabsTrigger value="donate" className="data-[state=active]:bg-blue-500">{text.donate}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="all" className="space-y-6">
@@ -359,16 +359,16 @@ function ContactCard({ icon, title, value, link, description, gradient, delay = 
       whileHover={{ y: -5 }}
     >
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" 
-             style={{ background: `linear-gradient(135deg, var(--gradient-from), var(--gradient-to))` }} />
+        <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-100 transition-opacity duration-300 rounded-xl"
+             style={{ background: 'var(--gradient-from)' }} />
         
-        <div className="relative p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 group-hover:border-white/20 transition-all duration-300">
+        <div className="relative p-5 md:p-6 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 group-hover:border-white/20 transition-all duration-300">
           <div className="flex items-start mb-4">
-            <div className={`p-3 rounded-lg bg-gradient-to-r ${gradient} text-white mr-4 group-hover:scale-110 transition-transform duration-300`}>
+            <div className={`p-3 rounded-lg ${gradient} text-white mr-4 group-hover:scale-110 transition-transform duration-300`}>
               {icon}
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-500 transition-all duration-300">
+              <h3 className="text-xl font-semibold mb-1 group-hover:text-blue-400 transition-colors duration-300">
                 {title}
               </h3>
               <p className="text-lg font-medium text-white/90 mb-2">{value}</p>
@@ -379,7 +379,7 @@ function ContactCard({ icon, title, value, link, description, gradient, delay = 
           </p>
           
           {/* Hover effect overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out" />
+          <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out" />
         </div>
       </div>
     </motion.a>

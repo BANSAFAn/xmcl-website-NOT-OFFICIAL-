@@ -2,7 +2,7 @@ import React from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 // import { cn } from '@/lib/utils';
-import { AlertCircle, AlertTriangle, CheckCircle, Info, AlertOctagon } from 'lucide-react';
+import { WarningCircle, Warning, Check, Info, WarningOctagon } from '@phosphor-icons/react';
 
 interface MarkdownRenderProps {
   content: string;
@@ -28,7 +28,7 @@ const BlockquoteComponent: Components['blockquote'] = ({ node, ...props }) => {
     return (
       <div className="my-4 p-4 bg-green-900/20 border-l-4 border-green-500 rounded-r-md">
         <div className="flex items-start gap-3">
-          <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+          <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
           <div>
             <p className="font-medium text-green-500">Tip</p>
             <div>{children}</div>
@@ -42,7 +42,7 @@ const BlockquoteComponent: Components['blockquote'] = ({ node, ...props }) => {
     return (
       <div className="my-4 p-4 bg-yellow-900/20 border-l-4 border-yellow-500 rounded-r-md">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+          <Warning className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
           <div>
             <p className="font-medium text-yellow-500">Warning</p>
             <div>{children}</div>
@@ -56,7 +56,7 @@ const BlockquoteComponent: Components['blockquote'] = ({ node, ...props }) => {
     return (
       <div className="my-4 p-4 bg-orange-900/20 border-l-4 border-orange-500 rounded-r-md">
         <div className="flex items-start gap-3">
-          <AlertOctagon className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+          <WarningOctagon className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
           <div>
             <p className="font-medium text-orange-500">Caution</p>
             <div>{children}</div>
@@ -70,7 +70,7 @@ const BlockquoteComponent: Components['blockquote'] = ({ node, ...props }) => {
     return (
       <div className="my-4 p-4 bg-red-900/20 border-l-4 border-red-500 rounded-r-md">
         <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <WarningCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
           <div>
             <p className="font-medium text-red-500">Important</p>
             <div>{children}</div>

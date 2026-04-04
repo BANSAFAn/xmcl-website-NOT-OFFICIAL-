@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Download, Copy, Check } from "lucide-react";
+import { DownloadSimple, Copy, Check } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
 import { toast } from "sonner";
@@ -47,7 +47,7 @@ export const DownloadItem: React.FC<DownloadItemProps> = ({
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.02]">
+    <div className="group relative overflow-hidden rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.02]">
       <div className="p-6 flex items-center gap-6 flex-wrap sm:flex-nowrap">
         <PackageIcon type={packageType} gradient={gradient} />
 
@@ -128,7 +128,7 @@ export const DownloadItem: React.FC<DownloadItemProps> = ({
             )
           ) : (
             <>
-              <Download className="w-5 h-5 mr-2" />
+              <DownloadSimple className="w-5 h-5 mr-2" />
               {t("downloadMessages.download")}
             </>
           )}
@@ -136,7 +136,7 @@ export const DownloadItem: React.FC<DownloadItemProps> = ({
       </div>
 
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-pulse" />
+        <div className="absolute inset-0 bg-blue-500/20 animate-pulse" />
       </div>
     </div>
   );

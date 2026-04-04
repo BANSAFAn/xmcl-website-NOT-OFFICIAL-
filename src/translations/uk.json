@@ -37,7 +37,11 @@
     "downloadXMCL": "Завантажити XMCL",
     "viewReleases": "Переглянути релізи",
     "launcherBy": "Лаунчер від",
-    "websiteBy": "Вебсайт від"
+    "websiteBy": "Вебсайт від",
+    "features": {
+      "highPerformance": "Висока продуктивність",
+      "secure": "Безпечний"
+    }
   },
   "theme": {
     "light": "Світла",
@@ -104,7 +108,14 @@
     "p2p": "Пірингове з'єднання",
     "feature5Description": "Організовуйте та застосовуйте пакети ресурсів із попереднім переглядом та автоматичними оновленнями",
     "feature6Title": "Керування збереженнями",
-    "feature6Description": "Резервне копіювання, відновлення та обмін вашими світами з синхронізацією в хмарі"
+    "feature6Description": "Резервне копіювання, відновлення та обмін вашими світами з синхронізацією в хмарі",
+    "downloads": "Завантажень (не точно, ми не відстежуємо автооновлення та багато іншого, ця версія більше для Windows 64x.)",
+    "stars": "Зірок",
+    "forks": "Форків",
+    "issues": "Проблем",
+    "readyToStart": "Готові почати?",
+    "readyToStartDesc": "Приєднуйтесь до мільйонів гравців, які довіряють XMCL",
+    "tryNow": "Спробувати зараз"
   },
   "downloadSection": {
     "title": "Завантажити",
@@ -326,7 +337,17 @@
     "rpmPackageARM64": "Пакет RPM (ARM64)",
     "tarArchiveARM64": "Архів TAR (ARM64)",
     "releaseNotes": "Примітки до релізу",
-    "allReleases": "Усі релізи"
+    "allReleases": "Усі релізи",
+    "macosDescription": "macOS 11.0+",
+    "linuxDescription": "Debian, RPM, AppImage",
+    "packageManagers": "Пакетні менеджери",
+    "windowsInstallers": "x64 / Інсталятори",
+    "otherOption": "App Store / Інше",
+    "otherPlatforms": "Інші платформи",
+    "appleSilicon": "Apple Silicon (M1/M2)",
+    "intel": "Intel (x64)",
+    "windowsDescription": "Windows 10/11 (64-біт)",
+    "lookingForOlder": "Шукаєте старіші версії?"
   },
   "issues": {
     "title": "Проблеми та звіти про помилки",
@@ -585,6 +606,7 @@
   "modernCrossplatformDescription": "Сучасний кросплатформений лаунчер Minecraft",
   "githubStars": "Зірки GitHub",
   "forks": "Форки",
+  "sponsoredBy": "За підтримки",
   "lastVersion": "Остання версія",
   "stats": {
     "downloads": "Завантаження",
@@ -599,11 +621,41 @@
   },
   "docs": {
     "title": "Документація",
-    "search": "Пошук документації"
+    "search": "Пошук документації",
+    "subtitle": "Досліджуйте API, основні модулі та документацію з керування модами",
+    "sections": {
+      "coreApi": {
+        "title": "Основний API",
+        "description": "Дізнайтеся про основний API XMCL та як інтегруватися з ним"
+      },
+      "launcherCore": {
+        "title": "Ядро лаунчера",
+        "description": "Зрозумійте архітектуру та внутрішню будову ядра лаунчера"
+      },
+      "modManagement": {
+        "title": "Керування модами",
+        "description": "Документація з керування модами, встановлення та налаштування"
+      }
+    },
+    "openDocumentation": "Відкрити документацію",
+    "fullDocumentation": "Повна документація",
+    "fullDocumentationDescription": "Відвідайте нашу повну документацію для детальних посібників та довідок API",
+    "goToDocumentation": "Перейти до документації"
   },
   "actions": {
     "preview": "Попередній перегляд",
     "hide": "Приховати",
-    "goToIssue": "Перейти до проблеми"
-  }
+    "goToIssue": "Перейти до проблеми",
+    "retry": "Повторити спробу"
+  },
+  "errors": {
+    "issuesLoad": "Не вдалося завантажити проблеми"
+  },
+  "issues": {
+    "sortBy": "Сортувати за",
+    "tryAdjusting": "Спробуйте налаштувати фільтри або пошукові запити"
+  },
+  "meta_description": "Відчуйте Minecraft по-новому з XMCL - сучасним лаунчером з розширеними можливостями, продуктивністю та кастомізацією",
+  "og_description": "Відчуйте Minecraft по-новому з XMCL - сучасним лаунчером з розширеними можливостями, продуктивністю та кастомізацією",
+  "og_title": "X Minecraft Launcher"
 }

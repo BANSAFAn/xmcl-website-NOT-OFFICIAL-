@@ -27,7 +27,7 @@ const NavItems: React.FC<NavItemsProps> = ({ className = '', onItemClick }) => {
   ];
 
   const baseClassName = "relative text-sm font-medium transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400";
-  const activeClassName = "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100";
+  const activeClassName = "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100";
 
   return (
     <>
